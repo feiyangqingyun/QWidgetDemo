@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/btn_close.png</file>
+        <file>image/btn_ok.png</file>
+        <file>image/fontawesome-webfont.ttf</file>
+        <file>image/msg_error.png</file>
+        <file>image/msg_info.png</file>
+        <file>image/msg_question.png</file>
+        <file>image/qt_zh_CN.qm</file>
+        <file>image/widgets.qm</file>
+    </qresource>
+</RCC>

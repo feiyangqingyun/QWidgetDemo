@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmMain</class>
+ <widget class="QWidget" name="frmMain">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+     <property name="tabPosition">
+      <enum>QTabWidget::South</enum>
+     </property>
+     <property name="currentIndex">
+      <number>2</number>
+     </property>
+     <widget class="frmTcpClient" name="tabTcpClient">
+      <attribute name="title">
+       <string>TCP客户端</string>
+      </attribute>
+     </widget>
+     <widget class="frmTcpServer" name="tabTcpServer">
+      <attribute name="title">
+       <string>TCP服务器</string>
+      </attribute>
+     </widget>
+     <widget class="frmUdpServer" name="tabUdpServer">
+      <attribute name="title">
+       <string>UDP服务器</string>
+      </attribute>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>frmTcpClient</class>
+   <extends>QWidget</extends>
+   <header>frmtcpclient.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>frmTcpServer</class>
+   <extends>QWidget</extends>
+   <header>frmtcpserver.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>frmUdpServer</class>
+   <extends>QWidget</extends>
+   <header>frmudpserver.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
