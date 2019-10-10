@@ -15,3 +15,5 @@ Qt编写的一些开源的demo，包括串口调试助手、网络调试助手�
 | 9 | styledemo | 高仿PS黑色+扁平白色+淡蓝色风格主题 |
 | 10 | navbutton | 导航按钮控件 |
 | 11 | video_splite | 视频监控画面分割demo |
+| 12 | framelesswidget | 通用无边框拖动拉伸类 |
+| 13 | ipaddress | IP地址输入控件 |
