@@ -5,6 +5,8 @@
 FramelessWidget::FramelessWidget(QObject *parent) : QObject(parent)
 {
     padding = 8;
+    moveEnable = true;
+    resizeEnable = true;
     widget = 0;
 
     pressed = false;
@@ -79,78 +81,85 @@ bool FramelessWidget::eventFilter(QObject *watched, QEvent *event)
                     pressed = true;
                 }
             } else if (event->type() == QEvent::MouseMove) {
-                //设置对应鼠标形状
+                //设置对应鼠标形状,这个必须放在这里而不是下面,因为可以在鼠标没有按下的时候识别
                 QPoint point = mouseEvent->pos();
-                if (rectLeft.contains(point)) {
-                    widget->setCursor(Qt::SizeHorCursor);
-                } else if (rectRight.contains(point)) {
-                    widget->setCursor(Qt::SizeHorCursor);
-                } else if (rectTop.contains(point)) {
-                    widget->setCursor(Qt::SizeVerCursor);
-                } else if (rectBottom.contains(point)) {
-                    widget->setCursor(Qt::SizeVerCursor);
-                } else if (rectLeftTop.contains(point)) {
-                    widget->setCursor(Qt::SizeFDiagCursor);
-                } else if (rectRightTop.contains(point)) {
-                    widget->setCursor(Qt::SizeBDiagCursor);
-                } else if (rectLeftBottom.contains(point)) {
-                    widget->setCursor(Qt::SizeBDiagCursor);
-                } else if (rectRightBottom.contains(point)) {
-                    widget->setCursor(Qt::SizeFDiagCursor);
-                } else {
-                    widget->setCursor(Qt::ArrowCursor);
+                if (resizeEnable) {
+                    if (rectLeft.contains(point)) {
+                        widget->setCursor(Qt::SizeHorCursor);
+                    } else if (rectRight.contains(point)) {
+                        widget->setCursor(Qt::SizeHorCursor);
+                    } else if (rectTop.contains(point)) {
+                        widget->setCursor(Qt::SizeVerCursor);
+                    } else if (rectBottom.contains(point)) {
+                        widget->setCursor(Qt::SizeVerCursor);
+                    } else if (rectLeftTop.contains(point)) {
+                        widget->setCursor(Qt::SizeFDiagCursor);
+                    } else if (rectRightTop.contains(point)) {
+                        widget->setCursor(Qt::SizeBDiagCursor);
+                    } else if (rectLeftBottom.contains(point)) {
+                        widget->setCursor(Qt::SizeBDiagCursor);
+                    } else if (rectRightBottom.contains(point)) {
+                        widget->setCursor(Qt::SizeFDiagCursor);
+                    } else {
+                        widget->setCursor(Qt::ArrowCursor);
+                    }
                 }
 
                 //根据当前鼠标位置,计算XY轴移动了多少
-                QPoint pos = mouseEvent->pos();
-                int dx = pos.x() - lastPos.x();
-                int dy = pos.y() - lastPos.y();
+                int offsetX = point.x() - lastPos.x();
+                int offsetY = point.y() - lastPos.y();
 
                 //根据按下处的位置判断是否是移动控件还是拉伸控件
-                if (pressed) {
-                    widget->move(widget->x() + dx, widget->y() + dy);
-                } else if (pressedLeft) {
-                    int resizeW = widget->width() - dx;
-                    if (widget->minimumWidth() <= resizeW) {
-                        widget->setGeometry(widget->x() + dx, rectY, resizeW, rectH);
+                if (moveEnable) {
+                    if (pressed) {
+                        widget->move(widget->x() + offsetX, widget->y() + offsetY);
                     }
-                } else if (pressedRight) {
-                    widget->setGeometry(rectX, rectY, rectW + dx, rectH);
-                } else if (pressedTop) {
-                    int resizeH = widget->height() - dy;
-                    if (widget->minimumHeight() <= resizeH) {
-                        widget->setGeometry(rectX, widget->y() + dy, rectW, resizeH);
-                    }
-                } else if (pressedBottom) {
-                    widget->setGeometry(rectX, rectY, rectW, rectH + dy);
-                } else if (pressedLeftTop) {
-                    int resizeW = widget->width() - dx;
-                    int resizeH = widget->height() - dy;
-                    if (widget->minimumWidth() <= resizeW) {
-                        widget->setGeometry(widget->x() + dx, widget->y(), resizeW, resizeH);
-                    }
-                    if (widget->minimumHeight() <= resizeH) {
-                        widget->setGeometry(widget->x(), widget->y() + dy, resizeW, resizeH);
-                    }
-                } else if (pressedRightTop) {
-                    int resizeW = rectW + dx;
-                    int resizeH = widget->height() - dy;
-                    if (widget->minimumHeight() <= resizeH) {
-                        widget->setGeometry(widget->x(), widget->y() + dy, resizeW, resizeH);
-                    }
-                } else if (pressedLeftBottom) {
-                    int resizeW = widget->width() - dx;
-                    int resizeH = rectH + dy;
-                    if (widget->minimumWidth() <= resizeW) {
-                        widget->setGeometry(widget->x() + dx, widget->y(), resizeW, resizeH);
-                    }
-                    if (widget->minimumHeight() <= resizeH) {
+                }
+
+                if (resizeEnable) {
+                    if (pressedLeft) {
+                        int resizeW = widget->width() - offsetX;
+                        if (widget->minimumWidth() <= resizeW) {
+                            widget->setGeometry(widget->x() + offsetX, rectY, resizeW, rectH);
+                        }
+                    } else if (pressedRight) {
+                        widget->setGeometry(rectX, rectY, rectW + offsetX, rectH);
+                    } else if (pressedTop) {
+                        int resizeH = widget->height() - offsetY;
+                        if (widget->minimumHeight() <= resizeH) {
+                            widget->setGeometry(rectX, widget->y() + offsetY, rectW, resizeH);
+                        }
+                    } else if (pressedBottom) {
+                        widget->setGeometry(rectX, rectY, rectW, rectH + offsetY);
+                    } else if (pressedLeftTop) {
+                        int resizeW = widget->width() - offsetX;
+                        int resizeH = widget->height() - offsetY;
+                        if (widget->minimumWidth() <= resizeW) {
+                            widget->setGeometry(widget->x() + offsetX, widget->y(), resizeW, resizeH);
+                        }
+                        if (widget->minimumHeight() <= resizeH) {
+                            widget->setGeometry(widget->x(), widget->y() + offsetY, resizeW, resizeH);
+                        }
+                    } else if (pressedRightTop) {
+                        int resizeW = rectW + offsetX;
+                        int resizeH = widget->height() - offsetY;
+                        if (widget->minimumHeight() <= resizeH) {
+                            widget->setGeometry(widget->x(), widget->y() + offsetY, resizeW, resizeH);
+                        }
+                    } else if (pressedLeftBottom) {
+                        int resizeW = widget->width() - offsetX;
+                        int resizeH = rectH + offsetY;
+                        if (widget->minimumWidth() <= resizeW) {
+                            widget->setGeometry(widget->x() + offsetX, widget->y(), resizeW, resizeH);
+                        }
+                        if (widget->minimumHeight() <= resizeH) {
+                            widget->setGeometry(widget->x(), widget->y(), resizeW, resizeH);
+                        }
+                    } else if (pressedRightBottom) {
+                        int resizeW = rectW + offsetX;
+                        int resizeH = rectH + offsetY;
                         widget->setGeometry(widget->x(), widget->y(), resizeW, resizeH);
                     }
-                } else if (pressedRightBottom) {
-                    int resizeW = rectW + dx;
-                    int resizeH = rectH + dy;
-                    widget->setGeometry(widget->x(), widget->y(), resizeW, resizeH);
                 }
             } else if (event->type() == QEvent::MouseButtonRelease) {
                 //恢复所有
@@ -176,6 +185,16 @@ void FramelessWidget::setPadding(int padding)
     this->padding = padding;
 }
 
+void FramelessWidget::setMoveEnable(bool moveEnable)
+{
+    this->moveEnable = moveEnable;
+}
+
+void FramelessWidget::setResizeEnable(bool resizeEnable)
+{
+    this->resizeEnable = resizeEnable;
+}
+
 void FramelessWidget::setWidget(QWidget *widget)
 {
     if (this->widget == 0) {
@@ -185,7 +204,7 @@ void FramelessWidget::setWidget(QWidget *widget)
         //绑定事件过滤器
         this->widget->installEventFilter(this);
         //设置无边框属性
-        this->widget->setWindowFlags(Qt::FramelessWindowHint);
+        this->widget->setWindowFlags(widget->windowFlags() | Qt::FramelessWindowHint);
         //this->widget->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
     }
 }

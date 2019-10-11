@@ -6,6 +6,8 @@
  * 1:可以指定需要无边框的widget
  * 2:边框四周八个方位都可以自由拉伸
  * 3:可设置对应位置的边距,以便识别更大区域
+ * 4:可设置是否允许拖动
+ * 5:可设置是否允许拉伸
  */
 
 #include <QWidget>
@@ -32,6 +34,8 @@ protected:
 
 private:
     int padding;                    //边距
+    bool moveEnable;                //可移动
+    bool resizeEnable;              //可拉伸
     QWidget *widget;                //无边框窗体
 
     bool pressed;                   //鼠标按下
@@ -59,6 +63,10 @@ private:
 public Q_SLOTS:
     //设置边距
     void setPadding(int padding);
+    //设置是否可拖动+拉伸
+    void setMoveEnable(bool moveEnable);
+    void setResizeEnable(bool resizeEnable);
+
     //设置要无边框的窗体
     void setWidget(QWidget *widget);
 };

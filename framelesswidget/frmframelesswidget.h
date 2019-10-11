@@ -2,6 +2,7 @@
 #define FRMFRAMELESSWIDGET_H
 
 #include <QWidget>
+class FramelessWidget;
 
 namespace Ui
 {
@@ -16,11 +17,17 @@ public:
     explicit frmFramelessWidget(QWidget *parent = 0);
     ~frmFramelessWidget();
 
+protected:
+    void closeEvent(QCloseEvent *);
+
 private:
     Ui::frmFramelessWidget *ui;
+    FramelessWidget *frameless;
 
 private slots:
     void on_btnOpen_clicked();
+    void stateChanged1(int arg1);
+    void stateChanged2(int arg1);
 };
 
 #endif // FRMFRAMELESSWIDGET_H
