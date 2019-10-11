@@ -51,14 +51,14 @@ private:
     int rectX, rectY, rectW, rectH; //窗体坐标+宽高
     QPoint lastPos;                 //鼠标按下处坐标
 
-    QRectF rectLeft;                //左侧区域
-    QRectF rectRight;               //右侧区域
-    QRectF rectTop;                 //上侧区域
-    QRectF rectBottom;              //下侧区域
-    QRectF rectLeftTop;             //左上侧区域
-    QRectF rectRightTop;            //右上侧区域
-    QRectF rectLeftBottom;          //左下侧区域
-    QRectF rectRightBottom;         //右下侧区域
+    QRect rectLeft;                 //左侧区域
+    QRect rectRight;                //右侧区域
+    QRect rectTop;                  //上侧区域
+    QRect rectBottom;               //下侧区域
+    QRect rectLeftTop;              //左上侧区域
+    QRect rectRightTop;             //右上侧区域
+    QRect rectLeftBottom;           //左下侧区域
+    QRect rectRightBottom;          //右下侧区域
 
 public Q_SLOTS:
     //设置边距

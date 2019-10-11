@@ -22,6 +22,7 @@ protected:
 
 private:
     Ui::frmFramelessWidget *ui;
+    QWidget *w;
     FramelessWidget *frameless;
 
 private slots:
