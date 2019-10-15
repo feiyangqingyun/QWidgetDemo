@@ -22,3 +22,4 @@ Qt编写的一些开源的demo，包括串口调试助手、网络调试助手�
 | 16 | pngtool | PNG图片警告去除工具 |
 | 17 | savelog | 日志重定向输出类 |
 | 18 | saveruntime | 运行时间记录类 |
+| 19 | colorwidget | 颜色拾取器 |
