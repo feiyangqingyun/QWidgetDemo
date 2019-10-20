@@ -248,7 +248,7 @@ void GifWidget::initForm()
     connect(timer, SIGNAL(timeout()), this, SLOT(saveImage()));
 
     this->setAttribute(Qt::WA_TranslucentBackground);
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint | Qt::WindowStaysOnTopHint);
+    this->setWindowFlags(Qt::FramelessWindowHint);
     this->installEventFilter(this);
 
     QStringList qss;
