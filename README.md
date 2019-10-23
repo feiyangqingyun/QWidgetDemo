@@ -21,3 +21,4 @@
 | 18 | saveruntime | 运行时间记录类 |
 | 19 | colorwidget | 颜色拾取器 |
 | 20 | maskwidget | 遮罩层窗体 |
+| 21 | battery | 电池电量控件 |
