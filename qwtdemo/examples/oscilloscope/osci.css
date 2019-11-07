@@ -1,0 +1,55 @@
+MainWindow
+{
+    border: 1px solid white;
+    border-radius: 20px;
+    padding: 10px;
+    background-color: qlineargradient( x1: 0, y1: 0, x2: 1, y2: 1,
+        stop: 0 #31312C, stop: 0.5 #808080 stop: 1 #31312C );
+}
+
+QwtPlotCanvas
+{
+    border: 1px solid White;
+    border-radius: 10px;
+    background-color: #101010;
+    color: yellow; /* used as curve color */
+}
+
+QwtScaleWidget
+{
+    color: white;
+}
+
+WheelBox
+{
+    qproperty-theme: #878787;
+}
+
+QwtWheel
+{
+    /* background-color: yellow; */
+    qproperty-mass: 0.0;
+    qproperty-tickCount: 5;
+    qproperty-wheelWidth: 15;
+    qproperty-borderWidth: 2;
+    qproperty-wheelBorderWidth: 2;
+    qproperty-wrapping: true;
+}
+
+Knob
+{
+    qproperty-theme: #606060;
+}
+
+QwtKnob
+{
+	qproperty-knobStyle: Sunken;
+	qproperty-markerStyle: Nub;
+	qproperty-markerSize: 8;
+	qproperty-borderWidth: 2;
+}
+
+QLCDNumber
+{
+    color: yellow;
+}

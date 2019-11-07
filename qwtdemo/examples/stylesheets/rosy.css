@@ -1,0 +1,50 @@
+QwtPlot
+{
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: qlineargradient( x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #7e354d, stop: 0.5 #7f5a58, stop: 1 #7e354d );
+}
+
+QwtPlotCanvas
+{
+    border: 1px solid White;
+    border-radius: 10px;
+    background-color: #7f5a58;
+}
+
+QwtPlotGLCanvas
+{
+    border: 1px solid White;
+    background-color: #7f5a58;
+}
+
+QwtScaleWidget
+{
+    color: white;
+}
+
+QwtTextLabel#QwtPlotTitle
+{
+    color: white;
+}
+
+QwtTextLabel#QwtPlotFooter
+{
+    color: white;
+}
+
+QwtLegend
+{
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 2px;
+    background: #7f5a58;
+}
+
+QwtLegendLabel
+{
+    color: white;
+}
+

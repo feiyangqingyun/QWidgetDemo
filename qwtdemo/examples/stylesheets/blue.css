@@ -1,0 +1,66 @@
+QwtPlot
+{
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: qlineargradient( x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #657383, stop: 0.4 #8395AA, stop: 1 #657383 );
+    background-color: qlineargradient( x1: 0, y1: 0, x2: 0, y2: 1,
+        stop: 0 #657383, stop: 1 #8395AA );
+    background-color: qlineargradient( x1: 0, y1: 0, x2: 1, y2: 1,
+        stop: 0 #8395AA, stop: 1 #657383 );
+    background-color: qlineargradient( x1: 0, y1: 0, x2: 1, y2: 1,
+        stop: 0 #8395AA, stop: 0.4 #657383 stop: 1 #8395AA );
+    background-color: qlineargradient( x1: 0, y1: 0, x2: 1, y2: 1,
+        stop: 0 #7C8DA0, stop: 0.4 #657383 stop: 1 #7C8DA0 );
+    background-color: qlineargradient( x1: 0, y1: 0, x2: 1, y2: 1,
+        stop: 0 #657383, stop: 0.25 #7C8DA0 stop: 0.55 #7C8DA0 stop: 1 #657383 );
+    background-color: qlineargradient( x1: 0, y1: 0, x2: 1, y2: 1,
+        stop: 0 #8FA3B9, stop: 0.25 #7C8DA0 stop: 0.55 #7C8DA0 stop: 1 #8FA3B9 );
+    background-color: qlineargradient( x1: 0, y1: 0, x2: 1, y2: 1,
+        stop: 0 #7C8DA0, stop: 0.4 #8FA3B9 stop: 0.55 #8FA3B9 stop: 1 #7C8DA0 );
+    background-color: qlineargradient( x1: 0, y1: 0, x2: 1, y2: 1,
+        stop: 0 #7C8DA0, stop: 0.4 #8395AA stop: 0.55 #8395AA stop: 1 #7C8DA0 );
+}
+
+QwtPlotCanvas
+{
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: #616d7e;
+}
+
+QwtPlotGLCanvas
+{
+    border: 1px solid white;
+    background-color: #616d7e;
+}
+
+QwtScaleWidget
+{
+    color: white;
+}
+
+QwtTextLabel#QwtPlotTitle
+{
+    color: white;
+}
+
+QwtTextLabel#QwtPlotFooter
+{
+    color: white;
+}
+
+QwtLegend
+{
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 2px;
+    background: #616d7e;
+}
+
+QwtLegendLabel
+{
+    color: white;
+}
+

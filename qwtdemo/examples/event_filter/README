@@ -1,0 +1,27 @@
+QwtPlot is a composite widget consisting of a title label,
+the canvas, the scales and a legend. Although all components 
+should be exchangable some day, the current design isn´t ready for it.
+
+In this situation event filtering is the mechanism to extend the behaviour
+of the plot components. event_filter shows 3 examples how to use it:
+
+1) CanvasPicker
+
+The CanvasPicker implements a solution, how to move points on the canvas
+with mouse and keyboard. 
+
+2) ScalePicker
+
+The ScalePicker translates the position of mouse clicks on the scales
+and emits them as signals.
+
+3) Plot: ColorBar, QSlider
+
+The Plot class shows how to add widgets to the scales. In this example
+there is no filter class. The derived plot widget filters its components.
+
+
+Please note that CanvasPicker and ScalePicker are standalone classes
+that could be connected with your QwtPlot as well. 
+
+Uwe

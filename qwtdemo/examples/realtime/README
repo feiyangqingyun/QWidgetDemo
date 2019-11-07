@@ -1,0 +1,25 @@
+1) Incremental plots
+
+IncrementalPlot shows an example how to implement a plot that
+displays growing data. 
+
+The example produces random data when you push the start button.
+With 'Timer' you can adjust the intervall between the
+the generation of the points, with 'Points' you can set the number
+of points to be generated.
+
+Unfortunately in Qt4 incremental painting is not possible with QPaintEngines
+that doesn't support the QPaintEngine::PaintOutsidePaintEvent feature. 
+( These are all common paint engines beside the OpenGL engine, but this one 
+is not supported by Qwt yet. )
+That is the reason why you can see much faster repaints with Qt3.
+
+2) Stacked Zooming with scrollbars
+
+ScrollZoomer adds scrollbars for zooming. There are a couple of
+reasons why the implementation is a hack and therefore the class
+is not part of the Qwt lib, but it should be working with all
+types of QwtPlots. Copy the code of scrollbar.[h|cpp] and 
+scrollzoomer.[h|cpp] to the application code.
+
+Uwe
