@@ -26,4 +26,5 @@
 | 23 | zhtopy | 汉字转拼音 |
 | 24 | qwtdemo | qwt的源码版本，无需插件，直接源码集成到你的项目即可 |
 | 25 | buttondefence | 通用按钮地图效果 |
-| 25 | mouseline | 鼠标定位十字线 |
+| 26 | mouseline | 鼠标定位十字线 |
+| 27 | email | 邮件发送工具 |
