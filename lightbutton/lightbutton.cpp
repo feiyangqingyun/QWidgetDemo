@@ -28,6 +28,7 @@ LightButton::LightButton(QWidget *parent) : QWidget(parent)
     canMove = false;
     this->installEventFilter(this);
 
+    isAlarm = false;
     timerAlarm = new QTimer(this);
     connect(timerAlarm, SIGNAL(timeout()), this, SLOT(alarm()));
     timerAlarm->setInterval(500);
@@ -435,7 +436,6 @@ void LightButton::stopAlarm()
 
 void LightButton::alarm()
 {
-    static bool isAlarm = false;
     if (isAlarm) {
         textColor = QColor(255, 255, 255);
         bgColor = normalColor;

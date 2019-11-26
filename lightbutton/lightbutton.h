@@ -76,6 +76,7 @@ private:
     bool showOverlay;               //是否显示遮罩层
     QColor overlayColor;            //遮罩层颜色
 
+    bool isAlarm;                   //是否报警
     QTimer *timerAlarm;             //定时器切换颜色
 
 public:
