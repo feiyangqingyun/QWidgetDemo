@@ -33,7 +33,7 @@ signals:
 
 public slots:    
     void stop();
-    void setEmialTitle(const QString &emailTitle);
+    void setEmailTitle(const QString &emailTitle);
     void setSendEmailAddr(const QString &sendEmailAddr);
     void setSendEmailPwd(const QString &sendEmailPwd);
     void setReceiveEmailAddr(const QString &receiveEmailAddr);

@@ -31,7 +31,7 @@ void frmEmailTool::on_btnSend_clicked()
         return;
     }
 
-    SendEmailThread::Instance()->setEmialTitle(ui->txtTitle->text());
+    SendEmailThread::Instance()->setEmailTitle(ui->txtTitle->text());
     SendEmailThread::Instance()->setSendEmailAddr(ui->txtSenderAddr->text());
     SendEmailThread::Instance()->setSendEmailPwd(ui->txtSenderPwd->text());
     SendEmailThread::Instance()->setReceiveEmailAddr(ui->txtReceiverAddr->text());
