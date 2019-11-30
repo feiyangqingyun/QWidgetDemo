@@ -35,7 +35,7 @@
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/flatui.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/countcode.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/gifwidget.gif)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/comtool.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/comtool.jpg)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/nettool.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/devicesizetable.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/styledemo_psblack.png)
