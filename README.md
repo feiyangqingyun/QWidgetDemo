@@ -11,7 +11,7 @@
 | 8 | devicesizetable | 硬盘容量控件 |
 | 9 | styledemo | 高仿PS黑色+扁平白色+淡蓝色风格主题 |
 | 10 | navbutton | 导航按钮控件 |
-| 11 | video_splite | 视频监控画面分割demo |
+| 11 | videopanel | 视频监控画面分割demo |
 | 12 | framelesswidget | 通用无边框拖动拉伸类 |
 | 13 | ipaddress | IP地址输入控件 |
 | 14 | bgdemo | 无边框背景透明窗体 |
@@ -27,5 +27,34 @@
 | 24 | qwtdemo | qwt的源码版本，无需插件，直接源码集成到你的项目即可 |
 | 25 | buttondefence | 通用按钮地图效果 |
 | 26 | mouseline | 鼠标定位十字线 |
-| 27 | email | 邮件发送工具 |
-| 27 | ntpclient | NTP服务器时间同步 |
+| 27 | emailtool | 邮件发送工具 |
+| 28 | ntpclient | NTP服务器时间同步 |
+
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/lightbutton.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/movewidget.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/flatui.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/countcode.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/gifwidget.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/comtool.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/nettool.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/devicesizetable.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/styledemo_psblack.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/styledemo_lightblue.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/styledemo_flatwhite.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/navbutton.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/videopanel.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/framelesswidget.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/ipaddress.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/bgdemo.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/dbpage.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/pngtool.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/colorwidget.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/maskwidget.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/battery.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/lineeditnext.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/zhtopy.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/qwtdemo.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/buttondefence.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/mouseline.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/emailtool.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/ntpclient.gif)

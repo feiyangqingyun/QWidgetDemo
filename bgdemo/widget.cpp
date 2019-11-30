@@ -10,7 +10,7 @@ Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
     this->setAttribute(Qt::WA_TranslucentBackground);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinimizeButtonHint);
     ui->widget->installEventFilter(this);
-    ui->widget->setStyleSheet(QString("background-image: url(:/%1.png);").arg(1));
+    ui->widget->setStyleSheet(QString("background-image:url(:/image/%1.png);").arg(1));
 }
 
 Widget::~Widget()
@@ -36,7 +36,7 @@ bool Widget::eventFilter(QObject *watched, QEvent *evt)
                 index++;
             }
 
-            ui->widget->setStyleSheet(QString("background-image: url(:/%1.png);").arg(index));
+            ui->widget->setStyleSheet(QString("background-image:url(:/image/%1.png);").arg(index));
 
             return true;
         } else {

@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET          = video_splite
+TARGET          = videopanel
 TEMPLATE        = app
 MOC_DIR         = temp/moc
 RCC_DIR         = temp/rcc
