@@ -25,12 +25,11 @@ private:
 
 private slots:
     void initForm();
+    void initIP();
     void initConfig();
     void saveConfig();
+    void changeTimer();
     void append(int type, const QString &data, bool clear = false);
-
-private slots:
-    void sendData(const QString &data);
 
     void clientConnected(const QString &ip, int port);
     void clientDisconnected(const QString &ip, int port);

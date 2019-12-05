@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>frmUdpServer</class>
- <widget class="QWidget" name="frmUdpServer">
+ <class>frmUdpClient</class>
+ <widget class="QWidget" name="frmUdpClient">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -41,7 +41,7 @@
      <property name="frameShadow">
       <enum>QFrame::Sunken</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QCheckBox" name="ckHexReceive">
         <property name="text">
@@ -88,31 +88,24 @@
        <widget class="QComboBox" name="cboxInterval"/>
       </item>
       <item>
-       <widget class="QLabel" name="labListenIP">
+       <widget class="QLabel" name="labServerIP">
         <property name="text">
-         <string>监听地址</string>
+         <string>远程地址</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="cboxListenIP"/>
+       <widget class="QLineEdit" name="txtServerIP"/>
       </item>
       <item>
-       <widget class="QLabel" name="labListenPort">
+       <widget class="QLabel" name="labServerPort">
         <property name="text">
-         <string>监听端口</string>
+         <string>远程端口</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="txtListenPort"/>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnListen">
-        <property name="text">
-         <string>监听</string>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="txtServerPort"/>
       </item>
       <item>
        <widget class="QPushButton" name="btnSave">
@@ -129,36 +122,17 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="labCount">
-        <property name="minimumSize">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
          <size>
-          <width>0</width>
-          <height>25</height>
+          <width>20</width>
+          <height>40</height>
          </size>
         </property>
-        <property name="frameShape">
-         <enum>QFrame::Box</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Sunken</enum>
-        </property>
-        <property name="text">
-         <string>共 0 个客户端</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QListWidget" name="listWidget"/>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="ckSelectAll">
-        <property name="text">
-         <string>对所有客户端发送</string>
-        </property>
-       </widget>
+       </spacer>
       </item>
      </layout>
     </widget>
@@ -215,23 +189,6 @@
    </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>txtMain</tabstop>
-  <tabstop>ckHexReceive</tabstop>
-  <tabstop>ckHexSend</tabstop>
-  <tabstop>ckAscii</tabstop>
-  <tabstop>ckShow</tabstop>
-  <tabstop>ckDebug</tabstop>
-  <tabstop>ckAutoSend</tabstop>
-  <tabstop>cboxInterval</tabstop>
-  <tabstop>cboxListenIP</tabstop>
-  <tabstop>txtListenPort</tabstop>
-  <tabstop>btnListen</tabstop>
-  <tabstop>btnSave</tabstop>
-  <tabstop>btnClear</tabstop>
-  <tabstop>cboxData</tabstop>
-  <tabstop>btnSend</tabstop>
- </tabstops>
  <resources/>
  <connections/>
 </ui>

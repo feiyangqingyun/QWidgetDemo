@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     App::readDeviceData();
 
     frmMain w;
-    w.setWindowTitle(QString("网络调试助手V2019  本机IP: %1  QQ: 517216493").arg(QUIHelper::getLocalIP()));
+    w.setWindowTitle(QString("网络调试助手V2020  本机IP: %1  QQ: 517216493").arg(QUIHelper::getLocalIP()));
     w.show();
 
     return a.exec();

@@ -24,12 +24,15 @@ private:
 
 private slots:
     void initForm();
+    void initIP();
     void initConfig();
     void saveConfig();
+    void changeTimer();
     void append(int type, const QString &data, bool clear = false);
 
     void readData();
     void sendData(const QString &ip, int port, const QString &data);
+    void clientConnected(const QString &ip, int port);
 
 private slots:
     void on_btnListen_clicked();

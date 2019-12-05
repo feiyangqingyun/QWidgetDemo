@@ -1,26 +1,25 @@
-﻿#ifndef FRMTCPCLIENT_H
-#define FRMTCPCLIENT_H
+﻿#ifndef FRMUDPCLIENT_H
+#define FRMUDPCLIENT_H
 
 #include <QWidget>
 #include <QtNetwork>
 
 namespace Ui {
-class frmTcpClient;
+class frmUdpClient;
 }
 
-class frmTcpClient : public QWidget
+class frmUdpClient : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit frmTcpClient(QWidget *parent = 0);
-    ~frmTcpClient();
+    explicit frmUdpClient(QWidget *parent = 0);
+    ~frmUdpClient();
 
 private:
-    Ui::frmTcpClient *ui;
+    Ui::frmUdpClient *ui;
 
-    bool isOk;
-    QTcpSocket *tcpSocket;
+    QUdpSocket *udpSocket;
     QTimer *timer;
 
 private slots:
@@ -30,16 +29,13 @@ private slots:
     void changeTimer();
     void append(int type, const QString &data, bool clear = false);
 
-    void connected();
-    void disconnected();
     void readData();
-    void sendData(const QString &data);
+    void sendData(const QString &ip, int port, const QString &data);
 
 private slots:
-    void on_btnConnect_clicked();
     void on_btnSave_clicked();
     void on_btnClear_clicked();
     void on_btnSend_clicked();
 };
 
-#endif // FRMTCPCLIENT_H
+#endif // FRMUDPCLIENT_H

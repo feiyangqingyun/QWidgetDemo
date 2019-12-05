@@ -100,6 +100,16 @@
        <widget class="QComboBox" name="cboxInterval"/>
       </item>
       <item>
+       <widget class="QLabel" name="labListenIP">
+        <property name="text">
+         <string>监听地址</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cboxListenIP"/>
+      </item>
+      <item>
        <widget class="QLabel" name="labListenPort">
         <property name="text">
          <string>监听端口</string>
@@ -152,7 +162,7 @@
          <enum>QFrame::Sunken</enum>
         </property>
         <property name="text">
-         <string>共 0 个连接</string>
+         <string>共 0 个客户端</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -165,7 +175,7 @@
       <item>
        <widget class="QCheckBox" name="ckSelectAll">
         <property name="text">
-         <string>对所有已连接客户端</string>
+         <string>对所有客户端发送</string>
         </property>
        </widget>
       </item>
@@ -224,6 +234,26 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>txtMain</tabstop>
+  <tabstop>ckHexReceive</tabstop>
+  <tabstop>ckHexSend</tabstop>
+  <tabstop>ckAscii</tabstop>
+  <tabstop>ckShow</tabstop>
+  <tabstop>ckDebug</tabstop>
+  <tabstop>ckAutoSend</tabstop>
+  <tabstop>cboxInterval</tabstop>
+  <tabstop>cboxListenIP</tabstop>
+  <tabstop>txtListenPort</tabstop>
+  <tabstop>btnListen</tabstop>
+  <tabstop>btnSave</tabstop>
+  <tabstop>btnClear</tabstop>
+  <tabstop>btnClose</tabstop>
+  <tabstop>listWidget</tabstop>
+  <tabstop>ckSelectAll</tabstop>
+  <tabstop>cboxData</tabstop>
+  <tabstop>btnSend</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

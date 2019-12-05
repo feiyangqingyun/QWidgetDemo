@@ -21,9 +21,19 @@ bool App::HexReceiveTcpServer = false;
 bool App::AsciiTcpServer = false;
 bool App::DebugTcpServer = false;
 bool App::AutoSendTcpServer = false;
-bool App::SelectAllTcpServer = false;
 int App::IntervalTcpServer = 1000;
+QString App::TcpListenIP = "127.0.0.1";
 int App::TcpListenPort = 6000;
+bool App::SelectAllTcpServer = false;
+
+bool App::HexSendUdpClient = false;
+bool App::HexReceiveUdpClient = false;
+bool App::AsciiUdpClient = false;
+bool App::DebugUdpClient = false;
+bool App::AutoSendUdpClient = false;
+int App::IntervalUdpClient = 1000;
+QString App::UdpServerIP = "127.0.0.1";
+int App::UdpServerPort = 6000;
 
 bool App::HexSendUdpServer = false;
 bool App::HexReceiveUdpServer = false;
@@ -31,9 +41,9 @@ bool App::AsciiUdpServer = false;
 bool App::DebugUdpServer = false;
 bool App::AutoSendUdpServer = false;
 int App::IntervalUdpServer = 1000;
+QString App::UdpListenIP = "127.0.0.1";
 int App::UdpListenPort = 6000;
-QString App::UdpServerIP = "127.0.0.1";
-int App::UdpServerPort = 6000;
+bool App::SelectAllUdpServer = false;
 
 void App::readConfig()
 {
@@ -63,10 +73,22 @@ void App::readConfig()
     App::HexReceiveTcpServer = set.value("HexReceiveTcpServer").toBool();
     App::AsciiTcpServer = set.value("AsciiTcpServer").toBool();
     App::DebugTcpServer = set.value("DebugTcpServer").toBool();
-    App::AutoSendTcpServer = set.value("AutoSendTcpServer").toBool();
-    App::SelectAllTcpServer = set.value("SelectAllTcpServer").toBool();
-    App::IntervalTcpServer = set.value("IntervalTcpServer").toInt();
+    App::AutoSendTcpServer = set.value("AutoSendTcpServer").toBool();    
+    App::IntervalTcpServer = set.value("IntervalTcpServer").toInt();    
+    App::TcpListenIP = set.value("TcpListenIP").toString();
     App::TcpListenPort = set.value("TcpListenPort").toInt();
+    App::SelectAllTcpServer = set.value("SelectAllTcpServer").toBool();
+    set.endGroup();
+
+    set.beginGroup("UdpClientConfig");
+    App::HexSendUdpClient = set.value("HexSendUdpClient").toBool();
+    App::HexReceiveUdpClient = set.value("HexReceiveUdpClient").toBool();
+    App::AsciiUdpClient = set.value("AsciiUdpClient").toBool();
+    App::DebugUdpClient = set.value("DebugUdpClient").toBool();
+    App::AutoSendUdpClient = set.value("AutoSendUdpClient").toBool();
+    App::IntervalUdpClient = set.value("IntervalUdpClient").toInt();
+    App::UdpServerIP = set.value("UdpServerIP").toString();
+    App::UdpServerPort = set.value("UdpServerPort").toInt();
     set.endGroup();
 
     set.beginGroup("UdpServerConfig");
@@ -75,10 +97,10 @@ void App::readConfig()
     App::AsciiUdpServer = set.value("AsciiUdpServer").toBool();
     App::DebugUdpServer = set.value("DebugUdpServer").toBool();
     App::AutoSendUdpServer = set.value("AutoSendUdpServer").toBool();
-    App::IntervalUdpServer = set.value("IntervalUdpServer").toInt();
-    App::UdpServerIP = set.value("UdpServerIP").toString();
-    App::UdpServerPort = set.value("UdpServerPort").toInt();
+    App::IntervalUdpServer = set.value("IntervalUdpServer").toInt();    
+    App::UdpListenIP = set.value("UdpListenIP").toString();
     App::UdpListenPort = set.value("UdpListenPort").toInt();
+    App::SelectAllUdpServer = set.value("SelectAllUdpServer").toBool();
     set.endGroup();
 }
 
@@ -104,10 +126,21 @@ void App::writeConfig()
     set.setValue("HexSendTcpServer", App::HexSendTcpServer);
     set.setValue("HexReceiveTcpServer", App::HexReceiveTcpServer);
     set.setValue("DebugTcpServer", App::DebugTcpServer);
-    set.setValue("AutoSendTcpServer", App::AutoSendTcpServer);
-    set.setValue("SelectAllTcpServer", App::SelectAllTcpServer);
-    set.setValue("IntervalTcpServer", App::IntervalTcpServer);
+    set.setValue("AutoSendTcpServer", App::AutoSendTcpServer);    
+    set.setValue("IntervalTcpServer", App::IntervalTcpServer);    
+    set.setValue("TcpListenIP", App::TcpListenIP);
     set.setValue("TcpListenPort", App::TcpListenPort);
+    set.setValue("SelectAllTcpServer", App::SelectAllTcpServer);
+    set.endGroup();
+
+    set.beginGroup("UdpClientConfig");
+    set.setValue("HexSendUdpClient", App::HexSendUdpClient);
+    set.setValue("HexReceiveUdpClient", App::HexReceiveUdpClient);
+    set.setValue("DebugUdpClient", App::DebugUdpClient);
+    set.setValue("AutoSendUdpClient", App::AutoSendUdpClient);
+    set.setValue("IntervalUdpClient", App::IntervalUdpClient);
+    set.setValue("UdpServerIP", App::UdpServerIP);
+    set.setValue("UdpServerPort", App::UdpServerPort);
     set.endGroup();
 
     set.beginGroup("UdpServerConfig");
@@ -115,11 +148,11 @@ void App::writeConfig()
     set.setValue("HexReceiveUdpServer", App::HexReceiveUdpServer);
     set.setValue("DebugUdpServer", App::DebugUdpServer);
     set.setValue("AutoSendUdpServer", App::AutoSendUdpServer);
-    set.setValue("IntervalUdpServer", App::IntervalUdpServer);
-    set.setValue("UdpServerIP", App::UdpServerIP);
-    set.setValue("UdpServerPort", App::UdpServerPort);
+    set.setValue("IntervalUdpServer", App::IntervalUdpServer);    
+    set.setValue("UdpListenIP", App::UdpListenIP);
     set.setValue("UdpListenPort", App::UdpListenPort);
-    set.endGroup();
+    set.setValue("SelectAllUdpServer", App::SelectAllUdpServer);
+    set.endGroup();    
 }
 
 void App::newConfig()

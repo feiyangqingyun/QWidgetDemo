@@ -6,7 +6,7 @@ frmTcpClient::frmTcpClient(QWidget *parent) : QWidget(parent), ui(new Ui::frmTcp
 {
     ui->setupUi(this);
     this->initForm();
-    this->initConfig();
+    this->initConfig();    
 }
 
 frmTcpClient::~frmTcpClient()
@@ -56,8 +56,7 @@ void frmTcpClient::initConfig()
     ui->txtServerPort->setText(QString::number(App::TcpServerPort));
     connect(ui->txtServerPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
-    timer->setInterval(App::IntervalTcpClient);
-    App::AutoSendTcpClient ? timer->start() : timer->stop();
+    this->changeTimer();
 }
 
 void frmTcpClient::saveConfig()
@@ -72,8 +71,21 @@ void frmTcpClient::saveConfig()
     App::TcpServerPort = ui->txtServerPort->text().trimmed().toInt();
     App::writeConfig();
 
+    this->changeTimer();
+}
+
+void frmTcpClient::changeTimer()
+{
     timer->setInterval(App::IntervalTcpClient);
-    App::AutoSendTcpClient ? timer->start() : timer->stop();
+    if (App::AutoSendTcpClient) {
+        if (!timer->isActive()) {
+            timer->start();
+        }
+    } else {
+        if (timer->isActive()) {
+            timer->stop();
+        }
+    }
 }
 
 void frmTcpClient::append(int type, const QString &data, bool clear)

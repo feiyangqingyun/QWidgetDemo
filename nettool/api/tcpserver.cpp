@@ -89,6 +89,7 @@ void TcpServer::incomingConnection(int handle)
     connect(client, SIGNAL(receiveData(QString, int, QString)), this, SIGNAL(receiveData(QString, int, QString)));
 
     QString ip = client->peerAddress().toString();
+    ip = ip.replace("::ffff:", "");
     int port = client->peerPort();
     client->setIP(ip);
     client->setPort(port);
@@ -113,12 +114,7 @@ void TcpServer::disconnected()
 
 bool TcpServer::start()
 {
-#if (QT_VERSION > QT_VERSION_CHECK(5,0,0))
-    bool ok = listen(QHostAddress::AnyIPv4, App::TcpListenPort);
-#else
-    bool ok = listen(QHostAddress::Any, App::TcpListenPort);
-#endif
-
+    bool ok = listen(QHostAddress(App::TcpListenIP), App::TcpListenPort);
     return ok;
 }
 

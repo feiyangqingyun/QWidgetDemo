@@ -6,6 +6,7 @@ frmTcpServer::frmTcpServer(QWidget *parent) : QWidget(parent), ui(new Ui::frmTcp
 {
     ui->setupUi(this);
     this->initForm();
+    this->initIP();
     this->initConfig();
 }
 
@@ -31,6 +32,38 @@ void frmTcpServer::initForm()
     QUIHelper::setLabStyle(ui->labCount, 3);
 }
 
+void frmTcpServer::initIP()
+{
+    //获取本机所有IP
+    QStringList ips;
+    QList<QNetworkInterface> netInterfaces = QNetworkInterface::allInterfaces();
+    foreach(const QNetworkInterface  &netInterface, netInterfaces) {
+        //移除虚拟机和抓包工具的虚拟网卡
+        QString humanReadableName = netInterface.humanReadableName().toLower();
+        if(humanReadableName.startsWith("vmware network adapter") || humanReadableName.startsWith("npcap loopback adapter")) {
+            continue;
+        }
+
+        //过滤当前网络接口
+        bool flag = (netInterface.flags() == (QNetworkInterface::IsUp | QNetworkInterface::IsRunning | QNetworkInterface::CanBroadcast | QNetworkInterface::CanMulticast));
+        if(flag) {
+            QList<QNetworkAddressEntry> addrs = netInterface.addressEntries();
+            foreach(QNetworkAddressEntry addr, addrs) {
+                //只取出IPV4的地址
+                if(addr.ip().protocol() == QAbstractSocket::IPv4Protocol) {
+                    QString ip4 = addr.ip().toString();
+                    if(ip4 != "127.0.0.1") {
+                        ips.append(ip4);
+                    }
+                }
+            }
+        }
+    }
+
+    ui->cboxListenIP->addItems(ips);
+    ui->cboxListenIP->addItem("127.0.0.1");
+}
+
 void frmTcpServer::initConfig()
 {
     ui->ckHexSend->setChecked(App::HexSendTcpServer);
@@ -46,19 +79,21 @@ void frmTcpServer::initConfig()
     connect(ui->ckDebug, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
     ui->ckAutoSend->setChecked(App::AutoSendTcpServer);
-    connect(ui->ckAutoSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
-
-    ui->ckSelectAll->setChecked(App::SelectAllTcpServer);
-    connect(ui->ckSelectAll, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+    connect(ui->ckAutoSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));    
 
     ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(App::IntervalTcpServer)));
     connect(ui->cboxInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
+    ui->cboxListenIP->setCurrentIndex(ui->cboxListenIP->findText(App::TcpListenIP));
+    connect(ui->cboxListenIP, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+
     ui->txtListenPort->setText(QString::number(App::TcpListenPort));
     connect(ui->txtListenPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
-    timer->setInterval(App::IntervalTcpServer);
-    App::AutoSendTcpServer ? timer->start() : timer->stop();
+    ui->ckSelectAll->setChecked(App::SelectAllTcpServer);
+    connect(ui->ckSelectAll, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
+
+    this->changeTimer();
 }
 
 void frmTcpServer::saveConfig()
@@ -67,14 +102,28 @@ void frmTcpServer::saveConfig()
     App::HexReceiveTcpServer = ui->ckHexReceive->isChecked();
     App::AsciiTcpServer = ui->ckAscii->isChecked();
     App::DebugTcpServer = ui->ckDebug->isChecked();
-    App::AutoSendTcpServer = ui->ckAutoSend->isChecked();
-    App::SelectAllTcpServer = ui->ckSelectAll->isChecked();
+    App::AutoSendTcpServer = ui->ckAutoSend->isChecked();    
     App::IntervalTcpServer = ui->cboxInterval->currentText().toInt();
+    App::TcpListenIP = ui->cboxListenIP->currentText();
     App::TcpListenPort = ui->txtListenPort->text().trimmed().toInt();
+    App::SelectAllTcpServer = ui->ckSelectAll->isChecked();
     App::writeConfig();
 
+    this->changeTimer();
+}
+
+void frmTcpServer::changeTimer()
+{
     timer->setInterval(App::IntervalTcpServer);
-    App::AutoSendTcpServer ? timer->start() : timer->stop();
+    if (App::AutoSendTcpServer) {
+        if (!timer->isActive()) {
+            timer->start();
+        }
+    } else {
+        if (timer->isActive()) {
+            timer->stop();
+        }
+    }
 }
 
 void frmTcpServer::append(int type, const QString &data, bool clear)
@@ -117,25 +166,11 @@ void frmTcpServer::append(int type, const QString &data, bool clear)
     currentCount++;
 }
 
-void frmTcpServer::sendData(const QString &data)
-{
-    if (ui->ckSelectAll->isChecked()) {
-        tcpServer->writeData(data);
-    } else {
-        int row = ui->listWidget->currentRow();
-        if (row >= 0) {
-            QString str = ui->listWidget->item(row)->text();
-            QStringList list = str.split(":");
-            tcpServer->writeData(list.at(0), list.at(1).toInt(), data);
-        }
-    }
-}
-
 void frmTcpServer::clientConnected(const QString &ip, int port)
 {
     QString str = QString("%1:%2").arg(ip).arg(port);
     ui->listWidget->addItem(str);
-    ui->labCount->setText(QString("共 %1 个连接").arg(ui->listWidget->count()));
+    ui->labCount->setText(QString("共 %1 个客户端").arg(ui->listWidget->count()));
 }
 
 void frmTcpServer::clientDisconnected(const QString &ip, int port)
@@ -150,7 +185,7 @@ void frmTcpServer::clientDisconnected(const QString &ip, int port)
     }
 
     delete ui->listWidget->takeItem(row);
-    ui->labCount->setText(QString("共 %1 个连接").arg(ui->listWidget->count()));
+    ui->labCount->setText(QString("共 %1 个客户端").arg(ui->listWidget->count()));
 }
 
 void frmTcpServer::sendData(const QString &ip, int port, const QString &data)
@@ -214,7 +249,16 @@ void frmTcpServer::on_btnSend_clicked()
         return;
     }
 
-    sendData(data);
+    if (ui->ckSelectAll->isChecked()) {
+        tcpServer->writeData(data);
+    } else {
+        int row = ui->listWidget->currentRow();
+        if (row >= 0) {
+            QString str = ui->listWidget->item(row)->text();
+            QStringList list = str.split(":");
+            tcpServer->writeData(list.at(0), list.at(1).toInt(), data);
+        }
+    }
 }
 
 void frmTcpServer::on_btnClose_clicked()

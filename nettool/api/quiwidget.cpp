@@ -17,7 +17,7 @@ QUIWidget::QUIWidget(QWidget *parent) : QDialog(parent)
 }
 
 QUIWidget::~QUIWidget()
-{    
+{
 }
 
 bool QUIWidget::eventFilter(QObject *watched, QEvent *event)
@@ -369,7 +369,7 @@ void QUIWidget::setIconMain(const QChar &str, quint32 size)
 void QUIWidget::setPixmap(QUIWidget::Widget widget, const QString &file, const QSize &size)
 {
     //按照宽高比自动缩放
-    QPixmap pix = QPixmap(file);    
+    QPixmap pix = QPixmap(file);
     pix = pix.scaled(size, Qt::KeepAspectRatio);
     if (widget == QUIWidget::Lab_Ico) {
         this->labIco->setPixmap(pix);
@@ -454,12 +454,12 @@ void QUIWidget::setExitAll(bool exitAll)
 void QUIWidget::setMainWidget(QWidget *mainWidget)
 {
     //一个QUI窗体对象只能设置一个主窗体
-    if (this->mainWidget == 0) {        
+    if (this->mainWidget == 0) {
         //将子窗体添加到布局
         this->widget->layout()->addWidget(mainWidget);
         //自动设置大小
         resize(mainWidget->width(), mainWidget->height() + this->widgetTitle->height());
-        this->mainWidget = mainWidget;        
+        this->mainWidget = mainWidget;
     }
 }
 
@@ -917,6 +917,7 @@ void QUITipBox::initControl()
     sizePolicy1.setVerticalStretch(0);
     sizePolicy1.setHeightForWidth(labTime->sizePolicy().hasHeightForWidth());
     labTime->setSizePolicy(sizePolicy1);
+    labTime->setAlignment(Qt::AlignCenter);
     horizontalLayout2->addWidget(labTime);
 
     widgetMenu = new QWidget(widgetTitle);
@@ -943,6 +944,7 @@ void QUITipBox::initControl()
     btnMenu_Close->setFocusPolicy(Qt::NoFocus);
     btnMenu_Close->setFlat(true);
 
+    widgetTitle->setMinimumHeight(TitleMinSize);
     horizontalLayout->addWidget(btnMenu_Close);
     horizontalLayout2->addWidget(widgetMenu);
     verticalLayout->addWidget(widgetTitle);
@@ -1039,7 +1041,7 @@ void QUITipBox::setTip(const QString &title, const QString &tip, bool fullScreen
     this->labInfo->setAlignment(center ? Qt::AlignCenter : Qt::AlignLeft);
     this->setWindowTitle(this->labTitle->text());
 
-    QRect rect = fullScreen ? qApp->desktop()->availableGeometry() : qApp->desktop()->geometry();
+    QRect rect = fullScreen ? qApp->desktop()->geometry() : qApp->desktop()->availableGeometry();
     int width = rect.width();
     int height = rect.height();
     int x = width - this->width();

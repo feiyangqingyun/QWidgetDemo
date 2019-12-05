@@ -47,6 +47,11 @@
        <string>TCP服务器</string>
       </attribute>
      </widget>
+     <widget class="frmUdpClient" name="tabUdpClient">
+      <attribute name="title">
+       <string>UDP客户端</string>
+      </attribute>
+     </widget>
      <widget class="frmUdpServer" name="tabUdpServer">
       <attribute name="title">
        <string>UDP服务器</string>
@@ -73,6 +78,12 @@
    <class>frmUdpServer</class>
    <extends>QWidget</extends>
    <header>frmudpserver.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>frmUdpClient</class>
+   <extends>QWidget</extends>
+   <header>frmudpclient.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
