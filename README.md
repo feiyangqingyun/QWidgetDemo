@@ -29,6 +29,7 @@
 | 26 | mouseline | 鼠标定位十字线 |
 | 27 | emailtool | 邮件发送工具 |
 | 28 | ntpclient | NTP服务器时间同步 |
+| 29 | lunarcalendarwidget | 农历控件 |
 
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/lightbutton.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/movewidget.gif)
@@ -58,3 +59,4 @@
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/mouseline.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/emailtool.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/ntpclient.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/lunarcalendarwidget.gif)
