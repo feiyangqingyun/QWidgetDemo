@@ -80,7 +80,11 @@ TcpServer::TcpServer(QObject *parent) : QTcpServer(parent)
 {
 }
 
+#if (QT_VERSION > QT_VERSION_CHECK(5,0,0))
+void TcpServer::incomingConnection(qintptr handle)
+#else
 void TcpServer::incomingConnection(int handle)
+#endif
 {
     TcpClient *client = new TcpClient(this);
     client->setSocketDescriptor(handle);
