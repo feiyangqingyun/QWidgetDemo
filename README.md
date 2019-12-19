@@ -30,6 +30,7 @@
 | 27 | emailtool | 邮件发送工具 |
 | 28 | ntpclient | NTP服务器时间同步 |
 | 29 | lunarcalendarwidget | 农历控件 |
+| 30 | videowidget | 通用视频控件 |
 
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/lightbutton.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/movewidget.gif)
@@ -60,3 +61,4 @@
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/emailtool.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/ntpclient.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/lunarcalendarwidget.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/videowidget.gif)
