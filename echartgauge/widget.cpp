@@ -51,7 +51,7 @@ void Widget::initForm()
 
 void Widget::on_horizontalSlider_valueChanged(int value)
 {
-    QString js = QString("init(%1)").arg(value);
+    QString js = QString("setGaugeValue(%1)").arg(value);
 #ifdef webkit
     webView->page()->mainFrame()->evaluateJavaScript(js);
     webView1->page()->mainFrame()->evaluateJavaScript(js);
