@@ -66,10 +66,10 @@ signals:
 public slots:
     //设置数据库连接名称
     void setConnName(const QString &connName);
-
     //设置要执行的查询语句
     void setSql(const QString &sql);
-
+    //查询行数
+    void select();
 };
 
 class DbPage : public QObject

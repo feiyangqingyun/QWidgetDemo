@@ -1,4 +1,5 @@
-﻿#include "dbpage.h"
+﻿#pragma execution_character_set("utf-8")
+#include "dbpage.h"
 
 SqlQueryModel::SqlQueryModel(QObject *parent) : QSqlQueryModel(parent)
 {
@@ -32,6 +33,42 @@ QVariant SqlQueryModel::data(const QModelIndex &index, int role) const
         }
     }
 
+    //实现鼠标经过整行换色,如果设置了hoverRow才需要处理
+    if (property("hoverRow").isValid()) {
+        int row = property("hoverRow").toInt();
+        if (row == index.row()) {
+            if(role == Qt::BackgroundRole) {
+                value = QColor(property("hoverBgColor").toString());
+            } else if(role == Qt::TextColorRole) {
+                value = QColor(property("hoverTextColor").toString());
+            }
+        }
+    }
+
+    //实现隐藏部分显示,指定列和替换字符
+    if (property("hideColumn").isValid()) {
+        int column = property("hideColumn").toInt();
+        if (column == index.column()) {
+            if(role == Qt::DisplayRole) {
+                QString letter = property("hideLetter").toString();
+                int start = property("hideStart").toInt();
+                int end = property("hideEnd").toInt();
+                QString str = value.toString();
+
+                QStringList list;
+                for (int i = 0; i < str.length(); i++) {
+                    if (i >= start && i <= end) {
+                        list << letter;
+                    } else {
+                        list << str.at(i);
+                    }
+                }
+
+                value = list.join("");
+            }
+        }
+    }
+
     return value;
 }
 
@@ -61,6 +98,21 @@ DbCountThread::DbCountThread(QObject *parent) : QThread(parent)
 
 void DbCountThread::run()
 {
+    select();
+}
+
+void DbCountThread::setConnName(const QString &connName)
+{
+    this->connName = connName;
+}
+
+void DbCountThread::setSql(const QString &sql)
+{
+    this->sql = sql;
+}
+
+void DbCountThread::select()
+{
     //计算用时
     QDateTime dtStart = QDateTime::currentDateTime();
 
@@ -74,22 +126,12 @@ void DbCountThread::run()
     emit receiveCount(count, msec);
 }
 
-void DbCountThread::setConnName(const QString &connName)
-{
-    this->connName = connName;
-}
-
-void DbCountThread::setSql(const QString &sql)
-{
-    this->sql = sql;
-}
-
 
 QScopedPointer<DbPage> DbPage::self;
 DbPage *DbPage::Instance()
 {
     if (self.isNull()) {
-        QMutex mutex;
+        static QMutex mutex;
         QMutexLocker locker(&mutex);
         if (self.isNull()) {
             self.reset(new DbPage);
@@ -190,7 +232,7 @@ void DbPage::bindData(const QString &sql)
 
     //设置列标题和列宽度
     for (int i = 0; i < columnCount; i++) {
-        queryModel->setHeaderData(i, Qt::Horizontal, columnNames.at(i));       
+        queryModel->setHeaderData(i, Qt::Horizontal, columnNames.at(i));
         tableView->setColumnWidth(i, columnWidths.at(i));
     }
 
@@ -483,5 +525,10 @@ void DbPage::select()
     //设置数据库连接名称和查询语句,并启动线程
     dbCountThread->setConnName(connName);
     dbCountThread->setSql(tempSql);
+    //从5.10开始不支持数据库在线程中执行
+#if (QT_VERSION <= QT_VERSION_CHECK(5,10,0))
     dbCountThread->start();
+#else
+    dbCountThread->select();
+#endif
 }
