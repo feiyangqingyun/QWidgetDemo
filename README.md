@@ -33,6 +33,7 @@
 | 30 | videowidget | 通用视频控件 |
 | 31 | screenwidget | 屏幕截图控件 |
 | 32 | echartgauge | echart仪表盘含交互支持webkit及webengine |
+| 33 | imageswitch | 图片开关控件 |
 
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/lightbutton.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/movewidget.gif)
@@ -66,3 +67,4 @@
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/videowidget.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/screenwidget.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/echartgauge.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/imageswitch.gif)
