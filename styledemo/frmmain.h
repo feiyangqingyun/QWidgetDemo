@@ -16,6 +16,9 @@ public:
     explicit frmMain(QWidget *parent = 0);
     ~frmMain();
 
+protected:
+    void showEvent(QShowEvent *);
+
 private:
     Ui::frmMain *ui;
 

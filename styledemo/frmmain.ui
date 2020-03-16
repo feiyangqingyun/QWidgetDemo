@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_7">
+   <layout class="QGridLayout" name="gridLayout_6">
     <item row="0" column="0">
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
@@ -51,18 +51,12 @@
      <widget class="QTextEdit" name="txtMain"/>
     </item>
     <item row="1" column="0">
-     <widget class="QFrame" name="frameColor">
+     <widget class="QTabWidget" name="tabConfig">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+       <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
-      </property>
-      <property name="minimumSize">
-       <size>
-        <width>220</width>
-        <height>0</height>
-       </size>
       </property>
       <property name="maximumSize">
        <size>
@@ -70,162 +64,208 @@
         <height>16777215</height>
        </size>
       </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+      <property name="tabPosition">
+       <enum>QTabWidget::South</enum>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
+      <property name="currentIndex">
+       <number>0</number>
       </property>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <property name="leftMargin">
-        <number>6</number>
-       </property>
-       <property name="topMargin">
-        <number>6</number>
-       </property>
-       <property name="rightMargin">
-        <number>6</number>
-       </property>
-       <property name="bottomMargin">
-        <number>6</number>
-       </property>
-       <item row="0" column="0">
-        <widget class="QLabel" name="labTextColor">
-         <property name="text">
-          <string>字体颜色</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="btnTextColor">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QLineEdit" name="txtTextColor"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="labPanelColor">
-         <property name="text">
-          <string>面板背景</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="btnPanelColor">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <widget class="QLineEdit" name="txtPanelColor"/>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="labBorderColor">
-         <property name="text">
-          <string>边框颜色</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QPushButton" name="btnBorderColor">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QLineEdit" name="txtBorderColor"/>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="labNormalColorStart">
-         <property name="text">
-          <string>普通渐变开始</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QPushButton" name="btnNormalColorStart">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QLineEdit" name="txtNormalColorStart"/>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="labNormalColorEnd">
-         <property name="text">
-          <string>普通渐变结束</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
-        <widget class="QPushButton" name="btnNormalColorEnd">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="2">
-        <widget class="QLineEdit" name="txtNormalColorEnd"/>
-       </item>
-       <item row="5" column="0">
-        <widget class="QLabel" name="labDarkColorStart">
-         <property name="text">
-          <string>加深渐变开始</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
-        <widget class="QPushButton" name="btnDarkColorStart">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="2">
-        <widget class="QLineEdit" name="txtDarkColorStart"/>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="labDarkColorEnd">
-         <property name="text">
-          <string>加深渐变结束</string>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="1">
-        <widget class="QPushButton" name="btnDarkColorEnd">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="2">
-        <widget class="QLineEdit" name="txtDarkColorEnd"/>
-       </item>
-       <item row="7" column="0">
-        <widget class="QLabel" name="labHighColor">
-         <property name="text">
-          <string>边缘高亮颜色</string>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="1">
-        <widget class="QPushButton" name="btnHighColor">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item row="7" column="2">
-        <widget class="QLineEdit" name="txtHighColor"/>
-       </item>
-      </layout>
+      <widget class="QWidget" name="tabColor">
+       <attribute name="title">
+        <string>颜色</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labTextColor">
+          <property name="text">
+           <string>字体文字颜色</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="btnTextColor">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QLineEdit" name="txtTextColor"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labPanelColor">
+          <property name="text">
+           <string>面板背景颜色</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="btnPanelColor">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLineEdit" name="txtPanelColor"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="labBorderColor">
+          <property name="text">
+           <string>全局边框颜色</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="btnBorderColor">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLineEdit" name="txtBorderColor"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="labNormalColorStart">
+          <property name="text">
+           <string>普通渐变开始</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QPushButton" name="btnNormalColorStart">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QLineEdit" name="txtNormalColorStart"/>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="labNormalColorEnd">
+          <property name="text">
+           <string>普通渐变结束</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QPushButton" name="btnNormalColorEnd">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QLineEdit" name="txtNormalColorEnd"/>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="labDarkColorStart">
+          <property name="text">
+           <string>加深渐变开始</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QPushButton" name="btnDarkColorStart">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="QLineEdit" name="txtDarkColorStart"/>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="labDarkColorEnd">
+          <property name="text">
+           <string>加深渐变结束</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QPushButton" name="btnDarkColorEnd">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <widget class="QLineEdit" name="txtDarkColorEnd"/>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="labHighColor">
+          <property name="text">
+           <string>边缘高亮颜色</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QPushButton" name="btnHighColor">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="2">
+         <widget class="QLineEdit" name="txtHighColor"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_11">
+       <attribute name="title">
+        <string>尺寸</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="0">
+         <widget class="QLabel" name="labIconWidth">
+          <property name="text">
+           <string>指示器宽度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="txtIconWidth">
+          <property name="text">
+           <string>40</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="labIconHeight">
+          <property name="text">
+           <string>指示器高度</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="txtIconHeight">
+          <property name="text">
+           <string>40</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <spacer name="verticalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>173</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_10">
+       <attribute name="title">
+        <string>其他</string>
+       </attribute>
+      </widget>
      </widget>
     </item>
     <item row="2" column="0" colspan="2">
@@ -249,191 +289,347 @@
           <property name="checkable">
            <bool>true</bool>
           </property>
-          <layout class="QGridLayout" name="gridLayout_2">
-           <item row="0" column="0">
-            <widget class="QLabel" name="lab">
-             <property name="text">
-              <string>飞扬青云</string>
+          <layout class="QGridLayout" name="gridLayout_8">
+           <item row="0" column="3">
+            <widget class="QWidget" name="widgetControl" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+             <layout class="QGridLayout" name="gridLayout_2">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item row="0" column="0">
+               <widget class="QLabel" name="lab">
+                <property name="text">
+                 <string>飞扬青云</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QLabel" name="label">
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="text">
+                 <string>我是标签</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="2" colspan="3">
+               <widget class="QLineEdit" name="lineEdit">
+                <property name="text">
+                 <string>拿人钱财替人消灾,人生江湖如此,程序江湖亦如此.</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QSpinBox" name="spinBox"/>
+              </item>
+              <item row="1" column="1">
+               <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
+              </item>
+              <item row="1" column="2">
+               <widget class="QTimeEdit" name="timeEdit"/>
+              </item>
+              <item row="1" column="3">
+               <widget class="QDateEdit" name="dateEdit">
+                <property name="calendarPopup">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="4">
+               <widget class="QDateTimeEdit" name="dateTimeEdit">
+                <property name="calendarPopup">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0" colspan="5">
+               <widget class="QSlider" name="horizontalSlider">
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0" colspan="5">
+               <widget class="QProgressBar" name="progressBar1">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>22</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0" colspan="5">
+               <widget class="QScrollBar" name="horizontalScrollBar">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QComboBox" name="cbox1"/>
+              </item>
+              <item row="2" column="1">
+               <widget class="QComboBox" name="cbox2"/>
+              </item>
+              <item row="2" column="2">
+               <widget class="QLCDNumber" name="lcdNumber">
+                <property name="digitCount">
+                 <number>5</number>
+                </property>
+                <property name="segmentStyle">
+                 <enum>QLCDNumber::Flat</enum>
+                </property>
+                <property name="value" stdset="0">
+                 <double>12345.000000000000000</double>
+                </property>
+                <property name="intValue" stdset="0">
+                 <number>12345</number>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="3" colspan="2">
+               <widget class="QFontComboBox" name="fontComboBox">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="0" column="4">
+            <widget class="QSlider" name="verticalSlider">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
              </property>
             </widget>
            </item>
-           <item row="0" column="1" colspan="6">
-            <widget class="QLineEdit" name="lineEdit">
-             <property name="text">
-              <string>拿人钱财替人消灾,人生江湖如此,程序江湖亦如此.</string>
-             </property>
-            </widget>
+           <item row="0" column="2">
+            <layout class="QVBoxLayout" name="verticalLayout_10">
+             <item>
+              <widget class="QPushButton" name="btnInput1">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>标准输入框</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnInput2">
+               <property name="text">
+                <string>密码输入框</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnInput3">
+               <property name="text">
+                <string>下拉输入框</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnWidget">
+               <property name="text">
+                <string>弹出新窗体</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnAbout">
+               <property name="text">
+                <string>关于Qt</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
-           <item row="1" column="0">
-            <widget class="QRadioButton" name="rbtn1">
-             <property name="text">
-              <string>单选框1</string>
+           <item row="0" column="5">
+            <widget class="QProgressBar" name="progressBar2">
+             <property name="maximumSize">
+              <size>
+               <width>12</width>
+               <height>16777215</height>
+              </size>
              </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QRadioButton" name="rbtn2">
-             <property name="text">
-              <string>单选框2</string>
+             <property name="value">
+              <number>0</number>
              </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QCheckBox" name="ck1">
-             <property name="text">
-              <string>复选框1</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="3">
-            <widget class="QCheckBox" name="ck2">
-             <property name="text">
-              <string>复选框2</string>
-             </property>
-             <property name="checked">
+             <property name="textVisible">
               <bool>false</bool>
              </property>
-            </widget>
-           </item>
-           <item row="1" column="4">
-            <widget class="QCheckBox" name="ck3">
-             <property name="text">
-              <string>复选框3</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="5">
-            <widget class="QComboBox" name="cbox1">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>28</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="6">
-            <widget class="QComboBox" name="cbox2">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>28</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QPushButton" name="btnInfo">
-             <property name="text">
-              <string>信息框</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QPushButton" name="btnQuestion">
-             <property name="text">
-              <string>提示框</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QPushButton" name="btnError">
-             <property name="text">
-              <string>错误框</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="3">
-            <widget class="QPushButton" name="btnInput">
-             <property name="text">
-              <string>标准输入框</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="4">
-            <widget class="QPushButton" name="btnInputPwd">
-             <property name="text">
-              <string>密码输入框</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="5">
-            <widget class="QPushButton" name="btnInputcbox">
-             <property name="text">
-              <string>下拉输入框</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="6">
-            <widget class="QPushButton" name="btnWidget">
-             <property name="text">
-              <string>新窗体</string>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="0">
-            <widget class="QSpinBox" name="spinBox"/>
-           </item>
-           <item row="3" column="1">
-            <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
-           </item>
-           <item row="3" column="2">
-            <widget class="QTimeEdit" name="timeEdit"/>
-           </item>
-           <item row="3" column="3" colspan="2">
-            <widget class="QDateEdit" name="dateEdit">
-             <property name="calendarPopup">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="3" column="5" colspan="2">
-            <widget class="QDateTimeEdit" name="dateTimeEdit">
-             <property name="calendarPopup">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0" colspan="3">
-            <widget class="QSlider" name="horizontalSlider">
-             <property name="maximum">
-              <number>100</number>
-             </property>
              <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+              <enum>Qt::Vertical</enum>
              </property>
             </widget>
            </item>
-           <item row="4" column="3" colspan="4">
-            <widget class="QProgressBar" name="progressBar">
-             <property name="maximumSize">
+           <item row="0" column="6">
+            <widget class="QScrollBar" name="verticalScrollBar">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <layout class="QVBoxLayout" name="verticalLayout_9">
+             <item>
+              <widget class="QPushButton" name="btnInfo">
+               <property name="minimumSize">
+                <size>
+                 <width>80</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>信息框</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnQuestion">
+               <property name="text">
+                <string>询问框</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnError">
+               <property name="text">
+                <string>错误框</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnTip">
+               <property name="text">
+                <string>右下框</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnDate">
+               <property name="text">
+                <string>日期框</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="0" column="0">
+            <layout class="QVBoxLayout" name="verticalLayout_8">
+             <item>
+              <widget class="QRadioButton" name="rbtn1">
+               <property name="text">
+                <string>单选框1</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rbtn2">
+               <property name="text">
+                <string>单选框2</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="rbtn3">
+               <property name="text">
+                <string>单选框3</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ck1">
+               <property name="text">
+                <string>复选框1</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ck2">
+               <property name="text">
+                <string>复选框2</string>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ck3">
+               <property name="text">
+                <string>复选框3</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item row="1" column="0">
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
               <size>
-               <width>16777215</width>
-               <height>18</height>
+               <width>20</width>
+               <height>40</height>
               </size>
              </property>
-            </widget>
-           </item>
-           <item row="5" column="0" colspan="7">
-            <widget class="QPlainTextEdit" name="plainTextEdit">
-             <property name="plainText">
-              <string>每个人心中都有一段鲜不为人知的故事，
-如果不是某一天，
-某个不经意的回头一瞥，
-那段往事，
-就只能永远埋在记忆的最深处，
-那是回忆的尽头，
-可就无法避免那一触，
-无论你在上面用怎样淤厚的冷漠层层包裹，
-却总在瞬间崩溃。</string>
-             </property>
-            </widget>
+            </spacer>
            </item>
           </layout>
          </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_12">
+       <attribute name="title">
+        <string>多行文本</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QTextEdit" name="textEdit"/>
+        </item>
+        <item>
+         <widget class="QPlainTextEdit" name="plainTextEdit">
+          <property name="plainText">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTextBrowser" name="textBrowser"/>
         </item>
        </layout>
       </widget>
@@ -684,20 +880,6 @@
           <widget class="QWidget" name="page3"/>
          </widget>
         </item>
-        <item>
-         <widget class="QSlider" name="verticalSlider">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QScrollBar" name="verticalScrollBar">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-         </widget>
-        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tab4">
@@ -864,111 +1046,40 @@
       </widget>
       <widget class="QWidget" name="tab9">
        <attribute name="title">
-        <string>UI界面</string>
+        <string>内置图标</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <widget class="QPushButton" name="btnUIDemo1">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>界面1</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QPushButton" name="btnUIDemo2">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>界面2</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QPushButton" name="btnUIDemo3">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>界面3</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QPushButton" name="btnUIDemo4">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>界面4</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="QPushButton" name="btnUIDemo5">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>界面5</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QPushButton" name="btnUIDemo6">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>界面6</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="QPushButton" name="btnUIDemo7">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>界面7</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="3">
-         <widget class="QPushButton" name="btnUIDemo8">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>界面8</string>
-          </property>
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <property name="leftMargin">
+         <number>3</number>
+        </property>
+        <property name="topMargin">
+         <number>3</number>
+        </property>
+        <property name="rightMargin">
+         <number>3</number>
+        </property>
+        <property name="bottomMargin">
+         <number>3</number>
+        </property>
+        <item>
+         <widget class="QWidget" name="widgetIcon" native="true">
+          <layout class="QGridLayout" name="gridLayout_4">
+           <property name="leftMargin">
+            <number>3</number>
+           </property>
+           <property name="topMargin">
+            <number>3</number>
+           </property>
+           <property name="rightMargin">
+            <number>3</number>
+           </property>
+           <property name="bottomMargin">
+            <number>3</number>
+           </property>
+           <property name="spacing">
+            <number>3</number>
+           </property>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -977,7 +1088,7 @@
        <attribute name="title">
         <string>视频监控</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_6">
+       <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
          <widget class="QWidget" name="widgetVideo" native="true">
           <layout class="QGridLayout" name="gridLayout_5">
@@ -1199,22 +1310,5 @@
   </action>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>horizontalSlider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>progressBar</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>207</x>
-     <y>445</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>445</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

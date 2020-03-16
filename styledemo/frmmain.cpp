@@ -1,4 +1,5 @@
-﻿#include "frmmain.h"
+﻿#pragma execution_character_set("utf-8")
+#include "frmmain.h"
 #include "ui_frmmain.h"
 #include "qfile.h"
 #include "qtranslator.h"
@@ -13,6 +14,12 @@ frmMain::frmMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::frmMain)
 frmMain::~frmMain()
 {
     delete ui;
+}
+
+void frmMain::showEvent(QShowEvent *)
+{
+    int width = ui->tabConfig->width() / ui->tabConfig->count() - 20;
+    ui->tabConfig->setStyleSheet(QString("QTabBar::tab{min-width:%1px;}").arg(width));
 }
 
 void frmMain::initForm()
