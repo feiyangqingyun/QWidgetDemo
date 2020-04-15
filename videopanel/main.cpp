@@ -1,14 +1,13 @@
-﻿#include "frmmain.h"
-#include "qcoreapplication.h"
+﻿#pragma execution_character_set("utf-8")
+
+#include "frmvideopanel.h"
+#include <QApplication>
+#include <QTextCodec>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
-    QFont font;
-    font.setFamily("MicroSoft Yahei");
-    font.setPixelSize(12);
-    a.setFont(font);
+    a.setFont(QFont("Microsoft Yahei", 9));
 
 #if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
 #if _MSC_VER
@@ -24,8 +23,10 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(codec);
 #endif
 
-    frmMain w;
-    w.showMaximized();
+    frmVideoPanel w;
+    w.setWindowTitle("视频监控画面");
+    w.resize(800, 600);
+    w.show();
 
     return a.exec();
 }
