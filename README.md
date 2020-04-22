@@ -34,6 +34,8 @@
 | 31 | screenwidget | 屏幕截图控件 |
 | 32 | echartgauge | echart仪表盘含交互支持webkit及webengine |
 | 33 | imageswitch | 图片开关控件 |
+| 34 | ffmpegdemo | 视频流播放ffmpeg内核 |
+| 35 | vlcdemo | 视频流播放vlc内核 |
 
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/lightbutton.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/movewidget.gif)
@@ -68,3 +70,5 @@
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/screenwidget.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/echartgauge.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/imageswitch.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/ffmpegdemo.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/snap/vlcdemo.png)
