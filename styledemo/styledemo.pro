@@ -8,27 +8,21 @@ QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET              = styledemo
-TEMPLATE            = app
-MOC_DIR             = temp/moc
-RCC_DIR             = temp/rcc
-UI_DIR              = temp/ui
-OBJECTS_DIR         = temp/obj
-DESTDIR             = $$PWD/../bin
+TARGET      = styledemo
+TEMPLATE    = app
+MOC_DIR     = temp/moc
+RCC_DIR     = temp/rcc
+UI_DIR      = temp/ui
+OBJECTS_DIR = temp/obj
+DESTDIR     = $$PWD/../bin
 
-INCLUDEPATH         += $$PWD
-CONFIG              += warn_off
+CONFIG      += warn_off
+SOURCES     += main.cpp
+SOURCES     += frmmain.cpp
+HEADERS     += head.h
+HEADERS     += frmmain.h
+FORMS       += frmmain.ui
+RESOURCES   += other/qss.qrc
+RESOURCES   += other/main.qrc
 
-SOURCES             += main.cpp \
-    frmmain.cpp
-SOURCES             +=
-
-HEADERS             += head.h \
-    frmmain.h
-HEADERS             +=
-
-FORMS               += \
-    frmmain.ui
-
-RESOURCES           += other/qss.qrc
-RESOURCES           += other/main.qrc
+INCLUDEPATH += $$PWD
