@@ -182,8 +182,6 @@ void frmMain::initStyle()
         qApp->setStyleSheet(qss);
         file.close();
     }
-
-
 }
 
 void frmMain::initTranslator()

@@ -38,13 +38,6 @@ class FlatUI : public QObject
 {
     Q_OBJECT
 public:
-    static FlatUI *Instance();
-    explicit FlatUI(QObject *parent = 0);    
-
-private:
-    static QScopedPointer<FlatUI> self;
-
-public:
     //设置按钮样式
     static QString setPushButtonQss(QPushButton *btn,                               //按钮对象
                                     int radius = 5,                                 //圆角半径

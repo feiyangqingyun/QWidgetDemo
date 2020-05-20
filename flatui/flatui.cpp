@@ -1,7 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 
 #include "flatui.h"
-#include "qmutex.h"
 #include "qpushbutton.h"
 #include "qlineedit.h"
 #include "qprogressbar.h"
@@ -10,25 +9,6 @@
 #include "qcheckbox.h"
 #include "qscrollbar.h"
 #include "qdebug.h"
-
-QScopedPointer<FlatUI> FlatUI::self;
-FlatUI *FlatUI::Instance()
-{
-    if (self.isNull()) {
-        static QMutex mutex;
-        QMutexLocker locker(&mutex);
-        if (self.isNull()) {
-            self.reset(new FlatUI);
-        }
-    }
-
-    return self.data();
-}
-
-FlatUI::FlatUI(QObject *parent) : QObject(parent)
-{
-
-}
 
 QString FlatUI::setPushButtonQss(QPushButton *btn, int radius, int padding,
                                     const QString &normalColor,

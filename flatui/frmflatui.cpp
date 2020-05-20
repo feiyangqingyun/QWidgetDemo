@@ -32,30 +32,30 @@ void frmFlatUI::initForm()
 
     this->setStyleSheet("*{outline:0px;}QWidget#frmFlatUI{background:#FFFFFF;}");
 
-    FlatUI::Instance()->setPushButtonQss(ui->btn1);
-    FlatUI::Instance()->setPushButtonQss(ui->btn2, 5, 8, "#1ABC9C", "#E6F8F5", "#2EE1C1", "#FFFFFF", "#16A086", "#A7EEE6");
-    FlatUI::Instance()->setPushButtonQss(ui->btn3, 5, 8, "#3498DB", "#FFFFFF", "#5DACE4", "#E5FEFF", "#2483C7", "#A0DAFB");
-    FlatUI::Instance()->setPushButtonQss(ui->btn4, 5, 8, "#E74C3C", "#FFFFFF", "#EC7064", "#FFF5E7", "#DC2D1A", "#F5A996");
+    FlatUI::setPushButtonQss(ui->btn1);
+    FlatUI::setPushButtonQss(ui->btn2, 5, 8, "#1ABC9C", "#E6F8F5", "#2EE1C1", "#FFFFFF", "#16A086", "#A7EEE6");
+    FlatUI::setPushButtonQss(ui->btn3, 5, 8, "#3498DB", "#FFFFFF", "#5DACE4", "#E5FEFF", "#2483C7", "#A0DAFB");
+    FlatUI::setPushButtonQss(ui->btn4, 5, 8, "#E74C3C", "#FFFFFF", "#EC7064", "#FFF5E7", "#DC2D1A", "#F5A996");
 
-    FlatUI::Instance()->setLineEditQss(ui->txt1);
-    FlatUI::Instance()->setLineEditQss(ui->txt2, 5, 2, "#DCE4EC", "#1ABC9C");
-    FlatUI::Instance()->setLineEditQss(ui->txt3, 3, 1, "#DCE4EC", "#3498DB");
-    FlatUI::Instance()->setLineEditQss(ui->txt4, 3, 1, "#DCE4EC", "#E74C3C");
+    FlatUI::setLineEditQss(ui->txt1);
+    FlatUI::setLineEditQss(ui->txt2, 5, 2, "#DCE4EC", "#1ABC9C");
+    FlatUI::setLineEditQss(ui->txt3, 3, 1, "#DCE4EC", "#3498DB");
+    FlatUI::setLineEditQss(ui->txt4, 3, 1, "#DCE4EC", "#E74C3C");
 
-    FlatUI::Instance()->setProgressQss(ui->bar1);
-    FlatUI::Instance()->setProgressQss(ui->bar2, 8, 5, 9, "#E8EDF2", "#1ABC9C");
+    FlatUI::setProgressQss(ui->bar1);
+    FlatUI::setProgressQss(ui->bar2, 8, 5, 9, "#E8EDF2", "#1ABC9C");
 
-    FlatUI::Instance()->setSliderQss(ui->slider1);
-    FlatUI::Instance()->setSliderQss(ui->slider2, 10, "#E8EDF2", "#E74C3C", "#E74C3C");
-    FlatUI::Instance()->setSliderQss(ui->slider3, 10, "#E8EDF2", "#34495E", "#34495E");
+    FlatUI::setSliderQss(ui->slider1);
+    FlatUI::setSliderQss(ui->slider2, 10, "#E8EDF2", "#E74C3C", "#E74C3C");
+    FlatUI::setSliderQss(ui->slider3, 10, "#E8EDF2", "#34495E", "#34495E");
 
-    FlatUI::Instance()->setRadioButtonQss(ui->rbtn1);
-    FlatUI::Instance()->setRadioButtonQss(ui->rbtn2, 8, "#D7DBDE", "#1ABC9C");
-    FlatUI::Instance()->setRadioButtonQss(ui->rbtn3, 8, "#D7DBDE", "#3498DB");
-    FlatUI::Instance()->setRadioButtonQss(ui->rbtn4, 8, "#D7DBDE", "#E74C3C");
+    FlatUI::setRadioButtonQss(ui->rbtn1);
+    FlatUI::setRadioButtonQss(ui->rbtn2, 8, "#D7DBDE", "#1ABC9C");
+    FlatUI::setRadioButtonQss(ui->rbtn3, 8, "#D7DBDE", "#3498DB");
+    FlatUI::setRadioButtonQss(ui->rbtn4, 8, "#D7DBDE", "#E74C3C");
 
-    FlatUI::Instance()->setScrollBarQss(ui->horizontalScrollBar);
-    FlatUI::Instance()->setScrollBarQss(ui->verticalScrollBar, 8, 120, 20, "#606060", "#34495E", "#1ABC9C", "#E74C3C");
+    FlatUI::setScrollBarQss(ui->horizontalScrollBar);
+    FlatUI::setScrollBarQss(ui->verticalScrollBar, 8, 120, 20, "#606060", "#34495E", "#1ABC9C", "#E74C3C");
 
     //设置列数和列宽
     int width = qApp->desktop()->availableGeometry().width() - 120;
