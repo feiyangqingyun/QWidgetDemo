@@ -1,0 +1,98 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial Usage
+** Licensees holding valid Qt Commercial licenses may use this file in
+** accordance with the Qt Commercial License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in a
+** written agreement between you and Nokia.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \class QDesignerDnDItemInterface
+    \brief The QDesignerDnDItemInterface class provides an interface that is used to manage items
+    during a drag and drop operation.
+    \inmodule QtDesigner
+    \internal
+*/
+
+/*!
+    \enum QDesignerDnDItemInterface::DropType
+
+    This enum describes the result of a drag and drop operation.
+
+    \value MoveDrop The item was moved.
+    \value CopyDrop The item was copied.
+*/
+
+/*!
+    \fn QDesignerDnDItemInterface::QDesignerDnDItemInterface()
+
+    Constructs a new interface to a drag and drop item.
+*/
+
+/*!
+    \fn QDesignerDnDItemInterface::~QDesignerDnDItemInterface()
+
+    Destroys the interface to the item.
+*/
+
+/*!
+    \fn DomUI *QDesignerDnDItemInterface::domUi() const
+
+    Returns a user interface object for the item.
+*/
+
+/*!
+    \fn QWidget *QDesignerDnDItemInterface::widget() const
+
+    Returns the widget being copied or moved in the drag and drop operation.
+
+    \sa source()
+*/
+
+/*!
+    \fn QWidget *QDesignerDnDItemInterface::decoration() const
+
+    Returns the widget used to represent the item.
+*/
+
+/*!
+    \fn QPoint QDesignerDnDItemInterface::hotSpot() const
+
+    Returns the cursor's hotspot.
+
+    \sa QDrag::hotSpot()
+*/
+
+/*!
+    \fn DropType QDesignerDnDItemInterface::type() const
+
+    Returns the type of drag and drop operation in progress.
+*/
+
+/*!
+    \fn QWidget *QDesignerDnDItemInterface::source() const
+
+    Returns the widget that is the source of the drag and drop operation; i.e. the original
+    container of the widget being dragged.
+
+    \sa widget()
+*/

@@ -1,0 +1,138 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial Usage
+** Licensees holding valid Qt Commercial licenses may use this file in
+** accordance with the Qt Commercial License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in a
+** written agreement between you and Nokia.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \class QDesignerTaskMenuExtension
+    \brief The QDesignerTaskMenuExtension class allows you to add custom
+    menu entries to Qt Designer's task menu.
+    \inmodule QtDesigner
+
+    QDesignerTaskMenuExtension provides an interface for creating
+    custom task menu extensions. It is typically used to create task
+    menu entries that are specific to a plugin in \QD.
+
+    \QD uses the QDesignerTaskMenuExtension to feed its task
+    menu. Whenever a task menu is requested, \QD will query
+    for the selected widget's task menu extension.
+
+    \image taskmenuextension-example-faded.png
+
+    A task menu extension is a collection of QActions. The actions
+    appear as entries in the task menu when the plugin with the
+    specified extension is selected. The image above shows the custom
+    \gui {Edit State...} action which appears in addition to \QD's
+    default task menu entries: \gui Cut, \gui Copy, \gui Paste etc.
+
+    To create a custom task menu extension, your extension class must
+    inherit from both QObject and QDesignerTaskMenuExtension. For
+    example:
+
+    \snippet doc/src/snippets/code/doc_src_qtdesigner.qdoc 9
+
+    Since we are implementing an interface, we must ensure that it
+    is made known to the meta-object system using the Q_INTERFACES()
+    macro. This enables \QD to use the qobject_cast() function to
+    query for supported interfaces using nothing but a QObject
+    pointer.
+
+    You must reimplement the taskActions() function to return a list
+    of actions that will be included in \QD task menu. Optionally, you
+    can reimplement the preferredEditAction() function to set the
+    action that is invoked when selecting your plugin and pressing
+    \key F2. The preferred edit action must be one of the actions
+    returned by taskActions() and, if it's not defined, pressing the
+    \key F2 key will simply be ignored.
+
+    In \QD, extensions are not created until they are required. A
+    task menu extension, for example, is created when you click the
+    right mouse button over a widget in \QD's workspace. For that
+    reason you must also construct an extension factory, using either
+    QExtensionFactory or a subclass, and register it using \QD's
+    \l {QExtensionManager}{extension manager}.
+
+    When a task menu extension is required, \QD's \l
+    {QExtensionManager}{extension manager} will run through all its
+    registered factories calling QExtensionFactory::createExtension()
+    for each until it finds one that is able to create a task menu
+    extension for the selected widget. This factory will then make an
+    instance of the extension.
+
+    There are four available types of extensions in \QD:
+    QDesignerContainerExtension, QDesignerMemberSheetExtension,
+    QDesignerPropertySheetExtension, and QDesignerTaskMenuExtension.
+    \QD's behavior is the same whether the requested extension is
+    associated with a container, a member sheet, a property sheet or a
+    task menu.
+
+    The QExtensionFactory class provides a standard extension factory,
+    and can also be used as an interface for custom extension
+    factories. You can either create a new QExtensionFactory and
+    reimplement the QExtensionFactory::createExtension() function. For
+    example:
+
+    \snippet doc/src/snippets/code/doc_src_qtdesigner.qdoc 10
+
+    Or you can use an existing factory, expanding the
+    QExtensionFactory::createExtension() function to make the factory
+    able to create a task menu extension as well. For example:
+
+    \snippet doc/src/snippets/code/doc_src_qtdesigner.qdoc 11
+
+    For a complete example using the QDesignerTaskMenuExtension class,
+    see the \l {designer/taskmenuextension}{Task Menu Extension
+    example}. The example shows how to create a custom widget plugin
+    for \QD, and how to to use the QDesignerTaskMenuExtension
+    class to add custom items to \QD's task menu.
+
+    \sa QExtensionFactory, QExtensionManager, {Creating Custom Widget
+    Extensions}
+*/
+
+/*!
+    \fn QDesignerTaskMenuExtension::~QDesignerTaskMenuExtension()
+
+    Destroys the task menu extension.
+*/
+
+/*!
+    \fn QAction *QDesignerTaskMenuExtension::preferredEditAction() const
+
+    Returns the action that is invoked when selecting a plugin with
+    the specified extension and pressing \key F2.
+
+    The action must be one of the actions returned by taskActions().
+*/
+
+/*!
+    \fn QList<QAction*> QDesignerTaskMenuExtension::taskActions() const
+
+    Returns the task menu extension as a list of actions which will be
+    included in \QD's task menu when a plugin with the specified
+    extension is selected.
+
+    The function must be reimplemented to add actions to the list.
+*/

@@ -1,0 +1,249 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial Usage
+** Licensees holding valid Qt Commercial licenses may use this file in
+** accordance with the Qt Commercial License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in a
+** written agreement between you and Nokia.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \class QDesignerMemberSheetExtension
+
+    \brief The QDesignerMemberSheetExtension class allows you to
+    manipulate a widget's member functions which is displayed when
+    configuring connections using Qt Designer's mode for editing
+    signals and slots.
+
+    \inmodule QtDesigner
+
+    QDesignerMemberSheetExtension is a collection of functions that is
+    typically used to query a widget's member functions, and to
+    manipulate the member functions' appearance in \QD's signals and
+    slots editing mode. For example:
+
+    \snippet doc/src/snippets/code/doc_src_qtdesigner.qdoc 2
+
+    When implementing a custom widget plugin, a pointer to \QD's
+    current QDesignerFormEditorInterface object (\c formEditor in the
+    example above) is provided by the
+    QDesignerCustomWidgetInterface::initialize() function's parameter.
+
+    The member sheet (and any other extension), can be retrieved by
+    querying \QD's extension manager using the qt_extension()
+    function. When you want to release the extension, you only need to
+    delete the pointer.
+
+    All widgets have a default member sheet used in \QD's signals and
+    slots editing mode with the widget's member functions. But
+    QDesignerMemberSheetExtension also provides an interface for
+    creating custom member sheet extensions.
+
+    \warning \QD uses the QDesignerMemberSheetExtension to facilitate
+    the signal and slot editing mode. Whenever a connection between
+    two widgets is requested, \QD will query for the widgets' member
+    sheet extensions. If a widget has an implemented member sheet
+    extension, this extension will override the default member sheet.
+
+    To create a member sheet extension, your extension class must
+    inherit from both QObject and QDesignerMemberSheetExtension. Then,
+    since we are implementing an interface, we must ensure that it's
+    made known to the meta object system using the Q_INTERFACES()
+    macro:
+
+    \snippet doc/src/snippets/code/doc_src_qtdesigner.qdoc 3
+
+    This enables \QD to use qobject_cast() to query for
+    supported interfaces using nothing but a QObject pointer.
+
+    In \QD the extensions are not created until they are
+    required. For that reason, when implementing a member sheet
+    extension, you must also create a QExtensionFactory, i.e a class
+    that is able to make an instance of your extension, and register
+    it using \QD's \l {QExtensionManager}{extension manager}.
+
+    When a widget's member sheet extension is required, \QD's \l
+    {QExtensionManager}{extension manager} will run through all its
+    registered factories calling QExtensionFactory::createExtension()
+    for each until the first one that is able to create a member sheet
+    extension for that widget, is found. This factory will then make
+    an instance of the extension. If no such factory is found, \QD
+    will use the default member sheet.
+
+    There are four available types of extensions in \QD:
+    QDesignerContainerExtension, QDesignerMemberSheetExtension,
+    QDesignerPropertySheetExtension and
+    QDesignerTaskMenuExtension. \QD's behavior is the same whether the
+    requested extension is associated with a multi page container, a
+    member sheet, a property sheet or a task menu.
+
+    The QExtensionFactory class provides a standard extension
+    factory, and can also be used as an interface for custom
+    extension factories. You can either create a new
+    QExtensionFactory and reimplement the
+    QExtensionFactory::createExtension() function. For example:
+
+    \snippet doc/src/snippets/code/doc_src_qtdesigner.qdoc 4
+
+    Or you can use an existing factory, expanding the
+    QExtensionFactory::createExtension() function to make the factory
+    able to create a member sheet extension as well. For example:
+
+    \snippet doc/src/snippets/code/doc_src_qtdesigner.qdoc 5
+
+    For a complete example using an extension class, see \l
+    {designer/taskmenuextension}{Task Menu Extension example}. The
+    example shows how to create a custom widget plugin for Qt
+    Designer, and how to to use the QDesignerTaskMenuExtension class
+    to add custom items to \QD's task menu.
+
+    \sa QExtensionFactory, QExtensionManager, {Creating Custom Widget
+    Extensions}
+*/
+
+/*!
+    \fn QDesignerMemberSheetExtension::~QDesignerMemberSheetExtension()
+
+    Destroys the member sheet extension.
+*/
+
+/*!
+    \fn int QDesignerMemberSheetExtension::count() const
+
+    Returns the extension's number of member functions.
+*/
+
+/*!
+    \fn int QDesignerMemberSheetExtension::indexOf(const QString &name) const
+
+    Returns the index of the member function specified by the given \a
+    name.
+
+    \sa memberName()
+*/
+
+/*!
+    \fn QString QDesignerMemberSheetExtension::memberName(int index) const
+
+    Returns the name of the member function with the given \a index.
+
+    \sa indexOf()
+*/
+
+/*!
+    \fn QString QDesignerMemberSheetExtension::memberGroup(int index) const
+
+    Returns the name of the member group specified for the function
+    with the given \a index.
+
+    \sa indexOf(), setMemberGroup()
+*/
+
+/*!
+    \fn void QDesignerMemberSheetExtension::setMemberGroup(int index, const QString &group)
+
+    Sets the member group of the member function with the given \a
+    index, to \a group.
+
+    \sa indexOf(), memberGroup()
+*/
+
+/*!
+    \fn bool QDesignerMemberSheetExtension::isVisible(int index) const
+
+    Returns true if the member function with the given \a index is
+    visible in \QD's signal and slot editor, otherwise false.
+
+    \sa indexOf(), setVisible()
+*/
+
+/*!
+    \fn void QDesignerMemberSheetExtension::setVisible(int index, bool visible)
+
+    If \a visible is true, the member function with the given \a index
+    is visible in \QD's signals and slots editing mode; otherwise the
+    member function is hidden.
+
+    \sa indexOf(), isVisible()
+*/
+
+/*!
+    \fn virtual bool QDesignerMemberSheetExtension::isSignal(int index) const
+
+    Returns true if the member function with the given \a index is a
+    signal, otherwise false.
+
+    \sa indexOf()
+*/
+
+/*!
+    \fn bool QDesignerMemberSheetExtension::isSlot(int index) const
+
+    Returns true if the member function with the given \a index is a
+    slot, otherwise false.
+
+    \sa indexOf()
+*/
+
+/*!
+    \fn bool QDesignerMemberSheetExtension::inheritedFromWidget(int index) const
+
+    Returns true if the member function with the given \a index is
+    inherited from QWidget, otherwise false.
+
+    \sa indexOf()
+*/
+
+/*!
+    \fn QString QDesignerMemberSheetExtension::declaredInClass(int index) const
+
+    Returns the name of the class in which the member function with
+    the given \a index is declared.
+
+    \sa indexOf()
+*/
+
+/*!
+    \fn QString QDesignerMemberSheetExtension::signature(int index) const
+
+    Returns the signature of the member function with the given \a
+    index.
+
+    \sa indexOf()
+*/
+
+/*!
+    \fn QList<QByteArray> QDesignerMemberSheetExtension::parameterTypes(int index) const
+
+    Returns the parameter types of the member function with the given
+    \a index, as a QByteArray list.
+
+    \sa indexOf(), parameterNames()
+*/
+
+/*!
+    \fn QList<QByteArray> QDesignerMemberSheetExtension::parameterNames(int index) const
+
+    Returns the parameter names of the member function with the given
+    \a index, as a QByteArray list.
+
+    \sa indexOf(), parameterTypes()
+*/

@@ -1,0 +1,288 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial Usage
+** Licensees holding valid Qt Commercial licenses may use this file in
+** accordance with the Qt Commercial License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in a
+** written agreement between you and Nokia.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \class QDesignerPropertySheetExtension
+
+    \brief The QDesignerPropertySheetExtension class allows you to
+    manipulate a widget's properties which is displayed in Qt
+    Designer's property editor.
+
+    \sa QDesignerDynamicPropertySheetExtension
+
+    \inmodule QtDesigner
+
+    QDesignerPropertySheetExtension provides a collection of functions that
+    are typically used to query a widget's properties, and to
+    manipulate the properties' appearance in the property editor. For
+    example:
+
+    \snippet doc/src/snippets/code/doc_src_qtdesigner.qdoc 15
+
+    Note that if you change the value of a property using the
+    QDesignerPropertySheetExtension::setProperty() function, the undo
+    stack is not updated. To ensure that a property's value can be
+    reverted using the undo stack, you must use the
+    QDesignerFormWindowCursorInterface::setProperty() function, or its
+    buddy \l
+    {QDesignerFormWindowCursorInterface::setWidgetProperty()}{setWidgetProperty()},
+    instead.
+
+    When implementing a custom widget plugin, a pointer to \QD's
+    current QDesignerFormEditorInterface object (\c formEditor in the
+    example above) is provided by the
+    QDesignerCustomWidgetInterface::initialize() function's parameter.
+
+    The property sheet, or any other extension, can be retrieved by
+    querying \QD's extension manager using the qt_extension()
+    function. When you want to release the extension, you only need to
+    delete the pointer.
+
+    All widgets have a default property sheet which populates \QD's
+    property editor with the widget's properties (i.e the ones defined
+    with the Q_PROPERTY() macro). But QDesignerPropertySheetExtension
+    also provides an interface for creating custom property sheet
+    extensions.
+
+    \warning \QD uses the QDesignerPropertySheetExtension to feed its
+    property editor. Whenever a widget is selected in its workspace,
+    \QD will query for the widget's property sheet extension. If the
+    selected widget has an implemented property sheet extension, this
+    extension will override the default property sheet.
+
+    To create a property sheet extension, your extension class must
+    inherit from both QObject and
+    QDesignerPropertySheetExtension. Then, since we are implementing
+    an interface, we must ensure that it's made known to the meta
+    object system using the Q_INTERFACES() macro:
+
+    \snippet doc/src/snippets/code/doc_src_qtdesigner.qdoc 16
+
+    This enables \QD to use qobject_cast() to query for supported
+    interfaces using nothing but a QObject pointer.
+
+    In \QD the extensions are not created until they are
+    required. For that reason, when implementing a property sheet
+    extension, you must also create a QExtensionFactory, i.e a class
+    that is able to make an instance of your extension, and register
+    it using \QD's \l {QExtensionManager}{extension manager}.
+
+    When a property sheet extension is required, \QD's \l
+    {QExtensionManager}{extension manager} will run through all its
+    registered factories calling QExtensionFactory::createExtension()
+    for each until the first one that is able to create a property
+    sheet extension for the selected widget, is found. This factory
+    will then make an instance of the extension. If no such factory
+    can be found, \QD will use the default property sheet.
+
+    There are four available types of extensions in \QD:
+    QDesignerContainerExtension, QDesignerMemberSheetExtension,
+    QDesignerPropertySheetExtension and QDesignerTaskMenuExtension. Qt
+    Designer's behavior is the same whether the requested extension is
+    associated with a multi page container, a member sheet, a property
+    sheet or a task menu.
+
+    The QExtensionFactory class provides a standard extension factory,
+    and can also be used as an interface for custom extension
+    factories. You can either create a new QExtensionFactory and
+    reimplement the QExtensionFactory::createExtension() function. For
+    example:
+
+    \snippet doc/src/snippets/code/doc_src_qtdesigner.qdoc 17
+
+    Or you can use an existing factory, expanding the
+    QExtensionFactory::createExtension() function to make the factory
+    able to create a property sheet extension extension as well. For
+    example:
+
+    \snippet doc/src/snippets/code/doc_src_qtdesigner.qdoc 18
+
+    For a complete example using an extension class, see the \l
+    {designer/taskmenuextension}{Task Menu Extension example}. The
+    example shows how to create a custom widget plugin for Qt
+    Designer, and how to to use the QDesignerTaskMenuExtension class
+    to add custom items to \QD's task menu.
+
+    \sa QExtensionFactory, QExtensionManager, {Creating Custom Widget
+    Extensions}
+*/
+
+/*!
+    \fn QDesignerPropertySheetExtension::~QDesignerPropertySheetExtension()
+
+    Destroys the property sheet extension.
+*/
+
+/*!
+    \fn int QDesignerPropertySheetExtension::count() const
+
+    Returns the selected widget's number of properties.
+*/
+
+/*!
+    \fn int QDesignerPropertySheetExtension::indexOf(const QString &name) const
+
+    Returns the index for a given property \a name.
+
+    \sa propertyName()
+*/
+
+/*!
+    \fn QString QDesignerPropertySheetExtension::propertyName(int index) const
+
+    Returns the name of the property at the given \a index.
+
+    \sa indexOf()
+*/
+
+/*!
+    \fn QString QDesignerPropertySheetExtension::propertyGroup(int index) const
+
+    Returns the property group for the property at the given \a index.
+
+    \QD's property editor supports property groups, i.e. sections of
+    related properties. A property can be related to a group using the
+    setPropertyGroup() function. The default group of any property is
+    the name of the class that defines it. For example, the
+    QObject::objectName property appears within the QObject property
+    group.
+
+    \sa indexOf(), setPropertyGroup()
+*/
+
+/*!
+    \fn void QDesignerPropertySheetExtension::setPropertyGroup(int index, const QString &group)
+
+    Sets the property group for the property at the given \a index to
+    \a group.
+
+    Relating a property to a group makes it appear within that group's
+    section in the property editor. The default property group of any
+    property is the name of the class that defines it. For example,
+    the QObject::objectName property appears within the QObject
+    property group.
+
+    \sa indexOf(), property(), propertyGroup()
+*/
+
+/*!
+    \fn bool QDesignerPropertySheetExtension::hasReset(int index) const
+
+    Returns true if the property at the given \a index has a reset
+    button in \QD's property editor, otherwise false.
+
+    \sa indexOf(), reset()
+*/
+
+/*!
+    \fn bool QDesignerPropertySheetExtension::reset(int index)
+
+    Resets the value of the property at the given \a index, to the
+    default value. Returns true if a default value could be found, otherwise false.
+
+    \sa indexOf(), hasReset(), isChanged()
+*/
+
+/*!
+    \fn bool QDesignerPropertySheetExtension::isVisible(int index) const
+
+    Returns true if the property at the given \a index is visible in
+    \QD's property editor, otherwise false.
+
+    \sa indexOf(), setVisible()
+*/
+
+/*!
+    \fn void QDesignerPropertySheetExtension::setVisible(int index, bool visible)
+
+    If \a visible is true, the property at the given \a index is
+    visible in \QD's property editor; otherwise the property is
+    hidden.
+
+    \sa indexOf(), isVisible()
+*/
+
+/*!
+    \fn bool QDesignerPropertySheetExtension::isAttribute(int index) const
+
+    Returns true if the property at the given \a index is an attribute,
+    which will be \e excluded from the UI file, otherwise false.
+
+    \sa indexOf(), setAttribute()
+*/
+
+/*!
+    \fn void QDesignerPropertySheetExtension::setAttribute(int index, bool attribute)
+
+    If \a attribute is true, the property at the given \a index is
+    made an attribute which will be \e excluded from the UI file;
+    otherwise it will be included.
+
+    \sa indexOf(), isAttribute()
+*/
+
+/*!
+    \fn QVariant QDesignerPropertySheetExtension::property(int index) const
+
+    Returns the value of the property at the given \a index.
+
+    \sa indexOf(), setProperty(), propertyGroup()
+*/
+
+/*!
+    \fn void QDesignerPropertySheetExtension::setProperty(int index, const QVariant &value)
+
+    Sets the \a value of the property at the given \a index.
+
+    \warning If you change the value of a property using this
+    function, the undo stack is not updated. To ensure that a
+    property's value can be reverted using the undo stack, you must
+    use the QDesignerFormWindowCursorInterface::setProperty()
+    function, or its buddy \l
+    {QDesignerFormWindowCursorInterface::setWidgetProperty()}{setWidgetProperty()},
+    instead.
+
+    \sa indexOf(), property(), propertyGroup()
+*/
+
+/*!
+    \fn bool QDesignerPropertySheetExtension::isChanged(int index) const
+
+    Returns true if the value of the property at the given \a index
+    differs from the property's default value, otherwise false.
+
+    \sa indexOf(), setChanged(), reset()
+*/
+
+/*!
+    \fn void QDesignerPropertySheetExtension::setChanged(int index, bool changed)
+
+    Sets whether the property at the given \a index is different from
+    its default value, or not, depending on the \a changed parameter.
+
+    \sa indexOf(), isChanged()
+*/

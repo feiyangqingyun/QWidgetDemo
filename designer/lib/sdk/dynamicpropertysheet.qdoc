@@ -1,0 +1,80 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial Usage
+** Licensees holding valid Qt Commercial licenses may use this file in
+** accordance with the Qt Commercial License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in a
+** written agreement between you and Nokia.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \class QDesignerDynamicPropertySheetExtension
+
+    \brief The QDesignerDynamicPropertySheetExtension class allows you to
+    manipulate a widget's dynamic properties in Qt Designer's property editor.
+
+    \sa QDesignerPropertySheetExtension, {QObject#Dynamic Properties}{Dynamic Properties}
+
+    \inmodule QtDesigner
+    \since 4.3
+*/
+
+/*!
+    \fn QDesignerDynamicPropertySheetExtension::~QDesignerDynamicPropertySheetExtension()
+
+    Destroys the dynamic property sheet extension.
+*/
+
+/*!
+    \fn bool QDesignerDynamicPropertySheetExtension::dynamicPropertiesAllowed() const
+
+    Returns true if the widget supports dynamic properties; otherwise returns false.
+*/
+
+/*!
+    \fn int QDesignerDynamicPropertySheetExtension::addDynamicProperty(const QString &propertyName, const QVariant &value)
+
+    Adds a dynamic property named \a propertyName and sets its value to \a value.
+    Returns the index of the property if it was added successfully; otherwise returns -1 to
+    indicate failure.
+*/
+
+/*!
+    \fn bool QDesignerDynamicPropertySheetExtension::removeDynamicProperty(int index)
+
+    Removes the dynamic property at the given \a index.
+    Returns true if the operation succeeds; otherwise returns false.
+*/
+
+/*!
+    \fn bool QDesignerDynamicPropertySheetExtension::isDynamicProperty(int index) const
+
+    Returns true if the property at the given \a index is a dynamic property; otherwise
+    returns false.
+*/
+
+/*!
+    \fn bool QDesignerDynamicPropertySheetExtension::canAddDynamicProperty(const QString &propertyName) const
+
+    Returns true if \a propertyName is a valid, unique name for a dynamic
+    property; otherwise returns false.
+
+*/

@@ -1,0 +1,116 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial Usage
+** Licensees holding valid Qt Commercial licenses may use this file in
+** accordance with the Qt Commercial License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in a
+** written agreement between you and Nokia.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \class QDesignerIconCacheInterface
+    \brief The QDesignerIconCacheInterface class provides an interface to \QD's icon cache.
+    \inmodule QtDesigner
+    \internal
+*/
+
+/*!
+    \fn QDesignerIconCacheInterface::QDesignerIconCacheInterface(QObject *parent)
+
+    Constructs a new interface with the given \a parent.
+*/
+
+/*!
+    \fn QIcon QDesignerIconCacheInterface::nameToIcon(const QString &filePath, const QString &qrcPath)
+
+    Returns the icon associated with the name specified by \a filePath in the resource
+    file specified by \a qrcPath.
+
+    If \a qrcPath refers to a valid resource file, the name used for the file path is a path
+    within those resources; otherwise the file path refers to a local file.
+
+    \sa {The Qt Resource System}, nameToPixmap()
+*/
+
+/*!
+    \fn QPixmap QDesignerIconCacheInterface::nameToPixmap(const QString &filePath, const QString &qrcPath)
+
+    Returns the pixmap associated with the name specified by \a filePath in the resource
+    file specified by \a qrcPath.
+
+    If \a qrcPath refers to a valid resource file, the name used for the file path is a path
+    within those resources; otherwise the file path refers to a local file.
+
+    \sa {The Qt Resource System}, nameToIcon()
+*/
+
+/*!
+    \fn QString QDesignerIconCacheInterface::iconToFilePath(const QIcon &icon) const
+
+    Returns the file path associated with the given \a icon. The file path is a path within
+    an application resources.
+*/
+
+/*!
+    \fn QString QDesignerIconCacheInterface::iconToQrcPath(const QIcon &icon) const
+
+    Returns the path to the resource file that refers to the specified \a icon. The resource
+    path refers to a local file.
+*/
+
+/*!
+    \fn QString QDesignerIconCacheInterface::pixmapToFilePath(const QPixmap &pixmap) const
+
+    Returns the file path associated with the given \a pixmap. The file path is a path within
+    an application resources.
+*/
+
+/*!
+    \fn QString QDesignerIconCacheInterface::pixmapToQrcPath(const QPixmap &pixmap) const
+
+    Returns the path to the resource file that refers to the specified \a pixmap. The resource
+    path refers to a local file.
+*/
+
+/*!
+    \fn QList<QPixmap> QDesignerIconCacheInterface::pixmapList() const
+
+    Returns a list of pixmaps for the icons provided by the icon cache.
+*/
+
+/*!
+    \fn QList<QIcon> QDesignerIconCacheInterface::iconList() const
+
+    Returns a list of icons provided by the icon cache.
+*/
+
+/*!
+    \fn QString QDesignerIconCacheInterface::resolveQrcPath(const QString &filePath, const QString &qrcPath, const QString &workingDirectory) const
+
+    Returns a path to a resource specified by the \a filePath within
+    the resource file located at \a qrcPath. If \a workingDirectory is
+    a valid path to a directory, the path returned will be relative to
+    that directory; otherwise an absolute path is returned.
+
+    \omit
+    ### Needs checking
+    \endomit
+*/

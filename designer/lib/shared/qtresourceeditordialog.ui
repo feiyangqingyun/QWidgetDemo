@@ -1,0 +1,177 @@
+<ui version="4.0" >
+ <class>QtResourceEditorDialog</class>
+ <widget class="QDialog" name="QtResourceEditorDialog" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>469</width>
+    <height>317</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Dialog</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" >
+   <item>
+    <widget class="QSplitter" name="splitter" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="childrenCollapsible" >
+      <bool>false</bool>
+     </property>
+     <widget class="QWidget" name="qrcLayoutWidget" >
+      <layout class="QGridLayout" name="qrcLayout" >
+       <item row="0" column="0" colspan="4" >
+        <widget class="QListWidget" name="qrcFileList" >
+         <property name="sizePolicy" >
+          <sizepolicy vsizetype="Expanding" hsizetype="Ignored" >
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" >
+        <widget class="QToolButton" name="newQrcButton" >
+         <property name="toolTip" >
+          <string>New File</string>
+         </property>
+         <property name="text" >
+          <string>N</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2" >
+        <widget class="QToolButton" name="removeQrcButton" >
+         <property name="toolTip" >
+          <string>Remove File</string>
+         </property>
+         <property name="text" >
+          <string>R</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3" >
+        <spacer>
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType" >
+          <enum>QSizePolicy::Ignored</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>21</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="1" column="1" >
+        <widget class="QToolButton" name="importQrcButton" >
+         <property name="text" >
+          <string>I</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="resourceLayoutWidget" >
+      <layout class="QGridLayout" name="resourceLayout" >
+       <item row="0" column="0" colspan="4" >
+        <widget class="QTreeView" name="resourceTreeView" />
+       </item>
+       <item row="1" column="0" >
+        <widget class="QToolButton" name="newResourceButton" >
+         <property name="toolTip" >
+          <string>New Resource</string>
+         </property>
+         <property name="text" >
+          <string>N</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" >
+        <widget class="QToolButton" name="addResourceButton" >
+         <property name="text" >
+          <string>A</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2" >
+        <widget class="QToolButton" name="removeResourceButton" >
+         <property name="toolTip" >
+          <string>Remove Resource or File</string>
+         </property>
+         <property name="text" >
+          <string>R</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3" >
+        <spacer name="horizontalSpacer" >
+         <property name="orientation" >
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0" >
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox" >
+     <property name="orientation" >
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons" >
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>QtResourceEditorDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>QtResourceEditorDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

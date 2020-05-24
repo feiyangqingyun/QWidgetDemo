@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/trolltech/designer">
+        <file>defaultgradients.xml</file>
+        <!-- Templates -->
+        <file>templates/forms/Dialog_with_Buttons_Bottom.ui</file>
+        <file>templates/forms/240x320/Dialog_with_Buttons_Bottom.ui</file>
+        <file>templates/forms/320x240/Dialog_with_Buttons_Bottom.ui</file>
+        <file>templates/forms/480x640/Dialog_with_Buttons_Bottom.ui</file>
+        <file>templates/forms/640x480/Dialog_with_Buttons_Bottom.ui</file>
+        <file>templates/forms/Dialog_with_Buttons_Right.ui</file>
+        <file>templates/forms/240x320/Dialog_with_Buttons_Right.ui</file>
+        <file>templates/forms/320x240/Dialog_with_Buttons_Right.ui</file>
+        <file>templates/forms/480x640/Dialog_with_Buttons_Right.ui</file>
+        <file>templates/forms/640x480/Dialog_with_Buttons_Right.ui</file>
+        <file>templates/forms/Dialog_without_Buttons.ui</file>
+        <file>templates/forms/Widget.ui</file>
+        <file>templates/forms/Main_Window.ui</file>
+    </qresource>
+</RCC>
+

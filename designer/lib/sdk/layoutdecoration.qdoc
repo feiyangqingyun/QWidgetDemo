@@ -1,0 +1,149 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial Usage
+** Licensees holding valid Qt Commercial licenses may use this file in
+** accordance with the Qt Commercial License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in a
+** written agreement between you and Nokia.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \class QDesignerLayoutDecorationExtension
+    \brief The QDesignerLayoutDecorationExtension class provides an extension to a layout in \QD.
+    \inmodule QtDesigner
+    \internal
+*/
+
+/*!
+    \enum QDesignerLayoutDecorationExtension::InsertMode
+
+    This enum describes the modes that are used to insert items into a layout.
+
+    \value InsertWidgetMode Widgets are inserted into empty cells in a layout.
+    \value InsertRowMode    Whole rows are inserted into a vertical or grid layout.
+    \value InsertColumnMode Whole columns are inserted into a horizontal or grid layout.
+*/
+
+/*!
+    \fn virtual QDesignerLayoutDecorationExtension::~QDesignerLayoutDecorationExtension()
+
+    Destroys the extension.
+*/
+
+/*!
+    \fn virtual QList<QWidget*> QDesignerLayoutDecorationExtension::widgets(QLayout *layout) const
+
+    Returns the widgets that are managed by the given \a layout.
+
+    \sa insertWidget(), removeWidget()
+*/
+
+/*!
+    \fn QRect QDesignerLayoutDecorationExtension::itemInfo(int index) const
+
+    Returns the rectangle covered by the item at the given \a index in the layout.
+*/
+
+/*!
+    \fn int QDesignerLayoutDecorationExtension::indexOf(QWidget *widget) const
+
+    Returns the index of the specified \a widget in the layout.
+*/
+
+/*!
+    \fn int QDesignerLayoutDecorationExtension::indexOf(QLayoutItem *item) const
+
+    Returns the index of the specified layout \a item.
+*/
+
+/*!
+    \fn QDesignerLayoutDecorationExtension::InsertMode QDesignerLayoutDecorationExtension::currentInsertMode() const
+
+    Returns the current insertion mode.
+*/
+
+/*!
+    \fn int QDesignerLayoutDecorationExtension::currentIndex() const
+
+    Returns the current index in the layout.
+*/
+
+/*!
+    \fn QPair<int, int> QDesignerLayoutDecorationExtension::currentCell() const
+
+    Returns a pair containing the row and column of the current cell in the layout.
+*/
+
+/*!
+    \fn void QDesignerLayoutDecorationExtension::insertWidget(QWidget *widget, const QPair<int, int> &cell)
+
+    Inserts the given \a widget into the specified \a cell in the layout.
+
+    \sa removeWidget()
+*/
+
+/*!
+    \fn void QDesignerLayoutDecorationExtension::removeWidget(QWidget *widget)
+
+    Removes the specified \a widget from the layout.
+
+    \sa insertWidget()
+*/
+
+/*!
+    \fn void QDesignerLayoutDecorationExtension::insertRow(int row)
+
+    Inserts a new row into the form at the position specified by \a row.
+*/
+
+/*!
+    \fn void QDesignerLayoutDecorationExtension::insertColumn(int column)
+
+    Inserts a new column into the form at the position specified by \a column.
+*/
+
+/*!
+    \fn void QDesignerLayoutDecorationExtension::simplify()
+
+    Simplifies the layout by removing unnecessary empty rows and columns, and by changing the
+    number of rows or columns spanned by widgets.
+*/
+
+/*!
+    \fn int QDesignerLayoutDecorationExtension::findItemAt(const QPoint &position) const
+
+    Returns the index of the item in the layout that covers the given \a position.
+*/
+
+/*!
+    \fn int QDesignerLayoutDecorationExtension::findItemAt(int row, int column) const
+
+    Returns the item in the layout that occupies the specified \a row and \a column in the layout.
+
+    Currently, this only applies to grid layouts.
+*/
+
+/*!
+    \fn void QDesignerLayoutDecorationExtension::adjustIndicator(const QPoint &position, int index)
+
+    Adjusts the indicator for the item specified by \a index so that
+    it lies at the given \a position on the form.
+*/

@@ -1,0 +1,172 @@
+/****************************************************************************
+**
+** Copyright (C) 2010 Nokia Corporation and/or its subsidiary(-ies).
+** All rights reserved.
+** Contact: Nokia Corporation (qt-info@nokia.com)
+**
+** This file is part of the documentation of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:FDL$
+** Commercial Usage
+** Licensees holding valid Qt Commercial licenses may use this file in
+** accordance with the Qt Commercial License Agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in a
+** written agreement between you and Nokia.
+**
+** GNU Free Documentation License
+** Alternatively, this file may be used under the terms of the GNU Free
+** Documentation License version 1.3 as published by the Free Software
+** Foundation and appearing in the file included in the packaging of this
+** file.
+**
+** If you have questions regarding the use of this file, please contact
+** Nokia at qt-info@nokia.com.
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+
+/*!
+    \class QDesignerContainerExtension
+    \brief The QDesignerContainerExtension class allows you to add pages to
+    a custom multi-page container in Qt Designer's workspace.
+    \inmodule QtDesigner
+
+    QDesignerContainerExtension provide an interface for creating
+    custom container extensions. A container extension consists of a
+    collection of functions that \QD needs to manage a multi-page
+    container plugin, and a list of the container's pages.
+
+    \image containerextension-example.png
+
+    \warning This is \e not an extension for container plugins in
+    general, only custom \e multi-page containers.
+
+    To create a container extension, your extension class must inherit
+    from both QObject and QDesignerContainerExtension. For example:
+
+    \snippet doc/src/snippets/code/doc_src_qtdesigner.qdoc 6
+
+    Since we are implementing an interface, we must ensure that it's
+    made known to the meta object system using the Q_INTERFACES()
+    macro. This enables \QD to use the qobject_cast() function to
+    query for supported interfaces using nothing but a QObject
+    pointer.
+
+    You must reimplement several functions to enable \QD to manage a
+    custom multi-page container widget: \QD uses count() to keep track
+    of the number pages in your container, widget() to return the page
+    at a given index in the list of the container's pages, and
+    currentIndex() to return the list index of the selected page. \QD
+    uses the addWidget() function to add a given page to the
+    container, expecting it to be appended to the list of pages, while
+    it expects the insertWidget() function to add a given page to the
+    container by inserting it at a given index.
+
+    In \QD the extensions are not created until they are
+    required. For that reason you must also create a
+    QExtensionFactory, i.e a class that is able to make an instance of
+    your extension, and register it using \QD's \l
+    {QExtensionManager}{extension manager}.
+
+    When a container extension is required, \QD's \l
+    {QExtensionManager}{extension manager} will run through all its
+    registered factories calling QExtensionFactory::createExtension()
+    for each until the first one that is able to create a container
+    extension, is found. This factory will then create the extension
+    for the plugin.
+
+    There are four available types of extensions in \QD:
+    QDesignerContainerExtension , QDesignerMemberSheetExtension,
+    QDesignerPropertySheetExtension and QDesignerTaskMenuExtension.
+    \QD's behavior is the same whether the requested extension is
+    associated with a multi page container, a member sheet, a property
+    sheet or a task menu.
+
+    The QExtensionFactory class provides a standard extension factory,
+    and can also be used as an interface for custom extension
+    factories. You can either create a new QExtensionFactory and
+    reimplement the QExtensionFactory::createExtension() function. For
+    example:
+
+    \snippet doc/src/snippets/code/doc_src_qtdesigner.qdoc 7
+
+    Or you can use an existing factory, expanding the
+    QExtensionFactory::createExtension() function to make the factory
+    able to create a container extension as well. For example:
+
+    \snippet doc/src/snippets/code/doc_src_qtdesigner.qdoc 8
+
+    For a complete example using the QDesignerContainerExtension
+    class, see the \l {designer/containerextension}{Container
+    Extension example}. The example shows how to create a custom
+    multi-page plugin for \QD.
+
+    \sa QExtensionFactory, QExtensionManager, {Creating Custom Widget
+    Extensions}
+*/
+
+/*!
+    \fn QDesignerContainerExtension::~QDesignerContainerExtension()
+
+    Destroys the extension.
+*/
+
+/*!
+    \fn int QDesignerContainerExtension::count() const
+
+    Returns the number of pages in the container.
+*/
+
+/*!
+    \fn QWidget *QDesignerContainerExtension::widget(int index) const
+
+    Returns the page at the given \a index in the extension's list of
+    pages.
+
+    \sa addWidget(), insertWidget()
+*/
+
+/*!
+    \fn int QDesignerContainerExtension::currentIndex() const
+
+    Returns the index of the currently selected page in the
+    container.
+
+    \sa setCurrentIndex()
+*/
+
+/*!
+    \fn void QDesignerContainerExtension::setCurrentIndex(int index)
+
+    Sets the currently selected page in the container to be the
+    page at the given \a index in the extension's list of pages.
+
+    \sa currentIndex()
+*/
+
+/*!
+    \fn void QDesignerContainerExtension::addWidget(QWidget *page)
+
+    Adds the given \a page to the container by appending it to the
+    extension's list of pages.
+
+    \sa insertWidget(), remove(), widget()
+*/
+
+/*!
+    \fn void QDesignerContainerExtension::insertWidget(int index, QWidget *page)
+
+    Adds the given \a page to the container by inserting it at the
+    given \a index in the extension's list of pages.
+
+    \sa addWidget(), remove(), widget()
+*/
+
+/*!
+    \fn void QDesignerContainerExtension::remove(int index)
+
+    Removes the page at the given \a index from the extension's list
+    of pages.
+
+    \sa addWidget(), insertWidget()
+*/

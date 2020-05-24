@@ -1,0 +1,148 @@
+
+#ifndef DECLARE_WIDGET_1
+#  define DECLARE_WIDGET_1(a,b) DECLARE_WIDGET(a,b)
+#endif
+
+// widgets
+#ifndef QT_NO_CHECKBOX
+DECLARE_WIDGET(QCheckBox, "text")
+#endif
+#ifndef QT_NO_COMBOBOX
+DECLARE_WIDGET(QComboBox, "")
+#endif
+#ifndef QT_NO_DATETIMEEDIT
+DECLARE_WIDGET(QDateTimeEdit, "")
+#endif
+#ifndef QT_NO_DATEEDIT
+DECLARE_WIDGET(QDateEdit, "")
+#endif
+#ifndef QT_NO_TIMEEDIT
+DECLARE_WIDGET(QTimeEdit, "")
+#endif
+#ifndef QT_NO_DIAL
+DECLARE_WIDGET(QDial, "")
+#endif
+DECLARE_WIDGET(QDialog, "")
+#ifndef QT_NO_DOCKWIDGET
+DECLARE_WIDGET(QDockWidget, "")
+#endif
+DECLARE_WIDGET(QFrame, "")
+#ifndef QT_NO_GROUPBOX
+DECLARE_WIDGET(QGroupBox, "")
+#endif
+#ifndef QT_NO_SCROLLAREA
+DECLARE_WIDGET(QScrollArea, "")
+#endif
+#ifndef QT_NO_LCDNUMBER
+DECLARE_WIDGET(QLCDNumber, "")
+#endif
+DECLARE_WIDGET(QLabel, "")
+#ifndef QT_NO_LINEEDIT
+DECLARE_WIDGET(QLineEdit, "")
+#endif
+#ifndef QT_NO_LISTVIEW
+DECLARE_WIDGET(QListView, "")
+#endif
+#ifndef QT_NO_LISTWIDGET
+DECLARE_WIDGET(QListWidget, "")
+#endif
+#ifndef QT_NO_MAINWINDOW
+DECLARE_WIDGET(QMainWindow, "")
+#endif
+#ifndef QT_NO_MDIAREA
+DECLARE_WIDGET(QMdiArea, "")
+#endif
+#ifndef QT_NO_MENU
+DECLARE_WIDGET(QMenu, "")
+#endif
+#ifndef QT_NO_MENUBAR
+DECLARE_WIDGET(QMenuBar, "")
+#endif
+#ifndef QT_NO_PROGRESSBAR
+DECLARE_WIDGET(QProgressBar, "")
+#endif
+DECLARE_WIDGET(QPushButton, "text")
+DECLARE_WIDGET(QRadioButton, "text")
+DECLARE_WIDGET(QCommandLinkButton, "text")
+#ifndef QT_NO_SCROLLBAR
+DECLARE_WIDGET(QScrollBar, "")
+#endif
+#ifndef QT_NO_SLIDER
+DECLARE_WIDGET(QSlider, "")
+#endif
+#ifndef QT_NO_SPINBOX
+DECLARE_WIDGET(QSpinBox, "")
+DECLARE_WIDGET(QDoubleSpinBox, "")
+#endif
+#ifndef QT_NO_TABWIDGET
+DECLARE_WIDGET(QTabWidget, "")
+#endif
+#ifndef QT_NO_TABLEVIEW
+DECLARE_WIDGET(QTableView, "")
+#endif
+#ifndef QT_NO_TABLEWIDGET
+DECLARE_WIDGET(QTableWidget, "")
+#endif
+#ifndef QT_NO_TEXTBROWSER
+DECLARE_WIDGET(QTextBrowser, "")
+#endif
+#ifndef QT_NO_TEXTEDIT
+DECLARE_WIDGET(QTextEdit, "")
+DECLARE_WIDGET(QPlainTextEdit, "")
+#endif
+#ifndef QT_NO_TOOLBAR
+DECLARE_WIDGET(QToolBar, "")
+#endif
+#ifndef QT_NO_TOOLBOX
+DECLARE_WIDGET(QToolBox, "")
+#endif
+#ifndef QT_NO_TOOLBUTTON
+DECLARE_WIDGET(QToolButton, "text")
+#endif
+#ifndef QT_NO_TREEVIEW
+DECLARE_WIDGET(QTreeView, "")
+#endif
+#ifndef QT_NO_TREEWIDGET
+DECLARE_WIDGET(QTreeWidget, "")
+#endif
+DECLARE_WIDGET(QWidget, "")
+#ifndef QT_NO_WORKSPACE
+DECLARE_WIDGET(QWorkspace, "")
+#endif
+#ifndef QT_NO_SPLITTER
+DECLARE_WIDGET(QSplitter, "")
+#endif
+#ifndef QT_NO_STACKEDWIDGET
+DECLARE_WIDGET(QStackedWidget, "")
+#endif
+#ifndef QT_NO_STATUSBAR
+DECLARE_WIDGET(QStatusBar, "")
+#endif
+DECLARE_WIDGET(QDialogButtonBox, "")
+#ifndef QT_NO_FONTCOMBOBOX
+DECLARE_WIDGET(QFontComboBox, "")
+#endif
+#ifndef QT_NO_CALENDARWIDGET
+DECLARE_WIDGET(QCalendarWidget, "")
+#endif
+#ifndef QT_NO_COLUMNVIEW
+DECLARE_WIDGET(QColumnView, "")
+#endif
+
+#ifndef QT_NO_WIZARD
+DECLARE_WIDGET(QWizard, "")
+DECLARE_WIDGET(QWizardPage, "")
+#endif
+
+#if !defined(QT_NO_GRAPHICSVIEW) || (QT_EDITION & QT_MODULE_GRAPHICSVIEW) != QT_MODULE_GRAPHICSVIEW
+DECLARE_WIDGET_1(QGraphicsView, "")
+#endif
+
+// layouts
+DECLARE_LAYOUT(QGridLayout, "")
+DECLARE_LAYOUT(QHBoxLayout, "")
+DECLARE_LAYOUT(QStackedLayout, "")
+DECLARE_LAYOUT(QVBoxLayout, "")
+#ifndef QT_NO_FORMLAYOUT
+DECLARE_LAYOUT(QFormLayout, "")
+#endif

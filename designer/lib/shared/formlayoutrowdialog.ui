@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormLayoutRowDialog</class>
+ <widget class="QDialog" name="FormLayoutRowDialog">
+  <property name="windowTitle">
+   <string>Add Form Layout Row</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <property name="fieldGrowthPolicy">
+      <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="labelTextLabel">
+       <property name="text">
+        <string>&amp;Label text:</string>
+       </property>
+       <property name="buddy">
+        <cstring>labelTextLineEdit</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="labelTextLineEdit">
+       <property name="minimumSize">
+        <size>
+         <width>180</width>
+         <height>0</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="labelNameLineEdit"/>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="fieldClassLabel">
+       <property name="text">
+        <string>Field &amp;type:</string>
+       </property>
+       <property name="buddy">
+        <cstring>fieldClassComboBox</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="fieldClassComboBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="fieldNameLabel">
+       <property name="text">
+        <string>&amp;Field name:</string>
+       </property>
+       <property name="buddy">
+        <cstring>fieldNameLineEdit</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="buddyLabel">
+       <property name="text">
+        <string>&amp;Buddy:</string>
+       </property>
+       <property name="buddy">
+        <cstring>buddyCheckBox</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QCheckBox" name="buddyCheckBox">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="rowLabel">
+       <property name="text">
+        <string>&amp;Row:</string>
+       </property>
+       <property name="buddy">
+        <cstring>rowSpinBox</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QSpinBox" name="rowSpinBox"/>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="fieldNameLineEdit"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="labelNameLabel">
+       <property name="text">
+        <string>Label &amp;name:</string>
+       </property>
+       <property name="buddy">
+        <cstring>labelNameLineEdit</cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>FormLayoutRowDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>FormLayoutRowDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
