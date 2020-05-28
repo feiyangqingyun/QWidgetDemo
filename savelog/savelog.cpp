@@ -18,7 +18,7 @@ void Log(QtMsgType type, const QMessageLogContext &, const QString &msg)
 #endif
 {
     //加锁,防止多线程中qdebug太频繁导致崩溃
-    QMutex mutex;
+    static QMutex mutex;
     QMutexLocker locker(&mutex);
     QString content;
 
