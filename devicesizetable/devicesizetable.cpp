@@ -96,14 +96,12 @@ void DeviceSizeTable::load()
 {
     //清空原有数据
     int row = this->rowCount();
-
     for (int i = 0; i < row; i++) {
         this->removeRow(0);
     }
 
 #ifdef Q_OS_WIN
     QFileInfoList list = QDir::drives();
-
     foreach (QFileInfo dir, list) {
         QString dirName = dir.absolutePath();
         LPCWSTR lpcwstrDriver = (LPCWSTR)dirName.utf16();
@@ -117,7 +115,6 @@ void DeviceSizeTable::load()
             QString all = QString::number((double) liTotalBytes.QuadPart / GB, 'f', 1);
             all += "G";
             int percent = 100 - ((double)liTotalFreeBytes.QuadPart / liTotalBytes.QuadPart) * 100;
-
             insertSize(dirName, use, free, all, percent);
         }
     }
@@ -220,13 +217,11 @@ void DeviceSizeTable::checkSize(const QString &result, const QString &name)
 
     for (int i = 0; i < list.count(); i++) {
         QString s = list.at(i).trimmed();
-
         if (s == "") {
             continue;
         }
 
         index++;
-
         if (index == 1) {
             dev = s;
         } else if (index == 2) {

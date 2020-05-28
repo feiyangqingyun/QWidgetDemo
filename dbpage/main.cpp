@@ -1,6 +1,8 @@
 ﻿#include "frmdbpage.h"
-#include <QtGui>
-#include <QtSql>
+#include "qapplication.h"
+#include "qtextcodec.h"
+#include "qsqldatabase.h"
+#include "qdebug.h"
 
 int main(int argc, char *argv[])
 {

@@ -8,26 +8,17 @@ QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET              = dbpage
-TEMPLATE            = app
-MOC_DIR             = temp/moc
-RCC_DIR             = temp/rcc
-UI_DIR              = temp/ui
-OBJECTS_DIR         = temp/obj
-DESTDIR             = bin
-PRECOMPILED_HEADER  = head.h
+TARGET      = dbpage
+TEMPLATE    = app
+DESTDIR     = $$PWD/../bin
+CONFIG      += warn_off
 
-INCLUDEPATH         += $$PWD
-CONFIG              += warn_off
+SOURCES     += main.cpp
+SOURCES     += dbpage.cpp
+SOURCES     += frmdbpage.cpp
 
-SOURCES += \
-    main.cpp \
-    dbpage.cpp \
-    frmdbpage.cpp
+HEADERS     += dbpage.h
+HEADERS     += frmdbpage.h
+FORMS       += frmdbpage.ui
 
-HEADERS += \
-    dbpage.h \
-    frmdbpage.h
-
-FORMS += \
-    frmdbpage.ui
+INCLUDEPATH += $$PWD

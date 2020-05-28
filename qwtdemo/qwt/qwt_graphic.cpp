@@ -16,7 +16,7 @@
 #include <qpixmap.h>
 #include <qpainterpath.h>
 #include <qmath.h>
-
+#include <QPainterPath>
 static bool qwtHasScalablePen( const QPainter *painter )
 {
     const QPen pen = painter->pen();

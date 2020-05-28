@@ -15,7 +15,6 @@ extern "C" {
 #include "libavutil/ffversion.h"
 #include "libavcodec/avcodec.h"
 #include "libswscale/swscale.h"
-
 #include "libavformat/avformat.h"
 #include "libavfilter/avfilter.h"
 

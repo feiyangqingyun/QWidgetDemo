@@ -2,6 +2,7 @@
 
 #include "lightbutton.h"
 #include "qpainter.h"
+#include "qpainterpath.h"
 #include "qevent.h"
 #include "qtimer.h"
 #include "qdebug.h"

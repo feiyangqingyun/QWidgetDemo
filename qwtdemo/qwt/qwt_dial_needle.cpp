@@ -13,7 +13,7 @@
 #include "qwt_painter.h"
 #include <qapplication.h>
 #include <qpainter.h>
-
+#include <QPainterPath>
 #if QT_VERSION < 0x040601
 #define qFastSin(x) qSin(x)
 #define qFastCos(x) qCos(x)

@@ -10,11 +10,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET      = netserver
 TEMPLATE    = app
-MOC_DIR     = temp/moc
-RCC_DIR     = temp/rcc
-UI_DIR      = temp/ui
-OBJECTS_DIR = temp/obj
-DESTDIR     = bin
+DESTDIR     = $$PWD/../bin
 RC_FILE     = other/main.rc
 
 SOURCES     += main.cpp
