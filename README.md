@@ -46,7 +46,7 @@
 ### 二、学习群
 1. **Qt交流大会群 853086607(雨田哥)**
 2. **Qt技术交流群 46679801(3000人群)**
-3. **Qt进阶之路 734623697(武威的涛哥)**
+3. **Qt进阶之路群 734623697(武威的涛哥)**
 
 ### 三、效果图
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/lightbutton.gif)
