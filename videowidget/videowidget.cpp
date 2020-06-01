@@ -20,12 +20,59 @@ VideoWidget::VideoWidget(QWidget *parent) : QWidget(parent)
     //设置支持拖放
     setAcceptDrops(true);
 
+    //定时器校验视频
     timerCheck = new QTimer(this);
     timerCheck->setInterval(10 * 1000);
     connect(timerCheck, SIGNAL(timeout()), this, SLOT(checkVideo()));
 
     image = QImage();
+    copyImage = false;
+    checkLive = true;
+    drawImage = true;
+    fillImage = true;
 
+    flowEnable = false;
+    flowBgColor = "#000000";
+    flowPressColor = "#5EC7D9";
+
+    timeout = 20;
+    borderWidth = 5;
+    borderColor = "#000000";
+    focusColor = "#22A3A9";
+    bgText = "实时视频";
+    bgImage = QImage();
+
+    osd1Visible = false;
+    osd1FontSize = 12;
+    osd1Text = "时间";
+    osd1Color = "#FF0000";
+    osd1Image = QImage();
+    osd1Format = OSDFormat_DateTime;
+    osd1Position = OSDPosition_Right_Top;
+
+    osd2Visible = false;
+    osd2FontSize = 12;
+    osd2Text = "通道名称";
+    osd2Color = "#FF0000";
+    osd2Image = QImage();
+    osd2Format = OSDFormat_Text;
+    osd2Position = OSDPosition_Left_Bottom;
+
+    //初始化解码线程
+    this->initThread();
+    //初始化悬浮条
+    this->initFlowPanel();
+    //初始化悬浮条样式
+    this->initFlowStyle();
+}
+
+void VideoWidget::initThread()
+{
+
+}
+
+void VideoWidget::initFlowPanel()
+{
     //顶部工具栏,默认隐藏,鼠标移入显示移除隐藏
     flowPanel = new QWidget(this);
     flowPanel->setObjectName("flowPanel");
@@ -101,40 +148,17 @@ VideoWidget::VideoWidget(QWidget *parent) : QWidget(parent)
         //将按钮加到布局中
         layout->addWidget(btn);
     }
+}
 
-    copyImage = false;
-    checkLive = true;
-    drawImage = true;
-    fillImage = true;
-
-    flowEnable = false;
-    flowBgColor = "#000000";
-    flowPressColor = "#5EC7D9";
-
-    timeout = 20;
-    borderWidth = 5;
-    borderColor = "#000000";
-    focusColor = "#22A3A9";
-    bgText = "实时视频";
-    bgImage = QImage();
-
-    osd1Visible = false;
-    osd1FontSize = 12;
-    osd1Text = "时间";
-    osd1Color = "#FF0000";
-    osd1Image = QImage();
-    osd1Format = OSDFormat_DateTime;
-    osd1Position = OSDPosition_Right_Top;
-
-    osd2Visible = false;
-    osd2FontSize = 12;
-    osd2Text = "通道名称";
-    osd2Color = "#FF0000";
-    osd2Image = QImage();
-    osd2Format = OSDFormat_Text;
-    osd2Position = OSDPosition_Left_Bottom;
-
-    this->initFlowStyle();
+void VideoWidget::initFlowStyle()
+{
+    //设置样式以便区分,可以自行更改样式,也可以不用样式
+    QStringList qss;
+    QString rgba = QString("rgba(%1,%2,%3,150)").arg(flowBgColor.red()).arg(flowBgColor.green()).arg(flowBgColor.blue());
+    qss.append(QString("#flowPanel{background:%1;border:none;}").arg(rgba));
+    qss.append(QString("QPushButton{border:none;padding:0px;background:rgba(0,0,0,0);}"));
+    qss.append(QString("QPushButton:pressed{color:%1;}").arg(flowPressColor.name()));
+    flowPanel->setStyleSheet(qss.join(""));
 }
 
 VideoWidget::~VideoWidget()
@@ -501,17 +525,6 @@ QSize VideoWidget::sizeHint() const
 QSize VideoWidget::minimumSizeHint() const
 {
     return QSize(50, 35);
-}
-
-void VideoWidget::initFlowStyle()
-{
-    //设置样式以便区分,可以自行更改样式,也可以不用样式
-    QStringList qss;
-    QString rgba = QString("rgba(%1,%2,%3,150)").arg(flowBgColor.red()).arg(flowBgColor.green()).arg(flowBgColor.blue());
-    qss.append(QString("#flowPanel{background:%1;border:none;}").arg(rgba));
-    qss.append(QString("QPushButton{border:none;padding:0px;background:rgba(0,0,0,0);}"));
-    qss.append(QString("QPushButton:pressed{color:%1;}").arg(flowPressColor.name()));
-    flowPanel->setStyleSheet(qss.join(""));
 }
 
 void VideoWidget::updateImage(const QImage &image)

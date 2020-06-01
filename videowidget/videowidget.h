@@ -3,18 +3,18 @@
 
 /**
  * 通用视频播放控件 作者:feiyangqingyun(QQ:517216493) 2018-5-1
- * 1:可设置边框大小
- * 2:可设置边框颜色
- * 3:可设置两路OSD标签
- * 4:可设置是否绘制OSD标签
- * 5:可设置标签文本或图片
- * 6:可设置OSD位置 左上角+左下角+右上角+右下角
- * 7:可设置OSD风格 文本+日期+时间+日期时间+图片
- * 8:自定义半透明悬浮窗体,一排按钮
- * 9:悬浮按钮可自定义设置,包括背景颜色+按下颜色
- * 10:发送信号通知单击了哪个悬浮按钮
- * 11:能够识别拖进来的文件,通知url
- * 12:提供open close pause等接口
+ * 1. 可设置边框大小
+ * 2. 可设置边框颜色
+ * 3. 可设置两路OSD标签
+ * 4. 可设置是否绘制OSD标签
+ * 5. 可设置标签文本或图片
+ * 6. 可设置OSD位置 左上角+左下角+右上角+右下角
+ * 7. 可设置OSD风格 文本+日期+时间+日期时间+图片
+ * 8. 自定义半透明悬浮窗体,一排按钮
+ * 9. 悬浮按钮可自定义设置,包括背景颜色+按下颜色
+ * 10. 发送信号通知单击了哪个悬浮按钮
+ * 11. 能够识别拖进来的文件,通知url
+ * 12. 提供open close pause等接口
  */
 
 #include <QWidget>
@@ -147,6 +147,14 @@ private:
     OSDFormat osd2Format;           //标签2文本格式
     OSDPosition osd2Position;       //标签2位置
 
+private:
+    //初始化解码线程
+    void initThread();
+    //初始化悬浮条
+    void initFlowPanel();
+    //初始化悬浮条样式
+    void initFlowStyle();
+
 public:
     QImage getImage()               const;
     QDateTime getLastTime()         const;
@@ -188,8 +196,6 @@ public:
     QSize minimumSizeHint()         const;
 
 private slots:
-    //初始化悬浮条样式
-    void initFlowStyle();
     //接收图像并绘制
     void updateImage(const QImage &image);
     //校验设备
