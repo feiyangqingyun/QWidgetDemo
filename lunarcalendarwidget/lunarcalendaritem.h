@@ -81,6 +81,7 @@ protected:
 private:
     bool hover;                     //鼠标是否悬停
     bool pressed;                   //鼠标是否按下
+    QStringList listDayName;        //农历日期
 
     bool select;                    //是否选中
     bool showLunar;                 //显示农历
