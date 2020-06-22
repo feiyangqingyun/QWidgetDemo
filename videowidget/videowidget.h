@@ -103,6 +103,7 @@ protected:
     void drawBg(QPainter *painter);
     void drawImg(QPainter *painter, QImage img);
     void drawOSD(QPainter *painter,
+                 bool osdVisible,
                  int osdFontSize,
                  const QString &osdText,
                  const QColor &osdColor,

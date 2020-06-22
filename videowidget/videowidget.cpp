@@ -198,7 +198,7 @@ void VideoWidget::dropEvent(QDropEvent *event)
 {
     //拖放完毕鼠标松开的时候执行
     //判断拖放进来的类型,取出文件,进行播放
-    if(event->mimeData()->hasUrls()) {
+    if (event->mimeData()->hasUrls()) {
         QString url = event->mimeData()->urls().first().toLocalFile();
         this->close();
         this->setUrl(url);
@@ -219,10 +219,10 @@ void VideoWidget::dropEvent(QDropEvent *event)
 void VideoWidget::dragEnterEvent(QDragEnterEvent *event)
 {
     //拖曳进来的时候先判断下类型,非法类型则不处理
-    if(event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
+    if (event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
         event->setDropAction(Qt::CopyAction);
         event->accept();
-    } else if(event->mimeData()->hasFormat("text/uri-list")) {
+    } else if (event->mimeData()->hasFormat("text/uri-list")) {
         event->setDropAction(Qt::LinkAction);
         event->accept();
     } else {
@@ -243,20 +243,12 @@ void VideoWidget::paintEvent(QPaintEvent *)
 
     //绘制边框
     drawBorder(&painter);
-
     if (!image.isNull()) {
         //绘制背景图片
         drawImg(&painter, image);
-
-        //绘制标签1
-        if (osd1Visible) {
-            drawOSD(&painter, osd1FontSize, osd1Text, osd1Color, osd1Image, osd1Format, osd1Position);
-        }
-
-        //绘制标签2
-        if (osd2Visible) {
-            drawOSD(&painter, osd2FontSize, osd2Text, osd2Color, osd2Image, osd2Format, osd2Position);
-        }
+        //绘制标签
+        drawOSD(&painter, osd1Visible, osd1FontSize, osd1Text, osd1Color, osd1Image, osd1Format, osd1Position);
+        drawOSD(&painter, osd2Visible, osd2FontSize, osd2Text, osd2Color, osd2Image, osd2Format, osd2Position);
     } else {
         //绘制背景
         drawBg(&painter);
@@ -265,6 +257,10 @@ void VideoWidget::paintEvent(QPaintEvent *)
 
 void VideoWidget::drawBorder(QPainter *painter)
 {
+    if (borderWidth == 0) {
+        return;
+    }
+
     painter->save();
     QPen pen;
     pen.setWidth(borderWidth);
@@ -314,6 +310,7 @@ void VideoWidget::drawImg(QPainter *painter, QImage img)
 }
 
 void VideoWidget::drawOSD(QPainter *painter,
+                          bool osdVisible,
                           int osdFontSize,
                           const QString &osdText,
                           const QColor &osdColor,
@@ -321,6 +318,10 @@ void VideoWidget::drawOSD(QPainter *painter,
                           const VideoWidget::OSDFormat &osdFormat,
                           const VideoWidget::OSDPosition &osdPosition)
 {
+    if (!osdVisible) {
+        return;
+    }
+
     painter->save();
 
     //标签位置尽量偏移多一点避免遮挡
