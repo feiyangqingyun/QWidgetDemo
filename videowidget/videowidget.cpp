@@ -276,6 +276,7 @@ void VideoWidget::drawBg(QPainter *painter)
 
     //背景图片为空则绘制文字,否则绘制背景图片
     if (bgImage.isNull()) {
+        painter->setFont(this->font());
         painter->setPen(palette().foreground().color());
         painter->drawText(rect(), Qt::AlignCenter, bgText);
     } else {

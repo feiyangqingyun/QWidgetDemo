@@ -1,4 +1,4 @@
-/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+﻿/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -18,6 +18,7 @@
 #include "qwt_text_label.h"
 #include "qwt_math.h"
 #include <qpainter.h>
+#include "qpainterpath.h"
 #include <qpaintengine.h>
 #include <qtransform.h>
 #include <qprinter.h>

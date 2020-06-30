@@ -1,4 +1,4 @@
-/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+﻿/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -10,7 +10,8 @@
 #include "qwt_compass_rose.h"
 #include "qwt_point_polar.h"
 #include "qwt_painter.h"
-#include <qpainter.h>
+#include "qpainter.h"
+#include "qpainterpath.h"
 
 static QPointF qwtIntersection( 
     QPointF p11, QPointF p12, QPointF p21, QPointF p22 )
