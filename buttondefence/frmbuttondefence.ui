@@ -88,6 +88,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="btnCustom">
+        <property name="text">
+         <string>自定义</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="Line" name="line">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -130,9 +137,23 @@
        </widget>
       </item>
       <item>
+       <widget class="Line" name="line_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="ckCanMove">
         <property name="text">
          <string>可移动</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnPoint">
+        <property name="text">
+         <string>坐标</string>
         </property>
        </widget>
       </item>
@@ -155,6 +176,21 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>btnCircle</tabstop>
+  <tabstop>btnPolice</tabstop>
+  <tabstop>btnBubble</tabstop>
+  <tabstop>btnBubble2</tabstop>
+  <tabstop>btnMsg</tabstop>
+  <tabstop>btnMsg2</tabstop>
+  <tabstop>btnCustom</tabstop>
+  <tabstop>btnArming</tabstop>
+  <tabstop>btnDisarming</tabstop>
+  <tabstop>btnAlarm</tabstop>
+  <tabstop>btnBypass</tabstop>
+  <tabstop>btnError</tabstop>
+  <tabstop>ckCanMove</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

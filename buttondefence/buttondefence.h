@@ -3,12 +3,12 @@
 
 /**
  * 防区按钮控件 作者:feiyangqingyun(QQ:517216493) 2018-7-2
- * 1:可设置防区样式  圆形、警察、气泡、气泡2、消息、消息2
- * 2:可设置防区状态  布防、撤防、报警、旁路、故障
- * 3:可设置报警切换
- * 4:可设置显示的防区号
- * 5:可设置是否可鼠标拖动
- * 6:发出单击和双击信号
+ * 1. 可设置防区样式  圆形、警察、气泡、气泡2、消息、消息2
+ * 2. 可设置防区状态  布防、撤防、报警、旁路、故障
+ * 3. 可设置报警切换
+ * 4. 可设置显示的防区号
+ * 5. 可设置是否可鼠标拖动
+ * 6. 发出单击和双击信号
  */
 
 #include <QWidget>
@@ -37,14 +37,16 @@ class ButtonDefence : public QWidget
     Q_PROPERTY(ButtonStatus buttonStatus READ getButtonStatus WRITE setButtonStatus)
 
 public:
-    //防区样式  圆形、警察、气泡、气泡2、消息、消息2
+    //防区样式  圆形、警察、气泡、气泡2、消息、消息2、自定义
+    //如果设置的自定义的，则图片拓展名 btn_defence_alarm_custom
     enum ButtonStyle {
         ButtonStyle_Circle = 0,
         ButtonStyle_Police = 1,
         ButtonStyle_Bubble = 2,
         ButtonStyle_Bubble2 = 3,
         ButtonStyle_Msg = 4,
-        ButtonStyle_Msg2 = 5
+        ButtonStyle_Msg2 = 5,
+        ButtonStyle_Custom = 6
     };
 
     //防区状态  布防、撤防、报警、旁路、故障
