@@ -6,6 +6,7 @@ frmDbPage::frmDbPage(QWidget *parent) : QWidget(parent), ui(new Ui::frmDbPage)
 {
     ui->setupUi(this);
     this->initForm();
+    on_btnSelect_clicked();
 }
 
 frmDbPage::~frmDbPage()

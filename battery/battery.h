@@ -3,12 +3,12 @@
 
 /**
  * 电池电量控件 作者:feiyangqingyun(QQ:517216493) 2016-10-23
- * 1:可设置电池电量,动态切换电池电量变化
- * 2:可设置电池电量警戒值
- * 3:可设置电池电量正常颜色和报警颜色
- * 4:可设置边框渐变颜色
- * 5:可设置电量变化时每次移动的步长
- * 6:可设置边框圆角角度/背景进度圆角角度/头部圆角角度
+ * 1. 可设置电池电量,动态切换电池电量变化
+ * 2. 可设置电池电量警戒值
+ * 3. 可设置电池电量正常颜色和报警颜色
+ * 4. 可设置边框渐变颜色
+ * 5. 可设置电量变化时每次移动的步长
+ * 6. 可设置边框圆角角度/背景进度圆角角度/头部圆角角度
  */
 
 #include <QWidget>
@@ -27,12 +27,12 @@ class Battery : public QWidget
 
 {
     Q_OBJECT    
-    Q_PROPERTY(double minValue READ getMinValue WRITE setMinValue)
-    Q_PROPERTY(double maxValue READ getMaxValue WRITE setMaxValue)
-    Q_PROPERTY(double value READ getValue WRITE setValue)
-    Q_PROPERTY(double alarmValue READ getAlarmValue WRITE setAlarmValue)
+    Q_PROPERTY(qreal minValue READ getMinValue WRITE setMinValue)
+    Q_PROPERTY(qreal maxValue READ getMaxValue WRITE setMaxValue)
+    Q_PROPERTY(qreal value READ getValue WRITE setValue)
+    Q_PROPERTY(qreal alarmValue READ getAlarmValue WRITE setAlarmValue)
 
-    Q_PROPERTY(double step READ getStep WRITE setStep)
+    Q_PROPERTY(qreal step READ getStep WRITE setStep)
     Q_PROPERTY(int borderRadius READ getBorderRadius WRITE setBorderRadius)
     Q_PROPERTY(int bgRadius READ getBgRadius WRITE setBgRadius)
     Q_PROPERTY(int headRadius READ getHeadRadius WRITE setHeadRadius)
@@ -60,72 +60,72 @@ private slots:
     void updateValue();
 
 private:    
-    double minValue;                //最小值
-    double maxValue;                //最大值
-    double value;                   //目标电量
-    double alarmValue;              //电池电量警戒值
+    qreal minValue;             //最小值
+    qreal maxValue;             //最大值
+    qreal value;                //目标电量
+    qreal alarmValue;           //电池电量警戒值
 
-    double step;                    //每次移动的步长
-    int borderRadius;               //边框圆角角度
-    int bgRadius;                   //背景进度圆角角度
-    int headRadius;                 //头部圆角角度
+    qreal step;                 //每次移动的步长
+    int borderRadius;           //边框圆角角度
+    int bgRadius;               //背景进度圆角角度
+    int headRadius;             //头部圆角角度
 
-    QColor borderColorStart;        //边框渐变开始颜色
-    QColor borderColorEnd;          //边框渐变结束颜色
+    QColor borderColorStart;    //边框渐变开始颜色
+    QColor borderColorEnd;      //边框渐变结束颜色
 
-    QColor alarmColorStart;         //电池低电量时的渐变开始颜色
-    QColor alarmColorEnd;           //电池低电量时的渐变结束颜色
+    QColor alarmColorStart;     //电池低电量时的渐变开始颜色
+    QColor alarmColorEnd;       //电池低电量时的渐变结束颜色
 
-    QColor normalColorStart;        //电池正常电量时的渐变开始颜色
-    QColor normalColorEnd;          //电池正常电量时的渐变结束颜色
+    QColor normalColorStart;    //电池正常电量时的渐变开始颜色
+    QColor normalColorEnd;      //电池正常电量时的渐变结束颜色
 
-    bool isForward;                 //是否往前移
-    double currentValue;            //当前电量
-    QRectF batteryRect;             //电池主体区域
-    QTimer *timer;                  //绘制定时器
+    bool isForward;             //是否往前移
+    qreal currentValue;         //当前电量
+    QRectF batteryRect;         //电池主体区域
+    QTimer *timer;              //绘制定时器
 
 public:    
-    double getMinValue()            const;
-    double getMaxValue()            const;
-    double getValue()               const;
-    double getAlarmValue()          const;
+    qreal getMinValue()         const;
+    qreal getMaxValue()         const;
+    qreal getValue()            const;
+    qreal getAlarmValue()       const;
 
-    double getStep()                const;
-    int getBorderRadius()           const;
-    int getBgRadius()               const;
-    int getHeadRadius()             const;
+    qreal getStep()             const;
+    int getBorderRadius()       const;
+    int getBgRadius()           const;
+    int getHeadRadius()         const;
 
-    QColor getBorderColorStart()    const;
-    QColor getBorderColorEnd()      const;
+    QColor getBorderColorStart()const;
+    QColor getBorderColorEnd()  const;
 
-    QColor getAlarmColorStart()     const;
-    QColor getAlarmColorEnd()       const;
+    QColor getAlarmColorStart() const;
+    QColor getAlarmColorEnd()   const;
 
-    QColor getNormalColorStart()    const;
-    QColor getNormalColorEnd()      const;
+    QColor getNormalColorStart()const;
+    QColor getNormalColorEnd()  const;
 
-    QSize sizeHint()                const;
-    QSize minimumSizeHint()         const;
+    QSize sizeHint()            const;
+    QSize minimumSizeHint()     const;
 
 public Q_SLOTS:
     //设置范围值
-    void setRange(double minValue, double maxValue);
+    void setRange(qreal minValue, qreal maxValue);
     void setRange(int minValue, int maxValue);
 
     //设置最大最小值
-    void setMinValue(double minValue);
-    void setMaxValue(double maxValue);
+    void setMinValue(qreal minValue);
+    void setMaxValue(qreal maxValue);
 
     //设置电池电量值
-    void setValue(double value);
+    void setValue(qreal value);
     void setValue(int value);
 
     //设置电池电量警戒值
-    void setAlarmValue(double alarmValue);
+    void setAlarmValue(qreal alarmValue);
     void setAlarmValue(int alarmValue);
 
     //设置步长
-    void setStep(double step);
+    void setStep(qreal step);
     void setStep(int step);
 
     //设置边框圆角角度
@@ -148,7 +148,7 @@ public Q_SLOTS:
     void setNormalColorEnd(const QColor &normalColorEnd);
 
 Q_SIGNALS:
-    void valueChanged(double value);
+    void valueChanged(qreal value);
 };
 
 #endif // BATTERY_H
