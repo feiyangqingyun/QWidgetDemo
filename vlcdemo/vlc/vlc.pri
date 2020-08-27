@@ -1,6 +1,6 @@
-HEADERS     += $$PWD/vlchead.h
-HEADERS     += $$PWD/vlc.h   
-SOURCES     += $$PWD/vlc.cpp
+HEADERS += $$PWD/vlchead.h
+HEADERS += $$PWD/vlc.h
+SOURCES += $$PWD/vlc.cpp
 
 #如果用的是vlc3内核请将vlc2改成vlc3,两种内核不兼容,头文件也不一样,建议用vlc2
 DEFINES += vlc2

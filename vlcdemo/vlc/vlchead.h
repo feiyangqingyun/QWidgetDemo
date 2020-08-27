@@ -1,37 +1,5 @@
-﻿/*****************************************************************************
- * vlc.h: global header for libvlc
- *****************************************************************************
- * Copyright (C) 1998-2008 VLC authors and VideoLAN
- * $Id: 8f39094bd4b15c99288cecd001f76fcc10565daa $
- *
- * Authors: Vincent Seguin <seguin@via.ecp.fr>
- *          Samuel Hocevar <sam@zoy.org>
- *          Gildas Bazin <gbazin@netcourrier.com>
- *          Derk-Jan Hartman <hartman at videolan dot org>
- *          Pierre d'Herbemont <pdherbemont@videolan.org>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
- *****************************************************************************/
-
-#ifndef VLC_VLC_H
-#define VLC_VLC_H 1
-
-/**
- * \file
- * This file defines libvlc new external API
- */
+﻿#ifndef VLCHEAD_H
+#define VLCHEAD_H 1
 
 # ifdef __cplusplus
 extern "C" {
@@ -68,4 +36,15 @@ extern "C" {
 }
 # endif
 
-#endif /* _VLC_VLC_H */
+#include "qdatetime.h"
+#pragma execution_character_set("utf-8")
+
+#define TIMEMS          qPrintable(QTime::currentTime().toString("HH:mm:ss zzz"))
+#define TIME            qPrintable(QTime::currentTime().toString("HH:mm:ss"))
+#define QDATE           qPrintable(QDate::currentDate().toString("yyyy-MM-dd"))
+#define QTIME           qPrintable(QTime::currentTime().toString("HH-mm-ss"))
+#define DATETIME        qPrintable(QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss"))
+#define STRDATETIME     qPrintable(QDateTime::currentDateTime().toString("yyyy-MM-dd-HH-mm-ss"))
+#define STRDATETIMEMS   qPrintable(QDateTime::currentDateTime().toString("yyyy-MM-dd-HH-mm-ss-zzz"))
+
+#endif // VLCHEAD_H

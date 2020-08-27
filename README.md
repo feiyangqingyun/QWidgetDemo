@@ -44,6 +44,7 @@
 | 37 | live | 程序守护进程 |
 | 38 | designer | QtDesigner4源码 |
 | 39 | netserver | 网络中转服务器 |
+| 40 | mpvdemo | 视频流播放mpv内核 |
 
 ### 二、学习群
 1. **Qt交流大会群 853086607(雨田哥)**

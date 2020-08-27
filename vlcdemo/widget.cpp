@@ -2,9 +2,7 @@
 #include "widget.h"
 #include "ui_widget.h"
 
-Widget::Widget(QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::Widget)
+Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
 {
     ui->setupUi(this);
 
@@ -17,6 +15,7 @@ Widget::Widget(QWidget *parent)
     urls << "rtsp://192.168.1.247:554/av0_0";
     urls << "rtsp://192.168.1.247:554/av0_1";
     ui->cboxUrl->addItems(urls);
+    ui->cboxUrl->setCurrentIndex(5);
 }
 
 Widget::~Widget()
@@ -29,10 +28,10 @@ void Widget::on_btnOpen_clicked()
     if (ui->btnOpen->text() == "打开") {
         ui->btnOpen->setText("关闭");
         QString url = ui->cboxUrl->currentText().trimmed();
-        ui->vlcWidget->setUrl(url);
-        ui->vlcWidget->open();
+        ui->playWidget->setUrl(url);
+        ui->playWidget->open();
     } else {
         ui->btnOpen->setText("打开");
-        ui->vlcWidget->close();
+        ui->playWidget->close();
     }
 }

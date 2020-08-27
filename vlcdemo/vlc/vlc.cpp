@@ -1,9 +1,5 @@
 ﻿#include "vlc.h"
 
-#pragma execution_character_set("utf-8")
-#define TIMEMS      qPrintable(QTime::currentTime().toString("HH:mm:ss zzz"))
-#define STRDATETIME qPrintable(QDateTime::currentDateTime().toString("yyyy-MM-dd-HH-mm-ss"))
-
 VlcThread::VlcThread(QObject *parent) : QThread(parent)
 {
     setObjectName("VlcThread");
@@ -34,7 +30,7 @@ void VlcThread::run()
     free();
     stopped = false;
     isPlay = false;
-    //qDebug() << TIMEMS << "stop vlc thread";
+    //qDebug() << TIMEMS << "stop vlc1 thread";
 }
 
 void VlcThread::setUrl(const QString &url)
@@ -136,7 +132,7 @@ void VlcThread::stop()
 //实时视频显示窗体类
 VlcWidget::VlcWidget(QWidget *parent) : QWidget(parent)
 {
-    vlc = new VlcThread(this);
+    thread = new VlcThread(this);
 }
 
 VlcWidget::~VlcWidget()
@@ -146,7 +142,7 @@ VlcWidget::~VlcWidget()
 
 void VlcWidget::setUrl(const QString &url)
 {
-    vlc->setUrl(url);
+    thread->setUrl(url);
 }
 
 void VlcWidget::open()
@@ -154,27 +150,27 @@ void VlcWidget::open()
     //qDebug() << TIMEMS << "open video" << objectName();
     clear();
 
-    vlc->play();
-    vlc->start();
+    thread->play();
+    thread->start();
 }
 
 void VlcWidget::pause()
 {
-    vlc->pause();
+    thread->pause();
 }
 
 void VlcWidget::next()
 {
-    vlc->next();
+    thread->next();
 }
 
 void VlcWidget::close()
 {
     //qDebug() << TIMEMS << "close video" << objectName();
-    if (vlc->isRunning()) {
-        vlc->stop();
-        vlc->quit();
-        vlc->wait(3000);
+    if (thread->isRunning()) {
+        thread->stop();
+        thread->quit();
+        thread->wait(3000);
     }
 
     QTimer::singleShot(5, this, SLOT(clear()));

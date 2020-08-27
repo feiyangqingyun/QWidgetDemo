@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="FFmpegWidget" name="playWidget" native="true">
+    <widget class="MpvWidget" name="playWidget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -52,9 +52,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>FFmpegWidget</class>
+   <class>MpvWidget</class>
    <extends>QWidget</extends>
-   <header>ffmpeg.h</header>
+   <header>mpv.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

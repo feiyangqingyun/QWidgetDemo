@@ -1,6 +1,6 @@
-HEADERS     += $$PWD/ffmpeghead.h
-HEADERS     += $$PWD/ffmpeg.h
-SOURCES     += $$PWD/ffmpeg.cpp
+HEADERS += $$PWD/ffmpeghead.h
+HEADERS += $$PWD/ffmpeg.h
+SOURCES += $$PWD/ffmpeg.cpp
 
 #如果用的是ffmpeg4内核请将ffmpeg3改成ffmpeg4,两种内核不兼容,头文件也不一样
 DEFINES += ffmpeg3

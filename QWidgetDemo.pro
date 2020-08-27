@@ -40,6 +40,8 @@ SUBDIRS += imageswitch      #图片开关控件
 #SUBDIRS += ffmpegdemo       #视频流播放ffmpeg内核
 #vlcdemo默认提供的win的lib,如果是win可以自行打开
 #SUBDIRS += vlcdemo          #视频流播放vlc内核
+#mpvdemo默认提供的win的lib,如果是win可以自行打开
+#SUBDIRS += mpvdemo          #视频流播放mpv内核
 #designer项目只支持Qt4,如果是Qt4可以自行打开
 #SUBDIRS += designer         #QtDesigner4源码
 

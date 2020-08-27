@@ -7,7 +7,6 @@
 #endif
 
 #include "ffmpeghead.h"
-class FFmpegWidget;
 
 class FFmpegThread : public QThread
 {
@@ -81,8 +80,8 @@ protected:
     void paintEvent(QPaintEvent *);
 
 private:
-    FFmpegThread *ffmpeg;           //实时视频采集对象
-    QImage image;                   //要显示的图片
+    FFmpegThread *thread;
+    QImage image;
 
 private slots:
     //接收图像并绘制
