@@ -231,8 +231,6 @@ bool FFmpegThread::init()
 
 void FFmpegThread::run()
 {
-    //计时
-    QTime time;
     while (!stopped) {
         //根据标志位执行初始化操作
         if (isPlay) {
@@ -241,16 +239,26 @@ void FFmpegThread::run()
             continue;
         }
 
-        time.restart();
         if (av_read_frame(avFormatContext, avPacket) >= 0) {
             //判断当前包是视频还是音频
-            int packetSize = avPacket->size;
             int index = avPacket->stream_index;
             if (index == videoStreamIndex) {
-                //解码视频流
+                //解码视频流 avcodec_decode_video2 方法已被废弃
+#if 0
                 avcodec_decode_video2(videoCodec, avFrame2, &frameFinish, avPacket);
+#else
+                frameFinish = avcodec_send_packet(videoCodec, avPacket);
+                if (frameFinish < 0) {
+                    continue;
+                }
 
-                if (frameFinish) {
+                frameFinish = avcodec_receive_frame(videoCodec, avFrame2);
+                if (frameFinish < 0) {
+                    continue;
+                }
+#endif
+
+                if (frameFinish >= 0) {
                     //将数据转成一张图片
                     sws_scale(swsContext, (const uint8_t *const *)avFrame2->data, avFrame2->linesize, 0, videoHeight, avFrame3->data, avFrame3->linesize);
 
@@ -354,11 +362,11 @@ void FFmpegThread::stop()
 }
 
 //实时视频显示窗体类
-FFmpegWidget::FFmpegWidget(QWidget * parent) : QWidget(parent)
+FFmpegWidget::FFmpegWidget(QWidget *parent) : QWidget(parent)
 {
     thread = new FFmpegThread(this);
     connect(thread, SIGNAL(receiveImage(QImage)), this, SLOT(updateImage(QImage)));
-    image = QImage();  
+    image = QImage();
 }
 
 FFmpegWidget::~FFmpegWidget()
