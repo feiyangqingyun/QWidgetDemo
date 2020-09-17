@@ -18,7 +18,7 @@ NtpClient *NtpClient::Instance()
 
 NtpClient::NtpClient(QObject *parent) : QObject(parent)
 {
-    ntpIP = "202.120.2.101";
+    ntpIP = "ntp1.aliyun.com";
 
     udpSocket = new QUdpSocket(this);
     connect(udpSocket, SIGNAL(connected()), this, SLOT(sendData()));
