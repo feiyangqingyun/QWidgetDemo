@@ -206,7 +206,7 @@ private slots:
 
 signals:
     //播放成功
-    void receivePlayOk();
+    void receivePlayStart();
     //播放失败
     void receivePlayError();
     //播放结束

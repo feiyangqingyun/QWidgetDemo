@@ -1,10 +1,11 @@
 ﻿#include "quiwidget.h"
-#ifdef Q_OS_ANDROID
-#include "qandroid.h"
-#endif
 
+#ifdef __arm__
 #ifdef arma7
 #define TOOL true
+#else
+#define TOOL false
+#endif
 #else
 #define TOOL false
 #endif
@@ -34,7 +35,7 @@ bool QUIWidget::eventFilter(QObject *watched, QEvent *event)
     } else if (mouseEvent->type() == QEvent::MouseButtonRelease) {
         mousePressed = false;
     } else if (mouseEvent->type() == QEvent::MouseMove) {
-        if (mousePressed && (mouseEvent->buttons() && Qt::LeftButton)) {
+        if (mousePressed) {
             if (this->property("canMove").toBool()) {
                 this->move(mouseEvent->globalPos() - mousePoint);
             }
@@ -549,7 +550,7 @@ bool QUIMessageBox::eventFilter(QObject *watched, QEvent *event)
         mousePressed = false;
         return true;
     } else if (mouseEvent->type() == QEvent::MouseMove) {
-        if (mousePressed && (mouseEvent->buttons() && Qt::LeftButton)) {
+        if (mousePressed) {
             this->move(mouseEvent->globalPos() - mousePoint);
             return true;
         }
@@ -573,7 +574,6 @@ void QUIMessageBox::initControl()
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(widgetTitle->sizePolicy().hasHeightForWidth());
     widgetTitle->setSizePolicy(sizePolicy);
-    widgetTitle->setMinimumSize(QSize(0, TitleMinSize));
     horizontalLayout3 = new QHBoxLayout(widgetTitle);
     horizontalLayout3->setSpacing(0);
     horizontalLayout3->setObjectName(QString::fromUtf8("horizontalLayout3"));
@@ -585,7 +585,6 @@ void QUIMessageBox::initControl()
     sizePolicy1.setVerticalStretch(0);
     sizePolicy1.setHeightForWidth(labIco->sizePolicy().hasHeightForWidth());
     labIco->setSizePolicy(sizePolicy1);
-    labIco->setMinimumSize(QSize(TitleMinSize, 0));
     labIco->setAlignment(Qt::AlignCenter);
 
     horizontalLayout3->addWidget(labIco);
@@ -622,8 +621,6 @@ void QUIMessageBox::initControl()
     sizePolicy3.setVerticalStretch(0);
     sizePolicy3.setHeightForWidth(btnMenu_Close->sizePolicy().hasHeightForWidth());
     btnMenu_Close->setSizePolicy(sizePolicy3);
-    btnMenu_Close->setMinimumSize(QSize(TitleMinSize, 0));
-    btnMenu_Close->setMaximumSize(QSize(TitleMinSize, 16777215));
     btnMenu_Close->setCursor(QCursor(Qt::ArrowCursor));
     btnMenu_Close->setFocusPolicy(Qt::NoFocus);
     btnMenu_Close->setFlat(true);
@@ -704,31 +701,19 @@ void QUIMessageBox::initControl()
 
 void QUIMessageBox::initForm()
 {
-    IconHelper::Instance()->setIcon(labIco, QUIConfig::IconMain, QUIConfig::FontSize + 2);
-    IconHelper::Instance()->setIcon(btnMenu_Close, QUIConfig::IconClose, QUIConfig::FontSize);
-
-    this->setProperty("form", true);
-    this->widgetTitle->setProperty("form", "title");
-    if (TOOL) {
-        this->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
-    } else {
-        this->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
-    }
-
+    QUIHelper::setFramelessForm(this, widgetTitle, labIco, btnMenu_Close);
     this->setWindowTitle(this->labTitle->text());
+    this->setFixedSize(DialogMinWidth, DialogMinHeight);
+    labIcoMain->setFixedSize(TitleMinSize, TitleMinSize);
 
 #ifdef __arm__
     int width = 90;
     int iconWidth = 22;
     int iconHeight = 22;
-    this->setFixedSize(350, 180);
-    labIcoMain->setFixedSize(40, 40);
 #else
     int width = 80;
     int iconWidth = 18;
     int iconHeight = 18;
-    this->setFixedSize(280, 150);
-    labIcoMain->setFixedSize(30, 30);
 #endif
 
     QList<QPushButton *> btns = this->frame->findChildren<QPushButton *>();
@@ -821,6 +806,13 @@ void QUIMessageBox::setMessage(const QString &msg, int type, int closeSec)
 
     this->labInfo->setText(msg);
     this->setWindowTitle(this->labTitle->text());
+    //设置对话框的大小总以最合适的大小显示
+    if (msg.length() < 70) {
+        this->layout()->setSizeConstraint(QLayout::SetMinimumSize);
+        this->setFixedSize(DialogMinWidth, DialogMinHeight);
+    } else {
+        this->layout()->setSizeConstraint(QLayout::SetFixedSize);
+    }
 }
 
 
@@ -871,7 +863,7 @@ bool QUITipBox::eventFilter(QObject *watched, QEvent *event)
         mousePressed = false;
         return true;
     } else if (mouseEvent->type() == QEvent::MouseMove) {
-        if (mousePressed && (mouseEvent->buttons() && Qt::LeftButton)) {
+        if (mousePressed) {
             this->move(mouseEvent->globalPos() - mousePoint);
             return true;
         }
@@ -901,7 +893,6 @@ void QUITipBox::initControl()
     horizontalLayout2->setContentsMargins(0, 0, 0, 0);
     labIco = new QLabel(widgetTitle);
     labIco->setObjectName(QString::fromUtf8("labIco"));
-    labIco->setMinimumSize(QSize(TitleMinSize, 0));
     labIco->setAlignment(Qt::AlignCenter);
     horizontalLayout2->addWidget(labIco);
 
@@ -938,13 +929,10 @@ void QUITipBox::initControl()
     sizePolicy3.setVerticalStretch(0);
     sizePolicy3.setHeightForWidth(btnMenu_Close->sizePolicy().hasHeightForWidth());
     btnMenu_Close->setSizePolicy(sizePolicy3);
-    btnMenu_Close->setMinimumSize(QSize(TitleMinSize, 0));
-    btnMenu_Close->setMaximumSize(QSize(TitleMinSize, 16777215));
     btnMenu_Close->setCursor(QCursor(Qt::ArrowCursor));
     btnMenu_Close->setFocusPolicy(Qt::NoFocus);
     btnMenu_Close->setFlat(true);
 
-    widgetTitle->setMinimumHeight(TitleMinSize);
     horizontalLayout->addWidget(btnMenu_Close);
     horizontalLayout2->addWidget(widgetMenu);
     verticalLayout->addWidget(widgetTitle);
@@ -965,12 +953,7 @@ void QUITipBox::initControl()
 
 void QUITipBox::initForm()
 {
-    IconHelper::Instance()->setIcon(labIco, QUIConfig::IconMain, QUIConfig::FontSize + 2);
-    IconHelper::Instance()->setIcon(btnMenu_Close, QUIConfig::IconClose, QUIConfig::FontSize);
-
-    this->setProperty("form", true);
-    this->widgetTitle->setProperty("form", "title");
-    this->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+    QUIHelper::setFramelessForm(this, widgetTitle, labIco, btnMenu_Close);
     this->setWindowTitle(this->labTitle->text());
 
 #ifdef __arm__
@@ -1120,7 +1103,6 @@ void QUIInputBox::initControl()
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(widgetTitle->sizePolicy().hasHeightForWidth());
     widgetTitle->setSizePolicy(sizePolicy);
-    widgetTitle->setMinimumSize(QSize(0, TitleMinSize));
     horizontalLayout1 = new QHBoxLayout(widgetTitle);
     horizontalLayout1->setSpacing(0);
     horizontalLayout1->setObjectName(QString::fromUtf8("horizontalLayout1"));
@@ -1132,7 +1114,6 @@ void QUIInputBox::initControl()
     sizePolicy1.setVerticalStretch(0);
     sizePolicy1.setHeightForWidth(labIco->sizePolicy().hasHeightForWidth());
     labIco->setSizePolicy(sizePolicy1);
-    labIco->setMinimumSize(QSize(TitleMinSize, 0));
     labIco->setAlignment(Qt::AlignCenter);
 
     horizontalLayout1->addWidget(labIco);
@@ -1169,8 +1150,6 @@ void QUIInputBox::initControl()
     sizePolicy3.setVerticalStretch(0);
     sizePolicy3.setHeightForWidth(btnMenu_Close->sizePolicy().hasHeightForWidth());
     btnMenu_Close->setSizePolicy(sizePolicy3);
-    btnMenu_Close->setMinimumSize(QSize(TitleMinSize, 0));
-    btnMenu_Close->setMaximumSize(QSize(TitleMinSize, 16777215));
     btnMenu_Close->setCursor(QCursor(Qt::ArrowCursor));
     btnMenu_Close->setFocusPolicy(Qt::NoFocus);
     btnMenu_Close->setFlat(true);
@@ -1240,17 +1219,7 @@ void QUIInputBox::initControl()
 
 void QUIInputBox::initForm()
 {
-    IconHelper::Instance()->setIcon(labIco, QUIConfig::IconMain, QUIConfig::FontSize + 2);
-    IconHelper::Instance()->setIcon(btnMenu_Close, QUIConfig::IconClose, QUIConfig::FontSize);
-
-    this->setProperty("form", true);
-    this->widgetTitle->setProperty("form", "title");
-    if (TOOL) {
-        this->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
-    } else {
-        this->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
-    }
-
+    QUIHelper::setFramelessForm(this, widgetTitle, labIco, btnMenu_Close);
     this->setWindowTitle(this->labTitle->text());
 
 #ifdef __arm__
@@ -1349,7 +1318,7 @@ bool QUIInputBox::eventFilter(QObject *watched, QEvent *event)
         mousePressed = false;
         return true;
     } else if (mouseEvent->type() == QEvent::MouseMove) {
-        if (mousePressed && (mouseEvent->buttons() && Qt::LeftButton)) {
+        if (mousePressed) {
             this->move(mouseEvent->globalPos() - mousePoint);
             return true;
         }
@@ -1424,7 +1393,7 @@ bool QUIDateSelect::eventFilter(QObject *watched, QEvent *event)
         mousePressed = false;
         return true;
     } else if (mouseEvent->type() == QEvent::MouseMove) {
-        if (mousePressed && (mouseEvent->buttons() && Qt::LeftButton)) {
+        if (mousePressed) {
             this->move(mouseEvent->globalPos() - mousePoint);
             return true;
         }
@@ -1448,7 +1417,6 @@ void QUIDateSelect::initControl()
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(widgetTitle->sizePolicy().hasHeightForWidth());
     widgetTitle->setSizePolicy(sizePolicy);
-    widgetTitle->setMinimumSize(QSize(0, TitleMinSize));
     horizontalLayout1 = new QHBoxLayout(widgetTitle);
     horizontalLayout1->setSpacing(0);
     horizontalLayout1->setObjectName(QString::fromUtf8("horizontalLayout1"));
@@ -1460,7 +1428,6 @@ void QUIDateSelect::initControl()
     sizePolicy1.setVerticalStretch(0);
     sizePolicy1.setHeightForWidth(labIco->sizePolicy().hasHeightForWidth());
     labIco->setSizePolicy(sizePolicy1);
-    labIco->setMinimumSize(QSize(TitleMinSize, 0));
     labIco->setAlignment(Qt::AlignCenter);
     horizontalLayout1->addWidget(labIco);
 
@@ -1489,8 +1456,6 @@ void QUIDateSelect::initControl()
     sizePolicy3.setVerticalStretch(0);
     sizePolicy3.setHeightForWidth(btnMenu_Close->sizePolicy().hasHeightForWidth());
     btnMenu_Close->setSizePolicy(sizePolicy3);
-    btnMenu_Close->setMinimumSize(QSize(TitleMinSize, 0));
-    btnMenu_Close->setMaximumSize(QSize(TitleMinSize, 16777215));
     btnMenu_Close->setCursor(QCursor(Qt::ArrowCursor));
     btnMenu_Close->setFocusPolicy(Qt::NoFocus);
     btnMenu_Close->setFlat(true);
@@ -1585,17 +1550,7 @@ void QUIDateSelect::initControl()
 
 void QUIDateSelect::initForm()
 {
-    IconHelper::Instance()->setIcon(labIco, QUIConfig::IconMain, QUIConfig::FontSize + 2);
-    IconHelper::Instance()->setIcon(btnMenu_Close, QUIConfig::IconClose, QUIConfig::FontSize);
-
-    this->setProperty("form", true);
-    this->widgetTitle->setProperty("form", "title");
-    if (TOOL) {
-        this->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
-    } else {
-        this->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
-    }
-
+    QUIHelper::setFramelessForm(this, widgetTitle, labIco, btnMenu_Close);
     this->setWindowTitle(this->labTitle->text());
 
 #ifdef __arm__
@@ -2055,14 +2010,14 @@ TrayIcon::TrayIcon(QObject *parent) : QObject(parent)
 void TrayIcon::iconIsActived(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason) {
-    case QSystemTrayIcon::Trigger:
-    case QSystemTrayIcon::DoubleClick: {
-        mainWidget->showNormal();
-        break;
-    }
+        case QSystemTrayIcon::Trigger:
+        case QSystemTrayIcon::DoubleClick: {
+            mainWidget->showNormal();
+            break;
+        }
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -2143,6 +2098,7 @@ QString QUIHelper::appName()
     static QString name;
     if (name.isEmpty()) {
         name = qApp->applicationFilePath();
+        //下面的方法主要为了过滤安卓的路径 lib程序名_armeabi-v7a
         QStringList list = name.split("/");
         name = list.at(list.count() - 1).split(".").at(0);
     }
@@ -2153,7 +2109,8 @@ QString QUIHelper::appName()
 QString QUIHelper::appPath()
 {
 #ifdef Q_OS_ANDROID
-    return QString("/sdcard/Android/%1").arg(appName());
+    //return QString("/sdcard/Android/%1").arg(appName());
+    return QString("/storage/emulated/0/%1").arg(appName());
 #else
     return qApp->applicationDirPath();
 #endif
@@ -2197,8 +2154,12 @@ void QUIHelper::newDir(const QString &dirName)
     }
 }
 
-void QUIHelper::writeInfo(const QString &info, const QString &filePath)
+void QUIHelper::writeInfo(const QString &info, bool needWrite, const QString &filePath)
 {
+    if (!needWrite) {
+        return;
+    }
+
     QString fileName = QString("%1/%2/%3_runinfo_%4.txt").arg(QUIHelper::appPath())
                        .arg(filePath).arg(QUIHelper::appName()).arg(QDate::currentDate().toString("yyyyMM"));
 
@@ -2209,10 +2170,12 @@ void QUIHelper::writeInfo(const QString &info, const QString &filePath)
     file.close();
 }
 
-void QUIHelper::writeError(const QString &info, const QString &filePath)
+void QUIHelper::writeError(const QString &info, bool needWrite, const QString &filePath)
 {
-    //正式运行屏蔽掉输出错误信息,调试阶段才需要
-    return;
+    if (!needWrite) {
+        return;
+    }
+
     QString fileName = QString("%1/%2/%3_runerror_%4.txt").arg(QUIHelper::appPath())
                        .arg(filePath).arg(QUIHelper::appName()).arg(QDate::currentDate().toString("yyyyMM"));
 
@@ -2223,10 +2186,36 @@ void QUIHelper::writeError(const QString &info, const QString &filePath)
     file.close();
 }
 
+void QUIHelper::setFramelessForm(QWidget *widgetMain, QWidget *widgetTitle, QLabel *labIco, QPushButton *btnClose, bool tool)
+{
+    labIco->setFixedWidth(TitleMinSize);
+    btnClose->setFixedWidth(TitleMinSize);
+    widgetTitle->setFixedHeight(TitleMinSize);
+    widgetTitle->setProperty("form", "title");
+    widgetMain->setProperty("form", true);
+    widgetMain->setProperty("canMove", true);
+
+#ifdef __arm__
+    if (tool) {
+        widgetMain->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+    } else {
+        widgetMain->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+    }
+#else
+    if (tool) {
+        widgetMain->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
+    } else {
+        widgetMain->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
+    }
+#endif
+
+    IconHelper::Instance()->setIcon(labIco, QUIConfig::IconMain, QUIConfig::FontSize + 2);
+    IconHelper::Instance()->setIcon(btnClose, QUIConfig::IconClose, QUIConfig::FontSize);
+}
+
 void QUIHelper::setStyle(QUIWidget::Style style)
 {
     QString qssFile = ":/qss/lightblue.css";
-
     if (style == QUIWidget::Style_Silvery) {
         qssFile = ":/qss/silvery.css";
     } else if (style == QUIWidget::Style_Blue) {
@@ -2262,7 +2251,6 @@ void QUIHelper::setStyle(QUIWidget::Style style)
     }
 
     QFile file(qssFile);
-
     if (file.open(QFile::ReadOnly)) {
         QString qss = QLatin1String(file.readAll());
         QString paletteColor = qss.mid(20, 7);
@@ -2310,7 +2298,6 @@ void QUIHelper::getQssColor(const QString &qss, QString &textColor, QString &pan
                             QString &darkColorStart, QString &darkColorEnd, QString &highColor)
 {
     QString str = qss;
-
     QString flagTextColor = "TextColor:";
     int indexTextColor = str.indexOf(flagTextColor);
     if (indexTextColor >= 0) {
@@ -2400,7 +2387,6 @@ QPixmap QUIHelper::ninePatch(const QPixmap &pix, int horzSplit, int vertSplit, i
 
     QPainter painter;
     painter.begin(&resultImg);
-
     if (!resultImg.isNull()) {
         painter.drawPixmap(0, 0, pix1);
         painter.drawPixmap(horzSplit, 0, pix2);
@@ -2416,27 +2402,55 @@ QPixmap QUIHelper::ninePatch(const QPixmap &pix, int horzSplit, int vertSplit, i
     }
 
     painter.end();
-
     return resultImg;
 }
 
-void QUIHelper::setLabStyle(QLabel *lab, quint8 type)
+void QUIHelper::setLabStyle(QLabel *lab, quint8 type, const QString &bgColor, const QString &textColor)
 {
-    QString qssDisable = QString("QLabel::disabled{background:none;color:%1;}").arg(QUIConfig::BorderColor);
-    QString qssRed = "QLabel{border:none;background-color:rgb(214,64,48);color:rgb(255,255,255);}" + qssDisable;
-    QString qssGreen = "QLabel{border:none;background-color:rgb(46,138,87);color:rgb(255,255,255);}" + qssDisable;
-    QString qssBlue = "QLabel{border:none;background-color:rgb(67,122,203);color:rgb(255,255,255);}" + qssDisable;
-    QString qssDark = "QLabel{border:none;background-color:rgb(75,75,75);color:rgb(255,255,255);}" + qssDisable;
+    QString colorBg = bgColor;
+    QString colorText = textColor;
 
-    if (type == 0) {
-        lab->setStyleSheet(qssRed);
-    } else if (type == 1) {
-        lab->setStyleSheet(qssGreen);
-    } else if (type == 2) {
-        lab->setStyleSheet(qssBlue);
-    } else if (type == 3) {
-        lab->setStyleSheet(qssDark);
+    //如果设置了新颜色则启用新颜色
+    if (bgColor.isEmpty() || textColor.isEmpty()) {
+        if (type == 0) {
+            colorBg = "#D64D54";
+            colorText = "#FFFFFF";
+        } else if (type == 1) {
+            colorBg = "#17A086";
+            colorText = "#FFFFFF";
+        } else if (type == 2) {
+            colorBg = "#47A4E9";
+            colorText = "#FFFFFF";
+        } else if (type == 3) {
+            colorBg = "#282D30";
+            colorText = "#FFFFFF";
+        } else if (type == 4) {
+            colorBg = "#0E99A0";
+            colorText = "#FFFFFF";
+        } else if (type == 5) {
+            colorBg = "#A279C5";
+            colorText = "#FFFFFF";
+        } else if (type == 6) {
+            colorBg = "#8C2957";
+            colorText = "#FFFFFF";
+        } else if (type == 7) {
+            colorBg = "#04567E";
+            colorText = "#FFFFFF";
+        } else if (type == 8) {
+            colorBg = "#FD8B28";
+            colorText = "#FFFFFF";
+        } else if (type == 9) {
+            colorBg = "#5580A2";
+            colorText = "#FFFFFF";
+        }
     }
+
+    QStringList qss;
+    //禁用颜色
+    qss << QString("QLabel::disabled{background:none;color:%1;}").arg(QUIConfig::BorderColor);
+    //正常颜色
+    qss << QString("QLabel{border:none;background-color:%1;color:%2;}").arg(colorBg).arg(colorText);
+    lab->setStyleSheet(qss.join(""));
 }
 
 void QUIHelper::setFormInCenter(QWidget *frm)
@@ -2476,9 +2490,15 @@ void QUIHelper::setCode()
 
 void QUIHelper::sleep(int msec)
 {
-    QTime dieTime = QTime::currentTime().addMSecs(msec);
-    while (QTime::currentTime() < dieTime) {
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    if (msec > 0) {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+        QTime endTime = QTime::currentTime().addMSecs(msec);
+        while (QTime::currentTime() < endTime) {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
+#else
+        QThread::msleep(msec);
+#endif
     }
 }
 
@@ -2689,8 +2709,8 @@ QByteArray QUIHelper::ushortToByteRec(ushort i)
 {
     QByteArray result;
     result.resize(2);
-    result[0] = (uchar) (0x000000ff & i);
-    result[1] = (uchar) ((0x0000ff00 & i) >> 8);
+    result[0] = (uchar)(0x000000ff & i);
+    result[1] = (uchar)((0x0000ff00 & i) >> 8);
     return result;
 }
 
@@ -2753,15 +2773,6 @@ uchar QUIHelper::getCheckCode(const QByteArray &data)
     return temp % 256;
 }
 
-QString QUIHelper::getValue(quint8 value)
-{
-    QString result = QString::number(value);
-    if (result.length() <= 1) {
-        result = QString("0%1").arg(result);
-    }
-    return result;
-}
-
 //函数功能：计算CRC16
 //参数1：*data 16位CRC校验数据，
 //参数2：len   数据流长度
@@ -2773,8 +2784,7 @@ quint16 QUIHelper::getRevCrc_16(quint8 *data, int len, quint16 init, const quint
 {
     quint16 cRc_16 = init;
     quint8 temp;
-
-    while(len-- > 0) {
+    while (len-- > 0) {
         temp = cRc_16 >> 8;
         cRc_16 = (cRc_16 << 8) ^ table[(temp ^ *data++) & 0xff];
     }
@@ -2787,8 +2797,7 @@ quint16 QUIHelper::getCrc_16(quint8 *data, int len, quint16 init, const quint16 
 {
     quint16 cRc_16 = init;
     quint8 temp;
-
-    while(len-- > 0) {
+    while (len-- > 0) {
         temp = cRc_16 & 0xff;
         cRc_16 = (cRc_16 >> 8) ^ table[(temp ^ *data++) & 0xff];
     }
@@ -2849,7 +2858,6 @@ QString QUIHelper::byteArrayToAsciiStr(const QByteArray &data)
 {
     QString temp;
     int len = data.size();
-
     for (int i = 0; i < len; i++) {
         //0x20为空格,空格以下都是不可见字符
         char b = data.at(i);
@@ -3280,12 +3288,33 @@ QString QUIHelper::byteArrayToHexStr(const QByteArray &data)
 
 QString QUIHelper::getSaveName(const QString &filter, QString defaultDir)
 {
-    return QFileDialog::getSaveFileName(0, "选择文件", defaultDir , filter);
+    return QFileDialog::getSaveFileName(0, "选择文件", defaultDir, filter);
 }
 
 QString QUIHelper::getFileName(const QString &filter, QString defaultDir)
 {
-    return QFileDialog::getOpenFileName(0, "选择文件", defaultDir , filter);
+    return QFileDialog::getOpenFileName(0, "选择文件", defaultDir, filter);
+}
+
+QString QUIHelper::saveFileName(const QString &filter, const QString &defaultDir, const QString &fileName)
+{
+    QString file;
+    QFileDialog dialog;
+    dialog.setFixedSize(900, 600);
+    dialog.setWindowModality(Qt::WindowModal);
+    dialog.setWindowTitle("保存文件");
+    dialog.setLabelText(QFileDialog::Accept, "保存(&S)");
+    dialog.setLabelText(QFileDialog::Reject, "取消(&C)");
+    dialog.selectFile(fileName);
+    dialog.setNameFilter(filter);
+    dialog.setDirectory(defaultDir);
+
+    if (dialog.exec() == 1) {
+        file = dialog.selectedFiles().value(0);
+        file = QFileInfo(file).suffix().isEmpty() ? "" : file;
+    }
+
+    return file;
 }
 
 QStringList QUIHelper::getFileNames(const QString &filter, QString defaultDir)
@@ -3363,11 +3392,21 @@ void QUIHelper::deleteDirectory(const QString &path)
 
 bool QUIHelper::ipLive(const QString &ip, int port, int timeout)
 {
-    QTcpSocket tcpClient;
-    tcpClient.abort();
-    tcpClient.connectToHost(ip, port);
-    //超时没有连接上则判断不在线
-    return tcpClient.waitForConnected(timeout);
+    //局部的事件循环,不卡主界面
+    QEventLoop eventLoop;
+
+    //设置超时
+    QTimer timer;
+    connect(&timer, SIGNAL(timeout()), &eventLoop, SLOT(quit()));
+    timer.setSingleShot(true);
+    timer.start(timeout);
+
+    QTcpSocket tcpSocket;
+    connect(&tcpSocket, SIGNAL(connected()), &eventLoop, SLOT(quit()));
+    tcpSocket.connectToHost(ip, port);
+    eventLoop.exec();
+    bool ok = (tcpSocket.state() == QAbstractSocket::ConnectedState);
+    return ok;
 }
 
 QString QUIHelper::getHtml(const QString &url)
@@ -3396,17 +3435,9 @@ QString QUIHelper::getNetIP(const QString &webCode)
 
 QString QUIHelper::getLocalIP()
 {
-    QStringList ips;
-    QList<QHostAddress> addrs = QNetworkInterface::allAddresses();
-    foreach (QHostAddress addr, addrs) {
-        QString ip = addr.toString();
-        if (QUIHelper::isIP(ip)) {
-            ips << ip;
-        }
-    }
-
     //优先取192开头的IP,如果获取不到IP则取127.0.0.1
     QString ip = "127.0.0.1";
+    QStringList ips = getLocalIPs();
     foreach (QString str, ips) {
         if (str.startsWith("192.168.1") || str.startsWith("192")) {
             ip = str;
@@ -3417,10 +3448,51 @@ QString QUIHelper::getLocalIP()
     return ip;
 }
 
+QStringList QUIHelper::getLocalIPs()
+{
+    static QStringList ips;
+    if (ips.count() == 0) {
+        QList<QNetworkInterface> netInterfaces = QNetworkInterface::allInterfaces();
+        foreach (const QNetworkInterface  &netInterface, netInterfaces) {
+            //移除虚拟机和抓包工具的虚拟网卡
+            QString humanReadableName = netInterface.humanReadableName().toLower();
+            if (humanReadableName.startsWith("vmware network adapter") || humanReadableName.startsWith("npcap loopback adapter")) {
+                continue;
+            }
+
+            //过滤当前网络接口
+            bool flag = (netInterface.flags() == (QNetworkInterface::IsUp | QNetworkInterface::IsRunning | QNetworkInterface::CanBroadcast | QNetworkInterface::CanMulticast));
+            if (flag) {
+                QList<QNetworkAddressEntry> addrs = netInterface.addressEntries();
+                foreach (QNetworkAddressEntry addr, addrs) {
+                    //只取出IPV4的地址
+                    if (addr.ip().protocol() == QAbstractSocket::IPv4Protocol) {
+                        QString ip4 = addr.ip().toString();
+                        if (ip4 != "127.0.0.1") {
+                            ips.append(ip4);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return ips;
+}
+
 QString QUIHelper::urlToIP(const QString &url)
 {
     QHostInfo host = QHostInfo::fromName(url);
     return host.addresses().at(0).toString();
+}
+
+QString QUIHelper::getValue(quint8 value)
+{
+    QString result = QString::number(value);
+    if (result.length() <= 1) {
+        result = QString("0%1").arg(result);
+    }
+    return result;
 }
 
 bool QUIHelper::isWebOk()
@@ -3429,11 +3501,58 @@ bool QUIHelper::isWebOk()
     return ipLive("115.239.211.112", 80);
 }
 
+void QUIHelper::initTableView(QTableView *tableView, int rowHeight, bool headVisible, bool edit)
+{
+    //奇数偶数行颜色交替
+    tableView->setAlternatingRowColors(false);
+    //垂直表头是否可见
+    tableView->verticalHeader()->setVisible(headVisible);
+    //选中一行表头是否加粗
+    tableView->horizontalHeader()->setHighlightSections(false);
+    //最后一行拉伸填充
+    tableView->horizontalHeader()->setStretchLastSection(true);
+    //行标题最小宽度尺寸
+    tableView->horizontalHeader()->setMinimumSectionSize(0);
+    //行标题最大高度
+    tableView->horizontalHeader()->setMaximumHeight(rowHeight);
+    //默认行高
+    tableView->verticalHeader()->setDefaultSectionSize(rowHeight);
+    //选中时一行整体选中
+    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //只允许选择单个
+    tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    //表头不可单击
+#if (QT_VERSION > QT_VERSION_CHECK(5,0,0))
+    tableView->horizontalHeader()->setSectionsClickable(false);
+#else
+    tableView->horizontalHeader()->setClickable(false);
+#endif
+
+    //鼠标按下即进入编辑模式
+    if (edit) {
+        tableView->setEditTriggers(QAbstractItemView::CurrentChanged | QAbstractItemView::DoubleClicked);
+    } else {
+        tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    }
+}
+
+int QUIHelper::showMessageBox(const QString &info, int type, int closeSec, bool exec)
+{
+    int result = 0;
+    if (type == 0) {
+        showMessageBoxInfo(info, closeSec, exec);
+    } else if (type == 1) {
+        showMessageBoxError(info, closeSec, exec);
+    } else if (type == 2) {
+        result = showMessageBoxQuestion(info);
+    }
+
+    return result;
+}
+
 void QUIHelper::showMessageBoxInfo(const QString &info, int closeSec, bool exec)
 {
-#ifdef Q_OS_ANDROID
-    QAndroid::Instance()->makeToast(info);
-#else
     if (exec) {
         QUIMessageBox msg;
         msg.setMessage(info, 0, closeSec);
@@ -3442,14 +3561,10 @@ void QUIHelper::showMessageBoxInfo(const QString &info, int closeSec, bool exec)
         QUIMessageBox::Instance()->setMessage(info, 0, closeSec);
         QUIMessageBox::Instance()->show();
     }
-#endif
 }
 
 void QUIHelper::showMessageBoxError(const QString &info, int closeSec, bool exec)
 {
-#ifdef Q_OS_ANDROID
-    QAndroid::Instance()->makeToast(info);
-#else
     if (exec) {
         QUIMessageBox msg;
         msg.setMessage(info, 2, closeSec);
@@ -3458,7 +3573,6 @@ void QUIHelper::showMessageBoxError(const QString &info, int closeSec, bool exec
         QUIMessageBox::Instance()->setMessage(info, 2, closeSec);
         QUIMessageBox::Instance()->show();
     }
-#endif
 }
 
 int QUIHelper::showMessageBoxQuestion(const QString &info)
@@ -3668,13 +3782,8 @@ QChar QUIConfig::IconNormal = QChar(0xf2d0);
 QChar QUIConfig::IconClose = QChar(0xf00d);
 
 #ifdef __arm__
-#ifdef Q_OS_ANDROID
-QString QUIConfig::FontName = "Droid Sans Fallback";
-int QUIConfig::FontSize = 15;
-#else
 QString QUIConfig::FontName = "WenQuanYi Micro Hei";
 int QUIConfig::FontSize = 18;
-#endif
 #else
 QString QUIConfig::FontName = "Microsoft Yahei";
 int QUIConfig::FontSize = 12;

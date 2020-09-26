@@ -9,16 +9,22 @@
 #define STRDATETIME     qPrintable(QDateTime::currentDateTime().toString("yyyy-MM-dd-HH-mm-ss"))
 #define STRDATETIMEMS   qPrintable(QDateTime::currentDateTime().toString("yyyy-MM-dd-HH-mm-ss-zzz"))
 
+//定义换行符
 #ifdef Q_OS_WIN
 #define NEWLINE "\r\n"
 #else
 #define NEWLINE "\n"
 #endif
 
+//定义无边框标题栏高度+对话框最小宽高
 #ifdef __arm__
 #define TitleMinSize 40
+#define DialogMinWidth 350
+#define DialogMinHeight 180
 #else
 #define TitleMinSize 30
+#define DialogMinWidth 280
+#define DialogMinHeight 150
 #endif
 
 /**
@@ -56,7 +62,7 @@ class QUIWidget : public QDialog
 
 {
     Q_OBJECT
-    Q_ENUMS(Style)    
+    Q_ENUMS(Style)
     Q_PROPERTY(QString title READ getTitle WRITE setTitle)
     Q_PROPERTY(Qt::Alignment alignment READ getAlignment WRITE setAlignment)
     Q_PROPERTY(bool minHide READ getMinHide WRITE setMinHide)
@@ -488,8 +494,7 @@ public:
         QString checkedBgColor;
         QString checkedTextColor;
 
-        StyleColor()
-        {
+        StyleColor() {
             iconSize = 12;
             iconWidth = 15;
             iconHeight = 15;
@@ -578,9 +583,8 @@ public:
     static int deskWidth();
     static int deskHeight();
 
-    //程序本身文件名称
+    //程序文件名称+当前所在路径
     static QString appName();
-    //程序当前所在路径
     static QString appPath();
 
     //初始化随机数种子
@@ -595,8 +599,11 @@ public:
     static void newDir(const QString &dirName);
 
     //写入消息到额外的的消息日志文件
-    static void writeInfo(const QString &info, const QString &filePath = "log");
-    static void writeError(const QString &info, const QString &filePath = "log");
+    static void writeInfo(const QString &info, bool needWrite = false, const QString &filePath = "log");
+    static void writeError(const QString &info, bool needWrite = false, const QString &filePath = "log");
+
+    //设置无边框窗体
+    static void setFramelessForm(QWidget *widgetMain, QWidget *widgetTitle, QLabel *labIco, QPushButton *btnClose, bool tool = true);
 
     //设置全局样式
     static void setStyle(QUIWidget::Style style);
@@ -619,7 +626,7 @@ public:
     static QPixmap ninePatch(const QPixmap &pix, int horzSplit, int vertSplit, int dstWidth, int dstHeight);
 
     //设置标签颜色
-    static void setLabStyle(QLabel *lab, quint8 type);
+    static void setLabStyle(QLabel *lab, quint8 type, const QString &bgColor = "", const QString &textColor = "");
 
     //设置窗体居中显示
     static void setFormInCenter(QWidget *frm);
@@ -637,38 +644,29 @@ public:
 
     //判断是否是IP地址
     static bool isIP(const QString &ip);
-
     //判断是否是MAC地址
     static bool isMac(const QString &mac);
-
     //判断是否是合法的电话号码
     static bool isTel(const QString &tel);
-
     //判断是否是合法的邮箱地址
     static bool isEmail(const QString &email);
 
 
     //16进制字符串转10进制
     static int strHexToDecimal(const QString &strHex);
-
     //10进制字符串转10进制
     static int strDecimalToDecimal(const QString &strDecimal);
-
     //2进制字符串转10进制
     static int strBinToDecimal(const QString &strBin);
 
     //16进制字符串转2进制字符串
     static QString strHexToStrBin(const QString &strHex);
-
     //10进制转2进制字符串一个字节
     static QString decimalToStrBin1(int decimal);
-
     //10进制转2进制字符串两个字节
     static QString decimalToStrBin2(int decimal);
-
     //10进制转16进制字符串,补零.
     static QString decimalToStrHex(int decimal);
-
 
     //int转字节数组
     static QByteArray intToByte(int i);
@@ -690,15 +688,10 @@ public:
 
     //异或加密算法
     static QString getXorEncryptDecrypt(const QString &str, char key);
-
     //异或校验
     static uchar getOrCode(const QByteArray &data);
-
     //计算校验码
     static uchar getCheckCode(const QByteArray &data);
-
-    //字符串补全
-    static QString getValue(quint8 value);
 
     //CRC校验
     static quint16 getRevCrc_16(quint8 *data, int len, quint16 init, const quint16 *table);
@@ -706,69 +699,65 @@ public:
     static quint16 getModbus16(quint8 *data, int len);
     static QByteArray getCRCCode(const QByteArray &data);
 
-
     //字节数组转Ascii字符串
     static QString byteArrayToAsciiStr(const QByteArray &data);
-
     //16进制字符串转字节数组
     static QByteArray hexStrToByteArray(const QString &str);
     static char convertHexChar(char ch);
 
     //Ascii字符串转字节数组
     static QByteArray asciiStrToByteArray(const QString &str);
-
     //字节数组转16进制字符串
     static QString byteArrayToHexStr(const QByteArray &data);
 
     //获取保存的文件
     static QString getSaveName(const QString &filter, QString defaultDir = QCoreApplication::applicationDirPath());
-
     //获取选择的文件
     static QString getFileName(const QString &filter, QString defaultDir = QCoreApplication::applicationDirPath());
-
+    //非阻塞保存文件对话框
+    static QString saveFileName(const QString &filter, const QString &defaultDir = "", const QString &fileName = "");
     //获取选择的文件集合
     static QStringList getFileNames(const QString &filter, QString defaultDir = QCoreApplication::applicationDirPath());
-
     //获取选择的目录
     static QString getFolderName();
 
     //获取文件名,含拓展名
     static QString getFileNameWithExtension(const QString &strFilePath);
-
     //获取选择文件夹中的文件
     static QStringList getFolderFileNames(const QStringList &filter);
 
     //文件夹是否存在
     static bool folderIsExist(const QString &strFolder);
-
     //文件是否存在
     static bool fileIsExist(const QString &strFile);
-
     //复制文件
     static bool copyFile(const QString &sourceFile, const QString &targetFile);
-
     //删除文件夹下所有文件
     static void deleteDirectory(const QString &path);
 
     //判断IP地址及端口是否在线
     static bool ipLive(const QString &ip, int port, int timeout = 1000);
-
     //获取网页所有源代码
     static QString getHtml(const QString &url);
-
     //获取本机公网IP地址
     static QString getNetIP(const QString &webCode);
-
     //获取本机IP
     static QString getLocalIP();
-
+    //获取本机IP地址集合
+    static QStringList getLocalIPs();
     //Url地址转为IP地址
     static QString urlToIP(const QString &url);
 
+    //字符串补全
+    static QString getValue(quint8 value);
     //判断是否通外网
     static bool isWebOk();
 
+    //初始化表格
+    static void initTableView(QTableView *tableView, int rowHeight = 25, bool headVisible = false, bool edit = false);
 
+    //弹出框
+    static int showMessageBox(const QString &info, int type = 0, int closeSec = 0, bool exec = false);
     //弹出消息框
     static void showMessageBoxInfo(const QString &info, int closeSec = 0, bool exec = false);
     //弹出错误框
@@ -785,7 +774,6 @@ public:
     static QString showInputBox(const QString &title, int type = 0, int closeSec = 0,
                                 const QString &placeholderText = QString(), bool pwd = false,
                                 const QString &defaultValue = QString());
-
     //弹出日期选择框
     static void showDateSelect(QString &dateStart, QString &dateEnd, const QString &format = "yyyy-MM-dd");
 
@@ -800,14 +788,12 @@ public:
                                     const QString &hoverTextColor = "#F0F0F0",      //悬停文字颜色
                                     const QString &pressedColor = "#2D3E50",        //按下颜色
                                     const QString &pressedTextColor = "#B8C6D1");   //按下文字颜色
-
     //设置文本框样式
     static QString setLineEditQss(QLineEdit *txt,                                   //文本框对象
                                   int radius = 3,                                   //圆角半径
                                   int borderWidth = 2,                              //边框大小
                                   const QString &normalColor = "#DCE4EC",           //正常颜色
                                   const QString &focusColor = "#34495E");           //选中颜色
-
     //设置进度条样式
     static QString setProgressBarQss(QProgressBar *bar,
                                      int barHeight = 8,                             //进度条高度
@@ -815,7 +801,6 @@ public:
                                      int fontSize = 9,                              //文字字号
                                      const QString &normalColor = "#E8EDF2",        //正常颜色
                                      const QString &chunkColor = "#E74C3C");        //进度颜色
-
     //设置滑块条样式
     static QString setSliderQss(QSlider *slider,                                    //滑动条对象
                                 int sliderHeight = 8,                               //滑动条高度
@@ -824,13 +809,11 @@ public:
                                 const QString &handleBorderColor = "#1ABC9C",       //指示器边框颜色
                                 const QString &handleColor = "#FFFFFF",             //指示器颜色
                                 const QString &textColor = "#000000");              //文字颜色
-
     //设置单选框样式
     static QString setRadioButtonQss(QRadioButton *rbtn,                            //单选框对象
                                      int indicatorRadius = 8,                       //指示器圆角角度
                                      const QString &normalColor = "#D7DBDE",        //正常颜色
                                      const QString &checkColor = "#34495E");        //选中颜色
-
     //设置滚动条样式
     static QString setScrollBarQss(QWidget *scroll,                                 //滚动条对象
                                    int radius = 6,                                  //圆角角度
