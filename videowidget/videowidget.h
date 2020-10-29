@@ -222,6 +222,23 @@ signals:
     void btnClicked(const QString &objName);
 
 public slots:
+    //获取长度
+    uint getLength();
+    //获取当前播放位置
+    uint getPosition();
+    //设置播放位置
+    void setPosition(int position);
+
+    //获取静音状态
+    bool getMute();
+    //设置静音
+    void setMute(bool mute);
+
+    //获取音量
+    int getVolume();
+    //设置音量
+    void setVolume(int volume);
+
     //设置显示间隔
     void setInterval(int interval);
     //设置休眠时间

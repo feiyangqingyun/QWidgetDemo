@@ -553,6 +553,41 @@ void VideoWidget::btnClicked()
     emit btnClicked(btn->objectName());
 }
 
+uint VideoWidget::getLength()
+{
+    return 0;
+}
+
+uint VideoWidget::getPosition()
+{
+    return 0;
+}
+
+void VideoWidget::setPosition(int position)
+{
+
+}
+
+bool VideoWidget::getMute()
+{
+    return false;
+}
+
+void VideoWidget::setMute(bool mute)
+{
+
+}
+
+int VideoWidget::getVolume()
+{
+    return 0;
+}
+
+void VideoWidget::setVolume(int volume)
+{
+
+}
+
 void VideoWidget::setInterval(int interval)
 {
 

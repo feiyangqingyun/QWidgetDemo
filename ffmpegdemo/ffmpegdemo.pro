@@ -1,6 +1,7 @@
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+android {QT += androidextras}
 
 TARGET      = ffmpegdemo
 TEMPLATE    = app

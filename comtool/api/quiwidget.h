@@ -642,6 +642,8 @@ public:
     //设置开机自启动
     static void runWithSystem(const QString &strName, const QString &strPath, bool autoRun = true);
 
+    //从字符串获取IP地址
+    static QString getIP(const QString &url);
     //判断是否是IP地址
     static bool isIP(const QString &ip);
     //判断是否是MAC地址
@@ -650,7 +652,6 @@ public:
     static bool isTel(const QString &tel);
     //判断是否是合法的邮箱地址
     static bool isEmail(const QString &email);
-
 
     //16进制字符串转10进制
     static int strHexToDecimal(const QString &strHex);

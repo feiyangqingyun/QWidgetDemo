@@ -2533,16 +2533,24 @@ void QUIHelper::runWithSystem(const QString &strName, const QString &strPath, bo
 #endif
 }
 
+QString QUIHelper::getIP(const QString &url)
+{
+    //取出IP地址
+    QRegExp regExp("((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d))");
+    regExp.indexIn(url);
+    return url.mid(url.indexOf(regExp), regExp.matchedLength());
+}
+
 bool QUIHelper::isIP(const QString &ip)
 {
-    QRegExp RegExp("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
-    return RegExp.exactMatch(ip);
+    QRegExp regExp("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
+    return regExp.exactMatch(ip);
 }
 
 bool QUIHelper::isMac(const QString &mac)
 {
-    QRegExp RegExp("^[A-F0-9]{2}(-[A-F0-9]{2}){5}$");
-    return RegExp.exactMatch(mac);
+    QRegExp regExp("^[A-F0-9]{2}(-[A-F0-9]{2}){5}$");
+    return regExp.exactMatch(mac);
 }
 
 bool QUIHelper::isTel(const QString &tel)
@@ -3503,6 +3511,10 @@ bool QUIHelper::isWebOk()
 
 void QUIHelper::initTableView(QTableView *tableView, int rowHeight, bool headVisible, bool edit)
 {
+    //取消自动换行
+    tableView->setWordWrap(false);
+    //超出文本不显示省略号
+    tableView->setTextElideMode(Qt::ElideNone);
     //奇数偶数行颜色交替
     tableView->setAlternatingRowColors(false);
     //垂直表头是否可见
