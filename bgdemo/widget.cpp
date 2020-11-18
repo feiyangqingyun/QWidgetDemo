@@ -2,7 +2,8 @@
 #include "ui_widget.h"
 #include "qevent.h"
 #include "qdebug.h"
-
+#include <QTimer>
+#include<QWheelEvent>
 Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
 {
     ui->setupUi(this);
@@ -23,6 +24,7 @@ bool Widget::eventFilter(QObject *watched, QEvent *evt)
     static int index = 1;
     static QPoint mousePoint;
     static bool mousePressed = false;
+    static bool is_smooth_scrolling = false;
 
     QMouseEvent *event = static_cast<QMouseEvent *>(evt);
     if (event->type() == QEvent::MouseButtonPress) {
@@ -49,6 +51,30 @@ bool Widget::eventFilter(QObject *watched, QEvent *evt)
         if (mousePressed && (event->buttons() && Qt::LeftButton)) {
             this->move(event->globalPos() - mousePoint);
             return true;
+        }
+    }
+
+    if (event->type()  == QEvent::Wheel) {
+        QWheelEvent *event = static_cast<QWheelEvent *>(evt);
+        if(is_smooth_scrolling == false) {
+          if (event->delta() > 0) {
+              is_smooth_scrolling = true;
+              if (index == 5) {
+                 index = 1;
+              } else {
+                  index++;
+              }
+          } else if (event->delta() < 0) {
+              is_smooth_scrolling = true;
+              if (index != 1) {
+                 index--;
+              } else {
+                  index =5;
+              }
+          }
+          ui->widget->setStyleSheet(QString("background-image:url(:/image/%1.png);").arg(index));
+          QTimer::singleShot(400, [&]() { is_smooth_scrolling = false; });
+          return true;
         }
     }
 
