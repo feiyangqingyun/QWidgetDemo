@@ -50,7 +50,7 @@ void frmMain::initConfig()
 void frmMain::saveConfig()
 {
     App::ListenPort1 = ui->txtListenPort1->text().trimmed().toInt();
-    App::ListenPort2 = ui->txtListenPort1->text().trimmed().toInt();
+    App::ListenPort2 = ui->txtListenPort2->text().trimmed().toInt();
     App::writeConfig();
 }
 

@@ -374,14 +374,39 @@ QImage VideoWidget::getImage() const
     return this->image;
 }
 
-QDateTime VideoWidget::getLastTime() const
+QPixmap VideoWidget::getPixmap() const
 {
-    return QDateTime::currentDateTime();
+    return QPixmap();
 }
 
 QString VideoWidget::getUrl() const
 {
     return this->property("url").toString();
+}
+
+QDateTime VideoWidget::getLastTime() const
+{
+    return QDateTime::currentDateTime();
+}
+
+bool VideoWidget::getCallback() const
+{
+    return false;
+}
+
+bool VideoWidget::getIsPlaying() const
+{
+    return false;
+}
+
+bool VideoWidget::getIsRtsp() const
+{
+    return false;
+}
+
+bool VideoWidget::getIsUsbCamera() const
+{
+    return false;
 }
 
 bool VideoWidget::getCopyImage() const
@@ -519,14 +544,19 @@ VideoWidget::OSDPosition VideoWidget::getOSD2Position() const
     return this->osd2Position;
 }
 
-QSize VideoWidget::sizeHint() const
+int VideoWidget::getFaceBorder() const
 {
-    return QSize(500, 350);
+    return this->faceBorder;
 }
 
-QSize VideoWidget::minimumSizeHint() const
+QColor VideoWidget::getFaceColor() const
 {
-    return QSize(50, 35);
+    return this->faceColor;
+}
+
+QList<QRect> VideoWidget::getFaceRects() const
+{
+    return this->faceRects;
 }
 
 void VideoWidget::updateImage(const QImage &image)
@@ -553,6 +583,26 @@ void VideoWidget::btnClicked()
     emit btnClicked(btn->objectName());
 }
 
+void VideoWidget::setVideoWidth(int videoWidth)
+{
+
+}
+
+void VideoWidget::setVideoHeight(int videoHeight)
+{
+
+}
+
+void VideoWidget::setBufferWidth(int bufferWidth)
+{
+
+}
+
+void VideoWidget::setBufferHeight(int bufferHeight)
+{
+
+}
+
 uint VideoWidget::getLength()
 {
     return 0;
@@ -568,12 +618,12 @@ void VideoWidget::setPosition(int position)
 
 }
 
-bool VideoWidget::getMute()
+bool VideoWidget::getMuted()
 {
     return false;
 }
 
-void VideoWidget::setMute(bool mute)
+void VideoWidget::setMuted(bool muted)
 {
 
 }
@@ -613,6 +663,11 @@ void VideoWidget::setUrl(const QString &url)
     this->setProperty("url", url);
 }
 
+void VideoWidget::setCallback(bool callback)
+{
+
+}
+
 void VideoWidget::setHardware(const QString &hardware)
 {
 
@@ -628,6 +683,11 @@ void VideoWidget::setSaveInterval(int saveInterval)
 
 }
 
+void VideoWidget::setFileFlag(const QString &fileFlag)
+{
+
+}
+
 void VideoWidget::setSavePath(const QString &savePath)
 {
     //如果目录不存在则新建
@@ -635,8 +695,6 @@ void VideoWidget::setSavePath(const QString &savePath)
     if (!dir.exists()) {
         dir.mkdir(savePath);
     }
-
-
 }
 
 void VideoWidget::setFileName(const QString &fileName)
@@ -785,6 +843,21 @@ void VideoWidget::setOSD2Position(const VideoWidget::OSDPosition &osdPosition)
     this->osd2Position = osdPosition;
 }
 
+void VideoWidget::setFaceBorder(int faceBorder)
+{
+    this->faceBorder = faceBorder;
+}
+
+void VideoWidget::setFaceColor(const QColor &faceColor)
+{
+    this->faceColor = faceColor;
+}
+
+void VideoWidget::setFaceRects(const QList<QRect> &faceRects)
+{
+    this->faceRects = faceRects;
+}
+
 void VideoWidget::open()
 {
     //qDebug() << TIMEMS << "open video" << objectName();
@@ -823,16 +896,25 @@ void VideoWidget::close()
     QTimer::singleShot(1, this, SLOT(clear()));
 }
 
-void VideoWidget::restart()
+void VideoWidget::restart(int delayOpen)
 {
     //qDebug() << TIMEMS << "restart video" << objectName();
     close();
-    QTimer::singleShot(10, this, SLOT(open()));
+    if (delayOpen > 0) {
+        QTimer::singleShot(delayOpen, this, SLOT(open()));
+    } else {
+        open();
+    }
 }
 
 void VideoWidget::clear()
 {
     image = QImage();
     this->update();
+}
+
+void VideoWidget::snap(const QString &fileName)
+{
+
 }
 

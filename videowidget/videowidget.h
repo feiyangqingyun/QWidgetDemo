@@ -148,6 +148,10 @@ private:
     OSDFormat osd2Format;           //标签2文本格式
     OSDPosition osd2Position;       //标签2位置
 
+    int faceBorder;                 //人脸框粗细
+    QColor faceColor;               //人脸框颜色
+    QList<QRect> faceRects;         //人脸框集合
+
 private:
     //初始化解码线程
     void initThread();
@@ -158,8 +162,14 @@ private:
 
 public:
     QImage getImage()               const;
-    QDateTime getLastTime()         const;
+    QPixmap getPixmap()             const;
     QString getUrl()                const;
+    QDateTime getLastTime()         const;
+
+    bool getCallback()              const;
+    bool getIsPlaying()             const;
+    bool getIsRtsp()                const;
+    bool getIsUsbCamera()           const;
 
     bool getCopyImage()             const;
     bool getCheckLive()             const;
@@ -193,8 +203,9 @@ public:
     OSDFormat getOSD2Format()       const;
     OSDPosition getOSD2Position()   const;
 
-    QSize sizeHint()                const;
-    QSize minimumSizeHint()         const;
+    int getFaceBorder()             const;
+    QColor getFaceColor()           const;
+    QList<QRect> getFaceRects()     const;
 
 private slots:
     //接收图像并绘制
@@ -222,6 +233,16 @@ signals:
     void btnClicked(const QString &objName);
 
 public slots:
+    //设置视频宽度
+    void setVideoWidth(int videoWidth);
+    //设置视频高度
+    void setVideoHeight(int videoHeight);
+
+    //设置缓存图片宽度
+    void setBufferWidth(int bufferWidth);
+    //设置缓存图片高度
+    void setBufferHeight(int bufferHeight);
+
     //获取长度
     uint getLength();
     //获取当前播放位置
@@ -230,9 +251,9 @@ public slots:
     void setPosition(int position);
 
     //获取静音状态
-    bool getMute();
+    bool getMuted();
     //设置静音
-    void setMute(bool mute);
+    void setMuted(bool muted);
 
     //获取音量
     int getVolume();
@@ -247,8 +268,11 @@ public slots:
     void setCheckTime(int checkTime);
     //设置是否检测连接
     void setCheckConn(bool checkConn);
+
     //设置视频流地址
     void setUrl(const QString &url);
+    //设置是否采用回调
+    void setCallback(bool callback);
     //设置硬件解码器名称
     void setHardware(const QString &hardware);
 
@@ -256,6 +280,8 @@ public slots:
     void setSaveFile(bool saveFile);
     //设置保存间隔
     void setSaveInterval(int saveInterval);
+    //设置定时保存文件唯一标识符
+    void setFileFlag(const QString &fileFlag);
     //设置保存文件夹
     void setSavePath(const QString &savePath);
     //设置保存文件名称
@@ -320,6 +346,13 @@ public slots:
     //设置标签2位置
     void setOSD2Position(const OSDPosition &osdPosition);
 
+    //设置人脸框粗细
+    void setFaceBorder(int faceBorder);
+    //设置人脸框颜色
+    void setFaceColor(const QColor &faceColor);
+    //设置人脸框区域集合
+    void setFaceRects(const QList<QRect> &faceRects);
+
     //打开设备
     void open();
     //暂停
@@ -329,10 +362,11 @@ public slots:
     //关闭设备
     void close();
     //重新加载
-    void restart();
+    void restart(int delayOpen = 500);
     //清空
     void clear();
-
+    //快照
+    void snap(const QString &fileName);
 };
 
 #endif // VIDEOWIDGET_H
