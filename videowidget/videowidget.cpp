@@ -673,6 +673,11 @@ void VideoWidget::setHardware(const QString &hardware)
 
 }
 
+void VideoWidget::setTransport(const QString &transport)
+{
+
+}
+
 void VideoWidget::setSaveFile(bool saveFile)
 {
 

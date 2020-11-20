@@ -275,6 +275,8 @@ public slots:
     void setCallback(bool callback);
     //设置硬件解码器名称
     void setHardware(const QString &hardware);
+    //设置通信协议
+    void setTransport(const QString &transport);
 
     //设置是否保存文件
     void setSaveFile(bool saveFile);
