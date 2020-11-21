@@ -6,7 +6,8 @@ MoveWidget::MoveWidget(QObject *parent) : QObject(parent)
 {
     lastPoint = QPoint(0, 0);
     pressed = false;
-    leftButton = true;
+    leftButton = false;
+    rightButton = false;
     inControl = true;
     widget = 0;
 }
@@ -16,8 +17,12 @@ bool MoveWidget::eventFilter(QObject *watched, QEvent *event)
     if (widget != 0 && watched == widget) {
         QMouseEvent *mouseEvent = (QMouseEvent *)event;
         if (mouseEvent->type() == QEvent::MouseButtonPress) {
-            //如果限定了只能鼠标左键拖动则判断当前是否是鼠标左键
-            if (leftButton && mouseEvent->button() != Qt::LeftButton) {
+            //如果鼠标左键和鼠标右键都可以拖动
+            if (leftButton && rightButton) {
+
+            }
+            //如果限定了只能鼠标左键拖动则判断当前是否是鼠标左键,如果限定了只能鼠标右键拖动则判断当前是否是鼠标右键
+            else if ((leftButton && mouseEvent->button() != Qt::LeftButton) || (rightButton && mouseEvent->button() != Qt::RightButton)) {
                 return false;
             }
 
@@ -66,6 +71,11 @@ void MoveWidget::setWidget(QWidget *widget)
 void MoveWidget::setLeftButton(bool leftButton)
 {
     this->leftButton = leftButton;
+}
+
+void MoveWidget::setRightButton(bool rightButton)
+{
+    this->rightButton = rightButton;
 }
 
 void MoveWidget::setInControl(bool inControl)
