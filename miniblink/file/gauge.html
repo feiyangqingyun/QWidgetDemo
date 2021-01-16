@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ECharts</title>
+  <script src="echarts.min.js"></script>
+</head>
+<body>
+<div id="main" style="height:500px;"></div>
+<script type="text/javascript">        
+  var myChart = echarts.init(document.getElementById('main'));
+  function setGaugeValue(value){
+    var option = {
+    tooltip : {
+        formatter: "{a} <br/>{b} : {c}%"
+    },
+    toolbox: {
+        feature: {
+            restore: {},
+            saveAsImage: {}
+        }
+    },
+    series: [
+        {
+            name: '业务指标',
+            type: 'gauge',
+            detail: {formatter:'{value}%'},
+            data: [{value: value, name: '完成率'}]
+        }
+    ]
+    };
+    myChart.setOption(option);
+  }
+  window.onresize = myChart.resize;
+  setGaugeValue(68);
+</script>
+</body>
+</html>

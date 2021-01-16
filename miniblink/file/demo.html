@@ -1,0 +1,18 @@
+﻿<html>
+<head>
+<script>            
+function onClicked() {
+  //alert('hello');
+  document.getElementById('label').innerHTML = '确实不错哦';
+  objName_receiveData('type','data');
+}            
+</script>
+</head>
+
+<body>
+<h1>Hello World</h1>
+<p>Hello World</p>
+<label id='label'>今天天气真棒</label>
+<input type="button" value="发送数据给Qt" onclick="onClicked()" />
+</body>
+</html>
