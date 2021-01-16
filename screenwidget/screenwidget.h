@@ -3,9 +3,9 @@
 
 /**
  * 全局截屏控件 作者:feiyangqingyun(QQ:517216493) 2016-11-11
- * 1:支持鼠标右键选择菜单
- * 2:支持全局截屏和局部截屏
- * 3:支持图片另存为
+ * 1. 支持鼠标右键选择菜单
+ * 2. 支持全局截屏和局部截屏
+ * 3. 支持图片另存为
  */
 
 #include <QWidget>
@@ -46,13 +46,7 @@ private:
 };
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT ScreenWidget : public QWidget
+class Q_DECL_EXPORT ScreenWidget : public QWidget
 #else
 class ScreenWidget : public QWidget
 #endif

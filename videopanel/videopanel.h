@@ -3,7 +3,7 @@
 
 /**
  * 视频监控画面控件 整理:feiyangqingyun(QQ:517216493) 2019-4-11
- * 1:目前颜色都写死在样式表,可自行更改或者拓展属性设置
+ * 1. 目前颜色都写死在样式表,可自行更改或者拓展属性设置
  */
 
 #include <QWidget>
@@ -13,13 +13,7 @@ class QLabel;
 class QGridLayout;
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT VideoPanel : public QWidget
+class Q_DECL_EXPORT VideoPanel : public QWidget
 #else
 class VideoPanel : public QWidget
 #endif
@@ -73,9 +67,12 @@ private slots:
     void hide_video_all();
     void change_video(int index, int flag);
     void change_video_4(int index);
+    void change_video_6(const QList<int> &indexs);
     void change_video_6(int index);
+    void change_video_8(const QList<int> &indexs);
     void change_video_8(int index);
     void change_video_9(int index);
+    void change_video_13(const QList<int> &indexs);
     void change_video_13(int index);
     void change_video_16(int index);
     void change_video_25(int index);

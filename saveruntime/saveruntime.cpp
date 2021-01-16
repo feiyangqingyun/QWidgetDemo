@@ -5,7 +5,6 @@
 #include "qfile.h"
 #include "qtextstream.h"
 #include "qstringlist.h"
-#include "qdebug.h"
 
 #ifdef Q_OS_WIN
 #define NEWLINE "\r\n"
@@ -37,6 +36,7 @@ SaveRunTime::SaveRunTime(QObject *parent) : QObject(parent)
     saveInterval = 1 * 60 * 1000;
     startTime = QDateTime::currentDateTime();
 
+    //存储运行时间定时器
     timerSave = new QTimer(this);
     timerSave->setInterval(saveInterval);
     connect(timerSave, SIGNAL(timeout()), this, SLOT(saveLog()));
@@ -44,6 +44,9 @@ SaveRunTime::SaveRunTime(QObject *parent) : QObject(parent)
 
 void SaveRunTime::start()
 {
+    //开始时间变量必须在这,在部分嵌入式系统上开机后的时间不准确比如是1970,而后会变成1999或者其他时间
+    //会在getDiffValue函数执行很久很久
+    startTime = QDateTime::currentDateTime();
     timerSave->start();
 
     initLog();
@@ -104,19 +107,16 @@ void SaveRunTime::initLog()
             QTextStream stream(&file);
             stream << line << NEWLINE;
             file.close();
-
             lastID = 0;
         }
     } else {
         if (file.open(QFile::ReadOnly)) {
             QString lastLine;
-
             while (!file.atEnd()) {
                 lastLine = file.readLine();
             }
 
             file.close();
-
             QStringList list = lastLine.split("\t");
             lastID = list.at(0).toInt();
         }
@@ -169,7 +169,6 @@ void SaveRunTime::saveLog()
 
         //重新清空文件
         file.resize(0);
-
         //如果行数小于2则返回
         if (content.count() < 2) {
             file.close();

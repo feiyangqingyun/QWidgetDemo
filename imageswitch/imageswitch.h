@@ -3,20 +3,14 @@
 
 /**
  * 图片开关控件 作者:feiyangqingyun(QQ:517216493) 2016-11-25
- * 1:自带三种开关按钮样式
- * 2:可自定义开关图片
+ * 1. 自带三种开关按钮样式
+ * 2. 可自定义开关图片
  */
 
 #include <QWidget>
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT ImageSwitch : public QWidget
+class Q_DECL_EXPORT ImageSwitch : public QWidget
 #else
 class ImageSwitch : public QWidget
 #endif

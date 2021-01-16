@@ -31,10 +31,5 @@
         <file>image/btn_defence_error_msg2.png</file>
         <file>image/btn_defence_error_police.png</file>
         <file>image/bg_call.jpg</file>
-        <file>image/btn_defence_alarm_custom.png</file>
-        <file>image/btn_defence_arming_custom.png</file>
-        <file>image/btn_defence_bypass_custom.png</file>
-        <file>image/btn_defence_disarming_custom.png</file>
-        <file>image/btn_defence_error_custom.png</file>
     </qresource>
 </RCC>

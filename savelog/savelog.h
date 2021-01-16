@@ -8,13 +8,7 @@ class QTcpSocket;
 class QTcpServer;
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT SaveLog : public QObject
+class Q_DECL_EXPORT SaveLog : public QObject
 #else
 class SaveLog : public QObject
 #endif

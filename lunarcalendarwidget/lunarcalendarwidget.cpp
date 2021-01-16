@@ -159,7 +159,7 @@ void LunarCalendarWidget::initWidget()
 
     //星期布局
     QHBoxLayout *layoutWeek = new QHBoxLayout(widgetWeek);
-    layoutWeek->setMargin(0);
+    layoutWeek->setContentsMargins(0, 0, 0, 0);
     layoutWeek->setSpacing(0);
 
     for (int i = 0; i < 7; i++) {
@@ -177,7 +177,7 @@ void LunarCalendarWidget::initWidget()
 
     //日期标签布局
     QGridLayout *layoutBody = new QGridLayout(widgetBody);
-    layoutBody->setMargin(1);
+    layoutBody->setContentsMargins(1, 1, 1, 1);
     layoutBody->setHorizontalSpacing(0);
     layoutBody->setVerticalSpacing(0);
 
@@ -191,7 +191,7 @@ void LunarCalendarWidget::initWidget()
 
     //主布局
     QVBoxLayout *verLayoutCalendar = new QVBoxLayout(this);
-    verLayoutCalendar->setMargin(0);
+    verLayoutCalendar->setContentsMargins(0, 0, 0, 0);
     verLayoutCalendar->setSpacing(0);
     verLayoutCalendar->addWidget(widgetTop);
     verLayoutCalendar->addWidget(widgetWeek);

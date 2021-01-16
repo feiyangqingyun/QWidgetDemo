@@ -71,33 +71,33 @@ class QUIWidget : public QDialog
 public:
     //将部分对象作为枚举值暴露给外部
     enum Widget {
-        Lab_Ico = 0,                //左上角图标
-        BtnMenu = 1,                //下拉菜单按钮
-        BtnMenu_Min = 2,            //最小化按钮
-        BtnMenu_Max = 3,            //最大化按钮
-        BtnMenu_Normal = 4,         //还原按钮
-        BtnMenu_Close = 5           //关闭按钮
+        Lab_Ico = 0,            //左上角图标
+        BtnMenu = 1,            //下拉菜单按钮
+        BtnMenu_Min = 2,        //最小化按钮
+        BtnMenu_Max = 3,        //最大化按钮
+        BtnMenu_Normal = 4,     //还原按钮
+        BtnMenu_Close = 5       //关闭按钮
     };
 
     //样式枚举
     enum Style {
-        Style_Silvery = 0,          //银色样式
-        Style_Blue = 1,             //蓝色样式
-        Style_LightBlue = 2,        //淡蓝色样式
-        Style_DarkBlue = 3,         //深蓝色样式
-        Style_Gray = 4,             //灰色样式
-        Style_LightGray = 5,        //浅灰色样式
-        Style_DarkGray = 6,         //深灰色样式
-        Style_Black = 7,            //黑色样式
-        Style_LightBlack = 8,       //浅黑色样式
-        Style_DarkBlack = 9,        //深黑色样式
-        Style_PSBlack = 10,         //PS黑色样式
-        Style_FlatBlack = 11,       //黑色扁平样式
-        Style_FlatWhite = 12,       //白色扁平样式
-        Style_FlatBlue = 13,        //蓝色扁平样式
-        Style_Purple = 14,          //紫色样式
-        Style_BlackBlue = 15,       //黑蓝色样式
-        Style_BlackVideo = 16       //视频监控黑色样式
+        Style_Silvery = 0,      //银色样式
+        Style_Blue = 1,         //蓝色样式
+        Style_LightBlue = 2,    //淡蓝色样式
+        Style_DarkBlue = 3,     //深蓝色样式
+        Style_Gray = 4,         //灰色样式
+        Style_LightGray = 5,    //浅灰色样式
+        Style_DarkGray = 6,     //深灰色样式
+        Style_Black = 7,        //黑色样式
+        Style_LightBlack = 8,   //浅黑色样式
+        Style_DarkBlack = 9,    //深黑色样式
+        Style_PSBlack = 10,     //PS黑色样式
+        Style_FlatBlack = 11,   //黑色扁平样式
+        Style_FlatWhite = 12,   //白色扁平样式
+        Style_FlatBlue = 13,    //蓝色扁平样式
+        Style_Purple = 14,      //紫色样式
+        Style_BlackBlue = 15,   //黑蓝色样式
+        Style_BlackVideo = 16   //视频监控黑色样式
     };
 
 public:
@@ -125,11 +125,11 @@ private:
     QVBoxLayout *verticalLayout3;
 
 private:
-    QString title;                  //标题
-    Qt::Alignment alignment;        //标题文本对齐
-    bool minHide;                   //最小化隐藏
-    bool exitAll;                   //退出整个程序
-    QWidget *mainWidget;            //主窗体对象
+    QString title;          //标题
+    Qt::Alignment alignment;//标题文本对齐
+    bool minHide;           //最小化隐藏
+    bool exitAll;           //退出整个程序
+    QWidget *mainWidget;    //主窗体对象
 
 public:
     QLabel *getLabIco()             const;
@@ -148,9 +148,9 @@ public:
     QSize minimumSizeHint()         const;
 
 private slots:
-    void initControl();             //初始化控件
-    void initForm();                //初始化窗体
-    void changeStyle();             //更换样式
+    void initControl(); //初始化控件
+    void initForm();    //初始化窗体
+    void changeStyle(); //更换样式
 
 private slots:
     void on_btnMenu_Min_clicked();
@@ -202,6 +202,7 @@ public:
     ~QUIMessageBox();
 
 protected:
+    void showEvent(QShowEvent *);
     void closeEvent(QCloseEvent *);
     bool eventFilter(QObject *watched, QEvent *event);
 
@@ -213,7 +214,7 @@ private:
     QHBoxLayout *horizontalLayout3;
     QLabel *labIco;
     QLabel *labTitle;
-    QLabel *labTime;
+    QLabel *labCountDown;
     QWidget *widgetMenu;
     QHBoxLayout *horizontalLayout4;
     QPushButton *btnMenu_Close;
@@ -231,13 +232,13 @@ private:
     QPushButton *btnCancel;
 
 private:
-    int closeSec;                   //总显示时间
-    int currentSec;                 //当前已显示时间
+    int closeSec;       //总显示时间
+    int currentSec;     //当前已显示时间
 
 private slots:
-    void initControl();             //初始化控件
-    void initForm();                //初始化窗体
-    void checkSec();                //校验倒计时
+    void initControl(); //初始化控件
+    void initForm();    //初始化窗体
+    void checkSec();    //校验倒计时
 
 private slots:
     void on_btnOk_clicked();
@@ -245,6 +246,7 @@ private slots:
 
 public Q_SLOTS:
     void setIconMain(const QChar &str, quint32 size = 12);
+    void setIconMsg(const QString &png, const QChar &str);
     void setMessage(const QString &msg, int type, int closeSec = 0);
 };
 
@@ -259,6 +261,7 @@ public:
     ~QUITipBox();
 
 protected:
+    void showEvent(QShowEvent *);
     void closeEvent(QCloseEvent *);
     bool eventFilter(QObject *watched, QEvent *event);
 
@@ -270,7 +273,7 @@ private:
     QHBoxLayout *horizontalLayout2;
     QLabel *labIco;
     QLabel *labTitle;
-    QLabel *labTime;
+    QLabel *labCountDown;
     QWidget *widgetMenu;
     QHBoxLayout *horizontalLayout;
     QPushButton *btnMenu_Close;
@@ -282,13 +285,13 @@ private:
     bool fullScreen;
 
 private:
-    int closeSec;                   //总显示时间
-    int currentSec;                 //当前已显示时间
+    int closeSec;       //总显示时间
+    int currentSec;     //当前已显示时间
 
 private slots:
-    void initControl();             //初始化控件
-    void initForm();                //初始化窗体
-    void checkSec();                //校验倒计时
+    void initControl(); //初始化控件
+    void initForm();    //初始化窗体
+    void checkSec();    //校验倒计时
 
 private slots:
     void on_btnMenu_Close_clicked();
@@ -323,7 +326,7 @@ private:
     QHBoxLayout *horizontalLayout1;
     QLabel *labIco;
     QLabel *labTitle;
-    QLabel *labTime;
+    QLabel *labCountDown;
     QWidget *widgetMenu;
     QHBoxLayout *horizontalLayout2;
     QPushButton *btnMenu_Close;
@@ -340,14 +343,14 @@ private:
     QPushButton *btnCancel;
 
 private:
-    int closeSec;                   //总显示时间
-    int currentSec;                 //当前已显示时间
-    QString value;                  //当前值
+    int closeSec;       //总显示时间
+    int currentSec;     //当前已显示时间
+    QString value;      //当前值
 
 private slots:
-    void initControl();             //初始化控件
-    void initForm();                //初始化窗体
-    void checkSec();                //校验倒计时
+    void initControl(); //初始化控件
+    void initForm();    //初始化窗体
+    void checkSec();    //校验倒计时
 
 private slots:
     void on_btnOk_clicked();
@@ -375,6 +378,7 @@ public:
     ~QUIDateSelect();
 
 protected:
+    void showEvent(QShowEvent *);
     bool eventFilter(QObject *watched, QEvent *event);
 
 private:
@@ -400,13 +404,13 @@ private:
     QDateTimeEdit *dateEnd;
 
 private:
-    QString startDateTime;          //开始时间
-    QString endDateTime;            //结束时间
-    QString format;                 //日期时间格式
+    QString startDateTime;  //开始时间
+    QString endDateTime;    //结束时间
+    QString format;         //日期时间格式
 
 private slots:
-    void initControl();             //初始化控件
-    void initForm();                //初始化窗体
+    void initControl();     //初始化控件
+    void initForm();        //初始化窗体
 
 private slots:
     void on_btnOk_clicked();
@@ -595,6 +599,9 @@ public:
     //初始化文件,不存在则拷贝
     static void initFile(const QString &sourceName, const QString &targetName);
 
+    //设置图标到按钮
+    static void setIconBtn(QAbstractButton *btn, const QString &png, const QChar &str);
+
     //新建目录
     static void newDir(const QString &dirName);
 
@@ -652,6 +659,10 @@ public:
     static bool isTel(const QString &tel);
     //判断是否是合法的邮箱地址
     static bool isEmail(const QString &email);
+
+    //IP地址字符串与整型转换
+    static QString ipv4IntToString(quint32 ip);
+    static quint32 ipv4StringToInt(const QString &ip);
 
     //16进制字符串转10进制
     static int strHexToDecimal(const QString &strHex);
@@ -755,7 +766,9 @@ public:
     static bool isWebOk();
 
     //初始化表格
-    static void initTableView(QTableView *tableView, int rowHeight = 25, bool headVisible = false, bool edit = false);
+    static void initTableView(QTableView *tableView, int rowHeight = 25,
+                              bool headVisible = false, bool edit = false,
+                              bool stretchLast = true);
 
     //弹出框
     static int showMessageBox(const QString &info, int type = 0, int closeSec = 0, bool exec = false);

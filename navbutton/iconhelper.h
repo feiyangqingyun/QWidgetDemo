@@ -7,8 +7,12 @@
 #include <QtWidgets>
 #endif
 
-//图形字体处理类
+#ifdef quc
+class Q_DECL_EXPORT IconHelper : public QObject
+#else
 class IconHelper : public QObject
+#endif
+
 {
     Q_OBJECT
 

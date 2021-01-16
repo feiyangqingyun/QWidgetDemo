@@ -9,13 +9,7 @@ class QLabel;
 class QLineEdit;
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT ColorWidget : public QWidget
+class Q_DECL_EXPORT ColorWidget : public QWidget
 #else
 class ColorWidget : public QWidget
 #endif

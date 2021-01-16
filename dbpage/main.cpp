@@ -2,6 +2,7 @@
 #include "qapplication.h"
 #include "qtextcodec.h"
 #include "qsqldatabase.h"
+#include "qsqlquery.h"
 #include "qdebug.h"
 
 int main(int argc, char *argv[])

@@ -3,11 +3,11 @@
 
 /**
  * GIF录屏控件 作者:feiyangqingyun(QQ:517216493) 2019-4-3
- * 1:可设置要录制屏幕的宽高,支持右下角直接拉动改变.
- * 2:可设置变宽的宽度
- * 3:可设置录屏控件的背景颜色
- * 4:可设置录制的帧数
- * 5:录制区域可自由拖动选择
+ * 1. 可设置要录制屏幕的宽高,支持右下角直接拉动改变.
+ * 2. 可设置变宽的宽度
+ * 3. 可设置录屏控件的背景颜色
+ * 4. 可设置录制的帧数
+ * 5. 录制区域可自由拖动选择
  */
 
 #include <QDialog>
@@ -17,13 +17,7 @@ class QLineEdit;
 class QLabel;
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT GifWidget : public QDialog
+class Q_DECL_EXPORT GifWidget : public QDialog
 #else
 class GifWidget : public QDialog
 #endif

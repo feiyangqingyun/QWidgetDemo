@@ -528,6 +528,11 @@ QUIMessageBox::~QUIMessageBox()
     delete widgetMain;
 }
 
+void QUIMessageBox::showEvent(QShowEvent *)
+{
+    this->activateWindow();
+}
+
 void QUIMessageBox::closeEvent(QCloseEvent *)
 {
     closeSec = 0;
@@ -567,6 +572,7 @@ void QUIMessageBox::initControl()
     verticalLayout1->setSpacing(0);
     verticalLayout1->setObjectName(QString::fromUtf8("verticalLayout1"));
     verticalLayout1->setContentsMargins(1, 1, 1, 1);
+
     widgetTitle = new QWidget(this);
     widgetTitle->setObjectName(QString::fromUtf8("widgetTitle"));
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -574,10 +580,12 @@ void QUIMessageBox::initControl()
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(widgetTitle->sizePolicy().hasHeightForWidth());
     widgetTitle->setSizePolicy(sizePolicy);
+
     horizontalLayout3 = new QHBoxLayout(widgetTitle);
     horizontalLayout3->setSpacing(0);
     horizontalLayout3->setObjectName(QString::fromUtf8("horizontalLayout3"));
     horizontalLayout3->setContentsMargins(0, 0, 0, 0);
+
     labIco = new QLabel(widgetTitle);
     labIco->setObjectName(QString::fromUtf8("labIco"));
     QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
@@ -586,34 +594,33 @@ void QUIMessageBox::initControl()
     sizePolicy1.setHeightForWidth(labIco->sizePolicy().hasHeightForWidth());
     labIco->setSizePolicy(sizePolicy1);
     labIco->setAlignment(Qt::AlignCenter);
-
     horizontalLayout3->addWidget(labIco);
 
     labTitle = new QLabel(widgetTitle);
     labTitle->setObjectName(QString::fromUtf8("labTitle"));
     labTitle->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
-
     horizontalLayout3->addWidget(labTitle);
 
-    labTime = new QLabel(widgetTitle);
-    labTime->setObjectName(QString::fromUtf8("labTime"));
+    labCountDown = new QLabel(widgetTitle);
+    labCountDown->setObjectName(QString::fromUtf8("labCountDown"));
     QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(0);
     sizePolicy2.setVerticalStretch(0);
-    sizePolicy2.setHeightForWidth(labTime->sizePolicy().hasHeightForWidth());
-    labTime->setSizePolicy(sizePolicy2);
-    labTime->setAlignment(Qt::AlignCenter);
-
-    horizontalLayout3->addWidget(labTime);
+    sizePolicy2.setHeightForWidth(labCountDown->sizePolicy().hasHeightForWidth());
+    labCountDown->setSizePolicy(sizePolicy2);
+    labCountDown->setAlignment(Qt::AlignCenter);
+    horizontalLayout3->addWidget(labCountDown);
 
     widgetMenu = new QWidget(widgetTitle);
     widgetMenu->setObjectName(QString::fromUtf8("widgetMenu"));
     sizePolicy1.setHeightForWidth(widgetMenu->sizePolicy().hasHeightForWidth());
     widgetMenu->setSizePolicy(sizePolicy1);
+
     horizontalLayout4 = new QHBoxLayout(widgetMenu);
     horizontalLayout4->setSpacing(0);
     horizontalLayout4->setObjectName(QString::fromUtf8("horizontalLayout4"));
     horizontalLayout4->setContentsMargins(0, 0, 0, 0);
+
     btnMenu_Close = new QPushButton(widgetMenu);
     btnMenu_Close->setObjectName(QString::fromUtf8("btnMenu_Close"));
     QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -631,22 +638,27 @@ void QUIMessageBox::initControl()
 
     widgetMain = new QWidget(this);
     widgetMain->setObjectName(QString::fromUtf8("widgetMainQUI"));
+
     verticalLayout2 = new QVBoxLayout(widgetMain);
     verticalLayout2->setSpacing(5);
     verticalLayout2->setObjectName(QString::fromUtf8("verticalLayout2"));
     verticalLayout2->setContentsMargins(5, 5, 5, 5);
+
     frame = new QFrame(widgetMain);
     frame->setObjectName(QString::fromUtf8("frame"));
     frame->setFrameShape(QFrame::Box);
     frame->setFrameShadow(QFrame::Sunken);
-    verticalLayout4 = new QVBoxLayout(frame);
-    verticalLayout4->setObjectName(QString::fromUtf8("verticalLayout4"));
-    verticalLayout4->setContentsMargins(-1, 9, -1, -1);
-    horizontalLayout1 = new QHBoxLayout();
-    horizontalLayout1->setObjectName(QString::fromUtf8("horizontalLayout1"));
+
     labIcoMain = new QLabel(frame);
     labIcoMain->setObjectName(QString::fromUtf8("labIcoMain"));
     labIcoMain->setAlignment(Qt::AlignCenter);
+
+    verticalLayout4 = new QVBoxLayout(frame);
+    verticalLayout4->setObjectName(QString::fromUtf8("verticalLayout4"));
+    verticalLayout4->setContentsMargins(-1, 9, -1, -1);
+
+    horizontalLayout1 = new QHBoxLayout();
+    horizontalLayout1->setObjectName(QString::fromUtf8("horizontalLayout1"));
     horizontalLayout1->addWidget(labIcoMain);
     horizontalSpacer1 = new QSpacerItem(5, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
     horizontalLayout1->addItem(horizontalSpacer1);
@@ -673,14 +685,13 @@ void QUIMessageBox::initControl()
     btnOk->setObjectName(QString::fromUtf8("btnOk"));
     btnOk->setMinimumSize(QSize(85, 0));
     btnOk->setFocusPolicy(Qt::StrongFocus);
-    btnOk->setIcon(QIcon(":/image/btn_ok.png"));
     horizontalLayout2->addWidget(btnOk);
+    btnOk->setDefault(true);
 
     btnCancel = new QPushButton(frame);
     btnCancel->setObjectName(QString::fromUtf8("btnCancel"));
     btnCancel->setMinimumSize(QSize(85, 0));
     btnCancel->setFocusPolicy(Qt::StrongFocus);
-    btnCancel->setIcon(QIcon(":/image/btn_close.png"));
     horizontalLayout2->addWidget(btnCancel);
 
     verticalLayout4->addLayout(horizontalLayout2);
@@ -693,6 +704,8 @@ void QUIMessageBox::initControl()
 
     btnOk->setText("确定");
     btnCancel->setText("取消");
+    QUIHelper::setIconBtn(btnOk, ":/image/btn_ok.png", 0xf00c);
+    QUIHelper::setIconBtn(btnCancel, ":/image/btn_close.png", 0xf00d);
 
     connect(btnOk, SIGNAL(clicked()), this, SLOT(on_btnOk_clicked()));
     connect(btnCancel, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
@@ -746,7 +759,7 @@ void QUIMessageBox::checkSec()
     }
 
     QString str = QString("关闭倒计时 %1 s").arg(closeSec - currentSec + 1);
-    this->labTime->setText(str);
+    this->labCountDown->setText(str);
 }
 
 void QUIMessageBox::on_btnOk_clicked()
@@ -766,40 +779,33 @@ void QUIMessageBox::setIconMain(const QChar &str, quint32 size)
     IconHelper::Instance()->setIcon(this->labIco, str, size);
 }
 
+void QUIMessageBox::setIconMsg(const QString &png, const QChar &str)
+{
+    //图片存在则取图片,不存在则取图形字体
+    int size = this->labIcoMain->size().height();
+    if (QImage(png).isNull()) {
+        IconHelper::Instance()->setIcon(this->labIcoMain, str, size);
+    } else {
+        this->labIcoMain->setStyleSheet(QString("border-image:url(%1);").arg(png));
+    }
+}
+
 void QUIMessageBox::setMessage(const QString &msg, int type, int closeSec)
 {
     this->closeSec = closeSec;
     this->currentSec = 0;
-    this->labTime->clear();
+    this->labCountDown->clear();
     checkSec();
 
-    //图片存在则取图片,不存在则取图形字体
-    int size = this->labIcoMain->size().height();
-    bool exist = !QImage(":/image/msg_info.png").isNull();
     if (type == 0) {
-        if (exist) {
-            this->labIcoMain->setStyleSheet("border-image: url(:/image/msg_info.png);");
-        } else {
-            IconHelper::Instance()->setIcon(this->labIcoMain, 0xf05a, size);
-        }
-
+        setIconMsg(":/image/msg_info.png", 0xf05a);
         this->btnCancel->setVisible(false);
         this->labTitle->setText("提示");
     } else if (type == 1) {
-        if (exist) {
-            this->labIcoMain->setStyleSheet("border-image: url(:/image/msg_question.png);");
-        } else {
-            IconHelper::Instance()->setIcon(this->labIcoMain, 0xf059, size);
-        }
-
+        setIconMsg(":/image/msg_question.png", 0xf059);
         this->labTitle->setText("询问");
     } else if (type == 2) {
-        if (exist) {
-            this->labIcoMain->setStyleSheet("border-image: url(:/image/msg_error.png);");
-        } else {
-            IconHelper::Instance()->setIcon(this->labIcoMain, 0xf057, size);
-        }
-
+        setIconMsg(":/image/msg_error.png", 0xf057);
         this->btnCancel->setVisible(false);
         this->labTitle->setText("错误");
     }
@@ -841,6 +847,11 @@ QUITipBox::~QUITipBox()
     delete widgetMain;
 }
 
+void QUITipBox::showEvent(QShowEvent *)
+{
+    this->activateWindow();
+}
+
 void QUITipBox::closeEvent(QCloseEvent *)
 {
     closeSec = 0;
@@ -880,6 +891,7 @@ void QUITipBox::initControl()
     verticalLayout->setSpacing(0);
     verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
     verticalLayout->setContentsMargins(1, 1, 1, 1);
+
     widgetTitle = new QWidget(this);
     widgetTitle->setObjectName(QString::fromUtf8("widgetTitle"));
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -887,10 +899,12 @@ void QUITipBox::initControl()
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(widgetTitle->sizePolicy().hasHeightForWidth());
     widgetTitle->setSizePolicy(sizePolicy);
+
     horizontalLayout2 = new QHBoxLayout(widgetTitle);
     horizontalLayout2->setSpacing(0);
     horizontalLayout2->setObjectName(QString::fromUtf8("horizontalLayout2"));
     horizontalLayout2->setContentsMargins(0, 0, 0, 0);
+
     labIco = new QLabel(widgetTitle);
     labIco->setObjectName(QString::fromUtf8("labIco"));
     labIco->setAlignment(Qt::AlignCenter);
@@ -901,15 +915,15 @@ void QUITipBox::initControl()
     labTitle->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
     horizontalLayout2->addWidget(labTitle);
 
-    labTime = new QLabel(widgetTitle);
-    labTime->setObjectName(QString::fromUtf8("labTime"));
+    labCountDown = new QLabel(widgetTitle);
+    labCountDown->setObjectName(QString::fromUtf8("labCountDown"));
     QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Preferred);
     sizePolicy1.setHorizontalStretch(0);
     sizePolicy1.setVerticalStretch(0);
-    sizePolicy1.setHeightForWidth(labTime->sizePolicy().hasHeightForWidth());
-    labTime->setSizePolicy(sizePolicy1);
-    labTime->setAlignment(Qt::AlignCenter);
-    horizontalLayout2->addWidget(labTime);
+    sizePolicy1.setHeightForWidth(labCountDown->sizePolicy().hasHeightForWidth());
+    labCountDown->setSizePolicy(sizePolicy1);
+    labCountDown->setAlignment(Qt::AlignCenter);
+    horizontalLayout2->addWidget(labCountDown);
 
     widgetMenu = new QWidget(widgetTitle);
     widgetMenu->setObjectName(QString::fromUtf8("widgetMenu"));
@@ -918,10 +932,12 @@ void QUITipBox::initControl()
     sizePolicy2.setVerticalStretch(0);
     sizePolicy2.setHeightForWidth(widgetMenu->sizePolicy().hasHeightForWidth());
     widgetMenu->setSizePolicy(sizePolicy2);
+
     horizontalLayout = new QHBoxLayout(widgetMenu);
     horizontalLayout->setSpacing(0);
     horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
+
     btnMenu_Close = new QPushButton(widgetMenu);
     btnMenu_Close->setObjectName(QString::fromUtf8("btnMenu_Close"));
     QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -940,11 +956,14 @@ void QUITipBox::initControl()
     widgetMain = new QWidget(this);
     widgetMain->setObjectName(QString::fromUtf8("widgetMainQUI"));
     widgetMain->setAutoFillBackground(true);
-    verticalLayout2 = new QVBoxLayout(widgetMain);
-    verticalLayout2->setObjectName(QString::fromUtf8("verticalLayout2"));
+
     labInfo = new QLabel(widgetMain);
     labInfo->setObjectName(QString::fromUtf8("labInfo"));
     labInfo->setScaledContents(true);
+    labInfo->setWordWrap(true);
+
+    verticalLayout2 = new QVBoxLayout(widgetMain);
+    verticalLayout2->setObjectName(QString::fromUtf8("verticalLayout2"));
     verticalLayout2->addWidget(labInfo);
     verticalLayout->addWidget(widgetMain);
 
@@ -997,7 +1016,7 @@ void QUITipBox::checkSec()
     }
 
     QString str = QString("关闭倒计时 %1 s").arg(closeSec - currentSec + 1);
-    this->labTime->setText(str);
+    this->labCountDown->setText(str);
 }
 
 void QUITipBox::on_btnMenu_Close_clicked()
@@ -1015,7 +1034,7 @@ void QUITipBox::setTip(const QString &title, const QString &tip, bool fullScreen
 {
     this->closeSec = closeSec;
     this->currentSec = 0;
-    this->labTime->clear();
+    this->labCountDown->clear();
     checkSec();
 
     this->fullScreen = fullScreen;
@@ -1096,6 +1115,7 @@ void QUIInputBox::initControl()
     verticalLayout1->setSpacing(0);
     verticalLayout1->setObjectName(QString::fromUtf8("verticalLayout1"));
     verticalLayout1->setContentsMargins(1, 1, 1, 1);
+
     widgetTitle = new QWidget(this);
     widgetTitle->setObjectName(QString::fromUtf8("widgetTitle"));
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -1103,10 +1123,12 @@ void QUIInputBox::initControl()
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(widgetTitle->sizePolicy().hasHeightForWidth());
     widgetTitle->setSizePolicy(sizePolicy);
+
     horizontalLayout1 = new QHBoxLayout(widgetTitle);
     horizontalLayout1->setSpacing(0);
     horizontalLayout1->setObjectName(QString::fromUtf8("horizontalLayout1"));
     horizontalLayout1->setContentsMargins(0, 0, 0, 0);
+
     labIco = new QLabel(widgetTitle);
     labIco->setObjectName(QString::fromUtf8("labIco"));
     QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
@@ -1115,34 +1137,33 @@ void QUIInputBox::initControl()
     sizePolicy1.setHeightForWidth(labIco->sizePolicy().hasHeightForWidth());
     labIco->setSizePolicy(sizePolicy1);
     labIco->setAlignment(Qt::AlignCenter);
-
     horizontalLayout1->addWidget(labIco);
 
     labTitle = new QLabel(widgetTitle);
     labTitle->setObjectName(QString::fromUtf8("labTitle"));
     labTitle->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
-
     horizontalLayout1->addWidget(labTitle);
 
-    labTime = new QLabel(widgetTitle);
-    labTime->setObjectName(QString::fromUtf8("labTime"));
+    labCountDown = new QLabel(widgetTitle);
+    labCountDown->setObjectName(QString::fromUtf8("labCountDown"));
     QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(0);
     sizePolicy2.setVerticalStretch(0);
-    sizePolicy2.setHeightForWidth(labTime->sizePolicy().hasHeightForWidth());
-    labTime->setSizePolicy(sizePolicy2);
-    labTime->setAlignment(Qt::AlignCenter);
-
-    horizontalLayout1->addWidget(labTime);
+    sizePolicy2.setHeightForWidth(labCountDown->sizePolicy().hasHeightForWidth());
+    labCountDown->setSizePolicy(sizePolicy2);
+    labCountDown->setAlignment(Qt::AlignCenter);
+    horizontalLayout1->addWidget(labCountDown);
 
     widgetMenu = new QWidget(widgetTitle);
     widgetMenu->setObjectName(QString::fromUtf8("widgetMenu"));
     sizePolicy1.setHeightForWidth(widgetMenu->sizePolicy().hasHeightForWidth());
     widgetMenu->setSizePolicy(sizePolicy1);
+
     horizontalLayout2 = new QHBoxLayout(widgetMenu);
     horizontalLayout2->setSpacing(0);
     horizontalLayout2->setObjectName(QString::fromUtf8("horizontalLayout2"));
     horizontalLayout2->setContentsMargins(0, 0, 0, 0);
+
     btnMenu_Close = new QPushButton(widgetMenu);
     btnMenu_Close->setObjectName(QString::fromUtf8("btnMenu_Close"));
     QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -1160,20 +1181,24 @@ void QUIInputBox::initControl()
 
     widgetMain = new QWidget(this);
     widgetMain->setObjectName(QString::fromUtf8("widgetMainQUI"));
+
     verticalLayout2 = new QVBoxLayout(widgetMain);
     verticalLayout2->setSpacing(5);
     verticalLayout2->setObjectName(QString::fromUtf8("verticalLayout2"));
     verticalLayout2->setContentsMargins(5, 5, 5, 5);
+
     frame = new QFrame(widgetMain);
     frame->setObjectName(QString::fromUtf8("frame"));
     frame->setFrameShape(QFrame::Box);
     frame->setFrameShadow(QFrame::Sunken);
-    verticalLayout3 = new QVBoxLayout(frame);
-    verticalLayout3->setObjectName(QString::fromUtf8("verticalLayout3"));
+
     labInfo = new QLabel(frame);
     labInfo->setObjectName(QString::fromUtf8("labInfo"));
     labInfo->setScaledContents(false);
     labInfo->setWordWrap(true);
+
+    verticalLayout3 = new QVBoxLayout(frame);
+    verticalLayout3->setObjectName(QString::fromUtf8("verticalLayout3"));
     verticalLayout3->addWidget(labInfo);
 
     txtValue = new QLineEdit(frame);
@@ -1192,13 +1217,12 @@ void QUIInputBox::initControl()
     btnOk = new QPushButton(frame);
     btnOk->setObjectName(QString::fromUtf8("btnOk"));
     btnOk->setMinimumSize(QSize(85, 0));
-    btnOk->setIcon(QIcon(":/image/btn_ok.png"));
     lay->addWidget(btnOk);
+    btnOk->setDefault(true);
 
     btnCancel = new QPushButton(frame);
     btnCancel->setObjectName(QString::fromUtf8("btnCancel"));
     btnCancel->setMinimumSize(QSize(85, 0));
-    btnCancel->setIcon(QIcon(":/image/btn_close.png"));
     lay->addWidget(btnCancel);
 
     verticalLayout3->addLayout(lay);
@@ -1211,6 +1235,8 @@ void QUIInputBox::initControl()
     labTitle->setText("输入框");
     btnOk->setText("确定");
     btnCancel->setText("取消");
+    QUIHelper::setIconBtn(btnOk, ":/image/btn_ok.png", 0xf00c);
+    QUIHelper::setIconBtn(btnCancel, ":/image/btn_close.png", 0xf00d);
 
     connect(btnOk, SIGNAL(clicked()), this, SLOT(on_btnOk_clicked()));
     connect(btnCancel, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
@@ -1264,7 +1290,7 @@ void QUIInputBox::checkSec()
     }
 
     QString str = QString("关闭倒计时 %1 s").arg(closeSec - currentSec + 1);
-    this->labTime->setText(str);
+    this->labCountDown->setText(str);
 }
 
 void QUIInputBox::setParameter(const QString &title, int type, int closeSec,
@@ -1273,7 +1299,7 @@ void QUIInputBox::setParameter(const QString &title, int type, int closeSec,
 {
     this->closeSec = closeSec;
     this->currentSec = 0;
-    this->labTime->clear();
+    this->labCountDown->clear();
     this->labInfo->setText(title);
     checkSec();
 
@@ -1377,6 +1403,11 @@ QUIDateSelect::~QUIDateSelect()
     delete widgetMain;
 }
 
+void QUIDateSelect::showEvent(QShowEvent *)
+{
+    this->activateWindow();
+}
+
 bool QUIDateSelect::eventFilter(QObject *watched, QEvent *event)
 {
     static QPoint mousePoint;
@@ -1410,6 +1441,7 @@ void QUIDateSelect::initControl()
     verticalLayout->setSpacing(0);
     verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
     verticalLayout->setContentsMargins(1, 1, 1, 1);
+
     widgetTitle = new QWidget(this);
     widgetTitle->setObjectName(QString::fromUtf8("widgetTitle"));
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -1417,10 +1449,12 @@ void QUIDateSelect::initControl()
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(widgetTitle->sizePolicy().hasHeightForWidth());
     widgetTitle->setSizePolicy(sizePolicy);
+
     horizontalLayout1 = new QHBoxLayout(widgetTitle);
     horizontalLayout1->setSpacing(0);
     horizontalLayout1->setObjectName(QString::fromUtf8("horizontalLayout1"));
     horizontalLayout1->setContentsMargins(0, 0, 0, 0);
+
     labIco = new QLabel(widgetTitle);
     labIco->setObjectName(QString::fromUtf8("labIco"));
     QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
@@ -1445,10 +1479,12 @@ void QUIDateSelect::initControl()
     widgetMenu->setObjectName(QString::fromUtf8("widgetMenu"));
     sizePolicy1.setHeightForWidth(widgetMenu->sizePolicy().hasHeightForWidth());
     widgetMenu->setSizePolicy(sizePolicy1);
+
     horizontalLayout = new QHBoxLayout(widgetMenu);
     horizontalLayout->setSpacing(0);
     horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
+
     btnMenu_Close = new QPushButton(widgetMenu);
     btnMenu_Close->setObjectName(QString::fromUtf8("btnMenu_Close"));
     QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -1466,14 +1502,17 @@ void QUIDateSelect::initControl()
 
     widgetMain = new QWidget(this);
     widgetMain->setObjectName(QString::fromUtf8("widgetMainQUI"));
+
     verticalLayout1 = new QVBoxLayout(widgetMain);
     verticalLayout1->setSpacing(6);
     verticalLayout1->setObjectName(QString::fromUtf8("verticalLayout1"));
     verticalLayout1->setContentsMargins(6, 6, 6, 6);
+
     frame = new QFrame(widgetMain);
     frame->setObjectName(QString::fromUtf8("frame"));
     frame->setFrameShape(QFrame::Box);
     frame->setFrameShadow(QFrame::Sunken);
+
     gridLayout = new QGridLayout(frame);
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
     labStart = new QLabel(frame);
@@ -1486,8 +1525,8 @@ void QUIDateSelect::initControl()
     btnOk->setMinimumSize(QSize(85, 0));
     btnOk->setCursor(QCursor(Qt::PointingHandCursor));
     btnOk->setFocusPolicy(Qt::StrongFocus);
-    btnOk->setIcon(QIcon(":/image/btn_ok.png"));
     gridLayout->addWidget(btnOk, 0, 2, 1, 1);
+    btnOk->setDefault(true);
 
     labEnd = new QLabel(frame);
     labEnd->setObjectName(QString::fromUtf8("labEnd"));
@@ -1499,7 +1538,6 @@ void QUIDateSelect::initControl()
     btnClose->setMinimumSize(QSize(85, 0));
     btnClose->setCursor(QCursor(Qt::PointingHandCursor));
     btnClose->setFocusPolicy(Qt::StrongFocus);
-    btnClose->setIcon(QIcon(":/image/btn_close.png"));
     gridLayout->addWidget(btnClose, 1, 2, 1, 1);
 
     dateStart = new QDateTimeEdit(frame);
@@ -1533,6 +1571,8 @@ void QUIDateSelect::initControl()
     labEnd->setText("结束时间");
     btnOk->setText("确定");
     btnClose->setText("关闭");
+    QUIHelper::setIconBtn(btnOk, ":/image/btn_ok.png", 0xf00c);
+    QUIHelper::setIconBtn(btnClose, ":/image/btn_close.png", 0xf00d);
 
     dateStart->setDate(QDate::currentDate());
     dateEnd->setDate(QDate::currentDate().addDays(1));
@@ -2138,6 +2178,22 @@ void QUIHelper::initFile(const QString &sourceName, const QString &targetName)
     }
 }
 
+void QUIHelper::setIconBtn(QAbstractButton *btn, const QString &png, const QChar &str)
+{
+    int size = 16;
+    int width = 18;
+    int height = 18;
+    QPixmap pix;
+    if (QPixmap(png).isNull()) {
+        pix = IconHelper::Instance()->getPixmap(QUIConfig::TextColor, str, size, width, height);
+    } else {
+        pix = QPixmap(png);
+    }
+
+    btn->setIconSize(QSize(width, height));
+    btn->setIcon(QIcon(pix));
+}
+
 void QUIHelper::newDir(const QString &dirName)
 {
     QString strDir = dirName;
@@ -2573,6 +2629,26 @@ bool QUIHelper::isEmail(const QString &email)
     }
 
     return true;
+}
+
+QString QUIHelper::ipv4IntToString(quint32 ip)
+{
+    QString result = QString("%1.%2.%3.%4").arg((ip >> 24) & 0xFF).arg((ip >> 16) & 0xFF).arg((ip >> 8) & 0xFF).arg(ip & 0xFF);
+    return result;
+}
+
+quint32 QUIHelper::ipv4StringToInt(const QString &ip)
+{
+    int result = 0;
+    if (isIP(ip)) {
+        QStringList list = ip.split(".");
+        int ip0 = list.at(0).toInt();
+        int ip1 = list.at(1).toInt();
+        int ip2 = list.at(2).toInt();
+        int ip3 = list.at(3).toInt();
+        result = ip3 | ip2 << 8 | ip1 << 16 | ip0 << 24;
+    }
+    return result;
 }
 
 int QUIHelper::strHexToDecimal(const QString &strHex)
@@ -3509,7 +3585,7 @@ bool QUIHelper::isWebOk()
     return ipLive("115.239.211.112", 80);
 }
 
-void QUIHelper::initTableView(QTableView *tableView, int rowHeight, bool headVisible, bool edit)
+void QUIHelper::initTableView(QTableView *tableView, int rowHeight, bool headVisible, bool edit, bool stretchLast)
 {
     //取消自动换行
     tableView->setWordWrap(false);
@@ -3522,7 +3598,7 @@ void QUIHelper::initTableView(QTableView *tableView, int rowHeight, bool headVis
     //选中一行表头是否加粗
     tableView->horizontalHeader()->setHighlightSections(false);
     //最后一行拉伸填充
-    tableView->horizontalHeader()->setStretchLastSection(true);
+    tableView->horizontalHeader()->setStretchLastSection(stretchLast);
     //行标题最小宽度尺寸
     tableView->horizontalHeader()->setMinimumSectionSize(0);
     //行标题最大高度

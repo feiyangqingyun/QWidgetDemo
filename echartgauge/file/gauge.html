@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>ECharts</title>
-    <!-- 引入 echarts.js -->
-    <script src="echarts.min.js"></script>
+  <meta charset="utf-8">
+  <title>ECharts</title>
+  <script src="echarts.min.js"></script>
 </head>
 <body>
-    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <div id="main" style="height:300px;"></div>
-    <script type="text/javascript">
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main'));  
-
-function setGaugeValue(value){
+<div id="main" style="height:300px;"></div>
+<script type="text/javascript">        
+  var myChart = echarts.init(document.getElementById('main'));
+  function setGaugeValue(value){
     var option = {
     tooltip : {
         formatter: "{a} <br/>{b} : {c}%"
@@ -32,17 +28,11 @@ function setGaugeValue(value){
             data: [{value: value, name: '完成率'}]
         }
     ]
-  };
-
-      
-myChart.setOption(option);
-}
-       
-
-window.onresize = myChart.resize ; 
-
-setGaugeValue(68);
-
-    </script>
+    };
+    myChart.setOption(option);
+  }
+  window.onresize = myChart.resize;
+  setGaugeValue(68);
+</script>
 </body>
 </html>

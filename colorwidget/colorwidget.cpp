@@ -105,7 +105,7 @@ ColorWidget::ColorWidget(QWidget *parent) : QWidget(parent)
 }
 
 ColorWidget::~ColorWidget()
-{    
+{
 }
 
 void ColorWidget::mousePressEvent(QMouseEvent *e)
@@ -128,10 +128,7 @@ void ColorWidget::showColorValue()
 
     int x = QCursor::pos().x();
     int y = QCursor::pos().y();
-
     txtPoint->setText(tr("x:%1  y:%2").arg(x).arg(y));
-    QString strDecimalValue, strHex, strTextColor;
-    int red, green, blue;
 
 #if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
     QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->winId(), x, y, 2, 2);
@@ -140,9 +137,10 @@ void ColorWidget::showColorValue()
     QPixmap pixmap = screen->grabWindow(QApplication::desktop()->winId(), x, y, 2, 2);
 #endif
 
+    int red, green, blue;
+    QString strDecimalValue, strHex;
     if (!pixmap.isNull()) {
         QImage image = pixmap.toImage();
-
         if (!image.isNull()) {
             if (image.valid(0, 0)) {
                 QColor color = image.pixel(0, 0);
@@ -159,13 +157,12 @@ void ColorWidget::showColorValue()
         }
     }
 
-    if (red > 200 && green > 200 && blue > 200) {
-        strTextColor = "10, 10, 10";
-    } else {
-        strTextColor = "255, 255, 255";
-    }
+    //根据背景色自动计算合适的前景色
+    QColor color(red, green, blue);
+    double gray = (0.299 * color.red() + 0.587 * color.green() + 0.114 * color.blue()) / 255;
+    QColor textColor = gray > 0.5 ? Qt::black : Qt::white;
 
-    QString str = tr("background-color: rgb(%1);color: rgb(%2)").arg(strDecimalValue).arg(strTextColor);
+    QString str = tr("background:rgb(%1);color:%2").arg(strDecimalValue).arg(textColor.name());
     labColor->setStyleSheet(str);
     txtRgb->setText(strDecimalValue);
     txtWeb->setText(strHex);

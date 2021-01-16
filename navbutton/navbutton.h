@@ -3,26 +3,20 @@
 
 /**
  * 导航按钮控件 作者:feiyangqingyun(QQ:517216493) 2017-12-19
- * 1:可设置文字的左侧+右侧+顶部+底部间隔
- * 2:可设置文字对齐方式
- * 3:可设置显示倒三角/倒三角边长/倒三角位置/倒三角颜色
- * 4:可设置显示图标/图标间隔/图标尺寸/正常状态图标/悬停状态图标/选中状态图标
- * 5:可设置显示边框线条/线条宽度/线条间隔/线条位置/线条颜色
- * 6:可设置正常背景颜色/悬停背景颜色/选中背景颜色
- * 7:可设置正常文字颜色/悬停文字颜色/选中文字颜色
- * 8:可设置背景颜色为画刷颜色
+ * 1. 可设置文字的左侧+右侧+顶部+底部间隔
+ * 2. 可设置文字对齐方式
+ * 3. 可设置显示倒三角/倒三角边长/倒三角位置/倒三角颜色
+ * 4. 可设置显示图标/图标间隔/图标尺寸/正常状态图标/悬停状态图标/选中状态图标
+ * 5. 可设置显示边框线条/线条宽度/线条间隔/线条位置/线条颜色
+ * 6. 可设置正常背景颜色/悬停背景颜色/选中背景颜色
+ * 7. 可设置正常文字颜色/悬停文字颜色/选中文字颜色
+ * 8. 可设置背景颜色为画刷颜色
  */
 
 #include <QPushButton>
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT NavButton : public QPushButton
+class Q_DECL_EXPORT NavButton : public QPushButton
 #else
 class NavButton : public QPushButton
 #endif

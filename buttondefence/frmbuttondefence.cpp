@@ -31,7 +31,7 @@ void frmButtonDefence::initForm()
     btn3->setText("#3");
     btn3->setGeometry(85, 5, 35, 35);
 
-    btnStyle << ui->btnCircle << ui->btnPolice << ui->btnBubble << ui->btnBubble2 << ui->btnMsg << ui->btnMsg2 << ui->btnCustom;
+    btnStyle << ui->btnCircle << ui->btnPolice << ui->btnBubble << ui->btnBubble2 << ui->btnMsg << ui->btnMsg2;
     foreach (QPushButton *btn, btnStyle) {
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(changeStyle()));
     }
@@ -50,16 +50,6 @@ void frmButtonDefence::changeStyle()
     btn1->setButtonStyle(style);
     btn2->setButtonStyle(style);
     btn3->setButtonStyle(style);
-
-    if (index == 6) {
-        btn1->setText("");
-        btn2->setText("");
-        btn3->setText("");
-    } else {
-        btn1->setText("#1");
-        btn2->setText("#2");
-        btn3->setText("#3");
-    }
 }
 
 void frmButtonDefence::changeStatus()
@@ -78,11 +68,4 @@ void frmButtonDefence::on_ckCanMove_stateChanged(int arg1)
     btn1->setCanMove(canMove);
     btn2->setCanMove(canMove);
     btn3->setCanMove(canMove);
-}
-
-void frmButtonDefence::on_btnPoint_clicked()
-{
-    qDebug() << "btn1" << "x" << btn1->geometry().x() << "y" << btn1->geometry().y();
-    qDebug() << "btn2" << "x" << btn2->geometry().x() << "y" << btn2->geometry().y();
-    qDebug() << "btn3" << "x" << btn3->geometry().x() << "y" << btn3->geometry().y();
 }

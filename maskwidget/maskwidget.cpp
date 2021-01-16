@@ -2,8 +2,8 @@
 
 #include "maskwidget.h"
 #include "qmutex.h"
-#include "qapplication.h"
 #include "qdesktopwidget.h"
+#include "qapplication.h"
 #include "qdebug.h"
 
 QScopedPointer<MaskWidget> MaskWidget::self;
@@ -56,7 +56,7 @@ void MaskWidget::setOpacity(double opacity)
 void MaskWidget::setBgColor(const QColor &bgColor)
 {
     QPalette palette = this->palette();
-    palette.setBrush(QPalette::Background, bgColor);
+    palette.setBrush(QPalette::Window, bgColor);
     this->setPalette(palette);
 }
 

@@ -3,23 +3,17 @@
 
 /**
  * 弹窗遮罩层控件 作者:feiyangqingyun(QQ:517216493) 2016-12-26
- * 1:可设置需要遮罩的主窗体,自动跟随主窗体位置显示遮罩面积
- * 2:只需要将弹窗窗体的名称一开始传入队列即可,足够简单
- * 3:可设置透明度
- * 4:可设置遮罩层颜色
- * 5:不阻塞消息循坏
+ * 1. 可设置需要遮罩的主窗体,自动跟随主窗体位置显示遮罩面积
+ * 2. 只需要将弹窗窗体的名称一开始传入队列即可,足够简单
+ * 3. 可设置透明度
+ * 4. 可设置遮罩层颜色
+ * 5. 不阻塞消息循坏
  */
 
 #include <QWidget>
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT MaskWidget : public QWidget
+class Q_DECL_EXPORT MaskWidget : public QWidget
 #else
 class MaskWidget : public QWidget
 #endif

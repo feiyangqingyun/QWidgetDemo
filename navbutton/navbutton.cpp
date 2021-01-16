@@ -43,6 +43,7 @@ NavButton::NavButton(QWidget *parent) : QPushButton(parent)
 
     hover = false;
     setCheckable(true);
+    setText("导航按钮");
 }
 
 void NavButton::enterEvent(QEvent *)

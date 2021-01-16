@@ -25,8 +25,6 @@ private slots:
     void changeStatus();
     void on_ckCanMove_stateChanged(int arg1);
 
-    void on_btnPoint_clicked();
-
 private:
     Ui::frmButtonDefence *ui;
     ButtonDefence *btn1;

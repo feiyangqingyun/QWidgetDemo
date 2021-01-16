@@ -4,10 +4,12 @@
 #include "qlabel.h"
 #include "qlineedit.h"
 #include "qboxlayout.h"
-#include "qregexp.h"
 #include "qvalidator.h"
 #include "qevent.h"
 #include "qdebug.h"
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
+#include "qregexp.h"
+#endif
 
 IPAddress::IPAddress(QWidget *parent) : QWidget(parent)
 {
@@ -53,6 +55,7 @@ IPAddress::IPAddress(QWidget *parent) : QWidget(parent)
     txtIP4->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     connect(txtIP4, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
 
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     //设置IP地址校验过滤
     QRegExp regExp("(2[0-5]{2}|2[0-4][0-9]|1?[0-9]{1,2})");
     QRegExpValidator *validator = new QRegExpValidator(regExp, this);
@@ -60,6 +63,7 @@ IPAddress::IPAddress(QWidget *parent) : QWidget(parent)
     txtIP2->setValidator(validator);
     txtIP3->setValidator(validator);
     txtIP4->setValidator(validator);
+#endif
 
     //绑定事件过滤器,识别键盘按下
     txtIP1->installEventFilter(this);
@@ -79,13 +83,13 @@ IPAddress::IPAddress(QWidget *parent) : QWidget(parent)
     frame->setStyleSheet(qss.join(""));
 
     QVBoxLayout *verticalLayout = new QVBoxLayout(this);
-    verticalLayout->setMargin(0);
+    verticalLayout->setContentsMargins(0, 0, 0, 0);
     verticalLayout->setSpacing(0);
     verticalLayout->addWidget(frame);
 
     //将控件按照横向布局排列
     QHBoxLayout *layout = new QHBoxLayout(frame);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
     layout->addWidget(txtIP1);
     layout->addWidget(labDot1);
@@ -153,11 +157,13 @@ QSize IPAddress::minimumSizeHint() const
 
 void IPAddress::setIP(const QString &ip)
 {
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     //先检测IP地址是否合法
     QRegExp regExp("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
     if (!regExp.exactMatch(ip)) {
         return;
     }
+#endif
 
     if (this->ip != ip) {
         this->ip = ip;

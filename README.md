@@ -45,6 +45,7 @@
 | 38 | designer | QtDesigner4源码 |
 | 39 | netserver | 网络中转服务器 |
 | 40 | mpvdemo | 视频流播放mpv内核 |
+| 41 | miniblink | miniblink示例 |
 
 ### 二、学习群
 1. **Qt交流大会群 853086607(雨田哥)**
@@ -93,3 +94,4 @@
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/live.png)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/netserver.jpg)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/designer.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/miniblink.jpg)

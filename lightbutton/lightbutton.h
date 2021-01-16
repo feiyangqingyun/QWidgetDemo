@@ -3,28 +3,22 @@
 
 /**
  * 高亮发光按钮控件 作者:feiyangqingyun(QQ:517216493) 2016-10-16
- * 1:可设置文本,居中显示
- * 2:可设置文本颜色
- * 3:可设置外边框渐变颜色
- * 4:可设置里边框渐变颜色
- * 5:可设置背景色
- * 6:可直接调用内置的设置 绿色/红色/黄色/黑色/蓝色 等公有槽函数
- * 7:可设置是否在容器中可移动,当成一个对象使用
- * 8:可设置是否显示矩形
- * 9:可设置报警颜色+非报警颜色
- * 10:可控制启动报警和停止报警,报警时闪烁
+ * 1. 可设置文本,居中显示
+ * 2. 可设置文本颜色
+ * 3. 可设置外边框渐变颜色
+ * 4. 可设置里边框渐变颜色
+ * 5. 可设置背景色
+ * 6. 可直接调用内置的设置 绿色/红色/黄色/黑色/蓝色 等公有槽函数
+ * 7. 可设置是否在容器中可移动,当成一个对象使用
+ * 8. 可设置是否显示矩形
+ * 9. 可设置报警颜色+非报警颜色
+ * 10. 可控制启动报警和停止报警,报警时闪烁
  */
 
 #include <QWidget>
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT LightButton : public QWidget
+class Q_DECL_EXPORT LightButton : public QWidget
 #else
 class LightButton : public QWidget
 #endif

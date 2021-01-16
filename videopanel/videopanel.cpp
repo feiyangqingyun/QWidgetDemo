@@ -56,7 +56,7 @@ void VideoPanel::initControl()
 {
     gridLayout = new QGridLayout;
     gridLayout->setSpacing(1);
-    gridLayout->setMargin(0);
+    gridLayout->setContentsMargins(0, 0, 0, 0);
     gridLayout->setObjectName("gridLayout");
     this->setLayout(gridLayout);
 }
@@ -214,13 +214,11 @@ void VideoPanel::show_video_all()
 
 void VideoPanel::show_video_4()
 {
-    videoMax = false;
-    QString videoType;
-    int index = 0;
-
     QAction *action = (QAction *)sender();
     QString name = action->text();
 
+    int index = 0;
+    QString videoType;
     if (name == "通道1-通道4") {
         index = 0;
         videoType = "1_4";
@@ -237,19 +235,18 @@ void VideoPanel::show_video_4()
 
     if (this->videoType != videoType) {
         this->videoType = videoType;
+        this->videoMax = false;
         change_video_4(index);
     }
 }
 
 void VideoPanel::show_video_6()
 {
-    videoMax = false;
-    QString videoType;
-    int index = 0;
-
     QAction *action = (QAction *)sender();
     QString name = action->text();
 
+    int index = 0;
+    QString videoType;
     if (name == "通道1-通道6") {
         index = 0;
         videoType = "1_6";
@@ -263,19 +260,18 @@ void VideoPanel::show_video_6()
 
     if (this->videoType != videoType) {
         this->videoType = videoType;
+        this->videoMax = false;
         change_video_6(index);
     }
 }
 
 void VideoPanel::show_video_8()
 {
-    videoMax = false;
-    QString videoType;
-    int index = 0;
-
     QAction *action = (QAction *)sender();
     QString name = action->text();
 
+    int index = 0;
+    QString videoType;
     if (name == "通道1-通道8") {
         index = 0;
         videoType = "1_8";
@@ -286,19 +282,18 @@ void VideoPanel::show_video_8()
 
     if (this->videoType != videoType) {
         this->videoType = videoType;
+        this->videoMax = false;
         change_video_8(index);
     }
 }
 
 void VideoPanel::show_video_9()
 {
-    videoMax = false;
-    QString videoType;
-    int index = 0;
-
     QAction *action = (QAction *)sender();
     QString name = action->text();
 
+    int index = 0;
+    QString videoType;
     if (name == "通道1-通道9") {
         index = 0;
         videoType = "1_9";
@@ -309,18 +304,18 @@ void VideoPanel::show_video_9()
 
     if (this->videoType != videoType) {
         this->videoType = videoType;
+        this->videoMax = false;
         change_video_9(index);
     }
 }
 
 void VideoPanel::show_video_13()
 {
-    QString videoType;
-    int index = 0;
-
     QAction *action = (QAction *)sender();
     QString name = action->text();
 
+    int index = 0;
+    QString videoType;
     if (name == "通道1-通道13") {
         index = 0;
         videoType = "1_13";
@@ -331,58 +326,51 @@ void VideoPanel::show_video_13()
 
     if (this->videoType != videoType) {
         this->videoType = videoType;
+        this->videoMax = false;
         change_video_13(index);
     }
 }
 
 void VideoPanel::show_video_16()
 {
-    videoMax = false;
-    QString videoType;
     int index = 0;
-    videoType = "1_16";
-
+    QString videoType = "1_16";
     if (this->videoType != videoType) {
         this->videoType = videoType;
+        this->videoMax = false;
         change_video_16(index);
     }
 }
 
 void VideoPanel::show_video_25()
 {
-    videoMax = false;
-    QString videoType;
     int index = 0;
-    videoType = "1_25";
-
+    QString videoType = "1_25";
     if (this->videoType != videoType) {
         this->videoType = videoType;
+        this->videoMax = false;
         change_video_25(index);
     }
 }
 
 void VideoPanel::show_video_36()
 {
-    videoMax = false;
-    QString videoType;
     int index = 0;
-    videoType = "1_36";
-
+    QString videoType = "1_36";
     if (this->videoType != videoType) {
         this->videoType = videoType;
+        this->videoMax = false;
         change_video_36(index);
     }
 }
 
 void VideoPanel::show_video_64()
 {
-    videoMax = false;
-    QString videoType;
     int index = 0;
-    videoType = "1_64";
-
+    QString videoType = "1_64";
     if (this->videoType != videoType) {
         this->videoType = videoType;
+        this->videoMax = false;
         change_video_64(index);
     }
 }
@@ -401,6 +389,8 @@ void VideoPanel::change_video(int index, int flag)
     int row = 0;
     int column = 0;
 
+    //行列数一致的比如 2*2 3*4 4*4 5*5 等可以直接套用通用的公式
+    //按照这个函数还可以非常容易的拓展出 10*10 16*16=256 通道界面
     for (int i = 0; i < videoCount; i++) {
         if (i >= index) {
             gridLayout->addWidget(widgets.at(i), row, column);
@@ -426,42 +416,51 @@ void VideoPanel::change_video_4(int index)
     change_video(index, 2);
 }
 
+void VideoPanel::change_video_6(const QList<int> &indexs)
+{
+    gridLayout->addWidget(widgets.at(indexs.at(0)), 0, 0, 2, 2);
+    gridLayout->addWidget(widgets.at(indexs.at(1)), 0, 2, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(2)), 1, 2, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(3)), 2, 2, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(4)), 2, 1, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(5)), 2, 0, 1, 1);
+
+    for (int i = indexs.first(); i <= indexs.last(); i++) {
+        widgets.at(i)->setVisible(true);
+    }
+}
+
 void VideoPanel::change_video_6(int index)
 {
     hide_video_all();
     if (index == 0) {
-        gridLayout->addWidget(widgets.at(0), 0, 0, 2, 2);
-        gridLayout->addWidget(widgets.at(1), 0, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(2), 1, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(3), 2, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(4), 2, 1, 1, 1);
-        gridLayout->addWidget(widgets.at(5), 2, 0, 1, 1);
-
-        for (int i = 0; i < 6; i++) {
-            widgets.at(i)->setVisible(true);
-        }
+        QList<int> indexs;
+        indexs << 0 << 1 << 2 << 3 << 4 << 5;
+        change_video_6(indexs);
     } else if (index == 5) {
-        gridLayout->addWidget(widgets.at(5), 0, 0, 2, 2);
-        gridLayout->addWidget(widgets.at(6), 0, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(7), 1, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(8), 2, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(9), 2, 1, 1, 1);
-        gridLayout->addWidget(widgets.at(10), 2, 0, 1, 1);
-
-        for (int i = 5; i < 11; i++) {
-            widgets.at(i)->setVisible(true);
-        }
+        QList<int> indexs;
+        indexs << 5 << 6 << 7 << 8 << 9 << 10;
+        change_video_6(indexs);
     } else if (index == 10) {
-        gridLayout->addWidget(widgets.at(10), 0, 0, 2, 2);
-        gridLayout->addWidget(widgets.at(11), 0, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(12), 1, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(13), 2, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(14), 2, 1, 1, 1);
-        gridLayout->addWidget(widgets.at(15), 2, 0, 1, 1);
+        QList<int> indexs;
+        indexs << 10 << 11 << 12 << 13 << 14 << 15;
+        change_video_6(indexs);
+    }
+}
 
-        for (int i = 10; i < 16; i++) {
-            widgets.at(i)->setVisible(true);
-        }
+void VideoPanel::change_video_8(const QList<int> &indexs)
+{
+    gridLayout->addWidget(widgets.at(indexs.at(0)), 0, 0, 3, 3);
+    gridLayout->addWidget(widgets.at(indexs.at(1)), 0, 3, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(2)), 1, 3, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(3)), 2, 3, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(4)), 3, 3, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(5)), 3, 2, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(6)), 3, 1, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(7)), 3, 0, 1, 1);
+
+    for (int i = indexs.first(); i <= indexs.last(); i++) {
+        widgets.at(i)->setVisible(true);
     }
 }
 
@@ -469,31 +468,13 @@ void VideoPanel::change_video_8(int index)
 {
     hide_video_all();
     if (index == 0) {
-        gridLayout->addWidget(widgets.at(0), 0, 0, 3, 3);
-        gridLayout->addWidget(widgets.at(1), 0, 3, 1, 1);
-        gridLayout->addWidget(widgets.at(2), 1, 3, 1, 1);
-        gridLayout->addWidget(widgets.at(3), 2, 3, 1, 1);
-        gridLayout->addWidget(widgets.at(4), 3, 3, 1, 1);
-        gridLayout->addWidget(widgets.at(5), 3, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(6), 3, 1, 1, 1);
-        gridLayout->addWidget(widgets.at(7), 3, 0, 1, 1);
-
-        for (int i = 0; i < 8; i++) {
-            widgets.at(i)->setVisible(true);
-        }
+        QList<int> indexs;
+        indexs << 0 << 1 << 2 << 3 << 4 << 5 << 6 << 7;
+        change_video_8(indexs);
     } else if (index == 8) {
-        gridLayout->addWidget(widgets.at(8), 0, 0, 3, 3);
-        gridLayout->addWidget(widgets.at(9), 0, 3, 1, 1);
-        gridLayout->addWidget(widgets.at(10), 1, 3, 1, 1);
-        gridLayout->addWidget(widgets.at(11), 2, 3, 1, 1);
-        gridLayout->addWidget(widgets.at(12), 3, 3, 1, 1);
-        gridLayout->addWidget(widgets.at(13), 3, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(14), 3, 1, 1, 1);
-        gridLayout->addWidget(widgets.at(15), 3, 0, 1, 1);
-
-        for (int i = 8; i < 16; i++) {
-            widgets.at(i)->setVisible(true);
-        }
+        QList<int> indexs;
+        indexs << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15;
+        change_video_8(indexs);
     }
 }
 
@@ -503,45 +484,38 @@ void VideoPanel::change_video_9(int index)
     change_video(index, 3);
 }
 
+void VideoPanel::change_video_13(const QList<int> &indexs)
+{
+    gridLayout->addWidget(widgets.at(indexs.at(0)), 0, 0, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(1)), 0, 1, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(2)), 0, 2, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(3)), 0, 3, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(4)), 1, 0, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(5)), 2, 0, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(6)), 1, 1, 2, 2);
+    gridLayout->addWidget(widgets.at(indexs.at(7)), 1, 3, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(8)), 2, 3, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(9)), 3, 0, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(10)), 3, 1, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(11)), 3, 2, 1, 1);
+    gridLayout->addWidget(widgets.at(indexs.at(12)), 3, 3, 1, 1);
+
+    for (int i = indexs.first(); i <= indexs.last(); i++) {
+        widgets.at(i)->setVisible(true);
+    }
+}
+
 void VideoPanel::change_video_13(int index)
 {
     hide_video_all();
     if (index == 0) {
-        gridLayout->addWidget(widgets.at(0), 0, 0, 1, 1);
-        gridLayout->addWidget(widgets.at(1), 0, 1, 1, 1);
-        gridLayout->addWidget(widgets.at(2), 0, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(3), 0, 3, 1, 1);
-        gridLayout->addWidget(widgets.at(4), 1, 0, 1, 1);
-        gridLayout->addWidget(widgets.at(5), 2, 0, 1, 1);
-        gridLayout->addWidget(widgets.at(6), 1, 1, 2, 2);
-        gridLayout->addWidget(widgets.at(7), 1, 3, 1, 1);
-        gridLayout->addWidget(widgets.at(8), 2, 3, 1, 1);
-        gridLayout->addWidget(widgets.at(9), 3, 0, 1, 1);
-        gridLayout->addWidget(widgets.at(10), 3, 1, 1, 1);
-        gridLayout->addWidget(widgets.at(11), 3, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(12), 3, 3, 1, 1);
-
-        for (int i = 0; i < 13; i++) {
-            widgets.at(i)->setVisible(true);
-        }
+        QList<int> indexs;
+        indexs << 0 << 1 << 2 << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12;
+        change_video_13(indexs);
     } else if (index == 3) {
-        gridLayout->addWidget(widgets.at(3), 0, 0, 1, 1);
-        gridLayout->addWidget(widgets.at(4), 0, 1, 1, 1);
-        gridLayout->addWidget(widgets.at(5), 0, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(6), 0, 3, 1, 1);
-        gridLayout->addWidget(widgets.at(7), 1, 0, 1, 1);
-        gridLayout->addWidget(widgets.at(8), 2, 0, 1, 1);
-        gridLayout->addWidget(widgets.at(9), 1, 1, 2, 2);
-        gridLayout->addWidget(widgets.at(10), 1, 3, 1, 1);
-        gridLayout->addWidget(widgets.at(11), 2, 3, 1, 1);
-        gridLayout->addWidget(widgets.at(12), 3, 0, 1, 1);
-        gridLayout->addWidget(widgets.at(13), 3, 1, 1, 1);
-        gridLayout->addWidget(widgets.at(14), 3, 2, 1, 1);
-        gridLayout->addWidget(widgets.at(15), 3, 3, 1, 1);
-
-        for (int i = 3; i < 16; i++) {
-            widgets.at(i)->setVisible(true);
-        }
+        QList<int> indexs;
+        indexs << 3 << 4 << 5 << 6 << 7 << 8 << 9 << 10 << 11 << 12 << 13 << 14 << 15;
+        change_video_13(indexs);
     }
 }
 

@@ -3,23 +3,17 @@
 
 /**
  * 农历信息类 作者:倪大侠 整理:feiyangqingyun(QQ:517216493) 2016-12-10
- * 1:计算是否闰年
- * 2:计算国际节日
- * 3:计算二十四节气
- * 4:计算农历年 天干+地支+生肖
- * 5:计算指定年月日农历信息,包括公历节日和农历节日及二十四节气
+ * 1. 计算是否闰年
+ * 2. 计算国际节日
+ * 3. 计算二十四节气
+ * 4. 计算农历年 天干+地支+生肖
+ * 5. 计算指定年月日农历信息,包括公历节日和农历节日及二十四节气
  */
 
 #include <QObject>
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT LunarCalendarInfo : public QObject
+class Q_DECL_EXPORT LunarCalendarInfo : public QObject
 #else
 class LunarCalendarInfo : public QObject
 #endif

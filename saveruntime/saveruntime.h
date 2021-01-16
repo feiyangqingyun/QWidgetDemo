@@ -6,13 +6,7 @@
 class QTimer;
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT SaveRunTime : public QObject
+class Q_DECL_EXPORT SaveRunTime : public QObject
 #else
 class SaveRunTime : public QObject
 #endif

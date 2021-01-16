@@ -88,14 +88,15 @@ bool frmCountCode::checkFile(const QString &fileName)
 void frmCountCode::countCode(const QString &filePath)
 {
     QDir dir(filePath);
-    foreach (QFileInfo fileInfo , dir.entryInfoList()) {
+    QFileInfoList fileInfos = dir.entryInfoList();
+    foreach (QFileInfo fileInfo, fileInfos) {
+        QString fileName = fileInfo.fileName();
         if (fileInfo.isFile()) {
-            QString strFileName = fileInfo.fileName();
-            if (checkFile(strFileName)) {
+            if (checkFile(fileName)) {
                 listFile << fileInfo.filePath();
             }
         } else {
-            if(fileInfo.fileName() == "." || fileInfo.fileName() == "..") {
+            if (fileName == "." || fileName == "..") {
                 continue;
             }
 

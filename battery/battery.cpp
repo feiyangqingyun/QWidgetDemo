@@ -13,6 +13,7 @@ Battery::Battery(QWidget *parent) : QWidget(parent)
     alarmValue = 30;
     step = 0.5;
 
+    borderWidth = 5;
     borderRadius = 8;
     bgRadius = 5;
     headRadius = 3;
@@ -57,15 +58,15 @@ void Battery::drawBorder(QPainter *painter)
 {
     painter->save();
 
-    qreal headWidth = width() / 10;
-    qreal batteryWidth = width() - headWidth;
+    double headWidth = width() / 15;
+    double batteryWidth = width() - headWidth;
 
     //绘制电池边框
-    QPointF topLeft(5, 5);
-    QPointF bottomRight(batteryWidth, height() - 5);
+    QPointF topLeft(borderWidth, borderWidth);
+    QPointF bottomRight(batteryWidth, height() - borderWidth);
     batteryRect = QRectF(topLeft, bottomRight);
 
-    painter->setPen(QPen(borderColorStart, 5));
+    painter->setPen(QPen(borderColorStart, borderWidth));
     painter->setBrush(Qt::NoBrush);
     painter->drawRoundedRect(batteryRect, borderRadius, borderRadius);
 
@@ -74,6 +75,10 @@ void Battery::drawBorder(QPainter *painter)
 
 void Battery::drawBg(QPainter *painter)
 {
+    if (value == minValue) {
+        return;
+    }
+
     painter->save();
 
     QLinearGradient batteryGradient(QPointF(0, 0), QPointF(0, height()));
@@ -86,10 +91,10 @@ void Battery::drawBg(QPainter *painter)
     }
 
     int margin = qMin(width(), height()) / 20;
-    qreal unit = (batteryRect.width() - (margin * 2)) / 100;
-    qreal width = currentValue * unit;
+    double unit = (batteryRect.width() - (margin * 2)) / 100;
+    double width = currentValue * unit;
     QPointF topLeft(batteryRect.topLeft().x() + margin, batteryRect.topLeft().y() + margin);
-    QPointF bottomRight(width + margin + 5, batteryRect.bottomRight().y() - margin);
+    QPointF bottomRight(width + margin + borderWidth, batteryRect.bottomRight().y() - margin);
     QRectF rect(topLeft, bottomRight);
 
     painter->setPen(Qt::NoPen);
@@ -122,13 +127,11 @@ void Battery::updateValue()
 {
     if (isForward) {
         currentValue -= step;
-
         if (currentValue <= value) {
             timer->stop();
         }
     } else {
         currentValue += step;
-
         if (currentValue >= value) {
             timer->stop();
         }
@@ -137,29 +140,34 @@ void Battery::updateValue()
     this->update();
 }
 
-qreal Battery::getMinValue() const
+double Battery::getMinValue() const
 {
     return this->minValue;
 }
 
-qreal Battery::getMaxValue() const
+double Battery::getMaxValue() const
 {
     return this->maxValue;
 }
 
-qreal Battery::getValue() const
+double Battery::getValue() const
 {
     return this->value;
 }
 
-qreal Battery::getAlarmValue() const
+double Battery::getAlarmValue() const
 {
     return this->alarmValue;
 }
 
-qreal Battery::getStep() const
+double Battery::getStep() const
 {
     return this->step;
+}
+
+int Battery::getBorderWidth() const
+{
+    return this->borderWidth;
 }
 
 int Battery::getBorderRadius() const
@@ -217,7 +225,7 @@ QSize Battery::minimumSizeHint() const
     return QSize(30, 10);
 }
 
-void Battery::setRange(qreal minValue, qreal maxValue)
+void Battery::setRange(double minValue, double maxValue)
 {
     //如果最小值大于或者等于最大值则不设置
     if (minValue >= maxValue) {
@@ -240,20 +248,20 @@ void Battery::setRange(qreal minValue, qreal maxValue)
 
 void Battery::setRange(int minValue, int maxValue)
 {
-    setRange((qreal)minValue, (qreal)maxValue);
+    setRange((double)minValue, (double)maxValue);
 }
 
-void Battery::setMinValue(qreal minValue)
+void Battery::setMinValue(double minValue)
 {
     setRange(minValue, maxValue);
 }
 
-void Battery::setMaxValue(qreal maxValue)
+void Battery::setMaxValue(double maxValue)
 {
     setRange(minValue, maxValue);
 }
 
-void Battery::setValue(qreal value)
+void Battery::setValue(double value)
 {
     //值和当前值一致则无需处理
     if (value == this->value) {
@@ -272,21 +280,24 @@ void Battery::setValue(qreal value)
     } else if (value < currentValue) {
         isForward = true;
     } else {
+        this->value = value;
+        this->update();
         return;
     }
 
     this->value = value;
     this->update();
     emit valueChanged(value);
+    timer->stop();
     timer->start();
 }
 
 void Battery::setValue(int value)
 {
-    setValue((qreal)value);
+    setValue((double)value);
 }
 
-void Battery::setAlarmValue(qreal alarmValue)
+void Battery::setAlarmValue(double alarmValue)
 {
     if (this->alarmValue != alarmValue) {
         this->alarmValue = alarmValue;
@@ -296,10 +307,10 @@ void Battery::setAlarmValue(qreal alarmValue)
 
 void Battery::setAlarmValue(int alarmValue)
 {
-    setAlarmValue((qreal)alarmValue);
+    setAlarmValue((double)alarmValue);
 }
 
-void Battery::setStep(qreal step)
+void Battery::setStep(double step)
 {
     if (this->step != step) {
         this->step = step;
@@ -309,7 +320,15 @@ void Battery::setStep(qreal step)
 
 void Battery::setStep(int step)
 {
-    setStep((qreal)step);
+    setStep((double)step);
+}
+
+void Battery::setBorderWidth(int borderWidth)
+{
+    if (this->borderWidth != borderWidth) {
+        this->borderWidth = borderWidth;
+        this->update();
+    }
 }
 
 void Battery::setBorderRadius(int borderRadius)

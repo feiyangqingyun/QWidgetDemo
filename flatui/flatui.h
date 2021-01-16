@@ -3,14 +3,14 @@
 
 /**
  * FlatUI辅助类 作者:feiyangqingyun(QQ:517216493) 2016-12-16
- * 1:按钮样式设置
- * 2:文本框样式设置
- * 3:进度条样式
- * 4:滑块条样式
- * 5:单选框样式
- * 6:滚动条样式
- * 7:可自由设置对象的高度宽度大小等
- * 8:自带默认参数值
+ * 1. 按钮样式设置
+ * 2. 文本框样式设置
+ * 3. 进度条样式
+ * 4. 滑块条样式
+ * 5. 单选框样式
+ * 6. 滚动条样式
+ * 7. 可自由设置对象的高度宽度大小等
+ * 8. 自带默认参数值
  */
 
 #include <QObject>
@@ -24,13 +24,7 @@ class QCheckBox;
 class QScrollBar;
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT FlatUI : public QObject
+class Q_DECL_EXPORT FlatUI : public QObject
 #else
 class FlatUI : public QObject
 #endif

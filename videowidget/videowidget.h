@@ -23,13 +23,7 @@
 class QTimer;
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT VideoWidget : public QWidget
+class Q_DECL_EXPORT VideoWidget : public QWidget
 #else
 class VideoWidget : public QWidget
 #endif
@@ -223,6 +217,11 @@ signals:
     //播放结束
     void receivePlayFinsh();
 
+    //总时长
+    void fileLengthReceive(qint64 length);
+    //当前播放时长
+    void filePositionReceive(qint64 position);
+
     //收到图片信号
     void receiveImage(const QImage &image);
 
@@ -233,16 +232,6 @@ signals:
     void btnClicked(const QString &objName);
 
 public slots:
-    //设置视频宽度
-    void setVideoWidth(int videoWidth);
-    //设置视频高度
-    void setVideoHeight(int videoHeight);
-
-    //设置缓存图片宽度
-    void setBufferWidth(int bufferWidth);
-    //设置缓存图片高度
-    void setBufferHeight(int bufferHeight);
-
     //获取长度
     uint getLength();
     //获取当前播放位置
@@ -347,6 +336,12 @@ public slots:
     void setOSD2Format(const OSDFormat &osdFormat);
     //设置标签2位置
     void setOSD2Position(const OSDPosition &osdPosition);
+
+    //设置值自动进行枚举转换
+    void setOSD1Format(quint8 osdFormat);
+    void setOSD2Format(quint8 osdFormat);
+    void setOSD1Position(quint8 osdPosition);
+    void setOSD2Position(quint8 osdPosition);
 
     //设置人脸框粗细
     void setFaceBorder(int faceBorder);

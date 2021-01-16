@@ -180,7 +180,7 @@ void ButtonDefence::setButtonStyle(const ButtonDefence::ButtonStyle &buttonStyle
     } else if (buttonStyle == ButtonStyle_Msg2) {
         type = "msg2";
     } else {
-        type = "custom";
+        type = "circle";
     }
 
     setButtonStatus(buttonStatus);

@@ -3,22 +3,16 @@
 
 /**
  * 汉字转拼音类 作者:feiyangqingyun(QQ:517216493) 2019-2-16
- * 1:汉字转拼音
- * 2:汉字转拼音简拼
- * 3:汉字转拼音首字母
+ * 1. 汉字转拼音
+ * 2. 汉字转拼音简拼
+ * 3. 汉字转拼音首字母
  */
 
 #include <QObject>
 #include <QStringList>
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT ZhToPY : public QObject
+class Q_DECL_EXPORT ZhToPY : public QObject
 #else
 class ZhToPY : public QObject
 #endif

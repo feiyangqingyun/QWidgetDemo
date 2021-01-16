@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET      = lightbutton
+TARGET      = movewidget
 TEMPLATE    = app
 DESTDIR     = $$PWD/../bin
 CONFIG      += warn_off
