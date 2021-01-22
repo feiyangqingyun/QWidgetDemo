@@ -593,6 +593,8 @@ public:
 
     //初始化随机数种子
     static void initRand();
+    //获取uuid
+    static QString getUuid();
 
     //初始化数据库
     static void initDb(const QString &dbName);
@@ -641,6 +643,9 @@ public:
     static void setTranslator(const QString &qmFile = ":/image/qt_zh_CN.qm");
     //设置编码
     static void setCode();
+    //设置字体
+    static void setFont(const QString &ttfFile = ":/image/DroidSansFallback.ttf",
+                        const QString &fontName = "Microsoft Yahei", int fontSize = 12);
     //设置延时
     static void sleep(int msec);
     //设置系统时间

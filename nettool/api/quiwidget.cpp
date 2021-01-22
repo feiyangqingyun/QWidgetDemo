@@ -2163,6 +2163,14 @@ void QUIHelper::initRand()
     qsrand(t.msec() + t.second() * 1000);
 }
 
+QString QUIHelper::getUuid()
+{
+    QString uuid = QUuid::createUuid().toString();
+    uuid = uuid.replace("{", "");
+    uuid = uuid.replace("}", "");
+    return uuid;
+}
+
 void QUIHelper::initDb(const QString &dbName)
 {
     initFile(QString(":/%1.db").arg(appName()), dbName);
@@ -2542,6 +2550,28 @@ void QUIHelper::setCode()
     QTextCodec *codec = QTextCodec::codecForName("utf-8");
     QTextCodec::setCodecForLocale(codec);
 #endif
+}
+
+void QUIHelper::setFont(const QString &ttfFile, const QString &fontName, int fontSize)
+{
+    QFont font;
+    font.setFamily(fontName);
+    font.setPixelSize(fontSize);
+
+    //如果存在字体文件则设备字体文件中的字体
+    //安卓版本和网页版本需要字体文件一起打包单独设置字体
+    if (!ttfFile.isEmpty()) {
+        QFontDatabase fontDb;
+        int fontId = fontDb.addApplicationFont(ttfFile);
+        if (fontId != -1) {
+            QStringList androidFont = fontDb.applicationFontFamilies(fontId);
+            if (androidFont.size() != 0) {
+                font.setFamily(androidFont.at(0));
+                font.setPixelSize(fontSize);
+            }
+        }
+    }
+    qApp->setFont(font);
 }
 
 void QUIHelper::sleep(int msec)
@@ -3536,6 +3566,9 @@ QStringList QUIHelper::getLocalIPs()
 {
     static QStringList ips;
     if (ips.count() == 0) {
+#ifdef emsdk
+        ips << "127.0.0.1";
+#else
         QList<QNetworkInterface> netInterfaces = QNetworkInterface::allInterfaces();
         foreach (const QNetworkInterface  &netInterface, netInterfaces) {
             //移除虚拟机和抓包工具的虚拟网卡
@@ -3559,6 +3592,7 @@ QStringList QUIHelper::getLocalIPs()
                 }
             }
         }
+#endif
     }
 
     return ips;
