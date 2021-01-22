@@ -33,16 +33,16 @@ SUBDIRS += lunarcalendarwidget#农历控件
 SUBDIRS += videowidget      #通用视频控件
 SUBDIRS += screenwidget     #屏幕截图控件
 SUBDIRS += imageswitch      #图片开关控件
+SUBDIRS += netserver        #网络中转服务器
+
+win32 {
+SUBDIRS += ffmpegdemo       #视频流播放ffmpeg内核
+SUBDIRS += vlcdemo          #视频流播放vlc内核
+SUBDIRS += mpvdemo          #视频流播放mpv内核
+SUBDIRS += miniblink        #miniblink示例
+}
 
 #如果你电脑对应的Qt版本有webkit或者webengine组件可以自行打开
 #SUBDIRS += echartgauge      #echart仪表盘含交互支持webkit及webengine
-#ffmpegdemo默认提供的win的lib,如果是win可以自行打开
-#SUBDIRS += ffmpegdemo       #视频流播放ffmpeg内核
-#vlcdemo默认提供的win的lib,如果是win可以自行打开
-#SUBDIRS += vlcdemo          #视频流播放vlc内核
-#mpvdemo默认提供的win的lib,如果是win可以自行打开
-#SUBDIRS += mpvdemo          #视频流播放mpv内核
 #designer项目只支持Qt4,如果是Qt4可以自行打开
 #SUBDIRS += designer         #QtDesigner4源码
-
-SUBDIRS += netserver        #网络中转服务器

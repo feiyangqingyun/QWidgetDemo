@@ -873,7 +873,7 @@ public:
 #define WKE_GET_PTR_ITERATOR(name) \
     name = (FN_##name)GetProcAddress(hMod, #name); \
     if (!name) \
-        MessageBoxA(((HWND)0), "wke api not found", #name, 0);
+        //MessageBoxA(((HWND)0), "wke api not found", #name, 0);
 
 #define WKE_GET_PTR_ITERATOR0(returnVal, name, description) \
     WKE_GET_PTR_ITERATOR(name);

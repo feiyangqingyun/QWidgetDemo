@@ -1,5 +1,6 @@
 ﻿#include "miniblink.h"
 #include "qapplication.h"
+#include "qvariant.h"
 #include "qdebug.h"
 
 void onLoadingFinish(wkeWebView, void *param, const wkeString, wkeLoadingResult result, const wkeString)
