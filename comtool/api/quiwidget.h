@@ -716,15 +716,14 @@ public:
     static quint16 getModbus16(quint8 *data, int len);
     static QByteArray getCRCCode(const QByteArray &data);
 
-    //字节数组转Ascii字符串
+    //字节数组与Ascii字符串互转
+    static void initAsciiStr();
     static QString byteArrayToAsciiStr(const QByteArray &data);
-    //16进制字符串转字节数组
-    static QByteArray hexStrToByteArray(const QString &str);
-    static char convertHexChar(char ch);
+    static QByteArray asciiStrToByteArray(const QString &data);
 
-    //Ascii字符串转字节数组
-    static QByteArray asciiStrToByteArray(const QString &str);
-    //字节数组转16进制字符串
+    //16进制字符串与字节数组互转
+    static char hexStrToChar(char data);
+    static QByteArray hexStrToByteArray(const QString &data);
     static QString byteArrayToHexStr(const QByteArray &data);
 
     //获取保存的文件

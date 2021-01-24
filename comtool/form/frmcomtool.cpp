@@ -366,7 +366,6 @@ void frmComTool::sendData(QString data)
     }
 
     QByteArray buffer;
-
     if (ui->ckHexSend->isChecked()) {
         buffer = QUIHelper::hexStrToByteArray(data);
     } else {
