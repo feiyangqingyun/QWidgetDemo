@@ -1,15 +1,15 @@
-﻿#include "tcpserver.h"
+﻿#include "webserver.h"
 #include "quiwidget.h"
 
-TcpServer::TcpServer(QObject *parent) : QTcpServer(parent)
+WebServer::WebServer(const QString &serverName, SslMode secureMode, QObject *parent) : QWebSocketServer(serverName, secureMode, parent)
 {
     connect(this, SIGNAL(newConnection()), this, SLOT(newConnection()));
 }
 
-void TcpServer::newConnection()
+void WebServer::newConnection()
 {
-    QTcpSocket *socket = this->nextPendingConnection();
-    TcpClient *client = new TcpClient(socket, this);
+    QWebSocket *socket = this->nextPendingConnection();
+    WebClient *client = new WebClient(socket, this);
     connect(client, SIGNAL(clientDisconnected()), this, SLOT(disconnected()));
     connect(client, SIGNAL(sendData(QString, int, QString)), this, SIGNAL(sendData(QString, int, QString)));
     connect(client, SIGNAL(receiveData(QString, int, QString)), this, SIGNAL(receiveData(QString, int, QString)));
@@ -23,9 +23,9 @@ void TcpServer::newConnection()
     clients.append(client);
 }
 
-void TcpServer::disconnected()
+void WebServer::disconnected()
 {
-    TcpClient *client = (TcpClient *)sender();
+    WebClient *client = (WebClient *)sender();
     QString ip = client->getIP();
     int port = client->getPort();
     emit clientDisconnected(ip, port);
@@ -35,21 +35,21 @@ void TcpServer::disconnected()
     clients.removeOne(client);
 }
 
-bool TcpServer::start()
+bool WebServer::start()
 {
-    bool ok = listen(QHostAddress(App::TcpListenIP), App::TcpListenPort);
+    bool ok = listen(QHostAddress(App::WebListenIP), App::WebListenPort);
     return ok;
 }
 
-void TcpServer::stop()
+void WebServer::stop()
 {
     remove();
     this->close();
 }
 
-void TcpServer::writeData(const QString &ip, int port, const QString &data)
+void WebServer::writeData(const QString &ip, int port, const QString &data)
 {
-    foreach (TcpClient *client, clients) {
+    foreach (WebClient *client, clients) {
         if (client->getIP() == ip && client->getPort() == port) {
             client->sendData(data);
             break;
@@ -57,16 +57,16 @@ void TcpServer::writeData(const QString &ip, int port, const QString &data)
     }
 }
 
-void TcpServer::writeData(const QString &data)
+void WebServer::writeData(const QString &data)
 {
-    foreach (TcpClient *client, clients) {
+    foreach (WebClient *client, clients) {
         client->sendData(data);
     }
 }
 
-void TcpServer::remove(const QString &ip, int port)
+void WebServer::remove(const QString &ip, int port)
 {
-    foreach (TcpClient *client, clients) {
+    foreach (WebClient *client, clients) {
         if (client->getIP() == ip && client->getPort() == port) {
             client->abort();
             break;
@@ -74,9 +74,9 @@ void TcpServer::remove(const QString &ip, int port)
     }
 }
 
-void TcpServer::remove()
+void WebServer::remove()
 {
-    foreach (TcpClient *client, clients) {
+    foreach (WebClient *client, clients) {
         client->abort();
     }
 }

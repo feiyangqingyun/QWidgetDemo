@@ -15,11 +15,13 @@ public:
     explicit frmMain(QWidget *parent = 0);
     ~frmMain();
 
-private slots:
-    void on_tabWidget_currentChanged(int index);
-
 private:
     Ui::frmMain *ui;
+
+private slots:
+    void initForm();
+    void initConfig();
+    void saveConfig();
 };
 
 #endif // FRMMAIN_H

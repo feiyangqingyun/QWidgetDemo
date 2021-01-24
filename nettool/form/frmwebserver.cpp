@@ -1,23 +1,23 @@
-﻿#include "frmtcpserver.h"
-#include "ui_frmtcpserver.h"
+﻿#include "frmwebserver.h"
+#include "ui_frmwebserver.h"
 #include "quiwidget.h"
 
-frmTcpServer::frmTcpServer(QWidget *parent) : QWidget(parent), ui(new Ui::frmTcpServer)
+frmWebServer::frmWebServer(QWidget *parent) : QWidget(parent), ui(new Ui::frmWebServer)
 {
     ui->setupUi(this);
     this->initForm();
     this->initConfig();
 }
 
-frmTcpServer::~frmTcpServer()
+frmWebServer::~frmWebServer()
 {
     delete ui;
 }
 
-void frmTcpServer::initForm()
+void frmWebServer::initForm()
 {
     isOk = false;
-    server = new TcpServer(this);
+    server = new WebServer("WebServer", QWebSocketServer::NonSecureMode, this);
     connect(server, SIGNAL(clientConnected(QString, int)), this, SLOT(clientConnected(QString, int)));
     connect(server, SIGNAL(clientDisconnected(QString, int)), this, SLOT(clientDisconnected(QString, int)));
     connect(server, SIGNAL(sendData(QString, int, QString)), this, SLOT(sendData(QString, int, QString)));
@@ -37,58 +37,58 @@ void frmTcpServer::initForm()
     }
 }
 
-void frmTcpServer::initConfig()
+void frmWebServer::initConfig()
 {
-    ui->ckHexSend->setChecked(App::HexSendTcpServer);
+    ui->ckHexSend->setChecked(App::HexSendWebServer);
     connect(ui->ckHexSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckHexReceive->setChecked(App::HexReceiveTcpServer);
+    ui->ckHexReceive->setChecked(App::HexReceiveWebServer);
     connect(ui->ckHexReceive, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckAscii->setChecked(App::AsciiTcpServer);
+    ui->ckAscii->setChecked(App::AsciiWebServer);
     connect(ui->ckAscii, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckDebug->setChecked(App::DebugTcpServer);
+    ui->ckDebug->setChecked(App::DebugWebServer);
     connect(ui->ckDebug, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckAutoSend->setChecked(App::AutoSendTcpServer);
+    ui->ckAutoSend->setChecked(App::AutoSendWebServer);
     connect(ui->ckAutoSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(App::IntervalTcpServer)));
+    ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(App::IntervalWebServer)));
     connect(ui->cboxInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
-    ui->cboxListenIP->setCurrentIndex(ui->cboxListenIP->findText(App::TcpListenIP));
+    ui->cboxListenIP->setCurrentIndex(ui->cboxListenIP->findText(App::WebListenIP));
     connect(ui->cboxListenIP, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
-    ui->txtListenPort->setText(QString::number(App::TcpListenPort));
+    ui->txtListenPort->setText(QString::number(App::WebListenPort));
     connect(ui->txtListenPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
-    ui->ckSelectAll->setChecked(App::SelectAllTcpServer);
+    ui->ckSelectAll->setChecked(App::SelectAllWebServer);
     connect(ui->ckSelectAll, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
     this->changeTimer();
 }
 
-void frmTcpServer::saveConfig()
+void frmWebServer::saveConfig()
 {
-    App::HexSendTcpServer = ui->ckHexSend->isChecked();
-    App::HexReceiveTcpServer = ui->ckHexReceive->isChecked();
-    App::AsciiTcpServer = ui->ckAscii->isChecked();
-    App::DebugTcpServer = ui->ckDebug->isChecked();
-    App::AutoSendTcpServer = ui->ckAutoSend->isChecked();
-    App::IntervalTcpServer = ui->cboxInterval->currentText().toInt();
-    App::TcpListenIP = ui->cboxListenIP->currentText();
-    App::TcpListenPort = ui->txtListenPort->text().trimmed().toInt();
-    App::SelectAllTcpServer = ui->ckSelectAll->isChecked();
+    App::HexSendWebServer = ui->ckHexSend->isChecked();
+    App::HexReceiveWebServer = ui->ckHexReceive->isChecked();
+    App::AsciiWebServer = ui->ckAscii->isChecked();
+    App::DebugWebServer = ui->ckDebug->isChecked();
+    App::AutoSendWebServer = ui->ckAutoSend->isChecked();
+    App::IntervalWebServer = ui->cboxInterval->currentText().toInt();
+    App::WebListenIP = ui->cboxListenIP->currentText();
+    App::WebListenPort = ui->txtListenPort->text().trimmed().toInt();
+    App::SelectAllWebServer = ui->ckSelectAll->isChecked();
     App::writeConfig();
 
     this->changeTimer();
 }
 
-void frmTcpServer::changeTimer()
+void frmWebServer::changeTimer()
 {
-    timer->setInterval(App::IntervalTcpServer);
-    if (App::AutoSendTcpServer) {
+    timer->setInterval(App::IntervalWebServer);
+    if (App::AutoSendWebServer) {
         if (!timer->isActive()) {
             timer->start();
         }
@@ -99,7 +99,7 @@ void frmTcpServer::changeTimer()
     }
 }
 
-void frmTcpServer::append(int type, const QString &data, bool clear)
+void frmWebServer::append(int type, const QString &data, bool clear)
 {
     static int currentCount = 0;
     static int maxCount = 100;
@@ -139,14 +139,14 @@ void frmTcpServer::append(int type, const QString &data, bool clear)
     currentCount++;
 }
 
-void frmTcpServer::clientConnected(const QString &ip, int port)
+void frmWebServer::clientConnected(const QString &ip, int port)
 {
     QString str = QString("%1:%2").arg(ip).arg(port);
     ui->listWidget->addItem(str);
     ui->labCount->setText(QString("共 %1 个客户端").arg(ui->listWidget->count()));
 }
 
-void frmTcpServer::clientDisconnected(const QString &ip, int port)
+void frmWebServer::clientDisconnected(const QString &ip, int port)
 {
     int row = -1;
     QString str = QString("%1:%2").arg(ip).arg(port);
@@ -161,20 +161,20 @@ void frmTcpServer::clientDisconnected(const QString &ip, int port)
     ui->labCount->setText(QString("共 %1 个客户端").arg(ui->listWidget->count()));
 }
 
-void frmTcpServer::sendData(const QString &ip, int port, const QString &data)
+void frmWebServer::sendData(const QString &ip, int port, const QString &data)
 {
     QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(data);
     bool error = (data.contains("下线") || data.contains("离线"));
     append(error ? 1 : 0, str);
 }
 
-void frmTcpServer::receiveData(const QString &ip, int port, const QString &data)
+void frmWebServer::receiveData(const QString &ip, int port, const QString &data)
 {
     QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(data);
     append(1, str);
 }
 
-void frmTcpServer::on_btnListen_clicked()
+void frmWebServer::on_btnListen_clicked()
 {
     if (ui->btnListen->text() == "监听") {
         isOk = server->start();
@@ -189,19 +189,19 @@ void frmTcpServer::on_btnListen_clicked()
     }
 }
 
-void frmTcpServer::on_btnSave_clicked()
+void frmWebServer::on_btnSave_clicked()
 {
     QString data = ui->txtMain->toPlainText();
     App::saveData(data);
     on_btnClear_clicked();
 }
 
-void frmTcpServer::on_btnClear_clicked()
+void frmWebServer::on_btnClear_clicked()
 {
     append(0, "", true);
 }
 
-void frmTcpServer::on_btnSend_clicked()
+void frmWebServer::on_btnSend_clicked()
 {
     if (!isOk) {
         return;
@@ -224,7 +224,7 @@ void frmTcpServer::on_btnSend_clicked()
     }
 }
 
-void frmTcpServer::on_btnClose_clicked()
+void frmWebServer::on_btnClose_clicked()
 {
     if (ui->ckSelectAll->isChecked()) {
         server->remove();

@@ -1,16 +1,16 @@
-﻿#ifndef TCPSERVER_H
-#define TCPSERVER_H
+﻿#ifndef WEBSERVER_H
+#define WEBSERVER_H
 
-#include "tcpclient.h"
+#include "webclient.h"
 
-class TcpServer : public QTcpServer
+class WebServer : public QWebSocketServer
 {
     Q_OBJECT
 public:
-    explicit TcpServer(QObject *parent = 0);
+    explicit WebServer(const QString &serverName = QString(), QWebSocketServer::SslMode secureMode = QWebSocketServer::NonSecureMode, QObject *parent = 0);
 
 private:
-    QList<TcpClient *> clients;
+    QList<WebClient *> clients;
 
 private slots:
     void newConnection();
@@ -40,4 +40,4 @@ public slots:
     void remove();
 };
 
-#endif // TCPSERVER_H
+#endif // WEBSERVER_H

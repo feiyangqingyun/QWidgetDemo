@@ -54,10 +54,30 @@ public:
     static int UdpListenPort;           //监听端口
     static bool SelectAllUdpServer;     //选中所有
 
+    //WEB客户端配置参数
+    static bool HexSendWebClient;       //16进制发送
+    static bool HexReceiveWebClient;    //16进制接收
+    static bool AsciiWebClient;         //ASCII模式
+    static bool DebugWebClient;         //启用数据调试
+    static bool AutoSendWebClient;      //自动发送数据
+    static int IntervalWebClient;       //发送数据间隔
+    static QString WebServerIP;         //服务器IP
+    static int WebServerPort;           //服务器端口
+
+    //WEB服务器配置参数
+    static bool HexSendWebServer;       //16进制发送
+    static bool HexReceiveWebServer;    //16进制接收
+    static bool AsciiWebServer;         //ASCII模式
+    static bool DebugWebServer;         //启用数据调试
+    static bool AutoSendWebServer;      //自动发送数据
+    static int IntervalWebServer;       //发送数据间隔
+    static QString WebListenIP;         //监听地址
+    static int WebListenPort;           //监听端口
+    static bool SelectAllWebServer;     //选中所有
+
     //读写配置参数及其他操作
     static void readConfig();           //读取配置参数
     static void writeConfig();          //写入配置参数
-    static void newConfig();            //以初始值新建配置文件
     static bool checkConfig();          //校验配置文件
 
     static QStringList Intervals;
@@ -66,6 +86,7 @@ public:
     static QStringList Values;
     static void readSendData();
     static void readDeviceData();
+    static void saveData(const QString &data);
 };
 
 #endif // APP_H

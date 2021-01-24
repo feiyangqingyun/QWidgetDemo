@@ -16,8 +16,8 @@ frmUdpClient::~frmUdpClient()
 
 void frmUdpClient::initForm()
 {
-    udpSocket = new QUdpSocket(this);
-    connect(udpSocket, SIGNAL(readyRead()), this, SLOT(readData()));
+    socket = new QUdpSocket(this);
+    connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
@@ -131,9 +131,9 @@ void frmUdpClient::readData()
     QByteArray data;
     QString buffer;
 
-    while (udpSocket->hasPendingDatagrams()) {
-        data.resize(udpSocket->pendingDatagramSize());
-        udpSocket->readDatagram(data.data(), data.size(), &host, &port);
+    while (socket->hasPendingDatagrams()) {
+        data.resize(socket->pendingDatagramSize());
+        socket->readDatagram(data.data(), data.size(), &host, &port);
 
         if (App::HexReceiveUdpClient) {
             buffer = QUIHelper::byteArrayToHexStr(data);
@@ -172,10 +172,10 @@ void frmUdpClient::sendData(const QString &ip, int port, const QString &data)
     } else if (App::AsciiUdpClient) {
         buffer = QUIHelper::asciiStrToByteArray(data);
     } else {
-        buffer = data.toLatin1();
+        buffer = data.toUtf8();
     }
 
-    udpSocket->writeDatagram(buffer, QHostAddress(ip), port);
+    socket->writeDatagram(buffer, QHostAddress(ip), port);
 
     QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(data);
     append(0, str);
@@ -184,17 +184,7 @@ void frmUdpClient::sendData(const QString &ip, int port, const QString &data)
 void frmUdpClient::on_btnSave_clicked()
 {
     QString data = ui->txtMain->toPlainText();
-    if (data.length() <= 0) {
-        return;
-    }
-
-    QString fileName = QString("%1/%2.txt").arg(QUIHelper::appPath()).arg(STRDATETIME);
-    QFile file(fileName);
-    if (file.open(QFile::WriteOnly | QFile::Text)) {
-        file.write(data.toUtf8());
-        file.close();
-    }
-
+    App::saveData(data);
     on_btnClear_clicked();
 }
 

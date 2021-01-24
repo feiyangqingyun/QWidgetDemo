@@ -6,7 +6,6 @@ frmUdpServer::frmUdpServer(QWidget *parent) : QWidget(parent), ui(new Ui::frmUdp
 {
     ui->setupUi(this);
     this->initForm();
-    this->initIP();
     this->initConfig();
 }
 
@@ -17,23 +16,21 @@ frmUdpServer::~frmUdpServer()
 
 void frmUdpServer::initForm()
 {
-    udpSocket = new QUdpSocket(this);
-    connect(udpSocket, SIGNAL(readyRead()), this, SLOT(readData()));
+    socket = new QUdpSocket(this);
+    connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
 
     ui->cboxInterval->addItems(App::Intervals);
     ui->cboxData->addItems(App::Datas);
-    QUIHelper::setLabStyle(ui->labCount, 3);
-}
 
-void frmUdpServer::initIP()
-{
     //获取本机所有IP
     QStringList ips = QUIHelper::getLocalIPs();
     ui->cboxListenIP->addItems(ips);
-    ui->cboxListenIP->addItem("127.0.0.1");
+    if (!ips.contains("127.0.0.1")) {
+        ui->cboxListenIP->addItem("127.0.0.1");
+    }
 }
 
 void frmUdpServer::initConfig()
@@ -145,9 +142,9 @@ void frmUdpServer::readData()
     QByteArray data;
     QString buffer;
 
-    while (udpSocket->hasPendingDatagrams()) {
-        data.resize(udpSocket->pendingDatagramSize());
-        udpSocket->readDatagram(data.data(), data.size(), &host, &port);
+    while (socket->hasPendingDatagrams()) {
+        data.resize(socket->pendingDatagramSize());
+        socket->readDatagram(data.data(), data.size(), &host, &port);
 
         if (App::HexReceiveUdpServer) {
             buffer = QUIHelper::byteArrayToHexStr(data);
@@ -187,10 +184,10 @@ void frmUdpServer::sendData(const QString &ip, int port, const QString &data)
     } else if (App::AsciiUdpServer) {
         buffer = QUIHelper::asciiStrToByteArray(data);
     } else {
-        buffer = data.toLatin1();
+        buffer = data.toUtf8();
     }
 
-    udpSocket->writeDatagram(buffer, QHostAddress(ip), port);
+    socket->writeDatagram(buffer, QHostAddress(ip), port);
 
     QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(data);
     append(0, str);
@@ -214,13 +211,13 @@ void frmUdpServer::clientConnected(const QString &ip, int port)
 void frmUdpServer::on_btnListen_clicked()
 {
     if (ui->btnListen->text() == "监听") {
-        bool ok = udpSocket->bind(QHostAddress(App::UdpListenIP), App::UdpListenPort);
+        bool ok = socket->bind(QHostAddress(App::UdpListenIP), App::UdpListenPort);
         if (ok) {
             ui->btnListen->setText("关闭");
             append(0, "监听成功");
         }
     } else {
-        udpSocket->abort();
+        socket->abort();
         ui->btnListen->setText("监听");
     }
 }
@@ -228,17 +225,7 @@ void frmUdpServer::on_btnListen_clicked()
 void frmUdpServer::on_btnSave_clicked()
 {
     QString data = ui->txtMain->toPlainText();
-    if (data.length() <= 0) {
-        return;
-    }
-
-    QString fileName = QString("%1/%2.txt").arg(QUIHelper::appPath()).arg(STRDATETIME);
-    QFile file(fileName);
-    if (file.open(QFile::WriteOnly | QFile::Text)) {
-        file.write(data.toUtf8());
-        file.close();
-    }
-
+    App::saveData(data);
     on_btnClear_clicked();
 }
 

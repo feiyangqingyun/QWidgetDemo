@@ -8,7 +8,7 @@ QString App::DeviceFileName = "device.txt";
 QString App::PortName = "COM1";
 int App::BaudRate = 9600;
 int App::DataBit = 8;
-QString App::Parity = "无";
+QString App::Parity = QString::fromUtf8("无");
 double App::StopBit = 1;
 
 bool App::HexSend = false;
@@ -37,30 +37,30 @@ void App::readConfig()
     QSettings set(App::ConfigFile, QSettings::IniFormat);
 
     set.beginGroup("ComConfig");
-    App::PortName = set.value("PortName").toString();
-    App::BaudRate = set.value("BaudRate").toInt();
-    App::DataBit = set.value("DataBit").toInt();
-    App::Parity = set.value("Parity").toString();
-    App::StopBit = set.value("StopBit").toInt();
+    App::PortName = set.value("PortName", App::PortName).toString();
+    App::BaudRate = set.value("BaudRate", App::BaudRate).toInt();
+    App::DataBit = set.value("DataBit", App::DataBit).toInt();
+    App::Parity = set.value("Parity", App::Parity).toString();
+    App::StopBit = set.value("StopBit", App::StopBit).toInt();
 
-    App::HexSend = set.value("HexSend").toBool();
-    App::HexReceive = set.value("HexReceive").toBool();
-    App::Debug = set.value("Debug").toBool();
-    App::AutoClear = set.value("AutoClear").toBool();
+    App::HexSend = set.value("HexSend", App::HexSend).toBool();
+    App::HexReceive = set.value("HexReceive", App::HexReceive).toBool();
+    App::Debug = set.value("Debug", App::Debug).toBool();
+    App::AutoClear = set.value("AutoClear", App::AutoClear).toBool();
 
-    App::AutoSend = set.value("AutoSend").toBool();
-    App::SendInterval = set.value("SendInterval").toInt();
-    App::AutoSave = set.value("AutoSave").toBool();
-    App::SaveInterval = set.value("SaveInterval").toInt();
+    App::AutoSend = set.value("AutoSend", App::AutoSend).toBool();
+    App::SendInterval = set.value("SendInterval", App::SendInterval).toInt();
+    App::AutoSave = set.value("AutoSave", App::AutoSave).toBool();
+    App::SaveInterval = set.value("SaveInterval", App::SaveInterval).toInt();
     set.endGroup();
 
     set.beginGroup("NetConfig");
-    App::Mode = set.value("Mode").toString();
-    App::ServerIP = set.value("ServerIP").toString();
-    App::ServerPort = set.value("ServerPort").toInt();
-    App::ListenPort = set.value("ListenPort").toInt();
-    App::SleepTime = set.value("SleepTime").toInt();
-    App::AutoConnect = set.value("AutoConnect").toBool();
+    App::Mode = set.value("Mode", App::Mode).toString();
+    App::ServerIP = set.value("ServerIP", App::ServerIP).toString();
+    App::ServerPort = set.value("ServerPort", App::ServerPort).toInt();
+    App::ListenPort = set.value("ListenPort", App::ListenPort).toInt();
+    App::SleepTime = set.value("SleepTime", App::SleepTime).toInt();
+    App::AutoConnect = set.value("AutoConnect", App::AutoConnect).toBool();
     set.endGroup();
 }
 
@@ -96,20 +96,12 @@ void App::writeConfig()
     set.endGroup();
 }
 
-void App::newConfig()
-{
-#if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
-    App::Parity = App::Parity.toLatin1();
-#endif
-    writeConfig();
-}
-
 bool App::checkConfig()
 {
     //如果配置文件大小为0,则以初始值继续运行,并生成配置文件
     QFile file(App::ConfigFile);
     if (file.size() == 0) {
-        newConfig();
+        writeConfig();
         return false;
     }
 
@@ -121,7 +113,6 @@ bool App::checkConfig()
             line = line.replace("\r", "");
             line = line.replace("\n", "");
             QStringList list = line.split("=");
-
             if (list.count() == 2) {
                 if (list.at(1) == "") {
                     ok = false;
@@ -131,11 +122,11 @@ bool App::checkConfig()
         }
 
         if (!ok) {
-            newConfig();
+            writeConfig();
             return false;
         }
     } else {
-        newConfig();
+        writeConfig();
         return false;
     }
 
@@ -165,6 +156,10 @@ void App::readSendData()
         }
 
         file.close();
+    }
+
+    if (App::Datas.count() == 0) {
+        App::Datas << "16 FF 01 01 E0 E1" << "16 FF 01 01 E1 E2";
     }
 }
 

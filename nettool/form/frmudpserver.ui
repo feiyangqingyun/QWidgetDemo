@@ -14,6 +14,18 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>6</number>
+   </property>
+   <property name="topMargin">
+    <number>6</number>
+   </property>
+   <property name="rightMargin">
+    <number>6</number>
+   </property>
+   <property name="bottomMargin">
+    <number>6</number>
+   </property>
    <item row="0" column="0">
     <widget class="QTextEdit" name="txtMain">
      <property name="readOnly">
@@ -42,6 +54,18 @@
       <enum>QFrame::Sunken</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>6</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
       <item>
        <widget class="QCheckBox" name="ckHexReceive">
         <property name="text">
@@ -59,7 +83,7 @@
       <item>
        <widget class="QCheckBox" name="ckAscii">
         <property name="text">
-         <string>Ascii控制字符</string>
+         <string>控制字符</string>
         </property>
        </widget>
       </item>

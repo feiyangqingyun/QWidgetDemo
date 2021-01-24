@@ -1,30 +1,30 @@
-﻿#ifndef FRMTCPSERVER_H
-#define FRMTCPSERVER_H
+﻿#ifndef FRMWEBSERVER_H
+#define FRMWEBSERVER_H
 
 #include <QWidget>
-#include "tcpserver.h"
+#include "webserver.h"
 
 namespace Ui {
-class frmTcpServer;
+class frmWebServer;
 }
 
-class frmTcpServer : public QWidget
+class frmWebServer : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit frmTcpServer(QWidget *parent = 0);
-    ~frmTcpServer();
+    explicit frmWebServer(QWidget *parent = 0);
+    ~frmWebServer();
 
 private:
-    Ui::frmTcpServer *ui;
+    Ui::frmWebServer *ui;
 
     bool isOk;
-    TcpServer *server;
+    WebServer *server;
     QTimer *timer;
 
 private slots:
-    void initForm();    
+    void initForm();
     void initConfig();
     void saveConfig();
     void changeTimer();
@@ -44,4 +44,4 @@ private slots:
     void on_btnClose_clicked();
 };
 
-#endif // FRMTCPSERVER_H
+#endif // FRMWEBSERVER_H

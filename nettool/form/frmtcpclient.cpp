@@ -6,7 +6,7 @@ frmTcpClient::frmTcpClient(QWidget *parent) : QWidget(parent), ui(new Ui::frmTcp
 {
     ui->setupUi(this);
     this->initForm();
-    this->initConfig();    
+    this->initConfig();
 }
 
 frmTcpClient::~frmTcpClient()
@@ -17,11 +17,11 @@ frmTcpClient::~frmTcpClient()
 void frmTcpClient::initForm()
 {
     isOk = false;
-    tcpSocket = new QTcpSocket(this);
-    connect(tcpSocket, SIGNAL(connected()), this, SLOT(connected()));
-    connect(tcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(disconnected()));
-    connect(tcpSocket, SIGNAL(disconnected()), this, SLOT(disconnected()));
-    connect(tcpSocket, SIGNAL(readyRead()), this, SLOT(readData()));
+    socket = new QTcpSocket(this);
+    connect(socket, SIGNAL(connected()), this, SLOT(connected()));
+    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(disconnected()));
+    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
 
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
@@ -138,14 +138,14 @@ void frmTcpClient::connected()
 void frmTcpClient::disconnected()
 {
     isOk = false;
-    tcpSocket->abort();
+    socket->abort();
     ui->btnConnect->setText("连接");
     append(1, "服务器断开");
 }
 
 void frmTcpClient::readData()
 {
-    QByteArray data = tcpSocket->readAll();
+    QByteArray data = socket->readAll();
     if (data.length() <= 0) {
         return;
     }
@@ -181,37 +181,27 @@ void frmTcpClient::sendData(const QString &data)
     } else if (App::AsciiTcpClient) {
         buffer = QUIHelper::asciiStrToByteArray(data);
     } else {
-        buffer = data.toLatin1();
+        buffer = data.toUtf8();
     }
 
-    tcpSocket->write(buffer);
+    socket->write(buffer);
     append(0, data);
 }
 
 void frmTcpClient::on_btnConnect_clicked()
 {
     if (ui->btnConnect->text() == "连接") {
-        tcpSocket->abort();
-        tcpSocket->connectToHost(App::TcpServerIP, App::TcpServerPort);
+        socket->abort();
+        socket->connectToHost(App::TcpServerIP, App::TcpServerPort);
     } else {
-        tcpSocket->abort();
+        socket->abort();
     }
 }
 
 void frmTcpClient::on_btnSave_clicked()
 {
     QString data = ui->txtMain->toPlainText();
-    if (data.length() <= 0) {
-        return;
-    }
-
-    QString fileName = QString("%1/%2.txt").arg(QUIHelper::appPath()).arg(STRDATETIME);
-    QFile file(fileName);
-    if (file.open(QFile::WriteOnly | QFile::Text)) {
-        file.write(data.toUtf8());
-        file.close();
-    }
-
+    App::saveData(data);
     on_btnClear_clicked();
 }
 

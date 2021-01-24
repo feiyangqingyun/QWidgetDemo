@@ -24,7 +24,8 @@ int main(int argc, char *argv[])
     App::readDeviceData();
 
     frmComTool w;
-    w.setWindowTitle("串口调试助手V2019  QQ: 517216493");
+    w.setWindowTitle("串口调试助手 V2021 (QQ: 517216493 WX: feiyangqingyun)");
+    QUIHelper::setFormInCenter(&w);
     w.show();
 
     return a.exec();

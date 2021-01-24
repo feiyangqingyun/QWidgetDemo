@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>frmTcpClient</class>
- <widget class="QWidget" name="frmTcpClient">
+ <class>frmWebClient</class>
+ <widget class="QWidget" name="frmWebClient">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -83,7 +83,7 @@
       <item>
        <widget class="QCheckBox" name="ckAscii">
         <property name="text">
-         <string>控制字符</string>
+         <string>文本字符</string>
         </property>
        </widget>
       </item>

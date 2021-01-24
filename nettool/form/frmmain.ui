@@ -35,58 +35,12 @@
       <enum>QTabWidget::South</enum>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>-1</number>
      </property>
-     <widget class="frmTcpClient" name="tabTcpClient">
-      <attribute name="title">
-       <string>TCP客户端</string>
-      </attribute>
-     </widget>
-     <widget class="frmTcpServer" name="tabTcpServer">
-      <attribute name="title">
-       <string>TCP服务器</string>
-      </attribute>
-     </widget>
-     <widget class="frmUdpClient" name="tabUdpClient">
-      <attribute name="title">
-       <string>UDP客户端</string>
-      </attribute>
-     </widget>
-     <widget class="frmUdpServer" name="tabUdpServer">
-      <attribute name="title">
-       <string>UDP服务器</string>
-      </attribute>
-     </widget>
     </widget>
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>frmTcpClient</class>
-   <extends>QWidget</extends>
-   <header>frmtcpclient.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>frmTcpServer</class>
-   <extends>QWidget</extends>
-   <header>frmtcpserver.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>frmUdpServer</class>
-   <extends>QWidget</extends>
-   <header>frmudpserver.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>frmUdpClient</class>
-   <extends>QWidget</extends>
-   <header>frmudpclient.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

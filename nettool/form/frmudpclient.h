@@ -19,7 +19,7 @@ public:
 private:
     Ui::frmUdpClient *ui;
 
-    QUdpSocket *udpSocket;
+    QUdpSocket *socket;
     QTimer *timer;
 
 private slots:
@@ -29,6 +29,7 @@ private slots:
     void changeTimer();
     void append(int type, const QString &data, bool clear = false);
 
+private slots:
     void readData();
     void sendData(const QString &ip, int port, const QString &data);
 

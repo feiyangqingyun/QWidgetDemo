@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>frmTcpClient</class>
- <widget class="QWidget" name="frmTcpClient">
+ <class>frmWebServer</class>
+ <widget class="QWidget" name="frmWebServer">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -53,7 +53,7 @@
      <property name="frameShadow">
       <enum>QFrame::Sunken</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_5">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="leftMargin">
        <number>6</number>
       </property>
@@ -83,7 +83,7 @@
       <item>
        <widget class="QCheckBox" name="ckAscii">
         <property name="text">
-         <string>控制字符</string>
+         <string>文本字符</string>
         </property>
        </widget>
       </item>
@@ -112,29 +112,29 @@
        <widget class="QComboBox" name="cboxInterval"/>
       </item>
       <item>
-       <widget class="QLabel" name="labServerIP">
+       <widget class="QLabel" name="labListenIP">
         <property name="text">
-         <string>服务器地址</string>
+         <string>监听地址</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="txtServerIP"/>
+       <widget class="QComboBox" name="cboxListenIP"/>
       </item>
       <item>
-       <widget class="QLabel" name="labServerPort">
+       <widget class="QLabel" name="labListenPort">
         <property name="text">
-         <string>服务器端口</string>
+         <string>监听端口</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="txtServerPort"/>
+       <widget class="QLineEdit" name="txtListenPort"/>
       </item>
       <item>
-       <widget class="QPushButton" name="btnConnect">
+       <widget class="QPushButton" name="btnListen">
         <property name="text">
-         <string>连接</string>
+         <string>监听</string>
         </property>
        </widget>
       </item>
@@ -153,24 +153,50 @@
        </widget>
       </item>
       <item>
-       <spacer name="spacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
+       <widget class="QPushButton" name="btnClose">
+        <property name="text">
+         <string>断开</string>
         </property>
-        <property name="sizeHint" stdset="0">
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labCount">
+        <property name="minimumSize">
          <size>
-          <width>20</width>
-          <height>40</height>
+          <width>0</width>
+          <height>25</height>
          </size>
         </property>
-       </spacer>
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <property name="text">
+         <string>共 0 个客户端</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="listWidget"/>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="ckSelectAll">
+        <property name="text">
+         <string>对所有客户端发送</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
    </item>
    <item row="1" column="0">
     <widget class="QWidget" name="widget" native="true">
-     <layout class="QHBoxLayout" name="layTcpClient">
+     <layout class="QHBoxLayout" name="layTcpServer">
       <property name="leftMargin">
        <number>0</number>
       </property>

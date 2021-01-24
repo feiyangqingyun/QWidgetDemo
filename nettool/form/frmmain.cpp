@@ -2,10 +2,20 @@
 #include "ui_frmmain.h"
 #include "quiwidget.h"
 
+#include "frmtcpclient.h"
+#include "frmtcpserver.h"
+#include "frmudpclient.h"
+#include "frmudpserver.h"
+#ifdef websocket
+#include "frmwebclient.h"
+#include "frmwebserver.h"
+#endif
+
 frmMain::frmMain(QWidget *parent) : QWidget(parent), ui(new Ui::frmMain)
 {
     ui->setupUi(this);
-    ui->tabWidget->setCurrentIndex(App::CurrentIndex);
+    this->initForm();
+    this->initConfig();
 }
 
 frmMain::~frmMain()
@@ -13,8 +23,29 @@ frmMain::~frmMain()
     delete ui;
 }
 
-void frmMain::on_tabWidget_currentChanged(int index)
+void frmMain::initForm()
 {
-    App::CurrentIndex = index;
+    ui->tabWidget->addTab(new frmTcpClient, "TCP客户端");
+    ui->tabWidget->addTab(new frmTcpServer, "TCP服务端");
+    ui->tabWidget->addTab(new frmUdpClient, "UDP客户端");
+    ui->tabWidget->addTab(new frmUdpServer, "UDP服务端");
+#ifdef websocket
+    ui->tabWidget->addTab(new frmWebClient, "WEB客户端");
+    ui->tabWidget->addTab(new frmWebServer, "WEB服务端");
+#endif
+#ifdef emsdk
+    App::CurrentIndex = 4;
+#endif
+}
+
+void frmMain::initConfig()
+{
+    ui->tabWidget->setCurrentIndex(App::CurrentIndex);
+    connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(saveConfig()));
+}
+
+void frmMain::saveConfig()
+{
+    App::CurrentIndex = ui->tabWidget->currentIndex();
     App::writeConfig();
 }

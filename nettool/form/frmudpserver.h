@@ -17,19 +17,19 @@ public:
     ~frmUdpServer();
 
 private:
-    Ui::frmUdpServer *ui;    
+    Ui::frmUdpServer *ui;
 
-    QUdpSocket *udpSocket;
+    QUdpSocket *socket;
     QTimer *timer;
 
 private slots:
     void initForm();
-    void initIP();
     void initConfig();
     void saveConfig();
     void changeTimer();
     void append(int type, const QString &data, bool clear = false);
 
+private slots:
     void readData();
     void sendData(const QString &ip, int port, const QString &data);
     void clientConnected(const QString &ip, int port);

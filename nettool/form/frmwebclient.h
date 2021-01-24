@@ -1,26 +1,26 @@
-﻿#ifndef FRMTCPCLIENT_H
-#define FRMTCPCLIENT_H
+﻿#ifndef FRMWEBCLIENT_H
+#define FRMWEBCLIENT_H
 
 #include <QWidget>
-#include <QtNetwork>
+#include <QtWebSockets>
 
 namespace Ui {
-class frmTcpClient;
+class frmWebClient;
 }
 
-class frmTcpClient : public QWidget
+class frmWebClient : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit frmTcpClient(QWidget *parent = 0);
-    ~frmTcpClient();
+    explicit frmWebClient(QWidget *parent = 0);
+    ~frmWebClient();
 
 private:
-    Ui::frmTcpClient *ui;
+    Ui::frmWebClient *ui;
 
     bool isOk;
-    QTcpSocket *socket;
+    QWebSocket *socket;
     QTimer *timer;
 
 private slots:
@@ -33,8 +33,12 @@ private slots:
 private slots:
     void connected();
     void disconnected();
-    void readData();
     void sendData(const QString &data);
+
+    void textFrameReceived(const QString &data, bool isLastFrame);
+    void binaryFrameReceived(const QByteArray &data, bool isLastFrame);
+    void textMessageReceived(const QString &data);
+    void binaryMessageReceived(const QByteArray &data);
 
 private slots:
     void on_btnConnect_clicked();
@@ -43,4 +47,4 @@ private slots:
     void on_btnSend_clicked();
 };
 
-#endif // FRMTCPCLIENT_H
+#endif // FRMWEBCLIENT_H

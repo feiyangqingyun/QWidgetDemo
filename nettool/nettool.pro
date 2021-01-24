@@ -6,12 +6,23 @@
 
 QT       += core gui network
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4) {
+QT += widgets
+#判断是否有websocket模块
+qtHaveModule(websockets) {
+QT += websockets
+DEFINES += websocket
+}}
 
 TARGET      = nettool
 TEMPLATE    = app
-DESTDIR     = $$PWD/../bin
 RC_FILE     = other/main.rc
+wasm {
+DEFINES     += emsdk
+RESOURCES   += other/font.qrc
+} else {
+DESTDIR     = $$PWD/../bin
+}
 
 SOURCES     += main.cpp
 HEADERS     += head.h
