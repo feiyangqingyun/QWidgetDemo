@@ -21,9 +21,6 @@ public:
     //读写配置参数及其他操作
     static void readConfig();           //读取配置参数
     static void writeConfig();          //写入配置参数
-    static void newConfig();            //以初始值新建配置文件
-    static bool checkConfig();          //校验配置文件
-
 };
 
 #endif // APP_H

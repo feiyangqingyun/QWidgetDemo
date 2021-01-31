@@ -33,7 +33,7 @@ void frmWebClient::initForm()
     connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
 
     ui->cboxInterval->addItems(App::Intervals);
-    ui->cboxData->addItems(App::Datas);
+    ui->cboxData->addItems(App::Datas);    
 }
 
 void frmWebClient::initConfig()

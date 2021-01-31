@@ -28,6 +28,11 @@ void frmTcpClient::initForm()
 
     ui->cboxInterval->addItems(App::Intervals);
     ui->cboxData->addItems(App::Datas);
+
+#ifndef emsdk
+    QString ip = QUIHelper::getNetIP(QUIHelper::getHtml("http://whois.pconline.com.cn/"));
+    append(1, QString("外网IP -> %1").arg(ip));
+#endif
 }
 
 void frmTcpClient::initConfig()

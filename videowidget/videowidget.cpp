@@ -273,6 +273,7 @@ void VideoWidget::drawBorder(QPainter *painter)
 void VideoWidget::drawBg(QPainter *painter)
 {
     painter->save();
+    painter->fillRect(rect(), bgColor);
 
     //背景图片为空则绘制文字,否则绘制背景图片
     if (bgImage.isNull()) {
@@ -462,6 +463,11 @@ QColor VideoWidget::getBorderColor() const
 QColor VideoWidget::getFocusColor() const
 {
     return this->focusColor;
+}
+
+QColor VideoWidget::getBgColor() const
+{
+    return this->bgColor;
 }
 
 QString VideoWidget::getBgText() const
@@ -736,96 +742,121 @@ void VideoWidget::setTimeout(int timeout)
 void VideoWidget::setBorderWidth(int borderWidth)
 {
     this->borderWidth = borderWidth;
+    this->update();
 }
 
 void VideoWidget::setBorderColor(const QColor &borderColor)
 {
     this->borderColor = borderColor;
+    this->update();
 }
 
 void VideoWidget::setFocusColor(const QColor &focusColor)
 {
     this->focusColor = focusColor;
+    this->update();
+}
+
+void VideoWidget::setBgColor(const QColor &bgColor)
+{
+    this->bgColor = bgColor;
+    this->update();
 }
 
 void VideoWidget::setBgText(const QString &bgText)
 {
     this->bgText = bgText;
+    this->update();
 }
 
 void VideoWidget::setBgImage(const QImage &bgImage)
 {
     this->bgImage = bgImage;
+    this->update();
 }
 
 void VideoWidget::setOSD1Visible(bool osdVisible)
 {
     this->osd1Visible = osdVisible;
+    this->update();
 }
 
 void VideoWidget::setOSD1FontSize(int osdFontSize)
 {
     this->osd1FontSize = osdFontSize;
+    this->update();
 }
 
 void VideoWidget::setOSD1Text(const QString &osdText)
 {
     this->osd1Text = osdText;
+    this->update();
 }
 
 void VideoWidget::setOSD1Color(const QColor &osdColor)
 {
     this->osd1Color = osdColor;
+    this->update();
 }
 
 void VideoWidget::setOSD1Image(const QImage &osdImage)
 {
     this->osd1Image = osdImage;
+    this->update();
 }
 
 void VideoWidget::setOSD1Format(const VideoWidget::OSDFormat &osdFormat)
 {
     this->osd1Format = osdFormat;
+    this->update();
 }
 
 void VideoWidget::setOSD1Position(const VideoWidget::OSDPosition &osdPosition)
 {
     this->osd1Position = osdPosition;
+    this->update();
 }
 
 void VideoWidget::setOSD2Visible(bool osdVisible)
 {
     this->osd2Visible = osdVisible;
+    this->update();
 }
 
 void VideoWidget::setOSD2FontSize(int osdFontSize)
 {
     this->osd2FontSize = osdFontSize;
+    this->update();
 }
 
 void VideoWidget::setOSD2Text(const QString &osdText)
 {
     this->osd2Text = osdText;
+    this->update();
 }
 
 void VideoWidget::setOSD2Color(const QColor &osdColor)
 {
     this->osd2Color = osdColor;
+    this->update();
 }
 
 void VideoWidget::setOSD2Image(const QImage &osdImage)
 {
     this->osd2Image = osdImage;
+    this->update();
 }
 
 void VideoWidget::setOSD2Format(const VideoWidget::OSDFormat &osdFormat)
 {
     this->osd2Format = osdFormat;
+    this->update();
 }
 
 void VideoWidget::setOSD2Position(const VideoWidget::OSDPosition &osdPosition)
 {
     this->osd2Position = osdPosition;
+    this->update();
 }
 
 void VideoWidget::setOSD1Format(quint8 osdFormat)
@@ -851,16 +882,19 @@ void VideoWidget::setOSD2Position(quint8 osdPosition)
 void VideoWidget::setFaceBorder(int faceBorder)
 {
     this->faceBorder = faceBorder;
+    this->update();
 }
 
 void VideoWidget::setFaceColor(const QColor &faceColor)
 {
     this->faceColor = faceColor;
+    this->update();
 }
 
 void VideoWidget::setFaceRects(const QList<QRect> &faceRects)
 {
     this->faceRects = faceRects;
+    this->update();
 }
 
 void VideoWidget::open()

@@ -45,7 +45,8 @@ class VideoWidget : public QWidget
     Q_PROPERTY(int timeout READ getTimeout WRITE setTimeout)
     Q_PROPERTY(int borderWidth READ getBorderWidth WRITE setBorderWidth)
     Q_PROPERTY(QColor borderColor READ getBorderColor WRITE setBorderColor)
-    Q_PROPERTY(QColor focusColor READ getFocusColor WRITE setFocusColor)    
+    Q_PROPERTY(QColor focusColor READ getFocusColor WRITE setFocusColor)
+    Q_PROPERTY(QColor bgColor READ getBgColor WRITE setBgColor)
     Q_PROPERTY(QString bgText READ getBgText WRITE setBgText)
     Q_PROPERTY(QImage bgImage READ getBgImage WRITE setBgImage)
 
@@ -122,7 +123,8 @@ private:
     int timeout;                    //超时时间
     int borderWidth;                //边框宽度
     QColor borderColor;             //边框颜色
-    QColor focusColor;              //有焦点边框颜色    
+    QColor focusColor;              //有焦点边框颜色
+    QColor bgColor;                 //背景颜色
     QString bgText;                 //默认无图像显示文字
     QImage bgImage;                 //默认无图像背景图片
 
@@ -178,6 +180,7 @@ public:
     int getBorderWidth()            const;
     QColor getBorderColor()         const;
     QColor getFocusColor()          const;
+    QColor getBgColor()             const;
     QString getBgText()             const;
     QImage getBgImage()             const;
 
@@ -288,7 +291,7 @@ public slots:
     void setFillImage(bool fillImage);
 
     //设置是否启用悬浮条
-    void setFlowEnable(bool flowEnable);    
+    void setFlowEnable(bool flowEnable);
     //设置悬浮条背景颜色
     void setFlowBgColor(const QColor &flowBgColor);
     //设置悬浮条按下颜色
@@ -301,7 +304,9 @@ public slots:
     //设置边框颜色
     void setBorderColor(const QColor &borderColor);
     //设置有焦点边框颜色
-    void setFocusColor(const QColor &focusColor);    
+    void setFocusColor(const QColor &focusColor);
+    //设置背景颜色
+    void setBgColor(const QColor &bgColor);
     //设置无图像文字
     void setBgText(const QString &bgText);
     //设置无图像背景图

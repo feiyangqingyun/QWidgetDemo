@@ -1,46 +1,54 @@
 ﻿#include "quiwidget.h"
 
+#ifdef __arm__
+#ifdef arma7
+#define TOOL true
+#else
+#define TOOL false
+#endif
+#else
+#define TOOL false
+#endif
+
 QUIWidget::QUIWidget(QWidget *parent) : QDialog(parent)
 {
     this->initControl();
     this->initForm();
+    QUIHelper::setFormInCenter(this);
 }
 
 QUIWidget::~QUIWidget()
 {
-    delete widgetMain;
 }
 
-bool QUIWidget::eventFilter(QObject *obj, QEvent *evt)
+bool QUIWidget::eventFilter(QObject *watched, QEvent *event)
 {
     static QPoint mousePoint;
     static bool mousePressed = false;
 
-    QMouseEvent *event = static_cast<QMouseEvent *>(evt);
-    if (event->type() == QEvent::MouseButtonPress) {
-        if (event->button() == Qt::LeftButton) {
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+    if (mouseEvent->type() == QEvent::MouseButtonPress) {
+        if (mouseEvent->button() == Qt::LeftButton) {
             mousePressed = true;
-            mousePoint = event->globalPos() - this->pos();
-            return true;
+            mousePoint = mouseEvent->globalPos() - this->pos();
         }
-    } else if (event->type() == QEvent::MouseButtonRelease) {
+    } else if (mouseEvent->type() == QEvent::MouseButtonRelease) {
         mousePressed = false;
-        return true;
-    } else if (event->type() == QEvent::MouseMove) {
-        if (mousePressed && (event->buttons() && Qt::LeftButton)) {
-            this->move(event->globalPos() - mousePoint);
-            return true;
+    } else if (mouseEvent->type() == QEvent::MouseMove) {
+        if (mousePressed) {
+            if (this->property("canMove").toBool()) {
+                this->move(mouseEvent->globalPos() - mousePoint);
+            }
         }
-    } else if (event->type() == QEvent::MouseButtonDblClick) {
+    } else if (mouseEvent->type() == QEvent::MouseButtonDblClick) {
         //以下写法可以将双击识别限定在标题栏
-        //if (this->btnMenu_Max->isVisible() && obj == this->widgetTitle) {
-        if (this->btnMenu_Max->isVisible()) {
+        if (this->btnMenu_Max->isVisible() && watched == this->widgetTitle) {
+            //if (this->btnMenu_Max->isVisible()) {
             this->on_btnMenu_Max_clicked();
-            return true;
         }
     }
 
-    return QWidget::eventFilter(obj, evt);
+    return QWidget::eventFilter(watched, event);
 }
 
 QLabel *QUIWidget::getLabIco() const
@@ -83,6 +91,16 @@ Qt::Alignment QUIWidget::getAlignment() const
     return this->alignment;
 }
 
+bool QUIWidget::getMinHide() const
+{
+    return this->minHide;
+}
+
+bool QUIWidget::getExitAll() const
+{
+    return this->exitAll;
+}
+
 QSize QUIWidget::sizeHint() const
 {
     return QSize(600, 450);
@@ -103,7 +121,7 @@ void QUIWidget::initControl()
     verticalLayout1->setObjectName(QString::fromUtf8("verticalLayout1"));
     verticalLayout1->setContentsMargins(1, 1, 1, 1);
     widgetMain = new QWidget(this);
-    widgetMain->setObjectName(QString::fromUtf8("widgetMain"));
+    widgetMain->setObjectName(QString::fromUtf8("widgetMainQUI"));
     verticalLayout2 = new QVBoxLayout(widgetMain);
     verticalLayout2->setSpacing(0);
     verticalLayout2->setContentsMargins(11, 11, 11, 11);
@@ -122,6 +140,7 @@ void QUIWidget::initControl()
     horizontalLayout4->setContentsMargins(11, 11, 11, 11);
     horizontalLayout4->setObjectName(QString::fromUtf8("horizontalLayout4"));
     horizontalLayout4->setContentsMargins(0, 0, 0, 0);
+
     labIco = new QLabel(widgetTitle);
     labIco->setObjectName(QString::fromUtf8("labIco"));
     QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
@@ -131,7 +150,6 @@ void QUIWidget::initControl()
     labIco->setSizePolicy(sizePolicy1);
     labIco->setMinimumSize(QSize(30, 0));
     labIco->setAlignment(Qt::AlignCenter);
-
     horizontalLayout4->addWidget(labIco);
 
     labTitle = new QLabel(widgetTitle);
@@ -142,7 +160,6 @@ void QUIWidget::initControl()
     sizePolicy2.setHeightForWidth(labTitle->sizePolicy().hasHeightForWidth());
     labTitle->setSizePolicy(sizePolicy2);
     labTitle->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
-
     horizontalLayout4->addWidget(labTitle);
 
     widgetMenu = new QWidget(widgetTitle);
@@ -154,6 +171,7 @@ void QUIWidget::initControl()
     horizontalLayout->setContentsMargins(11, 11, 11, 11);
     horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
+
     btnMenu = new QToolButton(widgetMenu);
     btnMenu->setObjectName(QString::fromUtf8("btnMenu"));
     QSizePolicy sizePolicy3(QSizePolicy::Fixed, QSizePolicy::Expanding);
@@ -165,7 +183,6 @@ void QUIWidget::initControl()
     btnMenu->setMaximumSize(QSize(30, 16777215));
     btnMenu->setFocusPolicy(Qt::NoFocus);
     btnMenu->setPopupMode(QToolButton::InstantPopup);
-
     horizontalLayout->addWidget(btnMenu);
 
     btnMenu_Min = new QPushButton(widgetMenu);
@@ -179,7 +196,6 @@ void QUIWidget::initControl()
     btnMenu_Min->setMaximumSize(QSize(30, 16777215));
     btnMenu_Min->setCursor(QCursor(Qt::ArrowCursor));
     btnMenu_Min->setFocusPolicy(Qt::NoFocus);
-
     horizontalLayout->addWidget(btnMenu_Min);
 
     btnMenu_Max = new QPushButton(widgetMenu);
@@ -190,7 +206,6 @@ void QUIWidget::initControl()
     btnMenu_Max->setMaximumSize(QSize(30, 16777215));
     btnMenu_Max->setCursor(QCursor(Qt::ArrowCursor));
     btnMenu_Max->setFocusPolicy(Qt::NoFocus);
-
     horizontalLayout->addWidget(btnMenu_Max);
 
     btnMenu_Close = new QPushButton(widgetMenu);
@@ -201,7 +216,6 @@ void QUIWidget::initControl()
     btnMenu_Close->setMaximumSize(QSize(30, 16777215));
     btnMenu_Close->setCursor(QCursor(Qt::ArrowCursor));
     btnMenu_Close->setFocusPolicy(Qt::NoFocus);
-
     horizontalLayout->addWidget(btnMenu_Close);
     horizontalLayout4->addWidget(widgetMenu);
     verticalLayout2->addWidget(widgetTitle);
@@ -213,7 +227,6 @@ void QUIWidget::initControl()
     verticalLayout3->setContentsMargins(11, 11, 11, 11);
     verticalLayout3->setObjectName(QString::fromUtf8("verticalLayout3"));
     verticalLayout3->setContentsMargins(0, 0, 0, 0);
-
     verticalLayout2->addWidget(widget);
     verticalLayout1->addWidget(widgetMain);
 
@@ -232,13 +245,15 @@ void QUIWidget::initForm()
     setIcon(QUIWidget::BtnMenu_Close, QUIConfig::IconClose);
 
     this->setProperty("form", true);
+    this->setProperty("canMove", true);
     this->widgetTitle->setProperty("form", "title");
-    this->setWindowFlags((Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint));
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinMaxButtonsHint);
 
     //设置标题及对齐方式
     title = "QUI Demo";
     alignment = Qt::AlignLeft | Qt::AlignVCenter;
     minHide = false;
+    exitAll = true;
     mainWidget = 0;
 
     setVisible(QUIWidget::BtnMenu, false);
@@ -248,14 +263,14 @@ void QUIWidget::initForm()
     this->widgetTitle->installEventFilter(this);
 
     //添加换肤菜单
-    QStringList name;
-    name << "银色" << "蓝色" << "浅蓝色" << "深蓝色" << "灰色" << "浅灰色" << "深灰色" << "黑色"
-         << "浅黑色" << "深黑色" << "PS黑色" << "黑色扁平" << "白色扁平";
+    QStringList styleNames;
+    styleNames << "银色" << "蓝色" << "浅蓝色" << "深蓝色" << "灰色" << "浅灰色" << "深灰色" << "黑色"
+               << "浅黑色" << "深黑色" << "PS黑色" << "黑色扁平" << "白色扁平" << "蓝色扁平" << "紫色" << "黑蓝色" << "视频黑";
 
-    foreach (QString str, name) {
-        QAction *action = new QAction(str, this);
-        this->btnMenu->addAction(action);
+    foreach (QString styleName, styleNames) {
+        QAction *action = new QAction(styleName, this);
         connect(action, SIGNAL(triggered(bool)), this, SLOT(changeStyle()));
+        this->btnMenu->addAction(action);
     }
 }
 
@@ -263,7 +278,7 @@ void QUIWidget::changeStyle()
 {
     QAction *act = (QAction *)sender();
     QString name = act->text();
-    QString qssFile = ":/qss/blue.css";
+    QString qssFile = ":/qss/lightblue.css";
 
     if (name == "银色") {
         qssFile = ":/qss/silvery.css";
@@ -304,12 +319,24 @@ void QUIWidget::changeStyle()
     } else if (name == "白色扁平") {
         qssFile = ":/qss/flatwhite.css";
         QUIHelper::setStyle(QUIWidget::Style_FlatWhite);
+    } else if (name == "蓝色扁平") {
+        qssFile = ":/qss/flatblue.css";
+        QUIHelper::setStyle(QUIWidget::Style_FlatBlue);
+    } else if (name == "紫色") {
+        qssFile = ":/qss/purple.css";
+        QUIHelper::setStyle(QUIWidget::Style_Purple);
+    } else if (name == "黑蓝色") {
+        qssFile = ":/qss/blackblue.css";
+        QUIHelper::setStyle(QUIWidget::Style_BlackBlue);
+    } else if (name == "视频黑") {
+        qssFile = ":/qss/blackvideo.css";
+        QUIHelper::setStyle(QUIWidget::Style_BlackVideo);
     }
 
     emit changeStyle(qssFile);
 }
 
-void QUIWidget::setIcon(QUIWidget::Widget widget, QChar str, quint32 size)
+void QUIWidget::setIcon(QUIWidget::Widget widget, const QChar &str, quint32 size)
 {
     if (widget == QUIWidget::Lab_Ico) {
         setIconMain(str, size);
@@ -331,7 +358,7 @@ void QUIWidget::setIcon(QUIWidget::Widget widget, QChar str, quint32 size)
     }
 }
 
-void QUIWidget::setIconMain(QChar str, quint32 size)
+void QUIWidget::setIconMain(const QChar &str, quint32 size)
 {
     QUIConfig::IconMain = str;
     IconHelper::Instance()->setIcon(this->labIco, str, size);
@@ -342,10 +369,9 @@ void QUIWidget::setIconMain(QChar str, quint32 size)
 
 void QUIWidget::setPixmap(QUIWidget::Widget widget, const QString &file, const QSize &size)
 {
-    QPixmap pix = QPixmap(file);
     //按照宽高比自动缩放
+    QPixmap pix = QPixmap(file);
     pix = pix.scaled(size, Qt::KeepAspectRatio);
-
     if (widget == QUIWidget::Lab_Ico) {
         this->labIco->setPixmap(pix);
     } else if (widget == QUIWidget::BtnMenu) {
@@ -419,6 +445,13 @@ void QUIWidget::setMinHide(bool minHide)
     }
 }
 
+void QUIWidget::setExitAll(bool exitAll)
+{
+    if (this->exitAll != exitAll) {
+        this->exitAll = exitAll;
+    }
+}
+
 void QUIWidget::setMainWidget(QWidget *mainWidget)
 {
     //一个QUI窗体对象只能设置一个主窗体
@@ -427,7 +460,6 @@ void QUIWidget::setMainWidget(QWidget *mainWidget)
         this->widget->layout()->addWidget(mainWidget);
         //自动设置大小
         resize(mainWidget->width(), mainWidget->height() + this->widgetTitle->height());
-
         this->mainWidget = mainWidget;
     }
 }
@@ -455,39 +487,81 @@ void QUIWidget::on_btnMenu_Max_clicked()
         setIcon(QUIWidget::BtnMenu_Max, QUIConfig::IconMax);
     }
 
+    this->setProperty("canMove", max);
     max = !max;
 }
 
 void QUIWidget::on_btnMenu_Close_clicked()
 {
+    //先发送关闭信号
     emit closing();
-    exit(0);
+    mainWidget->close();
+    if (exitAll) {
+        this->close();
+    }
 }
 
 
-QUIMessageBox *QUIMessageBox::self = NULL;
+QScopedPointer<QUIMessageBox> QUIMessageBox::self;
 QUIMessageBox *QUIMessageBox::Instance()
 {
-    if (!self) {
-        QMutex mutex;
+    if (self.isNull()) {
+        static QMutex mutex;
         QMutexLocker locker(&mutex);
-        if (!self) {
-            self = new QUIMessageBox;
+        if (self.isNull()) {
+            self.reset(new QUIMessageBox);
         }
     }
 
-    return self;
+    return self.data();
 }
 
 QUIMessageBox::QUIMessageBox(QWidget *parent) : QDialog(parent)
 {
     this->initControl();
     this->initForm();
+    QUIHelper::setFormInCenter(this);
 }
 
 QUIMessageBox::~QUIMessageBox()
 {
     delete widgetMain;
+}
+
+void QUIMessageBox::showEvent(QShowEvent *)
+{
+    this->activateWindow();
+}
+
+void QUIMessageBox::closeEvent(QCloseEvent *)
+{
+    closeSec = 0;
+    currentSec = 0;
+}
+
+bool QUIMessageBox::eventFilter(QObject *watched, QEvent *event)
+{
+    static QPoint mousePoint;
+    static bool mousePressed = false;
+
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+    if (mouseEvent->type() == QEvent::MouseButtonPress) {
+        if (mouseEvent->button() == Qt::LeftButton) {
+            mousePressed = true;
+            mousePoint = mouseEvent->globalPos() - this->pos();
+            return true;
+        }
+    } else if (mouseEvent->type() == QEvent::MouseButtonRelease) {
+        mousePressed = false;
+        return true;
+    } else if (mouseEvent->type() == QEvent::MouseMove) {
+        if (mousePressed) {
+            this->move(mouseEvent->globalPos() - mousePoint);
+            return true;
+        }
+    }
+
+    return QWidget::eventFilter(watched, event);
 }
 
 void QUIMessageBox::initControl()
@@ -498,6 +572,7 @@ void QUIMessageBox::initControl()
     verticalLayout1->setSpacing(0);
     verticalLayout1->setObjectName(QString::fromUtf8("verticalLayout1"));
     verticalLayout1->setContentsMargins(1, 1, 1, 1);
+
     widgetTitle = new QWidget(this);
     widgetTitle->setObjectName(QString::fromUtf8("widgetTitle"));
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -505,11 +580,12 @@ void QUIMessageBox::initControl()
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(widgetTitle->sizePolicy().hasHeightForWidth());
     widgetTitle->setSizePolicy(sizePolicy);
-    widgetTitle->setMinimumSize(QSize(0, TitleMinSize));
+
     horizontalLayout3 = new QHBoxLayout(widgetTitle);
     horizontalLayout3->setSpacing(0);
     horizontalLayout3->setObjectName(QString::fromUtf8("horizontalLayout3"));
     horizontalLayout3->setContentsMargins(0, 0, 0, 0);
+
     labIco = new QLabel(widgetTitle);
     labIco->setObjectName(QString::fromUtf8("labIco"));
     QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
@@ -517,36 +593,34 @@ void QUIMessageBox::initControl()
     sizePolicy1.setVerticalStretch(0);
     sizePolicy1.setHeightForWidth(labIco->sizePolicy().hasHeightForWidth());
     labIco->setSizePolicy(sizePolicy1);
-    labIco->setMinimumSize(QSize(TitleMinSize, 0));
     labIco->setAlignment(Qt::AlignCenter);
-
     horizontalLayout3->addWidget(labIco);
 
     labTitle = new QLabel(widgetTitle);
     labTitle->setObjectName(QString::fromUtf8("labTitle"));
     labTitle->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
-
     horizontalLayout3->addWidget(labTitle);
 
-    labTime = new QLabel(widgetTitle);
-    labTime->setObjectName(QString::fromUtf8("labTime"));
+    labCountDown = new QLabel(widgetTitle);
+    labCountDown->setObjectName(QString::fromUtf8("labCountDown"));
     QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(0);
     sizePolicy2.setVerticalStretch(0);
-    sizePolicy2.setHeightForWidth(labTime->sizePolicy().hasHeightForWidth());
-    labTime->setSizePolicy(sizePolicy2);
-    labTime->setAlignment(Qt::AlignCenter);
-
-    horizontalLayout3->addWidget(labTime);
+    sizePolicy2.setHeightForWidth(labCountDown->sizePolicy().hasHeightForWidth());
+    labCountDown->setSizePolicy(sizePolicy2);
+    labCountDown->setAlignment(Qt::AlignCenter);
+    horizontalLayout3->addWidget(labCountDown);
 
     widgetMenu = new QWidget(widgetTitle);
     widgetMenu->setObjectName(QString::fromUtf8("widgetMenu"));
     sizePolicy1.setHeightForWidth(widgetMenu->sizePolicy().hasHeightForWidth());
     widgetMenu->setSizePolicy(sizePolicy1);
+
     horizontalLayout4 = new QHBoxLayout(widgetMenu);
     horizontalLayout4->setSpacing(0);
     horizontalLayout4->setObjectName(QString::fromUtf8("horizontalLayout4"));
     horizontalLayout4->setContentsMargins(0, 0, 0, 0);
+
     btnMenu_Close = new QPushButton(widgetMenu);
     btnMenu_Close->setObjectName(QString::fromUtf8("btnMenu_Close"));
     QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -554,8 +628,6 @@ void QUIMessageBox::initControl()
     sizePolicy3.setVerticalStretch(0);
     sizePolicy3.setHeightForWidth(btnMenu_Close->sizePolicy().hasHeightForWidth());
     btnMenu_Close->setSizePolicy(sizePolicy3);
-    btnMenu_Close->setMinimumSize(QSize(TitleMinSize, 0));
-    btnMenu_Close->setMaximumSize(QSize(TitleMinSize, 16777215));
     btnMenu_Close->setCursor(QCursor(Qt::ArrowCursor));
     btnMenu_Close->setFocusPolicy(Qt::NoFocus);
     btnMenu_Close->setFlat(true);
@@ -565,22 +637,28 @@ void QUIMessageBox::initControl()
     verticalLayout1->addWidget(widgetTitle);
 
     widgetMain = new QWidget(this);
-    widgetMain->setObjectName(QString::fromUtf8("widgetMain"));
+    widgetMain->setObjectName(QString::fromUtf8("widgetMainQUI"));
+
     verticalLayout2 = new QVBoxLayout(widgetMain);
     verticalLayout2->setSpacing(5);
     verticalLayout2->setObjectName(QString::fromUtf8("verticalLayout2"));
     verticalLayout2->setContentsMargins(5, 5, 5, 5);
+
     frame = new QFrame(widgetMain);
     frame->setObjectName(QString::fromUtf8("frame"));
     frame->setFrameShape(QFrame::Box);
     frame->setFrameShadow(QFrame::Sunken);
+
+    labIcoMain = new QLabel(frame);
+    labIcoMain->setObjectName(QString::fromUtf8("labIcoMain"));
+    labIcoMain->setAlignment(Qt::AlignCenter);
+
     verticalLayout4 = new QVBoxLayout(frame);
     verticalLayout4->setObjectName(QString::fromUtf8("verticalLayout4"));
     verticalLayout4->setContentsMargins(-1, 9, -1, -1);
+
     horizontalLayout1 = new QHBoxLayout();
     horizontalLayout1->setObjectName(QString::fromUtf8("horizontalLayout1"));
-    labIcoMain = new QLabel(frame);
-    labIcoMain->setObjectName(QString::fromUtf8("labIcoMain"));
     horizontalLayout1->addWidget(labIcoMain);
     horizontalSpacer1 = new QSpacerItem(5, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
     horizontalLayout1->addItem(horizontalSpacer1);
@@ -607,14 +685,13 @@ void QUIMessageBox::initControl()
     btnOk->setObjectName(QString::fromUtf8("btnOk"));
     btnOk->setMinimumSize(QSize(85, 0));
     btnOk->setFocusPolicy(Qt::StrongFocus);
-    btnOk->setIcon(QIcon(":/image/btn_ok.png"));
     horizontalLayout2->addWidget(btnOk);
+    btnOk->setDefault(true);
 
     btnCancel = new QPushButton(frame);
     btnCancel->setObjectName(QString::fromUtf8("btnCancel"));
     btnCancel->setMinimumSize(QSize(85, 0));
     btnCancel->setFocusPolicy(Qt::StrongFocus);
-    btnCancel->setIcon(QIcon(":/image/btn_close.png"));
     horizontalLayout2->addWidget(btnCancel);
 
     verticalLayout4->addLayout(horizontalLayout2);
@@ -627,38 +704,32 @@ void QUIMessageBox::initControl()
 
     btnOk->setText("确定");
     btnCancel->setText("取消");
+    QUIHelper::setIconBtn(btnOk, ":/image/btn_ok.png", 0xf00c);
+    QUIHelper::setIconBtn(btnCancel, ":/image/btn_close.png", 0xf00d);
 
     connect(btnOk, SIGNAL(clicked()), this, SLOT(on_btnOk_clicked()));
-    connect(btnMenu_Close, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
     connect(btnCancel, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
+    connect(btnMenu_Close, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
 }
 
 void QUIMessageBox::initForm()
 {
-    IconHelper::Instance()->setIcon(labIco, QUIConfig::IconMain, QUIConfig::FontSize + 2);
-    IconHelper::Instance()->setIcon(btnMenu_Close, QUIConfig::IconClose, QUIConfig::FontSize);
-
-    this->setProperty("form", true);
-    this->widgetTitle->setProperty("form", "title");
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint | Qt::WindowStaysOnTopHint);
+    QUIHelper::setFramelessForm(this, widgetTitle, labIco, btnMenu_Close);
     this->setWindowTitle(this->labTitle->text());
+    this->setFixedSize(DialogMinWidth, DialogMinHeight);
+    labIcoMain->setFixedSize(TitleMinSize, TitleMinSize);
 
 #ifdef __arm__
     int width = 90;
     int iconWidth = 22;
     int iconHeight = 22;
-    this->setFixedSize(350, 180);
-    labIcoMain->setFixedSize(40, 40);
 #else
     int width = 80;
     int iconWidth = 18;
     int iconHeight = 18;
-    this->setFixedSize(280, 150);
-    labIcoMain->setFixedSize(30, 30);
 #endif
 
     QList<QPushButton *> btns = this->frame->findChildren<QPushButton *>();
-
     foreach (QPushButton *btn, btns) {
         btn->setMinimumWidth(width);
         btn->setIconSize(QSize(iconWidth, iconHeight));
@@ -688,63 +759,7 @@ void QUIMessageBox::checkSec()
     }
 
     QString str = QString("关闭倒计时 %1 s").arg(closeSec - currentSec + 1);
-    this->labTime->setText(str);
-}
-
-void QUIMessageBox::setMessage(const QString &msg, int type, int closeSec)
-{
-    this->closeSec = closeSec;
-    this->currentSec = 0;
-    this->labTime->clear();
-
-    checkSec();
-
-    if (type == 0) {
-        this->labIcoMain->setStyleSheet("border-image: url(:/image/msg_info.png);");
-        this->btnCancel->setVisible(false);
-        this->labTitle->setText("提示");
-    } else if (type == 1) {
-        this->labIcoMain->setStyleSheet("border-image: url(:/image/msg_question.png);");
-        this->labTitle->setText("询问");
-    } else if (type == 2) {
-        this->labIcoMain->setStyleSheet("border-image: url(:/image/msg_error.png);");
-        this->btnCancel->setVisible(false);
-        this->labTitle->setText("错误");
-    }
-
-    this->labInfo->setText(msg);
-    this->setWindowTitle(this->labTitle->text());
-}
-
-void QUIMessageBox::closeEvent(QCloseEvent *)
-{
-    closeSec = 0;
-    currentSec = 0;
-}
-
-bool QUIMessageBox::eventFilter(QObject *obj, QEvent *evt)
-{
-    static QPoint mousePoint;
-    static bool mousePressed = false;
-
-    QMouseEvent *event = static_cast<QMouseEvent *>(evt);
-    if (event->type() == QEvent::MouseButtonPress) {
-        if (event->button() == Qt::LeftButton) {
-            mousePressed = true;
-            mousePoint = event->globalPos() - this->pos();
-            return true;
-        }
-    } else if (event->type() == QEvent::MouseButtonRelease) {
-        mousePressed = false;
-        return true;
-    } else if (event->type() == QEvent::MouseMove) {
-        if (mousePressed && (event->buttons() && Qt::LeftButton)) {
-            this->move(event->globalPos() - mousePoint);
-            return true;
-        }
-    }
-
-    return QWidget::eventFilter(obj, evt);
+    this->labCountDown->setText(str);
 }
 
 void QUIMessageBox::on_btnOk_clicked()
@@ -759,35 +774,337 @@ void QUIMessageBox::on_btnMenu_Close_clicked()
     close();
 }
 
-void QUIMessageBox::setIconMain(QChar str, quint32 size)
+void QUIMessageBox::setIconMain(const QChar &str, quint32 size)
 {
     IconHelper::Instance()->setIcon(this->labIco, str, size);
 }
 
-
-QUIInputBox *QUIInputBox::self = NULL;
-QUIInputBox *QUIInputBox::Instance()
+void QUIMessageBox::setIconMsg(const QString &png, const QChar &str)
 {
-    if (!self) {
-        QMutex mutex;
+    //图片存在则取图片,不存在则取图形字体
+    int size = this->labIcoMain->size().height();
+    if (QImage(png).isNull()) {
+        IconHelper::Instance()->setIcon(this->labIcoMain, str, size);
+    } else {
+        this->labIcoMain->setStyleSheet(QString("border-image:url(%1);").arg(png));
+    }
+}
+
+void QUIMessageBox::setMessage(const QString &msg, int type, int closeSec)
+{
+    this->closeSec = closeSec;
+    this->currentSec = 0;
+    this->labCountDown->clear();
+    checkSec();
+
+    if (type == 0) {
+        setIconMsg(":/image/msg_info.png", 0xf05a);
+        this->btnCancel->setVisible(false);
+        this->labTitle->setText("提示");
+    } else if (type == 1) {
+        setIconMsg(":/image/msg_question.png", 0xf059);
+        this->labTitle->setText("询问");
+    } else if (type == 2) {
+        setIconMsg(":/image/msg_error.png", 0xf057);
+        this->btnCancel->setVisible(false);
+        this->labTitle->setText("错误");
+    }
+
+    this->labInfo->setText(msg);
+    this->setWindowTitle(this->labTitle->text());
+    //设置对话框的大小总以最合适的大小显示
+    if (msg.length() < 70) {
+        this->layout()->setSizeConstraint(QLayout::SetMinimumSize);
+        this->setFixedSize(DialogMinWidth, DialogMinHeight);
+    } else {
+        this->layout()->setSizeConstraint(QLayout::SetFixedSize);
+    }
+}
+
+
+QScopedPointer<QUITipBox> QUITipBox::self;
+QUITipBox *QUITipBox::Instance()
+{
+    if (self.isNull()) {
+        static QMutex mutex;
         QMutexLocker locker(&mutex);
-        if (!self) {
-            self = new QUIInputBox;
+        if (self.isNull()) {
+            self.reset(new QUITipBox);
         }
     }
 
-    return self;
+    return self.data();
+}
+
+QUITipBox::QUITipBox(QWidget *parent) : QDialog(parent)
+{
+    this->initControl();
+    this->initForm();
+}
+
+QUITipBox::~QUITipBox()
+{
+    delete widgetMain;
+}
+
+void QUITipBox::showEvent(QShowEvent *)
+{
+    this->activateWindow();
+}
+
+void QUITipBox::closeEvent(QCloseEvent *)
+{
+    closeSec = 0;
+    currentSec = 0;
+}
+
+bool QUITipBox::eventFilter(QObject *watched, QEvent *event)
+{
+    static QPoint mousePoint;
+    static bool mousePressed = false;
+
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+    if (mouseEvent->type() == QEvent::MouseButtonPress) {
+        if (mouseEvent->button() == Qt::LeftButton) {
+            mousePressed = true;
+            mousePoint = mouseEvent->globalPos() - this->pos();
+            return true;
+        }
+    } else if (mouseEvent->type() == QEvent::MouseButtonRelease) {
+        mousePressed = false;
+        return true;
+    } else if (mouseEvent->type() == QEvent::MouseMove) {
+        if (mousePressed) {
+            this->move(mouseEvent->globalPos() - mousePoint);
+            return true;
+        }
+    }
+
+    return QWidget::eventFilter(watched, event);
+}
+
+void QUITipBox::initControl()
+{
+    this->setObjectName(QString::fromUtf8("QUITipBox"));
+
+    verticalLayout = new QVBoxLayout(this);
+    verticalLayout->setSpacing(0);
+    verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+    verticalLayout->setContentsMargins(1, 1, 1, 1);
+
+    widgetTitle = new QWidget(this);
+    widgetTitle->setObjectName(QString::fromUtf8("widgetTitle"));
+    QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+    sizePolicy.setHeightForWidth(widgetTitle->sizePolicy().hasHeightForWidth());
+    widgetTitle->setSizePolicy(sizePolicy);
+
+    horizontalLayout2 = new QHBoxLayout(widgetTitle);
+    horizontalLayout2->setSpacing(0);
+    horizontalLayout2->setObjectName(QString::fromUtf8("horizontalLayout2"));
+    horizontalLayout2->setContentsMargins(0, 0, 0, 0);
+
+    labIco = new QLabel(widgetTitle);
+    labIco->setObjectName(QString::fromUtf8("labIco"));
+    labIco->setAlignment(Qt::AlignCenter);
+    horizontalLayout2->addWidget(labIco);
+
+    labTitle = new QLabel(widgetTitle);
+    labTitle->setObjectName(QString::fromUtf8("labTitle"));
+    labTitle->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
+    horizontalLayout2->addWidget(labTitle);
+
+    labCountDown = new QLabel(widgetTitle);
+    labCountDown->setObjectName(QString::fromUtf8("labCountDown"));
+    QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    sizePolicy1.setHorizontalStretch(0);
+    sizePolicy1.setVerticalStretch(0);
+    sizePolicy1.setHeightForWidth(labCountDown->sizePolicy().hasHeightForWidth());
+    labCountDown->setSizePolicy(sizePolicy1);
+    labCountDown->setAlignment(Qt::AlignCenter);
+    horizontalLayout2->addWidget(labCountDown);
+
+    widgetMenu = new QWidget(widgetTitle);
+    widgetMenu->setObjectName(QString::fromUtf8("widgetMenu"));
+    QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Preferred);
+    sizePolicy2.setHorizontalStretch(0);
+    sizePolicy2.setVerticalStretch(0);
+    sizePolicy2.setHeightForWidth(widgetMenu->sizePolicy().hasHeightForWidth());
+    widgetMenu->setSizePolicy(sizePolicy2);
+
+    horizontalLayout = new QHBoxLayout(widgetMenu);
+    horizontalLayout->setSpacing(0);
+    horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+    horizontalLayout->setContentsMargins(0, 0, 0, 0);
+
+    btnMenu_Close = new QPushButton(widgetMenu);
+    btnMenu_Close->setObjectName(QString::fromUtf8("btnMenu_Close"));
+    QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Expanding);
+    sizePolicy3.setHorizontalStretch(0);
+    sizePolicy3.setVerticalStretch(0);
+    sizePolicy3.setHeightForWidth(btnMenu_Close->sizePolicy().hasHeightForWidth());
+    btnMenu_Close->setSizePolicy(sizePolicy3);
+    btnMenu_Close->setCursor(QCursor(Qt::ArrowCursor));
+    btnMenu_Close->setFocusPolicy(Qt::NoFocus);
+    btnMenu_Close->setFlat(true);
+
+    horizontalLayout->addWidget(btnMenu_Close);
+    horizontalLayout2->addWidget(widgetMenu);
+    verticalLayout->addWidget(widgetTitle);
+
+    widgetMain = new QWidget(this);
+    widgetMain->setObjectName(QString::fromUtf8("widgetMainQUI"));
+    widgetMain->setAutoFillBackground(true);
+
+    labInfo = new QLabel(widgetMain);
+    labInfo->setObjectName(QString::fromUtf8("labInfo"));
+    labInfo->setScaledContents(true);
+    labInfo->setWordWrap(true);
+
+    verticalLayout2 = new QVBoxLayout(widgetMain);
+    verticalLayout2->setObjectName(QString::fromUtf8("verticalLayout2"));
+    verticalLayout2->addWidget(labInfo);
+    verticalLayout->addWidget(widgetMain);
+
+    connect(btnMenu_Close, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
+}
+
+void QUITipBox::initForm()
+{
+    QUIHelper::setFramelessForm(this, widgetTitle, labIco, btnMenu_Close);
+    this->setWindowTitle(this->labTitle->text());
+
+#ifdef __arm__
+    this->setFixedSize(350, 180);
+#else
+    this->setFixedSize(280, 150);
+#endif
+
+    closeSec = 0;
+    currentSec = 0;
+
+    QTimer *timer = new QTimer(this);
+    timer->setInterval(1000);
+    connect(timer, SIGNAL(timeout()), this, SLOT(checkSec()));
+    timer->start();
+
+    this->installEventFilter(this);
+
+    //字体加大
+    QFont font;
+    font.setPixelSize(QUIConfig::FontSize + 3);
+    font.setBold(true);
+    this->labInfo->setFont(font);
+
+    //显示和隐藏窗体动画效果
+    animation = new QPropertyAnimation(this, "pos");
+    animation->setDuration(500);
+    animation->setEasingCurve(QEasingCurve::InOutQuad);
+}
+
+void QUITipBox::checkSec()
+{
+    if (closeSec == 0) {
+        return;
+    }
+
+    if (currentSec < closeSec) {
+        currentSec++;
+    } else {
+        this->close();
+    }
+
+    QString str = QString("关闭倒计时 %1 s").arg(closeSec - currentSec + 1);
+    this->labCountDown->setText(str);
+}
+
+void QUITipBox::on_btnMenu_Close_clicked()
+{
+    done(QMessageBox::No);
+    close();
+}
+
+void QUITipBox::setIconMain(const QChar &str, quint32 size)
+{
+    IconHelper::Instance()->setIcon(this->labIco, str, size);
+}
+
+void QUITipBox::setTip(const QString &title, const QString &tip, bool fullScreen, bool center, int closeSec)
+{
+    this->closeSec = closeSec;
+    this->currentSec = 0;
+    this->labCountDown->clear();
+    checkSec();
+
+    this->fullScreen = fullScreen;
+    this->labTitle->setText(title);
+    this->labInfo->setText(tip);
+    this->labInfo->setAlignment(center ? Qt::AlignCenter : Qt::AlignLeft);
+    this->setWindowTitle(this->labTitle->text());
+
+    QRect rect = fullScreen ? qApp->desktop()->geometry() : qApp->desktop()->availableGeometry();
+    int width = rect.width();
+    int height = rect.height();
+    int x = width - this->width();
+    int y = height - this->height();
+
+    //移到右下角
+    this->move(x, y);
+
+    //启动动画
+    animation->stop();
+    animation->setStartValue(QPoint(x, height));
+    animation->setEndValue(QPoint(x, y));
+    animation->start();
+}
+
+void QUITipBox::hide()
+{
+    QRect rect = fullScreen ? qApp->desktop()->availableGeometry() : qApp->desktop()->geometry();
+    int width = rect.width();
+    int height = rect.height();
+    int x = width - this->width();
+    int y = height - this->height();
+
+    //启动动画
+    animation->stop();
+    animation->setStartValue(QPoint(x, y));
+    animation->setEndValue(QPoint(x, qApp->desktop()->geometry().height()));
+    animation->start();
+}
+
+
+QScopedPointer<QUIInputBox> QUIInputBox::self;
+QUIInputBox *QUIInputBox::Instance()
+{
+    if (self.isNull()) {
+        static QMutex mutex;
+        QMutexLocker locker(&mutex);
+        if (self.isNull()) {
+            self.reset(new QUIInputBox);
+        }
+    }
+
+    return self.data();
 }
 
 QUIInputBox::QUIInputBox(QWidget *parent) : QDialog(parent)
 {
     this->initControl();
     this->initForm();
+    QUIHelper::setFormInCenter(this);
 }
 
 QUIInputBox::~QUIInputBox()
 {
     delete widgetMain;
+}
+
+void QUIInputBox::showEvent(QShowEvent *)
+{
+    txtValue->setFocus();
+    this->activateWindow();
 }
 
 void QUIInputBox::initControl()
@@ -798,6 +1115,7 @@ void QUIInputBox::initControl()
     verticalLayout1->setSpacing(0);
     verticalLayout1->setObjectName(QString::fromUtf8("verticalLayout1"));
     verticalLayout1->setContentsMargins(1, 1, 1, 1);
+
     widgetTitle = new QWidget(this);
     widgetTitle->setObjectName(QString::fromUtf8("widgetTitle"));
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -805,11 +1123,12 @@ void QUIInputBox::initControl()
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(widgetTitle->sizePolicy().hasHeightForWidth());
     widgetTitle->setSizePolicy(sizePolicy);
-    widgetTitle->setMinimumSize(QSize(0, TitleMinSize));
+
     horizontalLayout1 = new QHBoxLayout(widgetTitle);
     horizontalLayout1->setSpacing(0);
     horizontalLayout1->setObjectName(QString::fromUtf8("horizontalLayout1"));
     horizontalLayout1->setContentsMargins(0, 0, 0, 0);
+
     labIco = new QLabel(widgetTitle);
     labIco->setObjectName(QString::fromUtf8("labIco"));
     QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
@@ -817,36 +1136,34 @@ void QUIInputBox::initControl()
     sizePolicy1.setVerticalStretch(0);
     sizePolicy1.setHeightForWidth(labIco->sizePolicy().hasHeightForWidth());
     labIco->setSizePolicy(sizePolicy1);
-    labIco->setMinimumSize(QSize(TitleMinSize, 0));
     labIco->setAlignment(Qt::AlignCenter);
-
     horizontalLayout1->addWidget(labIco);
 
     labTitle = new QLabel(widgetTitle);
     labTitle->setObjectName(QString::fromUtf8("labTitle"));
     labTitle->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
-
     horizontalLayout1->addWidget(labTitle);
 
-    labTime = new QLabel(widgetTitle);
-    labTime->setObjectName(QString::fromUtf8("labTime"));
+    labCountDown = new QLabel(widgetTitle);
+    labCountDown->setObjectName(QString::fromUtf8("labCountDown"));
     QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(0);
     sizePolicy2.setVerticalStretch(0);
-    sizePolicy2.setHeightForWidth(labTime->sizePolicy().hasHeightForWidth());
-    labTime->setSizePolicy(sizePolicy2);
-    labTime->setAlignment(Qt::AlignCenter);
-
-    horizontalLayout1->addWidget(labTime);
+    sizePolicy2.setHeightForWidth(labCountDown->sizePolicy().hasHeightForWidth());
+    labCountDown->setSizePolicy(sizePolicy2);
+    labCountDown->setAlignment(Qt::AlignCenter);
+    horizontalLayout1->addWidget(labCountDown);
 
     widgetMenu = new QWidget(widgetTitle);
     widgetMenu->setObjectName(QString::fromUtf8("widgetMenu"));
     sizePolicy1.setHeightForWidth(widgetMenu->sizePolicy().hasHeightForWidth());
     widgetMenu->setSizePolicy(sizePolicy1);
+
     horizontalLayout2 = new QHBoxLayout(widgetMenu);
     horizontalLayout2->setSpacing(0);
     horizontalLayout2->setObjectName(QString::fromUtf8("horizontalLayout2"));
     horizontalLayout2->setContentsMargins(0, 0, 0, 0);
+
     btnMenu_Close = new QPushButton(widgetMenu);
     btnMenu_Close->setObjectName(QString::fromUtf8("btnMenu_Close"));
     QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -854,8 +1171,6 @@ void QUIInputBox::initControl()
     sizePolicy3.setVerticalStretch(0);
     sizePolicy3.setHeightForWidth(btnMenu_Close->sizePolicy().hasHeightForWidth());
     btnMenu_Close->setSizePolicy(sizePolicy3);
-    btnMenu_Close->setMinimumSize(QSize(TitleMinSize, 0));
-    btnMenu_Close->setMaximumSize(QSize(TitleMinSize, 16777215));
     btnMenu_Close->setCursor(QCursor(Qt::ArrowCursor));
     btnMenu_Close->setFocusPolicy(Qt::NoFocus);
     btnMenu_Close->setFlat(true);
@@ -865,21 +1180,25 @@ void QUIInputBox::initControl()
     verticalLayout1->addWidget(widgetTitle);
 
     widgetMain = new QWidget(this);
-    widgetMain->setObjectName(QString::fromUtf8("widgetMain"));
+    widgetMain->setObjectName(QString::fromUtf8("widgetMainQUI"));
+
     verticalLayout2 = new QVBoxLayout(widgetMain);
     verticalLayout2->setSpacing(5);
     verticalLayout2->setObjectName(QString::fromUtf8("verticalLayout2"));
     verticalLayout2->setContentsMargins(5, 5, 5, 5);
+
     frame = new QFrame(widgetMain);
     frame->setObjectName(QString::fromUtf8("frame"));
     frame->setFrameShape(QFrame::Box);
     frame->setFrameShadow(QFrame::Sunken);
-    verticalLayout3 = new QVBoxLayout(frame);
-    verticalLayout3->setObjectName(QString::fromUtf8("verticalLayout3"));
+
     labInfo = new QLabel(frame);
     labInfo->setObjectName(QString::fromUtf8("labInfo"));
     labInfo->setScaledContents(false);
     labInfo->setWordWrap(true);
+
+    verticalLayout3 = new QVBoxLayout(frame);
+    verticalLayout3->setObjectName(QString::fromUtf8("verticalLayout3"));
     verticalLayout3->addWidget(labInfo);
 
     txtValue = new QLineEdit(frame);
@@ -898,13 +1217,12 @@ void QUIInputBox::initControl()
     btnOk = new QPushButton(frame);
     btnOk->setObjectName(QString::fromUtf8("btnOk"));
     btnOk->setMinimumSize(QSize(85, 0));
-    btnOk->setIcon(QIcon(":/image/btn_ok.png"));
     lay->addWidget(btnOk);
+    btnOk->setDefault(true);
 
     btnCancel = new QPushButton(frame);
     btnCancel->setObjectName(QString::fromUtf8("btnCancel"));
     btnCancel->setMinimumSize(QSize(85, 0));
-    btnCancel->setIcon(QIcon(":/image/btn_close.png"));
     lay->addWidget(btnCancel);
 
     verticalLayout3->addLayout(lay);
@@ -917,20 +1235,17 @@ void QUIInputBox::initControl()
     labTitle->setText("输入框");
     btnOk->setText("确定");
     btnCancel->setText("取消");
+    QUIHelper::setIconBtn(btnOk, ":/image/btn_ok.png", 0xf00c);
+    QUIHelper::setIconBtn(btnCancel, ":/image/btn_close.png", 0xf00d);
 
     connect(btnOk, SIGNAL(clicked()), this, SLOT(on_btnOk_clicked()));
-    connect(btnMenu_Close, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
     connect(btnCancel, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
+    connect(btnMenu_Close, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
 }
 
 void QUIInputBox::initForm()
 {
-    IconHelper::Instance()->setIcon(labIco, QUIConfig::IconMain, QUIConfig::FontSize + 2);
-    IconHelper::Instance()->setIcon(btnMenu_Close, QUIConfig::IconClose, QUIConfig::FontSize);
-
-    this->setProperty("form", true);
-    this->widgetTitle->setProperty("form", "title");
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint | Qt::WindowStaysOnTopHint);
+    QUIHelper::setFramelessForm(this, widgetTitle, labIco, btnMenu_Close);
     this->setWindowTitle(this->labTitle->text());
 
 #ifdef __arm__
@@ -946,7 +1261,6 @@ void QUIInputBox::initForm()
 #endif
 
     QList<QPushButton *> btns  = this->frame->findChildren<QPushButton *>();
-
     foreach (QPushButton *btn, btns) {
         btn->setMinimumWidth(width);
         btn->setIconSize(QSize(iconWidth, iconHeight));
@@ -976,22 +1290,23 @@ void QUIInputBox::checkSec()
     }
 
     QString str = QString("关闭倒计时 %1 s").arg(closeSec - currentSec + 1);
-    this->labTime->setText(str);
+    this->labCountDown->setText(str);
 }
 
 void QUIInputBox::setParameter(const QString &title, int type, int closeSec,
-                               QString defaultValue, bool pwd)
+                               QString placeholderText, bool pwd,
+                               const QString &defaultValue)
 {
     this->closeSec = closeSec;
     this->currentSec = 0;
-    this->labTime->clear();
+    this->labCountDown->clear();
     this->labInfo->setText(title);
-
     checkSec();
 
     if (type == 0) {
         this->cboxValue->setVisible(false);
-        this->txtValue->setPlaceholderText(defaultValue);
+        this->txtValue->setPlaceholderText(placeholderText);
+        this->txtValue->setText(defaultValue);
 
         if (pwd) {
             this->txtValue->setEchoMode(QLineEdit::Password);
@@ -1013,29 +1328,29 @@ void QUIInputBox::closeEvent(QCloseEvent *)
     currentSec = 0;
 }
 
-bool QUIInputBox::eventFilter(QObject *obj, QEvent *evt)
+bool QUIInputBox::eventFilter(QObject *watched, QEvent *event)
 {
     static QPoint mousePoint;
     static bool mousePressed = false;
 
-    QMouseEvent *event = static_cast<QMouseEvent *>(evt);
-    if (event->type() == QEvent::MouseButtonPress) {
-        if (event->button() == Qt::LeftButton) {
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+    if (mouseEvent->type() == QEvent::MouseButtonPress) {
+        if (mouseEvent->button() == Qt::LeftButton) {
             mousePressed = true;
-            mousePoint = event->globalPos() - this->pos();
+            mousePoint = mouseEvent->globalPos() - this->pos();
             return true;
         }
-    } else if (event->type() == QEvent::MouseButtonRelease) {
+    } else if (mouseEvent->type() == QEvent::MouseButtonRelease) {
         mousePressed = false;
         return true;
-    } else if (event->type() == QEvent::MouseMove) {
-        if (mousePressed && (event->buttons() && Qt::LeftButton)) {
-            this->move(event->globalPos() - mousePoint);
+    } else if (mouseEvent->type() == QEvent::MouseMove) {
+        if (mousePressed) {
+            this->move(mouseEvent->globalPos() - mousePoint);
             return true;
         }
     }
 
-    return QWidget::eventFilter(obj, evt);
+    return QWidget::eventFilter(watched, event);
 }
 
 void QUIInputBox::on_btnOk_clicked()
@@ -1056,30 +1371,31 @@ void QUIInputBox::on_btnMenu_Close_clicked()
     close();
 }
 
-void QUIInputBox::setIconMain(QChar str, quint32 size)
+void QUIInputBox::setIconMain(const QChar &str, quint32 size)
 {
     IconHelper::Instance()->setIcon(this->labIco, str, size);
 }
 
 
-QUIDateSelect *QUIDateSelect::self = NULL;
+QScopedPointer<QUIDateSelect> QUIDateSelect::self;
 QUIDateSelect *QUIDateSelect::Instance()
 {
-    if (!self) {
-        QMutex mutex;
+    if (self.isNull()) {
+        static QMutex mutex;
         QMutexLocker locker(&mutex);
-        if (!self) {
-            self = new QUIDateSelect;
+        if (self.isNull()) {
+            self.reset(new QUIDateSelect);
         }
     }
 
-    return self;
+    return self.data();
 }
 
 QUIDateSelect::QUIDateSelect(QWidget *parent) : QDialog(parent)
 {
     this->initControl();
     this->initForm();
+    QUIHelper::setFormInCenter(this);
 }
 
 QUIDateSelect::~QUIDateSelect()
@@ -1087,29 +1403,34 @@ QUIDateSelect::~QUIDateSelect()
     delete widgetMain;
 }
 
-bool QUIDateSelect::eventFilter(QObject *obj, QEvent *evt)
+void QUIDateSelect::showEvent(QShowEvent *)
+{
+    this->activateWindow();
+}
+
+bool QUIDateSelect::eventFilter(QObject *watched, QEvent *event)
 {
     static QPoint mousePoint;
     static bool mousePressed = false;
 
-    QMouseEvent *event = static_cast<QMouseEvent *>(evt);
-    if (event->type() == QEvent::MouseButtonPress) {
-        if (event->button() == Qt::LeftButton) {
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+    if (mouseEvent->type() == QEvent::MouseButtonPress) {
+        if (mouseEvent->button() == Qt::LeftButton) {
             mousePressed = true;
-            mousePoint = event->globalPos() - this->pos();
+            mousePoint = mouseEvent->globalPos() - this->pos();
             return true;
         }
-    } else if (event->type() == QEvent::MouseButtonRelease) {
+    } else if (mouseEvent->type() == QEvent::MouseButtonRelease) {
         mousePressed = false;
         return true;
-    } else if (event->type() == QEvent::MouseMove) {
-        if (mousePressed && (event->buttons() && Qt::LeftButton)) {
-            this->move(event->globalPos() - mousePoint);
+    } else if (mouseEvent->type() == QEvent::MouseMove) {
+        if (mousePressed) {
+            this->move(mouseEvent->globalPos() - mousePoint);
             return true;
         }
     }
 
-    return QWidget::eventFilter(obj, evt);
+    return QWidget::eventFilter(watched, event);
 }
 
 void QUIDateSelect::initControl()
@@ -1120,6 +1441,7 @@ void QUIDateSelect::initControl()
     verticalLayout->setSpacing(0);
     verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
     verticalLayout->setContentsMargins(1, 1, 1, 1);
+
     widgetTitle = new QWidget(this);
     widgetTitle->setObjectName(QString::fromUtf8("widgetTitle"));
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -1127,11 +1449,12 @@ void QUIDateSelect::initControl()
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(widgetTitle->sizePolicy().hasHeightForWidth());
     widgetTitle->setSizePolicy(sizePolicy);
-    widgetTitle->setMinimumSize(QSize(0, TitleMinSize));
+
     horizontalLayout1 = new QHBoxLayout(widgetTitle);
     horizontalLayout1->setSpacing(0);
     horizontalLayout1->setObjectName(QString::fromUtf8("horizontalLayout1"));
     horizontalLayout1->setContentsMargins(0, 0, 0, 0);
+
     labIco = new QLabel(widgetTitle);
     labIco->setObjectName(QString::fromUtf8("labIco"));
     QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
@@ -1139,7 +1462,6 @@ void QUIDateSelect::initControl()
     sizePolicy1.setVerticalStretch(0);
     sizePolicy1.setHeightForWidth(labIco->sizePolicy().hasHeightForWidth());
     labIco->setSizePolicy(sizePolicy1);
-    labIco->setMinimumSize(QSize(TitleMinSize, 0));
     labIco->setAlignment(Qt::AlignCenter);
     horizontalLayout1->addWidget(labIco);
 
@@ -1157,10 +1479,12 @@ void QUIDateSelect::initControl()
     widgetMenu->setObjectName(QString::fromUtf8("widgetMenu"));
     sizePolicy1.setHeightForWidth(widgetMenu->sizePolicy().hasHeightForWidth());
     widgetMenu->setSizePolicy(sizePolicy1);
+
     horizontalLayout = new QHBoxLayout(widgetMenu);
     horizontalLayout->setSpacing(0);
     horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
     horizontalLayout->setContentsMargins(0, 0, 0, 0);
+
     btnMenu_Close = new QPushButton(widgetMenu);
     btnMenu_Close->setObjectName(QString::fromUtf8("btnMenu_Close"));
     QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -1168,8 +1492,6 @@ void QUIDateSelect::initControl()
     sizePolicy3.setVerticalStretch(0);
     sizePolicy3.setHeightForWidth(btnMenu_Close->sizePolicy().hasHeightForWidth());
     btnMenu_Close->setSizePolicy(sizePolicy3);
-    btnMenu_Close->setMinimumSize(QSize(TitleMinSize, 0));
-    btnMenu_Close->setMaximumSize(QSize(TitleMinSize, 16777215));
     btnMenu_Close->setCursor(QCursor(Qt::ArrowCursor));
     btnMenu_Close->setFocusPolicy(Qt::NoFocus);
     btnMenu_Close->setFlat(true);
@@ -1179,15 +1501,18 @@ void QUIDateSelect::initControl()
     verticalLayout->addWidget(widgetTitle);
 
     widgetMain = new QWidget(this);
-    widgetMain->setObjectName(QString::fromUtf8("widgetMain"));
+    widgetMain->setObjectName(QString::fromUtf8("widgetMainQUI"));
+
     verticalLayout1 = new QVBoxLayout(widgetMain);
     verticalLayout1->setSpacing(6);
     verticalLayout1->setObjectName(QString::fromUtf8("verticalLayout1"));
     verticalLayout1->setContentsMargins(6, 6, 6, 6);
+
     frame = new QFrame(widgetMain);
     frame->setObjectName(QString::fromUtf8("frame"));
     frame->setFrameShape(QFrame::Box);
     frame->setFrameShadow(QFrame::Sunken);
+
     gridLayout = new QGridLayout(frame);
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
     labStart = new QLabel(frame);
@@ -1200,8 +1525,8 @@ void QUIDateSelect::initControl()
     btnOk->setMinimumSize(QSize(85, 0));
     btnOk->setCursor(QCursor(Qt::PointingHandCursor));
     btnOk->setFocusPolicy(Qt::StrongFocus);
-    btnOk->setIcon(QIcon(":/image/btn_ok.png"));
     gridLayout->addWidget(btnOk, 0, 2, 1, 1);
+    btnOk->setDefault(true);
 
     labEnd = new QLabel(frame);
     labEnd->setObjectName(QString::fromUtf8("labEnd"));
@@ -1213,7 +1538,6 @@ void QUIDateSelect::initControl()
     btnClose->setMinimumSize(QSize(85, 0));
     btnClose->setCursor(QCursor(Qt::PointingHandCursor));
     btnClose->setFocusPolicy(Qt::StrongFocus);
-    btnClose->setIcon(QIcon(":/image/btn_close.png"));
     gridLayout->addWidget(btnClose, 1, 2, 1, 1);
 
     dateStart = new QDateTimeEdit(frame);
@@ -1247,6 +1571,8 @@ void QUIDateSelect::initControl()
     labEnd->setText("结束时间");
     btnOk->setText("确定");
     btnClose->setText("关闭");
+    QUIHelper::setIconBtn(btnOk, ":/image/btn_ok.png", 0xf00c);
+    QUIHelper::setIconBtn(btnClose, ":/image/btn_close.png", 0xf00d);
 
     dateStart->setDate(QDate::currentDate());
     dateEnd->setDate(QDate::currentDate().addDays(1));
@@ -1258,18 +1584,13 @@ void QUIDateSelect::initControl()
     setFormat("yyyy-MM-dd");
 
     connect(btnOk, SIGNAL(clicked()), this, SLOT(on_btnOk_clicked()));
-    connect(btnMenu_Close, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
     connect(btnClose, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
+    connect(btnMenu_Close, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));
 }
 
 void QUIDateSelect::initForm()
 {
-    IconHelper::Instance()->setIcon(labIco, QUIConfig::IconMain, QUIConfig::FontSize + 2);
-    IconHelper::Instance()->setIcon(btnMenu_Close, QUIConfig::IconClose, QUIConfig::FontSize);
-
-    this->setProperty("form", true);
-    this->widgetTitle->setProperty("form", "title");
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint | Qt::WindowStaysOnTopHint);
+    QUIHelper::setFramelessForm(this, widgetTitle, labIco, btnMenu_Close);
     this->setWindowTitle(this->labTitle->text());
 
 #ifdef __arm__
@@ -1285,7 +1606,6 @@ void QUIDateSelect::initForm()
 #endif
 
     QList<QPushButton *> btns  = this->frame->findChildren<QPushButton *>();
-
     foreach (QPushButton *btn, btns) {
         btn->setMinimumWidth(width);
         btn->setIconSize(QSize(iconWidth, iconHeight));
@@ -1324,7 +1644,7 @@ QString QUIDateSelect::getEndDateTime() const
     return this->endDateTime;
 }
 
-void QUIDateSelect::setIconMain(QChar str, quint32 size)
+void QUIDateSelect::setIconMain(const QChar &str, quint32 size)
 {
     IconHelper::Instance()->setIcon(this->labIco, str, size);
 }
@@ -1334,6 +1654,459 @@ void QUIDateSelect::setFormat(const QString &format)
     this->format = format;
     this->dateStart->setDisplayFormat(format);
     this->dateEnd->setDisplayFormat(format);
+}
+
+
+QScopedPointer<IconHelper> IconHelper::self;
+IconHelper *IconHelper::Instance()
+{
+    if (self.isNull()) {
+        static QMutex mutex;
+        QMutexLocker locker(&mutex);
+        if (self.isNull()) {
+            self.reset(new IconHelper);
+        }
+    }
+
+    return self.data();
+}
+
+IconHelper::IconHelper(QObject *parent) : QObject(parent)
+{
+    //判断图形字体是否存在,不存在则加入
+    QFontDatabase fontDb;
+    if (!fontDb.families().contains("FontAwesome")) {
+        int fontId = fontDb.addApplicationFont(":/image/fontawesome-webfont.ttf");
+        QStringList fontName = fontDb.applicationFontFamilies(fontId);
+        if (fontName.count() == 0) {
+            qDebug() << "load fontawesome-webfont.ttf error";
+        }
+    }
+
+    if (fontDb.families().contains("FontAwesome")) {
+        iconFont = QFont("FontAwesome");
+#if (QT_VERSION >= QT_VERSION_CHECK(4,8,0))
+        iconFont.setHintingPreference(QFont::PreferNoHinting);
+#endif
+    }
+}
+
+QFont IconHelper::getIconFont()
+{
+    return this->iconFont;
+}
+
+void IconHelper::setIcon(QLabel *lab, const QChar &str, quint32 size)
+{
+    iconFont.setPixelSize(size);
+    lab->setFont(iconFont);
+    lab->setText(str);
+}
+
+void IconHelper::setIcon(QAbstractButton *btn, const QChar &str, quint32 size)
+{
+    iconFont.setPixelSize(size);
+    btn->setFont(iconFont);
+    btn->setText(str);
+}
+
+QPixmap IconHelper::getPixmap(const QColor &color, const QChar &str, quint32 size,
+                              quint32 pixWidth, quint32 pixHeight, int flags)
+{
+    QPixmap pix(pixWidth, pixHeight);
+    pix.fill(Qt::transparent);
+
+    QPainter painter;
+    painter.begin(&pix);
+    painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
+    painter.setPen(color);
+
+    iconFont.setPixelSize(size);
+    painter.setFont(iconFont);
+    painter.drawText(pix.rect(), flags, str);
+    painter.end();
+
+    return pix;
+}
+
+QPixmap IconHelper::getPixmap(QToolButton *btn, bool normal)
+{
+    QPixmap pix;
+    int index = btns.indexOf(btn);
+    if (index >= 0) {
+        if (normal) {
+            pix = pixNormal.at(index);
+        } else {
+            pix = pixDark.at(index);
+        }
+    }
+
+    return pix;
+}
+
+QPixmap IconHelper::getPixmap(QToolButton *btn, int type)
+{
+    QPixmap pix;
+    int index = btns.indexOf(btn);
+    if (index >= 0) {
+        if (type == 0) {
+            pix = pixNormal.at(index);
+        } else if (type == 1) {
+            pix = pixHover.at(index);
+        } else if (type == 2) {
+            pix = pixPressed.at(index);
+        } else if (type == 3) {
+            pix = pixChecked.at(index);
+        }
+    }
+
+    return pix;
+}
+
+void IconHelper::setStyle(QFrame *frame, QList<QToolButton *> btns, QList<int> pixChar,
+                          quint32 iconSize, quint32 iconWidth, quint32 iconHeight,
+                          const QString &normalBgColor, const QString &darkBgColor,
+                          const QString &normalTextColor, const QString &darkTextColor)
+{
+    int btnCount = btns.count();
+    int charCount = pixChar.count();
+    if (btnCount <= 0 || charCount <= 0 || btnCount != charCount) {
+        return;
+    }
+
+    QStringList qss;
+    qss.append(QString("QFrame>QToolButton{border-style:none;border-width:0px;"
+                       "background-color:%1;color:%2;}").arg(normalBgColor).arg(normalTextColor));
+    qss.append(QString("QFrame>QToolButton:hover,QFrame>QToolButton:pressed,QFrame>QToolButton:checked"
+                       "{background-color:%1;color:%2;}").arg(darkBgColor).arg(darkTextColor));
+
+    frame->setStyleSheet(qss.join(""));
+
+    //存储对应按钮对象,方便鼠标移上去的时候切换图片
+    for (int i = 0; i < btnCount; i++) {
+        QChar c = QChar(pixChar.at(i));
+        QPixmap pixNormal = getPixmap(normalTextColor, c, iconSize, iconWidth, iconHeight);
+        QPixmap pixDark = getPixmap(darkTextColor, c, iconSize, iconWidth, iconHeight);
+
+        QToolButton *btn = btns.at(i);
+        btn->setIcon(QIcon(pixNormal));
+        btn->setIconSize(QSize(iconWidth, iconHeight));
+        btn->installEventFilter(this);
+
+        this->btns.append(btn);
+        this->pixNormal.append(pixNormal);
+        this->pixDark.append(pixDark);
+        this->pixHover.append(pixDark);
+        this->pixPressed.append(pixDark);
+        this->pixChecked.append(pixDark);
+    }
+}
+
+void IconHelper::setStyle(QWidget *widget, const QString &type, int borderWidth, const QString &borderColor,
+                          const QString &normalBgColor, const QString &darkBgColor,
+                          const QString &normalTextColor, const QString &darkTextColor)
+{
+    QString strBorder;
+    if (type == "top") {
+        strBorder = QString("border-width:%1px 0px 0px 0px;padding-top:%1px;padding-bottom:%2px;")
+                    .arg(borderWidth).arg(borderWidth * 2);
+    } else if (type == "right") {
+        strBorder = QString("border-width:0px %1px 0px 0px;padding-right:%1px;padding-left:%2px;")
+                    .arg(borderWidth).arg(borderWidth * 2);
+    } else if (type == "bottom") {
+        strBorder = QString("border-width:0px 0px %1px 0px;padding-bottom:%1px;padding-top:%2px;")
+                    .arg(borderWidth).arg(borderWidth * 2);
+    } else if (type == "left") {
+        strBorder = QString("border-width:0px 0px 0px %1px;padding-left:%1px;padding-right:%2px;")
+                    .arg(borderWidth).arg(borderWidth * 2);
+    }
+
+    QStringList qss;
+    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:none;border-radius:0px;padding:5px;"
+                       "color:%2;background:%3;}").arg(type).arg(normalTextColor).arg(normalBgColor));
+
+    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton:hover,"
+                       "QWidget[flag=\"%1\"] QAbstractButton:pressed,"
+                       "QWidget[flag=\"%1\"] QAbstractButton:checked{"
+                       "border-style:solid;%2border-color:%3;color:%4;background:%5;}")
+               .arg(type).arg(strBorder).arg(borderColor).arg(darkTextColor).arg(darkBgColor));
+
+    widget->setStyleSheet(qss.join(""));
+}
+
+void IconHelper::removeStyle(QList<QToolButton *> btns)
+{
+    for (int i = 0; i < btns.count(); i++) {
+        for (int j = 0; j < this->btns.count(); j++) {
+            if (this->btns.at(j) == btns.at(i)) {
+                this->btns.at(j)->removeEventFilter(this);
+                this->btns.removeAt(j);
+                this->pixNormal.removeAt(j);
+                this->pixDark.removeAt(j);
+                this->pixHover.removeAt(j);
+                this->pixPressed.removeAt(j);
+                this->pixChecked.removeAt(j);
+                break;
+            }
+        }
+    }
+}
+
+void IconHelper::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<int> pixChar,
+                          quint32 iconSize, quint32 iconWidth, quint32 iconHeight,
+                          const QString &type, int borderWidth, const QString &borderColor,
+                          const QString &normalBgColor, const QString &darkBgColor,
+                          const QString &normalTextColor, const QString &darkTextColor)
+{
+    int btnCount = btns.count();
+    int charCount = pixChar.count();
+    if (btnCount <= 0 || charCount <= 0 || btnCount != charCount) {
+        return;
+    }
+
+    QString strBorder;
+    if (type == "top") {
+        strBorder = QString("border-width:%1px 0px 0px 0px;padding-top:%1px;padding-bottom:%2px;")
+                    .arg(borderWidth).arg(borderWidth * 2);
+    } else if (type == "right") {
+        strBorder = QString("border-width:0px %1px 0px 0px;padding-right:%1px;padding-left:%2px;")
+                    .arg(borderWidth).arg(borderWidth * 2);
+    } else if (type == "bottom") {
+        strBorder = QString("border-width:0px 0px %1px 0px;padding-bottom:%1px;padding-top:%2px;")
+                    .arg(borderWidth).arg(borderWidth * 2);
+    } else if (type == "left") {
+        strBorder = QString("border-width:0px 0px 0px %1px;padding-left:%1px;padding-right:%2px;")
+                    .arg(borderWidth).arg(borderWidth * 2);
+    }
+
+    //如果图标是左侧显示则需要让没有选中的按钮左侧也有加深的边框,颜色为背景颜色
+    QStringList qss;
+    if (btns.at(0)->toolButtonStyle() == Qt::ToolButtonTextBesideIcon) {
+        qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:solid;border-radius:0px;%2border-color:%3;color:%4;background:%5;}")
+                   .arg(type).arg(strBorder).arg(normalBgColor).arg(normalTextColor).arg(normalBgColor));
+    } else {
+        qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:none;border-radius:0px;padding:5px;color:%2;background:%3;}")
+                   .arg(type).arg(normalTextColor).arg(normalBgColor));
+    }
+
+    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton:hover,"
+                       "QWidget[flag=\"%1\"] QAbstractButton:pressed,"
+                       "QWidget[flag=\"%1\"] QAbstractButton:checked{"
+                       "border-style:solid;%2border-color:%3;color:%4;background:%5;}")
+               .arg(type).arg(strBorder).arg(borderColor).arg(darkTextColor).arg(darkBgColor));
+
+    qss.append(QString("QWidget#%1{background:%2;}").arg(widget->objectName()).arg(normalBgColor));
+    qss.append(QString("QWidget>QToolButton{border-width:0px;"
+                       "background-color:%1;color:%2;}").arg(normalBgColor).arg(normalTextColor));
+    qss.append(QString("QWidget>QToolButton:hover,QWidget>QToolButton:pressed,QWidget>QToolButton:checked{"
+                       "background-color:%1;color:%2;}").arg(darkBgColor).arg(darkTextColor));
+
+    widget->setStyleSheet(qss.join(""));
+
+    //存储对应按钮对象,方便鼠标移上去的时候切换图片
+    for (int i = 0; i < btnCount; i++) {
+        QChar c = QChar(pixChar.at(i));
+        QPixmap pixNormal = getPixmap(normalTextColor, c, iconSize, iconWidth, iconHeight);
+        QPixmap pixDark = getPixmap(darkTextColor, c, iconSize, iconWidth, iconHeight);
+
+        QToolButton *btn = btns.at(i);
+        btn->setIcon(QIcon(pixNormal));
+        btn->setIconSize(QSize(iconWidth, iconHeight));
+        btn->installEventFilter(this);
+
+        this->btns.append(btn);
+        this->pixNormal.append(pixNormal);
+        this->pixDark.append(pixDark);
+        this->pixHover.append(pixDark);
+        this->pixPressed.append(pixDark);
+        this->pixChecked.append(pixDark);
+    }
+}
+
+void IconHelper::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<int> pixChar, const IconHelper::StyleColor &styleColor)
+{
+    int btnCount = btns.count();
+    int charCount = pixChar.count();
+    if (btnCount <= 0 || charCount <= 0 || btnCount != charCount) {
+        return;
+    }
+
+    quint32 iconSize = styleColor.iconSize;
+    quint32 iconWidth = styleColor.iconWidth;
+    quint32 iconHeight = styleColor.iconHeight;
+    quint32 borderWidth = styleColor.borderWidth;
+    QString type = styleColor.type;
+
+    QString strBorder;
+    if (type == "top") {
+        strBorder = QString("border-width:%1px 0px 0px 0px;padding-top:%1px;padding-bottom:%2px;")
+                    .arg(borderWidth).arg(borderWidth * 2);
+    } else if (type == "right") {
+        strBorder = QString("border-width:0px %1px 0px 0px;padding-right:%1px;padding-left:%2px;")
+                    .arg(borderWidth).arg(borderWidth * 2);
+    } else if (type == "bottom") {
+        strBorder = QString("border-width:0px 0px %1px 0px;padding-bottom:%1px;padding-top:%2px;")
+                    .arg(borderWidth).arg(borderWidth * 2);
+    } else if (type == "left") {
+        strBorder = QString("border-width:0px 0px 0px %1px;padding-left:%1px;padding-right:%2px;")
+                    .arg(borderWidth).arg(borderWidth * 2);
+    }
+
+    //如果图标是左侧显示则需要让没有选中的按钮左侧也有加深的边框,颜色为背景颜色
+    QStringList qss;
+    if (btns.at(0)->toolButtonStyle() == Qt::ToolButtonTextBesideIcon) {
+        qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:solid;border-radius:0px;%2border-color:%3;color:%4;background:%5;}")
+                   .arg(type).arg(strBorder).arg(styleColor.normalBgColor).arg(styleColor.normalTextColor).arg(styleColor.normalBgColor));
+    } else {
+        qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:none;border-radius:0px;padding:5px;color:%2;background:%3;}")
+                   .arg(type).arg(styleColor.normalTextColor).arg(styleColor.normalBgColor));
+    }
+
+    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton:hover{border-style:solid;%2border-color:%3;color:%4;background:%5;}")
+               .arg(type).arg(strBorder).arg(styleColor.borderColor).arg(styleColor.hoverTextColor).arg(styleColor.hoverBgColor));
+    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton:pressed{border-style:solid;%2border-color:%3;color:%4;background:%5;}")
+               .arg(type).arg(strBorder).arg(styleColor.borderColor).arg(styleColor.pressedTextColor).arg(styleColor.pressedBgColor));
+    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton:checked{border-style:solid;%2border-color:%3;color:%4;background:%5;}")
+               .arg(type).arg(strBorder).arg(styleColor.borderColor).arg(styleColor.checkedTextColor).arg(styleColor.checkedBgColor));
+
+    qss.append(QString("QWidget#%1{background:%2;}").arg(widget->objectName()).arg(styleColor.normalBgColor));
+    qss.append(QString("QWidget>QToolButton{border-width:0px;background-color:%1;color:%2;}").arg(styleColor.normalBgColor).arg(styleColor.normalTextColor));
+    qss.append(QString("QWidget>QToolButton:hover{background-color:%1;color:%2;}").arg(styleColor.hoverBgColor).arg(styleColor.hoverTextColor));
+    qss.append(QString("QWidget>QToolButton:pressed{background-color:%1;color:%2;}").arg(styleColor.pressedBgColor).arg(styleColor.pressedTextColor));
+    qss.append(QString("QWidget>QToolButton:checked{background-color:%1;color:%2;}").arg(styleColor.checkedBgColor).arg(styleColor.checkedTextColor));
+
+    widget->setStyleSheet(qss.join(""));
+
+    //存储对应按钮对象,方便鼠标移上去的时候切换图片
+    for (int i = 0; i < btnCount; i++) {
+        QChar c = QChar(pixChar.at(i));
+        QPixmap pixNormal = getPixmap(styleColor.normalTextColor, c, iconSize, iconWidth, iconHeight);
+        QPixmap pixHover = getPixmap(styleColor.hoverTextColor, c, iconSize, iconWidth, iconHeight);
+        QPixmap pixPressed = getPixmap(styleColor.pressedTextColor, c, iconSize, iconWidth, iconHeight);
+        QPixmap pixChecked = getPixmap(styleColor.checkedTextColor, c, iconSize, iconWidth, iconHeight);
+
+        QToolButton *btn = btns.at(i);
+        btn->setIcon(QIcon(pixNormal));
+        btn->setIconSize(QSize(iconWidth, iconHeight));
+        btn->installEventFilter(this);
+
+        this->btns.append(btn);
+        this->pixNormal.append(pixNormal);
+        this->pixDark.append(pixHover);
+        this->pixHover.append(pixHover);
+        this->pixPressed.append(pixPressed);
+        this->pixChecked.append(pixChecked);
+    }
+}
+
+bool IconHelper::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched->inherits("QToolButton")) {
+        QToolButton *btn = (QToolButton *)watched;
+        int index = btns.indexOf(btn);
+        if (index >= 0) {
+            if (event->type() == QEvent::Enter) {
+                btn->setIcon(QIcon(pixHover.at(index)));
+            } else if (event->type() == QEvent::MouseButtonPress) {
+                btn->setIcon(QIcon(pixPressed.at(index)));
+            } else if (event->type() == QEvent::Leave) {
+                if (btn->isChecked()) {
+                    btn->setIcon(QIcon(pixChecked.at(index)));
+                } else {
+                    btn->setIcon(QIcon(pixNormal.at(index)));
+                }
+            }
+        }
+    }
+
+    return QObject::eventFilter(watched, event);
+}
+
+
+QScopedPointer<TrayIcon> TrayIcon::self;
+TrayIcon *TrayIcon::Instance()
+{
+    if (self.isNull()) {
+        static QMutex mutex;
+        QMutexLocker locker(&mutex);
+        if (self.isNull()) {
+            self.reset(new TrayIcon);
+        }
+    }
+
+    return self.data();
+}
+
+TrayIcon::TrayIcon(QObject *parent) : QObject(parent)
+{
+    mainWidget = 0;
+    trayIcon = new QSystemTrayIcon(this);
+    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this, SLOT(iconIsActived(QSystemTrayIcon::ActivationReason)));
+    menu = new QMenu(QApplication::desktop());
+    exitDirect = true;
+}
+
+void TrayIcon::iconIsActived(QSystemTrayIcon::ActivationReason reason)
+{
+    switch (reason) {
+        case QSystemTrayIcon::Trigger:
+        case QSystemTrayIcon::DoubleClick: {
+            mainWidget->showNormal();
+            break;
+        }
+
+        default:
+            break;
+    }
+}
+
+void TrayIcon::setExitDirect(bool exitDirect)
+{
+    if (this->exitDirect != exitDirect) {
+        this->exitDirect = exitDirect;
+    }
+}
+
+void TrayIcon::setMainWidget(QWidget *mainWidget)
+{
+    this->mainWidget = mainWidget;
+    menu->addAction("主界面", mainWidget, SLOT(showNormal()));
+
+    if (exitDirect) {
+        menu->addAction("退出", this, SLOT(closeAll()));
+    } else {
+        menu->addAction("退出", this, SIGNAL(trayIconExit()));
+    }
+
+    trayIcon->setContextMenu(menu);
+}
+
+void TrayIcon::showMessage(const QString &title, const QString &msg, QSystemTrayIcon::MessageIcon icon, int msecs)
+{
+    trayIcon->showMessage(title, msg, icon, msecs);
+}
+
+void TrayIcon::setIcon(const QString &strIcon)
+{
+    trayIcon->setIcon(QIcon(strIcon));
+}
+
+void TrayIcon::setToolTip(const QString &tip)
+{
+    trayIcon->setToolTip(tip);
+}
+
+void TrayIcon::setVisible(bool visible)
+{
+    trayIcon->setVisible(visible);
+}
+
+void TrayIcon::closeAll()
+{
+    trayIcon->hide();
+    trayIcon->deleteLater();
+    exit(0);
 }
 
 
@@ -1365,6 +2138,7 @@ QString QUIHelper::appName()
     static QString name;
     if (name.isEmpty()) {
         name = qApp->applicationFilePath();
+        //下面的方法主要为了过滤安卓的路径 lib程序名_armeabi-v7a
         QStringList list = name.split("/");
         name = list.at(list.count() - 1).split(".").at(0);
     }
@@ -1375,7 +2149,8 @@ QString QUIHelper::appName()
 QString QUIHelper::appPath()
 {
 #ifdef Q_OS_ANDROID
-    return QString("/sdcard/Android/%1").arg(appName());
+    //return QString("/sdcard/Android/%1").arg(appName());
+    return QString("/storage/emulated/0/%1").arg(appName());
 #else
     return qApp->applicationDirPath();
 #endif
@@ -1386,6 +2161,81 @@ void QUIHelper::initRand()
     //初始化随机数种子
     QTime t = QTime::currentTime();
     qsrand(t.msec() + t.second() * 1000);
+}
+
+QString QUIHelper::getUuid()
+{
+    QString uuid = QUuid::createUuid().toString();
+    uuid = uuid.replace("{", "");
+    uuid = uuid.replace("}", "");
+    return uuid;
+}
+
+void QUIHelper::initDb(const QString &dbName)
+{
+    initFile(QString(":/%1.db").arg(appName()), dbName);
+}
+
+void QUIHelper::initFile(const QString &sourceName, const QString &targetName)
+{
+    //判断文件是否存在,不存在则从资源文件复制出来
+    QFile file(targetName);
+    if (!file.exists() || file.size() == 0) {
+        file.remove();
+        QUIHelper::copyFile(sourceName, targetName);
+    }
+}
+
+bool QUIHelper::checkIniFile(const QString &iniFile)
+{
+    //如果配置文件大小为0,则以初始值继续运行,并生成配置文件
+    QFile file(iniFile);
+    if (file.size() == 0) {
+        return false;
+    }
+
+    //如果配置文件不完整,则以初始值继续运行,并生成配置文件
+    if (file.open(QFile::ReadOnly)) {
+        bool ok = true;
+        while (!file.atEnd()) {
+            QString line = file.readLine();
+            line = line.replace("\r", "");
+            line = line.replace("\n", "");
+            QStringList list = line.split("=");
+
+            if (list.count() == 2) {
+                if (list.at(1) == "") {
+                    qDebug() << TIMEMS << "ini node no value" << list.at(0);
+                    ok = false;
+                    break;
+                }
+            }
+        }
+
+        if (!ok) {
+            return false;
+        }
+    } else {
+        return false;
+    }
+
+    return true;
+}
+
+void QUIHelper::setIconBtn(QAbstractButton *btn, const QString &png, const QChar &str)
+{
+    int size = 16;
+    int width = 18;
+    int height = 18;
+    QPixmap pix;
+    if (QPixmap(png).isNull()) {
+        pix = IconHelper::Instance()->getPixmap(QUIConfig::TextColor, str, size, width, height);
+    } else {
+        pix = QPixmap(png);
+    }
+
+    btn->setIconSize(QSize(width, height));
+    btn->setIcon(QIcon(pix));
 }
 
 void QUIHelper::newDir(const QString &dirName)
@@ -1404,8 +2254,12 @@ void QUIHelper::newDir(const QString &dirName)
     }
 }
 
-void QUIHelper::writeInfo(const QString &info, const QString &filePath)
+void QUIHelper::writeInfo(const QString &info, bool needWrite, const QString &filePath)
 {
+    if (!needWrite) {
+        return;
+    }
+
     QString fileName = QString("%1/%2/%3_runinfo_%4.txt").arg(QUIHelper::appPath())
                        .arg(filePath).arg(QUIHelper::appName()).arg(QDate::currentDate().toString("yyyyMM"));
 
@@ -1416,10 +2270,12 @@ void QUIHelper::writeInfo(const QString &info, const QString &filePath)
     file.close();
 }
 
-void QUIHelper::writeError(const QString &info, const QString &filePath)
+void QUIHelper::writeError(const QString &info, bool needWrite, const QString &filePath)
 {
-    //正式运行屏蔽掉输出错误信息,调试阶段才需要
-    return;
+    if (!needWrite) {
+        return;
+    }
+
     QString fileName = QString("%1/%2/%3_runerror_%4.txt").arg(QUIHelper::appPath())
                        .arg(filePath).arg(QUIHelper::appName()).arg(QDate::currentDate().toString("yyyyMM"));
 
@@ -1430,10 +2286,36 @@ void QUIHelper::writeError(const QString &info, const QString &filePath)
     file.close();
 }
 
+void QUIHelper::setFramelessForm(QWidget *widgetMain, QWidget *widgetTitle, QLabel *labIco, QPushButton *btnClose, bool tool)
+{
+    labIco->setFixedWidth(TitleMinSize);
+    btnClose->setFixedWidth(TitleMinSize);
+    widgetTitle->setFixedHeight(TitleMinSize);
+    widgetTitle->setProperty("form", "title");
+    widgetMain->setProperty("form", true);
+    widgetMain->setProperty("canMove", true);
+
+#ifdef __arm__
+    if (tool) {
+        widgetMain->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+    } else {
+        widgetMain->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+    }
+#else
+    if (tool) {
+        widgetMain->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
+    } else {
+        widgetMain->setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
+    }
+#endif
+
+    IconHelper::Instance()->setIcon(labIco, QUIConfig::IconMain, QUIConfig::FontSize + 2);
+    IconHelper::Instance()->setIcon(btnClose, QUIConfig::IconClose, QUIConfig::FontSize);
+}
+
 void QUIHelper::setStyle(QUIWidget::Style style)
 {
-    QString qssFile = ":/qss/blue.css";
-
+    QString qssFile = ":/qss/lightblue.css";
     if (style == QUIWidget::Style_Silvery) {
         qssFile = ":/qss/silvery.css";
     } else if (style == QUIWidget::Style_Blue) {
@@ -1460,10 +2342,15 @@ void QUIHelper::setStyle(QUIWidget::Style style)
         qssFile = ":/qss/flatblack.css";
     } else if (style == QUIWidget::Style_FlatWhite) {
         qssFile = ":/qss/flatwhite.css";
+    } else if (style == QUIWidget::Style_Purple) {
+        qssFile = ":/qss/purple.css";
+    } else if (style == QUIWidget::Style_BlackBlue) {
+        qssFile = ":/qss/blackblue.css";
+    } else if (style == QUIWidget::Style_BlackVideo) {
+        qssFile = ":/qss/blackvideo.css";
     }
 
     QFile file(qssFile);
-
     if (file.open(QFile::ReadOnly)) {
         QString qss = QLatin1String(file.readAll());
         QString paletteColor = qss.mid(20, 7);
@@ -1511,7 +2398,6 @@ void QUIHelper::getQssColor(const QString &qss, QString &textColor, QString &pan
                             QString &darkColorStart, QString &darkColorEnd, QString &highColor)
 {
     QString str = qss;
-
     QString flagTextColor = "TextColor:";
     int indexTextColor = str.indexOf(flagTextColor);
     if (indexTextColor >= 0) {
@@ -1601,7 +2487,6 @@ QPixmap QUIHelper::ninePatch(const QPixmap &pix, int horzSplit, int vertSplit, i
 
     QPainter painter;
     painter.begin(&resultImg);
-
     if (!resultImg.isNull()) {
         painter.drawPixmap(0, 0, pix1);
         painter.drawPixmap(horzSplit, 0, pix2);
@@ -1617,26 +2502,55 @@ QPixmap QUIHelper::ninePatch(const QPixmap &pix, int horzSplit, int vertSplit, i
     }
 
     painter.end();
-
     return resultImg;
 }
 
-void QUIHelper::setLabStyle(QLabel *lab, quint8 type)
+void QUIHelper::setLabStyle(QLabel *lab, quint8 type, const QString &bgColor, const QString &textColor)
 {
-    QString qssRed = "QLabel{border:none;background-color:rgb(214,64,48);color:rgb(255,255,255);}";
-    QString qssGreen = "QLabel{border:none;background-color:rgb(46,138,87);color:rgb(255,255,255);}";
-    QString qssBlue = "QLabel{border:none;background-color:rgb(67,122,203);color:rgb(255,255,255);}";
-    QString qssDark = "QLabel{border:none;background-color:rgb(75,75,75);color:rgb(255,255,255);}";
+    QString colorBg = bgColor;
+    QString colorText = textColor;
 
-    if (type == 0) {
-        lab->setStyleSheet(qssRed);
-    } else if (type == 1) {
-        lab->setStyleSheet(qssGreen);
-    } else if (type == 2) {
-        lab->setStyleSheet(qssBlue);
-    } else if (type == 3) {
-        lab->setStyleSheet(qssDark);
+    //如果设置了新颜色则启用新颜色
+    if (bgColor.isEmpty() || textColor.isEmpty()) {
+        if (type == 0) {
+            colorBg = "#D64D54";
+            colorText = "#FFFFFF";
+        } else if (type == 1) {
+            colorBg = "#17A086";
+            colorText = "#FFFFFF";
+        } else if (type == 2) {
+            colorBg = "#47A4E9";
+            colorText = "#FFFFFF";
+        } else if (type == 3) {
+            colorBg = "#282D30";
+            colorText = "#FFFFFF";
+        } else if (type == 4) {
+            colorBg = "#0E99A0";
+            colorText = "#FFFFFF";
+        } else if (type == 5) {
+            colorBg = "#A279C5";
+            colorText = "#FFFFFF";
+        } else if (type == 6) {
+            colorBg = "#8C2957";
+            colorText = "#FFFFFF";
+        } else if (type == 7) {
+            colorBg = "#04567E";
+            colorText = "#FFFFFF";
+        } else if (type == 8) {
+            colorBg = "#FD8B28";
+            colorText = "#FFFFFF";
+        } else if (type == 9) {
+            colorBg = "#5580A2";
+            colorText = "#FFFFFF";
+        }
     }
+
+    QStringList qss;
+    //禁用颜色
+    qss << QString("QLabel::disabled{background:none;color:%1;}").arg(QUIConfig::BorderColor);
+    //正常颜色
+    qss << QString("QLabel{border:none;background-color:%1;color:%2;}").arg(colorBg).arg(colorText);
+    lab->setStyleSheet(qss.join(""));
 }
 
 void QUIHelper::setFormInCenter(QWidget *frm)
@@ -1674,11 +2588,39 @@ void QUIHelper::setCode()
 #endif
 }
 
-void QUIHelper::sleep(int sec)
+void QUIHelper::setFont(const QString &ttfFile, const QString &fontName, int fontSize)
 {
-    QTime dieTime = QTime::currentTime().addMSecs(sec);
-    while (QTime::currentTime() < dieTime) {
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    QFont font;
+    font.setFamily(fontName);
+    font.setPixelSize(fontSize);
+
+    //如果存在字体文件则设备字体文件中的字体
+    //安卓版本和网页版本需要字体文件一起打包单独设置字体
+    if (!ttfFile.isEmpty()) {
+        QFontDatabase fontDb;
+        int fontId = fontDb.addApplicationFont(ttfFile);
+        if (fontId != -1) {
+            QStringList androidFont = fontDb.applicationFontFamilies(fontId);
+            if (androidFont.size() != 0) {
+                font.setFamily(androidFont.at(0));
+                font.setPixelSize(fontSize);
+            }
+        }
+    }
+    qApp->setFont(font);
+}
+
+void QUIHelper::sleep(int msec)
+{
+    if (msec > 0) {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+        QTime endTime = QTime::currentTime().addMSecs(msec);
+        while (QTime::currentTime() < endTime) {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
+#else
+        QThread::msleep(msec);
+#endif
     }
 }
 
@@ -1713,16 +2655,24 @@ void QUIHelper::runWithSystem(const QString &strName, const QString &strPath, bo
 #endif
 }
 
+QString QUIHelper::getIP(const QString &url)
+{
+    //取出IP地址
+    QRegExp regExp("((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d))");
+    regExp.indexIn(url);
+    return url.mid(url.indexOf(regExp), regExp.matchedLength());
+}
+
 bool QUIHelper::isIP(const QString &ip)
 {
-    QRegExp RegExp("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
-    return RegExp.exactMatch(ip);
+    QRegExp regExp("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
+    return regExp.exactMatch(ip);
 }
 
 bool QUIHelper::isMac(const QString &mac)
 {
-    QRegExp RegExp("^[A-F0-9]{2}(-[A-F0-9]{2}){5}$");
-    return RegExp.exactMatch(mac);
+    QRegExp regExp("^[A-F0-9]{2}(-[A-F0-9]{2}){5}$");
+    return regExp.exactMatch(mac);
 }
 
 bool QUIHelper::isTel(const QString &tel)
@@ -1745,6 +2695,26 @@ bool QUIHelper::isEmail(const QString &email)
     }
 
     return true;
+}
+
+QString QUIHelper::ipv4IntToString(quint32 ip)
+{
+    QString result = QString("%1.%2.%3.%4").arg((ip >> 24) & 0xFF).arg((ip >> 16) & 0xFF).arg((ip >> 8) & 0xFF).arg(ip & 0xFF);
+    return result;
+}
+
+quint32 QUIHelper::ipv4StringToInt(const QString &ip)
+{
+    int result = 0;
+    if (isIP(ip)) {
+        QStringList list = ip.split(".");
+        int ip0 = list.at(0).toInt();
+        int ip1 = list.at(1).toInt();
+        int ip2 = list.at(2).toInt();
+        int ip3 = list.at(3).toInt();
+        result = ip3 | ip2 << 8 | ip1 << 16 | ip0 << 24;
+    }
+    return result;
 }
 
 int QUIHelper::strHexToDecimal(const QString &strHex)
@@ -1858,6 +2828,24 @@ int QUIHelper::byteToIntRec(const QByteArray &data)
     return i;
 }
 
+quint32 QUIHelper::byteToUInt(const QByteArray &data)
+{
+    quint32 i = data.at(3) & 0x000000ff;
+    i |= ((data.at(2) << 8) & 0x0000ff00);
+    i |= ((data.at(1) << 16) & 0x00ff0000);
+    i |= ((data.at(0) << 24) & 0xff000000);
+    return i;
+}
+
+quint32 QUIHelper::byteToUIntRec(const QByteArray &data)
+{
+    quint32 i = data.at(0) & 0x000000ff;
+    i |= ((data.at(1) << 8) & 0x0000ff00);
+    i |= ((data.at(2) << 16) & 0x00ff0000);
+    i |= ((data.at(3) << 24) & 0xff000000);
+    return i;
+}
+
 QByteArray QUIHelper::ushortToByte(ushort i)
 {
     QByteArray result;
@@ -1871,8 +2859,8 @@ QByteArray QUIHelper::ushortToByteRec(ushort i)
 {
     QByteArray result;
     result.resize(2);
-    result[0] = (uchar) (0x000000ff & i);
-    result[1] = (uchar) ((0x0000ff00 & i) >> 8);
+    result[0] = (uchar)(0x000000ff & i);
+    result[1] = (uchar)((0x0000ff00 & i) >> 8);
     return result;
 }
 
@@ -1904,12 +2892,11 @@ QString QUIHelper::getXorEncryptDecrypt(const QString &str, char key)
 {
     QByteArray data = str.toLatin1();
     int size = data.size();
-
     for (int i = 0; i < size; i++) {
-        data[i] = data.at(i) ^ key;
+        data[i] = data[i] ^ key;
     }
 
-    return QString(data);
+    return QLatin1String(data);
 }
 
 uchar QUIHelper::getOrCode(const QByteArray &data)
@@ -1936,15 +2923,6 @@ uchar QUIHelper::getCheckCode(const QByteArray &data)
     return temp % 256;
 }
 
-QString QUIHelper::getValue(quint8 value)
-{
-    QString result = QString::number(value);
-    if (result.length() <= 1) {
-        result = QString("0%1").arg(result);
-    }
-    return result;
-}
-
 //函数功能：计算CRC16
 //参数1：*data 16位CRC校验数据，
 //参数2：len   数据流长度
@@ -1956,8 +2934,7 @@ quint16 QUIHelper::getRevCrc_16(quint8 *data, int len, quint16 init, const quint
 {
     quint16 cRc_16 = init;
     quint8 temp;
-
-    while(len-- > 0) {
+    while (len-- > 0) {
         temp = cRc_16 >> 8;
         cRc_16 = (cRc_16 << 8) ^ table[(temp ^ *data++) & 0xff];
     }
@@ -1970,8 +2947,7 @@ quint16 QUIHelper::getCrc_16(quint8 *data, int len, quint16 init, const quint16 
 {
     quint16 cRc_16 = init;
     quint8 temp;
-
-    while(len-- > 0) {
+    while (len-- > 0) {
         temp = cRc_16 & 0xff;
         cRc_16 = (cRc_16 >> 8) ^ table[(temp ^ *data++) & 0xff];
     }
@@ -2028,104 +3004,117 @@ QByteArray QUIHelper::getCRCCode(const QByteArray &data)
     return QUIHelper::ushortToByteRec(result);
 }
 
+static QMap<char, QString> listChar;
+void QUIHelper::initAsciiStr()
+{
+    //0x20为空格,空格以下都是不可见字符
+    if (listChar.count() == 0) {
+        listChar.insert(0, "\\NUL");
+        listChar.insert(1, "\\SOH");
+        listChar.insert(2, "\\STX");
+        listChar.insert(3, "\\ETX");
+        listChar.insert(4, "\\EOT");
+        listChar.insert(5, "\\ENQ");
+        listChar.insert(6, "\\ACK");
+        listChar.insert(7, "\\BEL");
+        listChar.insert(8, "\\BS");
+        listChar.insert(9, "\\HT");
+        listChar.insert(10, "\\LF");
+        listChar.insert(11, "\\VT");
+        listChar.insert(12, "\\FF");
+        listChar.insert(13, "\\CR");
+        listChar.insert(14, "\\SO");
+        listChar.insert(15, "\\SI");
+        listChar.insert(16, "\\DLE");
+        listChar.insert(17, "\\DC1");
+        listChar.insert(18, "\\DC2");
+        listChar.insert(19, "\\DC3");
+        listChar.insert(20, "\\DC4");
+        listChar.insert(21, "\\NAK");
+        listChar.insert(22, "\\SYN");
+        listChar.insert(23, "\\ETB");
+        listChar.insert(24, "\\CAN");
+        listChar.insert(25, "\\EM");
+        listChar.insert(26, "\\SUB");
+        listChar.insert(27, "\\ESC");
+        listChar.insert(28, "\\FS");
+        listChar.insert(29, "\\GS");
+        listChar.insert(30, "\\RS");
+        listChar.insert(31, "\\US");
+        listChar.insert(0x5C, "\\");
+        listChar.insert(0x7F, "\\DEL");
+    }
+}
+
 QString QUIHelper::byteArrayToAsciiStr(const QByteArray &data)
 {
+    initAsciiStr();
     QString temp;
     int len = data.size();
 
     for (int i = 0; i < len; i++) {
-        //0x20为空格,空格以下都是不可见字符
-        char b = data.at(i);
-
-        if (0x00 == b) {
-            temp += QString("\\NUL");
-        } else if (0x01 == b) {
-            temp += QString("\\SOH");
-        } else if (0x02 == b) {
-            temp += QString("\\STX");
-        } else if (0x03 == b) {
-            temp += QString("\\ETX");
-        } else if (0x04 == b) {
-            temp += QString("\\EOT");
-        } else if (0x05 == b) {
-            temp += QString("\\ENQ");
-        } else if (0x06 == b) {
-            temp += QString("\\ACK");
-        } else if (0x07 == b) {
-            temp += QString("\\BEL");
-        } else if (0x08 == b) {
-            temp += QString("\\BS");
-        } else if (0x09 == b) {
-            temp += QString("\\HT");
-        } else if (0x0A == b) {
-            temp += QString("\\LF");
-        } else if (0x0B == b) {
-            temp += QString("\\VT");
-        } else if (0x0C == b) {
-            temp += QString("\\FF");
-        } else if (0x0D == b) {
-            temp += QString("\\CR");
-        } else if (0x0E == b) {
-            temp += QString("\\SO");
-        } else if (0x0F == b) {
-            temp += QString("\\SI");
-        } else if (0x10 == b) {
-            temp += QString("\\DLE");
-        } else if (0x11 == b) {
-            temp += QString("\\DC1");
-        } else if (0x12 == b) {
-            temp += QString("\\DC2");
-        } else if (0x13 == b) {
-            temp += QString("\\DC3");
-        } else if (0x14 == b) {
-            temp += QString("\\DC4");
-        } else if (0x15 == b) {
-            temp += QString("\\NAK");
-        } else if (0x16 == b) {
-            temp += QString("\\SYN");
-        } else if (0x17 == b) {
-            temp += QString("\\ETB");
-        } else if (0x18 == b) {
-            temp += QString("\\CAN");
-        } else if (0x19 == b) {
-            temp += QString("\\EM");
-        } else if (0x1A == b) {
-            temp += QString("\\SUB");
-        } else if (0x1B == b) {
-            temp += QString("\\ESC");
-        } else if (0x1C == b) {
-            temp += QString("\\FS");
-        } else if (0x1D == b) {
-            temp += QString("\\GS");
-        } else if (0x1E == b) {
-            temp += QString("\\RS");
-        } else if (0x1F == b) {
-            temp += QString("\\US");
-        } else if (0x7F == b) {
-            temp += QString("\\x7F");
-        } else if (0x5C == b) {
-            temp += QString("\\x5C");
-        } else if (0x20 >= b) {
-            temp += QString("\\x%1").arg(decimalToStrHex((quint8)b));
+        char byte = data.at(i);
+        QString value = listChar.value(byte);
+        if (!value.isEmpty()) {
+        } else if (byte >= 0 && byte <= 0x7F) {
+            value = QString("%1").arg(byte);
         } else {
-            temp += QString("%1").arg(b);
+            value = decimalToStrHex((quint8)byte);
+            value = QString("\\x%1").arg(value.toUpper());
         }
+
+        temp += value;
     }
 
     return temp.trimmed();
 }
 
-QByteArray QUIHelper::hexStrToByteArray(const QString &str)
+QByteArray QUIHelper::asciiStrToByteArray(const QString &data)
+{
+    initAsciiStr();
+    QByteArray buffer;
+    QStringList list = data.split("\\");
+
+    int count = list.count();
+    for (int i = 1; i < count; i++) {
+        QString str = list.at(i);
+        int key = 0;
+        if (str.contains("x")) {
+            key = strHexToDecimal(str.mid(1, 2));
+        } else {
+            key = listChar.key("\\" + str);
+        }
+
+        buffer.append(key);
+    }
+
+    return buffer;
+}
+
+char QUIHelper::hexStrToChar(char data)
+{
+    if ((data >= '0') && (data <= '9')) {
+        return data - 0x30;
+    } else if ((data >= 'A') && (data <= 'F')) {
+        return data - 'A' + 10;
+    } else if ((data >= 'a') && (data <= 'f')) {
+        return data - 'a' + 10;
+    } else {
+        return (-1);
+    }
+}
+
+QByteArray QUIHelper::hexStrToByteArray(const QString &data)
 {
     QByteArray senddata;
     int hexdata, lowhexdata;
     int hexdatalen = 0;
-    int len = str.length();
+    int len = data.length();
     senddata.resize(len / 2);
     char lstr, hstr;
 
     for (int i = 0; i < len;) {
-        hstr = str.at(i).toLatin1();
+        hstr = data.at(i).toLatin1();
         if (hstr == ' ') {
             i++;
             continue;
@@ -2136,9 +3125,9 @@ QByteArray QUIHelper::hexStrToByteArray(const QString &str)
             break;
         }
 
-        lstr = str.at(i).toLatin1();
-        hexdata = convertHexChar(hstr);
-        lowhexdata = convertHexChar(lstr);
+        lstr = data.at(i).toLatin1();
+        hexdata = hexStrToChar(hstr);
+        lowhexdata = hexStrToChar(lstr);
 
         if ((hexdata == 16) || (lowhexdata == 16)) {
             break;
@@ -2155,300 +3144,6 @@ QByteArray QUIHelper::hexStrToByteArray(const QString &str)
     return senddata;
 }
 
-char QUIHelper::convertHexChar(char ch)
-{
-    if ((ch >= '0') && (ch <= '9')) {
-        return ch - 0x30;
-    } else if ((ch >= 'A') && (ch <= 'F')) {
-        return ch - 'A' + 10;
-    } else if ((ch >= 'a') && (ch <= 'f')) {
-        return ch - 'a' + 10;
-    } else {
-        return (-1);
-    }
-}
-
-QByteArray QUIHelper::asciiStrToByteArray(const QString &str)
-{
-    QByteArray buffer;
-    int len = str.length();
-    QString letter;
-    QString hex;
-
-    for (int i = 0; i < len; i++) {
-        letter = str.at(i);
-
-        if (letter == "\\") {
-            i++;
-            letter = str.mid(i, 1);
-
-            if (letter == "x") {
-                i++;
-                hex = str.mid(i, 2);
-                buffer.append(strHexToDecimal(hex));
-                i++;
-                continue;
-            } else if (letter == "N") {
-                i++;
-                hex = str.mid(i, 1);
-
-                if (hex == "U") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "L") {           //NUL=0x00
-                        buffer.append((char)0x00);
-                        continue;
-                    }
-                } else if (hex == "A") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "K") {           //NAK=0x15
-                        buffer.append(0x15);
-                        continue;
-                    }
-                }
-            } else if (letter == "S") {
-                i++;
-                hex = str.mid(i, 1);
-
-                if (hex == "O") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "H") {           //SOH=0x01
-                        buffer.append(0x01);
-                        continue;
-                    } else {                    //SO=0x0E
-                        buffer.append(0x0E);
-                        i--;
-                        continue;
-                    }
-                } else if (hex == "T") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "X") {           //STX=0x02
-                        buffer.append(0x02);
-                        continue;
-                    }
-                } else if (hex == "I") {        //SI=0x0F
-                    buffer.append(0x0F);
-                    continue;
-                } else if (hex == "Y") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "N") {           //SYN=0x16
-                        buffer.append(0x16);
-                        continue;
-                    }
-                } else if (hex == "U") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "B") {           //SUB=0x1A
-                        buffer.append(0x1A);
-                        continue;
-                    }
-                }
-            } else if (letter == "E") {
-                i++;
-                hex = str.mid(i, 1);
-
-                if (hex == "T") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "X") {           //ETX=0x03
-                        buffer.append(0x03);
-                        continue;
-                    } else if (hex == "B") {    //ETB=0x17
-                        buffer.append(0x17);
-                        continue;
-                    }
-                } else if (hex == "O") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "T") {           //EOT=0x04
-                        buffer.append(0x04);
-                        continue;
-                    }
-                } else if (hex == "N") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "Q") {           //ENQ=0x05
-                        buffer.append(0x05);
-                        continue;
-                    }
-                } else if (hex == "M") {        //EM=0x19
-                    buffer.append(0x19);
-                    continue;
-                } else if (hex == "S") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "C") {           //ESC=0x1B
-                        buffer.append(0x1B);
-                        continue;
-                    }
-                }
-            } else if (letter == "A") {
-                i++;
-                hex = str.mid(i, 1);
-
-                if (hex == "C") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "K") {           //ACK=0x06
-                        buffer.append(0x06);
-                        continue;
-                    }
-                }
-            } else if (letter == "B") {
-                i++;
-                hex = str.mid(i, 1);
-
-                if (hex == "E") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "L") {           //BEL=0x07
-                        buffer.append(0x07);
-                        continue;
-                    }
-                } else if (hex == "S") {        //BS=0x08
-                    buffer.append(0x08);
-                    continue;
-                }
-            } else if (letter == "C") {
-                i++;
-                hex = str.mid(i, 1);
-
-                if (hex == "R") {               //CR=0x0D
-                    buffer.append(0x0D);
-                    continue;
-                } else if (hex == "A") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "N") {           //CAN=0x18
-                        buffer.append(0x18);
-                        continue;
-                    }
-                }
-            } else if (letter == "D") {
-                i++;
-                hex = str.mid(i, 1);
-
-                if (hex == "L") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "E") {           //DLE=0x10
-                        buffer.append(0x10);
-                        continue;
-                    }
-                } else if (hex == "C") {
-                    i++;
-                    hex = str.mid(i, 1);
-
-                    if (hex == "1") {           //DC1=0x11
-                        buffer.append(0x11);
-                        continue;
-                    } else if (hex == "2") {    //DC2=0x12
-                        buffer.append(0x12);
-                        continue;
-                    } else if (hex == "3") {    //DC3=0x13
-                        buffer.append(0x13);
-                        continue;
-                    } else if (hex == "4") {    //DC2=0x14
-                        buffer.append(0x14);
-                        continue;
-                    }
-                }
-            } else if (letter == "F") {
-                i++;
-                hex = str.mid(i, 1);
-
-                if (hex == "F") {               //FF=0x0C
-                    buffer.append(0x0C);
-                    continue;
-                } else if (hex == "S") {        //FS=0x1C
-                    buffer.append(0x1C);
-                    continue;
-                }
-            } else if (letter == "H") {
-                i++;
-                hex = str.mid(i, 1);
-
-                if (hex == "T") {               //HT=0x09
-                    buffer.append(0x09);
-                    continue;
-                }
-            } else if (letter == "L") {
-                i++;
-                hex = str.mid(i, 1);
-
-                if (hex == "F") {               //LF=0x0A
-                    buffer.append(0x0A);
-                    continue;
-                }
-            } else if (letter == "G") {
-                i++;
-                hex = str.mid(i, 1);
-
-                if (hex == "S") {               //GS=0x1D
-                    buffer.append(0x1D);
-                    continue;
-                }
-            } else if (letter == "R") {
-                i++;
-                hex = str.mid(i, 1);
-
-                if (hex == "S") {               //RS=0x1E
-                    buffer.append(0x1E);
-                    continue;
-                }
-            } else if (letter == "U") {
-                i++;
-                hex = str.mid(i, 1);
-
-                if (hex == "S") {               //US=0x1F
-                    buffer.append(0x1F);
-                    continue;
-                }
-            } else if (letter == "V") {
-                i++;
-                hex = str.mid(i, 1);
-
-                if (hex == "T") {               //VT=0x0B
-                    buffer.append(0x0B);
-                    continue;
-                }
-            } else if (letter == "\\") {
-                //如果连着的是多个\\则对应添加\对应的16进制0x5C
-                buffer.append(0x5C);
-                continue;
-            } else {
-                //将对应的\[前面的\\也要加入
-                buffer.append(0x5C);
-                buffer.append(letter.toLatin1());
-                continue;
-            }
-        }
-
-        buffer.append(str.mid(i, 1).toLatin1());
-
-    }
-
-    return buffer;
-}
-
 QString QUIHelper::byteArrayToHexStr(const QByteArray &data)
 {
     QString temp = "";
@@ -2463,12 +3158,33 @@ QString QUIHelper::byteArrayToHexStr(const QByteArray &data)
 
 QString QUIHelper::getSaveName(const QString &filter, QString defaultDir)
 {
-    return QFileDialog::getSaveFileName(0, "选择文件", defaultDir , filter);
+    return QFileDialog::getSaveFileName(0, "选择文件", defaultDir, filter);
 }
 
 QString QUIHelper::getFileName(const QString &filter, QString defaultDir)
 {
-    return QFileDialog::getOpenFileName(0, "选择文件", defaultDir , filter);
+    return QFileDialog::getOpenFileName(0, "选择文件", defaultDir, filter);
+}
+
+QString QUIHelper::saveFileName(const QString &filter, const QString &defaultDir, const QString &fileName)
+{
+    QString file;
+    QFileDialog dialog;
+    dialog.setFixedSize(900, 600);
+    dialog.setWindowModality(Qt::WindowModal);
+    dialog.setWindowTitle("保存文件");
+    dialog.setLabelText(QFileDialog::Accept, "保存(&S)");
+    dialog.setLabelText(QFileDialog::Reject, "取消(&C)");
+    dialog.selectFile(fileName);
+    dialog.setNameFilter(filter);
+    dialog.setDirectory(defaultDir);
+
+    if (dialog.exec() == 1) {
+        file = dialog.selectedFiles().value(0);
+        file = QFileInfo(file).suffix().isEmpty() ? "" : file;
+    }
+
+    return file;
 }
 
 QStringList QUIHelper::getFileNames(const QString &filter, QString defaultDir)
@@ -2546,50 +3262,55 @@ void QUIHelper::deleteDirectory(const QString &path)
 
 bool QUIHelper::ipLive(const QString &ip, int port, int timeout)
 {
-    QTcpSocket tcpClient;
-    tcpClient.abort();
-    tcpClient.connectToHost(ip, port);
-    //超时没有连接上则判断不在线
-    return tcpClient.waitForConnected(timeout);
+    //局部的事件循环,不卡主界面
+    QEventLoop eventLoop;
+
+    //设置超时
+    QTimer timer;
+    connect(&timer, SIGNAL(timeout()), &eventLoop, SLOT(quit()));
+    timer.setSingleShot(true);
+    timer.start(timeout);
+
+    QTcpSocket tcpSocket;
+    connect(&tcpSocket, SIGNAL(connected()), &eventLoop, SLOT(quit()));
+    tcpSocket.connectToHost(ip, port);
+    eventLoop.exec();
+    bool ok = (tcpSocket.state() == QAbstractSocket::ConnectedState);
+    return ok;
 }
 
 QString QUIHelper::getHtml(const QString &url)
 {
-    QNetworkAccessManager *manager = new QNetworkAccessManager();
-    QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
-    QByteArray responseData;
+    QNetworkAccessManager manager;
+    QNetworkReply *reply = manager.get(QNetworkRequest(QUrl(url)));
     QEventLoop eventLoop;
-    QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &eventLoop, SLOT(quit()));
+    QObject::connect(&manager, SIGNAL(finished(QNetworkReply *)), &eventLoop, SLOT(quit()));
     eventLoop.exec();
-    responseData = reply->readAll();
-    return QString(responseData);
+    QByteArray data = reply->readAll();
+    reply->deleteLater();
+    return QString(data);
 }
 
-QString QUIHelper::getNetIP(const QString &webCode)
+QString QUIHelper::getNetIP(const QString &html)
 {
-    QString web = webCode;
-    web = web.replace(' ', "");
-    web = web.replace("\r", "");
-    web = web.replace("\n", "");
-    QStringList list = web.split("<br/>");
-    QString tar = list.at(3);
-    QStringList ip = tar.split("=");
-    return ip.at(1);
+    QString ip;
+    QStringList list = html.split(" ");
+    foreach (QString str, list) {
+        //value=\"101.86.197.178\">
+        if (str.contains("value=")) {
+            QStringList temp = str.split("\"");
+            ip = temp.at(1);
+            break;
+        }
+    }
+    return ip;
 }
 
 QString QUIHelper::getLocalIP()
 {
-    QStringList ips;
-    QList<QHostAddress> addrs = QNetworkInterface::allAddresses();
-    foreach (QHostAddress addr, addrs) {
-        QString ip = addr.toString();
-        if (QUIHelper::isIP(ip)) {
-            ips << ip;
-        }
-    }
-
     //优先取192开头的IP,如果获取不到IP则取127.0.0.1
     QString ip = "127.0.0.1";
+    QStringList ips = getLocalIPs();
     foreach (QString str, ips) {
         if (str.startsWith("192.168.1") || str.startsWith("192")) {
             ip = str;
@@ -2600,23 +3321,119 @@ QString QUIHelper::getLocalIP()
     return ip;
 }
 
+QStringList QUIHelper::getLocalIPs()
+{
+    static QStringList ips;
+    if (ips.count() == 0) {
+#ifdef emsdk
+        ips << "127.0.0.1";
+#else
+        QList<QNetworkInterface> netInterfaces = QNetworkInterface::allInterfaces();
+        foreach (const QNetworkInterface  &netInterface, netInterfaces) {
+            //移除虚拟机和抓包工具的虚拟网卡
+            QString humanReadableName = netInterface.humanReadableName().toLower();
+            if (humanReadableName.startsWith("vmware network adapter") || humanReadableName.startsWith("npcap loopback adapter")) {
+                continue;
+            }
+
+            //过滤当前网络接口
+            bool flag = (netInterface.flags() == (QNetworkInterface::IsUp | QNetworkInterface::IsRunning | QNetworkInterface::CanBroadcast | QNetworkInterface::CanMulticast));
+            if (flag) {
+                QList<QNetworkAddressEntry> addrs = netInterface.addressEntries();
+                foreach (QNetworkAddressEntry addr, addrs) {
+                    //只取出IPV4的地址
+                    if (addr.ip().protocol() == QAbstractSocket::IPv4Protocol) {
+                        QString ip4 = addr.ip().toString();
+                        if (ip4 != "127.0.0.1") {
+                            ips.append(ip4);
+                        }
+                    }
+                }
+            }
+        }
+#endif
+    }
+
+    return ips;
+}
+
 QString QUIHelper::urlToIP(const QString &url)
 {
     QHostInfo host = QHostInfo::fromName(url);
     return host.addresses().at(0).toString();
 }
 
+QString QUIHelper::getValue(quint8 value)
+{
+    QString result = QString::number(value);
+    if (result.length() <= 1) {
+        result = QString("0%1").arg(result);
+    }
+    return result;
+}
+
 bool QUIHelper::isWebOk()
 {
-    //能接通百度IP说明可以通外网
-    return ipLive("115.239.211.112", 80);
+    //能接通百度IP 115.239.211.112 说明可以通外网
+    return ipLive("www.baidu.com", 80);
+}
+
+void QUIHelper::initTableView(QTableView *tableView, int rowHeight, bool headVisible, bool edit, bool stretchLast)
+{
+    //取消自动换行
+    tableView->setWordWrap(false);
+    //超出文本不显示省略号
+    tableView->setTextElideMode(Qt::ElideNone);
+    //奇数偶数行颜色交替
+    tableView->setAlternatingRowColors(false);
+    //垂直表头是否可见
+    tableView->verticalHeader()->setVisible(headVisible);
+    //选中一行表头是否加粗
+    tableView->horizontalHeader()->setHighlightSections(false);
+    //最后一行拉伸填充
+    tableView->horizontalHeader()->setStretchLastSection(stretchLast);
+    //行标题最小宽度尺寸
+    tableView->horizontalHeader()->setMinimumSectionSize(0);
+    //行标题最大高度
+    tableView->horizontalHeader()->setMaximumHeight(rowHeight);
+    //默认行高
+    tableView->verticalHeader()->setDefaultSectionSize(rowHeight);
+    //选中时一行整体选中
+    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    //只允许选择单个
+    tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    //表头不可单击
+#if (QT_VERSION > QT_VERSION_CHECK(5,0,0))
+    tableView->horizontalHeader()->setSectionsClickable(false);
+#else
+    tableView->horizontalHeader()->setClickable(false);
+#endif
+
+    //鼠标按下即进入编辑模式
+    if (edit) {
+        tableView->setEditTriggers(QAbstractItemView::CurrentChanged | QAbstractItemView::DoubleClicked);
+    } else {
+        tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    }
+}
+
+int QUIHelper::showMessageBox(const QString &info, int type, int closeSec, bool exec)
+{
+    int result = 0;
+    if (type == 0) {
+        showMessageBoxInfo(info, closeSec, exec);
+    } else if (type == 1) {
+        showMessageBoxError(info, closeSec, exec);
+    } else if (type == 2) {
+        result = showMessageBoxQuestion(info);
+    }
+
+    return result;
 }
 
 void QUIHelper::showMessageBoxInfo(const QString &info, int closeSec, bool exec)
 {
-#ifdef Q_OS_ANDROID
-    QAndroid::Instance()->makeToast(info);
-#else
     if (exec) {
         QUIMessageBox msg;
         msg.setMessage(info, 0, closeSec);
@@ -2625,14 +3442,10 @@ void QUIHelper::showMessageBoxInfo(const QString &info, int closeSec, bool exec)
         QUIMessageBox::Instance()->setMessage(info, 0, closeSec);
         QUIMessageBox::Instance()->show();
     }
-#endif
 }
 
 void QUIHelper::showMessageBoxError(const QString &info, int closeSec, bool exec)
 {
-#ifdef Q_OS_ANDROID
-    QAndroid::Instance()->makeToast(info);
-#else
     if (exec) {
         QUIMessageBox msg;
         msg.setMessage(info, 2, closeSec);
@@ -2641,7 +3454,6 @@ void QUIHelper::showMessageBoxError(const QString &info, int closeSec, bool exec
         QUIMessageBox::Instance()->setMessage(info, 2, closeSec);
         QUIMessageBox::Instance()->show();
     }
-#endif
 }
 
 int QUIHelper::showMessageBoxQuestion(const QString &info)
@@ -2651,11 +3463,23 @@ int QUIHelper::showMessageBoxQuestion(const QString &info)
     return msg.exec();
 }
 
+void QUIHelper::showTipBox(const QString &title, const QString &tip, bool fullScreen, bool center, int closeSec)
+{
+    QUITipBox::Instance()->setTip(title, tip, fullScreen, center, closeSec);
+    QUITipBox::Instance()->show();
+}
+
+void QUIHelper::hideTipBox()
+{
+    QUITipBox::Instance()->hide();
+}
+
 QString QUIHelper::showInputBox(const QString &title, int type, int closeSec,
-                                QString defaultValue, bool pwd)
+                                const QString &placeholderText, bool pwd,
+                                const QString &defaultValue)
 {
     QUIInputBox input;
-    input.setParameter(title, type, closeSec, defaultValue, pwd);
+    input.setParameter(title, type, closeSec, placeholderText, pwd, defaultValue);
     input.exec();
     return input.getValue();
 }
@@ -2669,251 +3493,165 @@ void QUIHelper::showDateSelect(QString &dateStart, QString &dateEnd, const QStri
     dateEnd = select.getEndDateTime();
 }
 
-
-IconHelper *IconHelper::self = NULL;
-IconHelper *IconHelper::Instance()
+QString QUIHelper::setPushButtonQss(QPushButton *btn, int radius, int padding,
+                                    const QString &normalColor,
+                                    const QString &normalTextColor,
+                                    const QString &hoverColor,
+                                    const QString &hoverTextColor,
+                                    const QString &pressedColor,
+                                    const QString &pressedTextColor)
 {
-    if (!self) {
-        QMutex mutex;
-        QMutexLocker locker(&mutex);
-        if (!self) {
-            self = new IconHelper;
-        }
-    }
+    QStringList list;
+    list.append(QString("QPushButton{border-style:none;padding:%1px;border-radius:%2px;color:%3;background:%4;}")
+                .arg(padding).arg(radius).arg(normalTextColor).arg(normalColor));
+    list.append(QString("QPushButton:hover{color:%1;background:%2;}")
+                .arg(hoverTextColor).arg(hoverColor));
+    list.append(QString("QPushButton:pressed{color:%1;background:%2;}")
+                .arg(pressedTextColor).arg(pressedColor));
 
-    return self;
+    QString qss = list.join("");
+    btn->setStyleSheet(qss);
+    return qss;
 }
 
-IconHelper::IconHelper(QObject *) : QObject(qApp)
+QString QUIHelper::setLineEditQss(QLineEdit *txt, int radius, int borderWidth,
+                                  const QString &normalColor,
+                                  const QString &focusColor)
 {
-    int fontId = QFontDatabase::addApplicationFont(":/image/fontawesome-webfont.ttf");
-    QStringList fontName = QFontDatabase::applicationFontFamilies(fontId);
+    QStringList list;
+    list.append(QString("QLineEdit{border-style:none;padding:3px;border-radius:%1px;border:%2px solid %3;}")
+                .arg(radius).arg(borderWidth).arg(normalColor));
+    list.append(QString("QLineEdit:focus{border:%1px solid %2;}")
+                .arg(borderWidth).arg(focusColor));
 
-    if (fontName.count() > 0) {
-        iconFont = QFont(fontName.at(0));
-    } else {
-        qDebug() << "load fontawesome-webfont.ttf error";
-    }
+    QString qss = list.join("");
+    txt->setStyleSheet(qss);
+    return qss;
 }
 
-void IconHelper::setIcon(QLabel *lab, QChar c, quint32 size)
+QString QUIHelper::setProgressBarQss(QProgressBar *bar, int barHeight,
+                                     int barRadius, int fontSize,
+                                     const QString &normalColor,
+                                     const QString &chunkColor)
 {
-    iconFont.setPixelSize(size);
-    lab->setFont(iconFont);
-    lab->setText(c);
+
+    QStringList list;
+    list.append(QString("QProgressBar{font:%1pt;background:%2;max-height:%3px;border-radius:%4px;text-align:center;border:1px solid %2;}")
+                .arg(fontSize).arg(normalColor).arg(barHeight).arg(barRadius));
+    list.append(QString("QProgressBar:chunk{border-radius:%2px;background-color:%1;}")
+                .arg(chunkColor).arg(barRadius));
+
+    QString qss = list.join("");
+    bar->setStyleSheet(qss);
+    return qss;
 }
 
-void IconHelper::setIcon(QAbstractButton *btn, QChar c, quint32 size)
+QString QUIHelper::setSliderQss(QSlider *slider, int sliderHeight,
+                                const QString &normalColor,
+                                const QString &grooveColor,
+                                const QString &handleBorderColor,
+                                const QString &handleColor,
+                                const QString &textColor)
 {
-    iconFont.setPixelSize(size);
-    btn->setFont(iconFont);
-    btn->setText(c);
+    int sliderRadius = sliderHeight / 2;
+    int handleSize = (sliderHeight * 3) / 2 + (sliderHeight / 5);
+    int handleRadius = handleSize / 2;
+    int handleOffset = handleRadius / 2;
+
+    QStringList list;
+    int handleWidth = handleSize + sliderHeight / 5 - 1;
+    list.append(QString("QSlider::horizontal{min-height:%1px;color:%2;}").arg(sliderHeight * 2).arg(textColor));
+    list.append(QString("QSlider::groove:horizontal{background:%1;height:%2px;border-radius:%3px;}")
+                .arg(normalColor).arg(sliderHeight).arg(sliderRadius));
+    list.append(QString("QSlider::add-page:horizontal{background:%1;height:%2px;border-radius:%3px;}")
+                .arg(normalColor).arg(sliderHeight).arg(sliderRadius));
+    list.append(QString("QSlider::sub-page:horizontal{background:%1;height:%2px;border-radius:%3px;}")
+                .arg(grooveColor).arg(sliderHeight).arg(sliderRadius));
+    list.append(QString("QSlider::handle:horizontal{width:%3px;margin-top:-%4px;margin-bottom:-%4px;border-radius:%5px;"
+                        "background:qradialgradient(spread:pad,cx:0.5,cy:0.5,radius:0.5,fx:0.5,fy:0.5,stop:0.6 %1,stop:0.8 %2);}")
+                .arg(handleColor).arg(handleBorderColor).arg(handleWidth).arg(handleOffset).arg(handleRadius));
+
+    //偏移一个像素
+    handleWidth = handleSize + sliderHeight / 5;
+    list.append(QString("QSlider::vertical{min-width:%1px;color:%2;}").arg(sliderHeight * 2).arg(textColor));
+    list.append(QString("QSlider::groove:vertical{background:%1;width:%2px;border-radius:%3px;}")
+                .arg(normalColor).arg(sliderHeight).arg(sliderRadius));
+    list.append(QString("QSlider::add-page:vertical{background:%1;width:%2px;border-radius:%3px;}")
+                .arg(grooveColor).arg(sliderHeight).arg(sliderRadius));
+    list.append(QString("QSlider::sub-page:vertical{background:%1;width:%2px;border-radius:%3px;}")
+                .arg(normalColor).arg(sliderHeight).arg(sliderRadius));
+    list.append(QString("QSlider::handle:vertical{height:%3px;margin-left:-%4px;margin-right:-%4px;border-radius:%5px;"
+                        "background:qradialgradient(spread:pad,cx:0.5,cy:0.5,radius:0.5,fx:0.5,fy:0.5,stop:0.6 %1,stop:0.8 %2);}")
+                .arg(handleColor).arg(handleBorderColor).arg(handleWidth).arg(handleOffset).arg(handleRadius));
+
+    QString qss = list.join("");
+    slider->setStyleSheet(qss);
+    return qss;
 }
 
-QPixmap IconHelper::getPixmap(const QString &color, QChar c, quint32 size,
-                              quint32 pixWidth, quint32 pixHeight)
+QString QUIHelper::setRadioButtonQss(QRadioButton *rbtn, int indicatorRadius,
+                                     const QString &normalColor,
+                                     const QString &checkColor)
 {
-    QPixmap pix(pixWidth, pixHeight);
-    pix.fill(Qt::transparent);
+    int indicatorWidth = indicatorRadius * 2;
 
-    QPainter painter;
-    painter.begin(&pix);
-    painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
-    painter.setPen(QColor(color));
-    painter.setBrush(QColor(color));
+    QStringList list;
+    list.append(QString("QRadioButton::indicator{border-radius:%1px;width:%2px;height:%2px;}")
+                .arg(indicatorRadius).arg(indicatorWidth));
+    list.append(QString("QRadioButton::indicator::unchecked{background:qradialgradient(spread:pad,cx:0.5,cy:0.5,radius:0.5,fx:0.5,fy:0.5,"
+                        "stop:0.6 #FFFFFF,stop:0.7 %1);}").arg(normalColor));
+    list.append(QString("QRadioButton::indicator::checked{background:qradialgradient(spread:pad,cx:0.5,cy:0.5,radius:0.5,fx:0.5,fy:0.5,"
+                        "stop:0 %1,stop:0.3 %1,stop:0.4 #FFFFFF,stop:0.6 #FFFFFF,stop:0.7 %1);}").arg(checkColor));
 
-    iconFont.setPixelSize(size);
-    painter.setFont(iconFont);
-    painter.drawText(pix.rect(), Qt::AlignCenter, c);
-    painter.end();
-
-    return pix;
+    QString qss = list.join("");
+    rbtn->setStyleSheet(qss);
+    return qss;
 }
 
-QPixmap IconHelper::getPixmap(QToolButton *btn, bool normal)
+QString QUIHelper::setScrollBarQss(QWidget *scroll, int radius, int min, int max,
+                                   const QString &bgColor,
+                                   const QString &handleNormalColor,
+                                   const QString &handleHoverColor,
+                                   const QString &handlePressedColor)
 {
-    QPixmap pix;
-    int index = btns.indexOf(btn);
-    if (index >= 0) {
-        if (normal) {
-            pix = pixNormal.at(index);
-        } else {
-            pix = pixDark.at(index);
-        }
-    }
+    //滚动条离背景间隔
+    int padding = 0;
 
-    return pix;
-}
+    QStringList list;
 
-void IconHelper::setStyle(QWidget *widget, const QString &type, int borderWidth, const QString &borderColor,
-                          const QString &normalBgColor, const QString &darkBgColor,
-                          const QString &normalTextColor, const QString &darkTextColor)
-{
-    QString strBorder;
-    if (type == "top") {
-        strBorder = QString("border-width:%1px 0px 0px 0px;padding-top:%1px;padding-bottom:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "right") {
-        strBorder = QString("border-width:0px %1px 0px 0px;padding-right:%1px;padding-left:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "bottom") {
-        strBorder = QString("border-width:0px 0px %1px 0px;padding-bottom:%1px;padding-top:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "left") {
-        strBorder = QString("border-width:0px 0px 0px %1px;padding-left:%1px;padding-right:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    }
+    //handle:指示器,滚动条拉动部分 add-page:滚动条拉动时增加的部分 sub-page:滚动条拉动时减少的部分 add-line:递增按钮 sub-line:递减按钮
 
-    QStringList qss;
-    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:none;border-radius:0px;padding:5px;color:%2;background:%3;}")
-               .arg(type).arg(normalTextColor).arg(normalBgColor));
+    //横向滚动条部分
+    list.append(QString("QScrollBar:horizontal{background:%1;padding:%2px;border-radius:%3px;min-height:%4px;max-height:%4px;}")
+                .arg(bgColor).arg(padding).arg(radius).arg(max));
+    list.append(QString("QScrollBar::handle:horizontal{background:%1;min-width:%2px;border-radius:%3px;}")
+                .arg(handleNormalColor).arg(min).arg(radius));
+    list.append(QString("QScrollBar::handle:horizontal:hover{background:%1;}")
+                .arg(handleHoverColor));
+    list.append(QString("QScrollBar::handle:horizontal:pressed{background:%1;}")
+                .arg(handlePressedColor));
+    list.append(QString("QScrollBar::add-page:horizontal{background:none;}"));
+    list.append(QString("QScrollBar::sub-page:horizontal{background:none;}"));
+    list.append(QString("QScrollBar::add-line:horizontal{background:none;}"));
+    list.append(QString("QScrollBar::sub-line:horizontal{background:none;}"));
 
-    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton:hover,"
-                       "QWidget[flag=\"%1\"] QAbstractButton:pressed,"
-                       "QWidget[flag=\"%1\"] QAbstractButton:checked{"
-                       "border-style:solid;%2border-color:%3;color:%4;background:%5;}")
-               .arg(type).arg(strBorder).arg(borderColor).arg(darkTextColor).arg(darkBgColor));
+    //纵向滚动条部分
+    list.append(QString("QScrollBar:vertical{background:%1;padding:%2px;border-radius:%3px;min-width:%4px;max-width:%4px;}")
+                .arg(bgColor).arg(padding).arg(radius).arg(max));
+    list.append(QString("QScrollBar::handle:vertical{background:%1;min-height:%2px;border-radius:%3px;}")
+                .arg(handleNormalColor).arg(min).arg(radius));
+    list.append(QString("QScrollBar::handle:vertical:hover{background:%1;}")
+                .arg(handleHoverColor));
+    list.append(QString("QScrollBar::handle:vertical:pressed{background:%1;}")
+                .arg(handlePressedColor));
+    list.append(QString("QScrollBar::add-page:vertical{background:none;}"));
+    list.append(QString("QScrollBar::sub-page:vertical{background:none;}"));
+    list.append(QString("QScrollBar::add-line:vertical{background:none;}"));
+    list.append(QString("QScrollBar::sub-line:vertical{background:none;}"));
 
-    widget->setStyleSheet(qss.join(""));
-}
-
-void IconHelper::removeStyle(QList<QToolButton *> btns)
-{
-    for (int i = 0; i < btns.count(); i++) {
-        for (int j = 0; j < this->btns.count(); j++) {
-            if (this->btns.at(j) == btns.at(i)) {
-                this->btns.at(j)->removeEventFilter(this);
-                this->btns.removeAt(j);
-                this->pixNormal.removeAt(j);
-                this->pixDark.removeAt(j);
-                break;
-            }
-        }
-    }
-}
-
-void IconHelper::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<int> pixChar,
-                          quint32 iconSize, quint32 iconWidth, quint32 iconHeight,
-                          const QString &type, int borderWidth, const QString &borderColor,
-                          const QString &normalBgColor, const QString &darkBgColor,
-                          const QString &normalTextColor, const QString &darkTextColor)
-{
-    int btnCount = btns.count();
-    int charCount = pixChar.count();
-    if (btnCount <= 0 || charCount <= 0 || btnCount != charCount) {
-        return;
-    }
-
-    QString strBorder;
-    if (type == "top") {
-        strBorder = QString("border-width:%1px 0px 0px 0px;padding-top:%1px;padding-bottom:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "right") {
-        strBorder = QString("border-width:0px %1px 0px 0px;padding-right:%1px;padding-left:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "bottom") {
-        strBorder = QString("border-width:0px 0px %1px 0px;padding-bottom:%1px;padding-top:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "left") {
-        strBorder = QString("border-width:0px 0px 0px %1px;padding-left:%1px;padding-right:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    }
-
-    //如果图标是左侧显示则需要让没有选中的按钮左侧也有加深的边框,颜色为背景颜色
-    QStringList qss;
-    if (btns.at(0)->toolButtonStyle() == Qt::ToolButtonTextBesideIcon) {
-        qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:solid;border-radius:0px;%2border-color:%3;color:%4;background:%5;}")
-                   .arg(type).arg(strBorder).arg(normalBgColor).arg(normalTextColor).arg(normalBgColor));
-    } else {
-        qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:none;border-radius:0px;padding:5px;color:%2;background:%3;}")
-                   .arg(type).arg(normalTextColor).arg(normalBgColor));
-    }
-
-    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton:hover,"
-                       "QWidget[flag=\"%1\"] QAbstractButton:pressed,"
-                       "QWidget[flag=\"%1\"] QAbstractButton:checked{"
-                       "border-style:solid;%2border-color:%3;color:%4;background:%5;}")
-               .arg(type).arg(strBorder).arg(borderColor).arg(darkTextColor).arg(darkBgColor));
-
-    qss.append(QString("QWidget#%1{background:%2;}").arg(widget->objectName()).arg(normalBgColor));
-
-    qss.append(QString("QWidget>QToolButton{border-width:0px;}"));
-    qss.append(QString("QWidget>QToolButton{background-color:%1;color:%2;}")
-               .arg(normalBgColor).arg(normalTextColor));
-    qss.append(QString("QWidget>QToolButton:hover,QWidget>QToolButton:pressed,QWidget>QToolButton:checked{background-color:%1;color:%2;}")
-               .arg(darkBgColor).arg(darkTextColor));
-
-    widget->setStyleSheet(qss.join(""));
-
-    for (int i = 0; i < btnCount; i++) {
-        //存储对应按钮对象,方便鼠标移上去的时候切换图片
-        QPixmap pixNormal = getPixmap(normalTextColor, QChar(pixChar.at(i)), iconSize, iconWidth, iconHeight);
-        QPixmap pixDark = getPixmap(darkTextColor, QChar(pixChar.at(i)), iconSize, iconWidth, iconHeight);
-
-        btns.at(i)->setIcon(QIcon(pixNormal));
-        btns.at(i)->setIconSize(QSize(iconWidth, iconHeight));
-        btns.at(i)->installEventFilter(this);
-
-        this->btns.append(btns.at(i));
-        this->pixNormal.append(pixNormal);
-        this->pixDark.append(pixDark);
-    }
-}
-
-void IconHelper::setStyle(QFrame *frame, QList<QToolButton *> btns, QList<int> pixChar,
-                          quint32 iconSize, quint32 iconWidth, quint32 iconHeight,
-                          const QString &normalBgColor, const QString &darkBgColor,
-                          const QString &normalTextColor, const QString &darkTextColor)
-{
-    int btnCount = btns.count();
-    int charCount = pixChar.count();
-    if (btnCount <= 0 || charCount <= 0 || btnCount != charCount) {
-        return;
-    }
-
-    QStringList qss;
-    qss.append(QString("QFrame>QToolButton{border-style:none;border-width:0px;}"));
-    qss.append(QString("QFrame>QToolButton{background-color:%1;color:%2;}")
-               .arg(normalBgColor).arg(normalTextColor));
-    qss.append(QString("QFrame>QToolButton:hover,QFrame>QToolButton:pressed,QFrame>QToolButton:checked{background-color:%1;color:%2;}")
-               .arg(darkBgColor).arg(darkTextColor));
-
-    frame->setStyleSheet(qss.join(""));
-
-    for (int i = 0; i < btnCount; i++) {
-        //存储对应按钮对象,方便鼠标移上去的时候切换图片
-        QPixmap pixNormal = getPixmap(normalTextColor, QChar(pixChar.at(i)), iconSize, iconWidth, iconHeight);
-        QPixmap pixDark = getPixmap(darkTextColor, QChar(pixChar.at(i)), iconSize, iconWidth, iconHeight);
-
-        btns.at(i)->setIcon(QIcon(pixNormal));
-        btns.at(i)->setIconSize(QSize(iconWidth, iconHeight));
-        btns.at(i)->installEventFilter(this);
-
-        this->btns.append(btns.at(i));
-        this->pixNormal.append(pixNormal);
-        this->pixDark.append(pixDark);
-    }
-}
-
-bool IconHelper::eventFilter(QObject *watched, QEvent *event)
-{
-    if (watched->inherits("QToolButton")) {
-        QToolButton *btn = (QToolButton *)watched;
-        int index = btns.indexOf(btn);
-        if (index >= 0) {
-            if (event->type() == QEvent::Enter) {
-                btn->setIcon(QIcon(pixDark.at(index)));
-            } else if (event->type() == QEvent::Leave) {
-                if (btn->isChecked()) {
-                    btn->setIcon(QIcon(pixDark.at(index)));
-                } else {
-                    btn->setIcon(QIcon(pixNormal.at(index)));
-                }
-            }
-        }
-    }
-
-    return QObject::eventFilter(watched, event);
+    QString qss = list.join("");
+    scroll->setStyleSheet(qss);
+    return qss;
 }
 
 
@@ -2925,13 +3663,8 @@ QChar QUIConfig::IconNormal = QChar(0xf2d0);
 QChar QUIConfig::IconClose = QChar(0xf00d);
 
 #ifdef __arm__
-#ifdef Q_OS_ANDROID
-QString QUIConfig::FontName = "Droid Sans Fallback";
-int QUIConfig::FontSize = 50;
-#else
 QString QUIConfig::FontName = "WenQuanYi Micro Hei";
 int QUIConfig::FontSize = 18;
-#endif
 #else
 QString QUIConfig::FontName = "Microsoft Yahei";
 int QUIConfig::FontSize = 12;

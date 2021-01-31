@@ -2186,6 +2186,42 @@ void QUIHelper::initFile(const QString &sourceName, const QString &targetName)
     }
 }
 
+bool QUIHelper::checkIniFile(const QString &iniFile)
+{
+    //如果配置文件大小为0,则以初始值继续运行,并生成配置文件
+    QFile file(iniFile);
+    if (file.size() == 0) {
+        return false;
+    }
+
+    //如果配置文件不完整,则以初始值继续运行,并生成配置文件
+    if (file.open(QFile::ReadOnly)) {
+        bool ok = true;
+        while (!file.atEnd()) {
+            QString line = file.readLine();
+            line = line.replace("\r", "");
+            line = line.replace("\n", "");
+            QStringList list = line.split("=");
+
+            if (list.count() == 2) {
+                if (list.at(1) == "") {
+                    qDebug() << TIMEMS << "ini node no value" << list.at(0);
+                    ok = false;
+                    break;
+                }
+            }
+        }
+
+        if (!ok) {
+            return false;
+        }
+    } else {
+        return false;
+    }
+
+    return true;
+}
+
 void QUIHelper::setIconBtn(QAbstractButton *btn, const QString &png, const QChar &str)
 {
     int size = 16;
@@ -3016,7 +3052,7 @@ QString QUIHelper::byteArrayToAsciiStr(const QByteArray &data)
     QString temp;
     int len = data.size();
 
-    for (int i = 0; i < len; i++) {        
+    for (int i = 0; i < len; i++) {
         char byte = data.at(i);
         QString value = listChar.value(byte);
         if (!value.isEmpty()) {
@@ -3245,26 +3281,29 @@ bool QUIHelper::ipLive(const QString &ip, int port, int timeout)
 
 QString QUIHelper::getHtml(const QString &url)
 {
-    QNetworkAccessManager *manager = new QNetworkAccessManager();
-    QNetworkReply *reply = manager->get(QNetworkRequest(QUrl(url)));
-    QByteArray responseData;
+    QNetworkAccessManager manager;
+    QNetworkReply *reply = manager.get(QNetworkRequest(QUrl(url)));
     QEventLoop eventLoop;
-    QObject::connect(manager, SIGNAL(finished(QNetworkReply *)), &eventLoop, SLOT(quit()));
+    QObject::connect(&manager, SIGNAL(finished(QNetworkReply *)), &eventLoop, SLOT(quit()));
     eventLoop.exec();
-    responseData = reply->readAll();
-    return QString(responseData);
+    QByteArray data = reply->readAll();
+    reply->deleteLater();
+    return QString(data);
 }
 
-QString QUIHelper::getNetIP(const QString &webCode)
+QString QUIHelper::getNetIP(const QString &html)
 {
-    QString web = webCode;
-    web = web.replace(' ', "");
-    web = web.replace("\r", "");
-    web = web.replace("\n", "");
-    QStringList list = web.split("<br/>");
-    QString tar = list.at(3);
-    QStringList ip = tar.split("=");
-    return ip.at(1);
+    QString ip;
+    QStringList list = html.split(" ");
+    foreach (QString str, list) {
+        //value=\"101.86.197.178\">
+        if (str.contains("value=")) {
+            QStringList temp = str.split("\"");
+            ip = temp.at(1);
+            break;
+        }
+    }
+    return ip;
 }
 
 QString QUIHelper::getLocalIP()
@@ -3335,8 +3374,8 @@ QString QUIHelper::getValue(quint8 value)
 
 bool QUIHelper::isWebOk()
 {
-    //能接通百度IP说明可以通外网
-    return ipLive("115.239.211.112", 80);
+    //能接通百度IP 115.239.211.112 说明可以通外网
+    return ipLive("www.baidu.com", 80);
 }
 
 void QUIHelper::initTableView(QTableView *tableView, int rowHeight, bool headVisible, bool edit, bool stretchLast)

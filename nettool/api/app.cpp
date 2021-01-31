@@ -66,7 +66,8 @@ bool App::SelectAllWebServer = true;
 
 void App::readConfig()
 {
-    if (!checkConfig()) {
+    if (!QUIHelper::checkIniFile(App::ConfigFile)) {
+        writeConfig();
         return;
     }
 
@@ -216,43 +217,6 @@ void App::writeConfig()
     set.setValue("WebListenPort", App::WebListenPort);
     set.setValue("SelectAllWebServer", App::SelectAllWebServer);
     set.endGroup();
-}
-
-bool App::checkConfig()
-{
-    //如果配置文件大小为0,则以初始值继续运行,并生成配置文件
-    QFile file(App::ConfigFile);
-    if (file.size() == 0) {
-        writeConfig();
-        return false;
-    }
-
-    //如果配置文件不完整,则以初始值继续运行,并生成配置文件
-    if (file.open(QFile::ReadOnly)) {
-        bool ok = true;
-        while (!file.atEnd()) {
-            QString line = file.readLine();
-            line = line.replace("\r", "");
-            line = line.replace("\n", "");
-            QStringList list = line.split("=");
-            if (list.count() == 2) {
-                if (list.at(1) == "") {
-                    ok = false;
-                    break;
-                }
-            }
-        }
-
-        if (!ok) {
-            writeConfig();
-            return false;
-        }
-    } else {
-        writeConfig();
-        return false;
-    }
-
-    return true;
 }
 
 QStringList App::Intervals = QStringList();

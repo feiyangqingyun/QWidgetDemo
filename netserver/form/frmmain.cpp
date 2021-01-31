@@ -2,9 +2,7 @@
 #include "ui_frmmain.h"
 #include "quiwidget.h"
 
-frmMain::frmMain(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::frmMain)
+frmMain::frmMain(QWidget *parent) : QWidget(parent), ui(new Ui::frmMain)
 {
     ui->setupUi(this);
     this->initForm();

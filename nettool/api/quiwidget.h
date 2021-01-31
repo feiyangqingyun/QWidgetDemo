@@ -601,6 +601,9 @@ public:
     //初始化文件,不存在则拷贝
     static void initFile(const QString &sourceName, const QString &targetName);
 
+    //检查ini配置文件
+    static bool checkIniFile(const QString &iniFile);
+
     //设置图标到按钮
     static void setIconBtn(QAbstractButton *btn, const QString &png, const QChar &str);
 
@@ -756,7 +759,7 @@ public:
     //获取网页所有源代码
     static QString getHtml(const QString &url);
     //获取本机公网IP地址
-    static QString getNetIP(const QString &webCode);
+    static QString getNetIP(const QString &html);
     //获取本机IP
     static QString getLocalIP();
     //获取本机IP地址集合
