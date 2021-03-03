@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmMain w;
-    w.setWindowTitle("styledemo   Author: feiyangqingyun@163.com   QQ: 517216493");
+    w.setWindowTitle("styledemo  Author: feiyangqingyun@163.com  QQ: 517216493");
     w.show();
 
     //居中显示窗体

@@ -73,8 +73,8 @@ border:1px solid #242424;
 border-radius:3px;
 padding:2px;
 background:none;
-selection-background-color:#484848;
-selection-color:#DCDCDC;
+selection-background-color:#00BB9E;
+selection-color:#FFFFFF;
 }
 
 QLineEdit:focus,QTextEdit:focus,QPlainTextEdit:focus,QSpinBox:focus,QDoubleSpinBox:focus,QComboBox:focus,QDateEdit:focus,QTimeEdit:focus,QDateTimeEdit:focus,QLineEdit:hover,QTextEdit:hover,QPlainTextEdit:hover,QSpinBox:hover,QDoubleSpinBox:hover,QComboBox:hover,QDateEdit:hover,QTimeEdit:hover,QDateTimeEdit:hover{
@@ -632,7 +632,16 @@ QTabWidget::pane:bottom{bottom:-1px;}
 QTabWidget::pane:left{right:-1px;}
 QTabWidget::pane:right{left:-1px;}
 
-*:disabled{
+QDialog {
+background-color:#444444;
+color:#DCDCDC;
+}
+
+QDialogButtonBox > QPushButton {
+min-width:50px;
+}
+
+*:disabled,QMenu::item:disabled,QTabBar::tab:disabled{
 background:#444444;
 border-color:#484848;
 color:#242424;
