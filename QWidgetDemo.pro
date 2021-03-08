@@ -35,6 +35,7 @@ SUBDIRS += screenwidget     #屏幕截图控件
 SUBDIRS += imageswitch      #图片开关控件
 SUBDIRS += netserver        #网络中转服务器
 SUBDIRS += base64        	#图片文字base64互换
+SUBDIRS += smoothcurve      #平滑曲线
 
 win32 {
 SUBDIRS += ffmpegdemo       #视频流播放ffmpeg内核

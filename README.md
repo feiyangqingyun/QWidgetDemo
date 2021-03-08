@@ -47,6 +47,7 @@
 | 40 | mpvdemo | 视频流播放mpv内核 |
 | 41 | miniblink | miniblink示例 |
 | 42 | base64 | 图片文字base64互换 |
+| 43 | smoothcurve | 平滑曲线 |
 
 ### 二、学习群
 1. **Qt交流大会群 853086607(雨田哥)**
@@ -97,3 +98,4 @@
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/designer.png)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/miniblink.jpg)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/base64.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/smoothcurve.png)
