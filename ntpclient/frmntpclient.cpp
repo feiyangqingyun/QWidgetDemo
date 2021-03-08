@@ -7,6 +7,7 @@
 frmNtpClient::frmNtpClient(QWidget *parent) : QWidget(parent), ui(new Ui::frmNtpClient)
 {
     ui->setupUi(this);
+    ui->txtNtpIP->setText("ntp1.aliyun.com");
     connect(NtpClient::Instance(), SIGNAL(receiveTime(QDateTime)), this, SLOT(receiveTime(QDateTime)));
 }
 
