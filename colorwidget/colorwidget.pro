@@ -14,5 +14,10 @@ DESTDIR     = $$PWD/../bin
 CONFIG      += warn_off
 
 SOURCES     += main.cpp
+SOURCES     += frmcolorwidget.cpp
 SOURCES     += colorwidget.cpp
+
 HEADERS     += colorwidget.h
+HEADERS     += frmcolorwidget.h
+
+FORMS       += frmcolorwidget.ui

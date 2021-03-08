@@ -73,8 +73,8 @@ protected:
     void paintEvent(QPaintEvent *);
     void showEvent(QShowEvent *);
 
-private slots:    
-    void saveScreen();    
+private slots:
+    void saveScreen();
     void saveFullScreen();
     void saveScreenOther();
     void saveFullOther();

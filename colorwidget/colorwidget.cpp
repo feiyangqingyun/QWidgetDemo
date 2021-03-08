@@ -86,14 +86,14 @@ ColorWidget::ColorWidget(QWidget *parent) : QWidget(parent)
     txtPoint = new QLineEdit(this);
     gridLayout->addWidget(txtPoint, 2, 2, 1, 1);
 
-    label->setText("当前颜色显示");
+    label->setText("当前颜色");
     labWeb->setText("web值:");
     labRgb->setText("rgb值:");
     labPoint->setText("坐标值:");
 
     this->setLayout(gridLayout);
     this->setWindowTitle("屏幕拾色器");
-    this->setFixedSize(270, 108);
+    this->setFixedSize(300, 108);
 
     cp = QApplication::clipboard();
     pressed = false;

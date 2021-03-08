@@ -19,7 +19,7 @@ class ColorWidget : public QWidget
 public:
     static ColorWidget *Instance();
     explicit ColorWidget(QWidget *parent = 0);
-    ~ColorWidget();    
+    ~ColorWidget();
 
 protected:
     void mousePressEvent(QMouseEvent *);

@@ -205,6 +205,6 @@ void FramelessWidget::setWidget(QWidget *widget)
         //绑定事件过滤器
         this->widget->installEventFilter(this);
         //设置悬停为真,必须设置这个,不然当父窗体里边还有子窗体全部遮挡了识别不到MouseMove,需要识别HoverMove
-        this->widget->setAttribute(Qt::WA_Hover, true);        
+        this->widget->setAttribute(Qt::WA_Hover, true);
     }
 }

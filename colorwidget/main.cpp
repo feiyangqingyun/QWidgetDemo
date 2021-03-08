@@ -1,9 +1,8 @@
 ﻿#pragma execution_character_set("utf-8")
 
-#include "colorwidget.h"
+#include "frmcolorwidget.h"
 #include <QApplication>
 #include <QTextCodec>
-#include <QIcon>
 
 int main(int argc, char *argv[])
 {
@@ -24,7 +23,9 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(codec);
 #endif
 
-    ColorWidget::Instance()->show();
+    frmColorWidget w;
+    w.setWindowTitle("屏幕拾色器");
+    w.show();
 
     return a.exec();
 }

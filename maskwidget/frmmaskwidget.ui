@@ -18,12 +18,12 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>131</width>
-     <height>23</height>
+     <width>92</width>
+     <height>28</height>
     </rect>
    </property>
    <property name="text">
-    <string>弹出遮罩窗体</string>
+    <string>弹出</string>
    </property>
   </widget>
  </widget>

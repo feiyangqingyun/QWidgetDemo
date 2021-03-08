@@ -4,18 +4,25 @@
 #include "ui_frmmaskwidget.h"
 #include "maskwidget.h"
 #include "qdialog.h"
+#include "qtimer.h"
+#include "qdebug.h"
 
 frmMaskWidget::frmMaskWidget(QWidget *parent) : QWidget(parent), ui(new Ui::frmMaskWidget)
 {
     ui->setupUi(this);
-    MaskWidget::Instance()->setMainWidget(this);
-    MaskWidget::Instance()->setDialogNames(QStringList() << "frmTest");
+    QTimer::singleShot(1000, this, SLOT(initForm()));
 }
 
 frmMaskWidget::~frmMaskWidget()
 {
     delete ui;
     exit(0);
+}
+
+void frmMaskWidget::initForm()
+{
+    MaskWidget::Instance()->setMainWidget(this->topLevelWidget());
+    MaskWidget::Instance()->setDialogNames(QStringList() << "frmTest");
 }
 
 void frmMaskWidget::on_pushButton_clicked()

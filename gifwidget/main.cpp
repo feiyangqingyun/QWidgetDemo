@@ -1,6 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 
-#include "gifwidget.h"
+#include "frmgifwidget.h"
 #include <QApplication>
 #include <QTextCodec>
 #include <QIcon>
@@ -25,7 +25,9 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(codec);
 #endif
 
-    GifWidget::Instance()->show();
+    frmGifWidget w;
+    w.setWindowTitle("GIF录屏");
+    w.show();
 
     return a.exec();
 }

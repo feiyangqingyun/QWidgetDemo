@@ -3,9 +3,8 @@
 
 #include <QWidget>
 
-namespace Ui
-{
-    class frmMoveWidget;
+namespace Ui {
+class frmMoveWidget;
 }
 
 class frmMoveWidget : public QWidget

@@ -22,7 +22,7 @@ void frmFramelessWidget::closeEvent(QCloseEvent *)
     exit(0);
 }
 
-void frmFramelessWidget::on_btnOpen_clicked()
+void frmFramelessWidget::on_pushButton_clicked()
 {
     if (w == 0) {
         w = new QWidget;

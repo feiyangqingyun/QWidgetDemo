@@ -4,9 +4,8 @@
 #include <QWidget>
 class FramelessWidget;
 
-namespace Ui
-{
-    class frmFramelessWidget;
+namespace Ui {
+class frmFramelessWidget;
 }
 
 class frmFramelessWidget : public QWidget
@@ -26,7 +25,7 @@ private:
     FramelessWidget *frameless;
 
 private slots:
-    void on_btnOpen_clicked();
+    void on_pushButton_clicked();
     void stateChanged1(int arg1);
     void stateChanged2(int arg1);
 };

@@ -3,21 +3,15 @@
 
 /**
  * 通用控件移动类 作者:feiyangqingyun(QQ:517216493) 2019-9-28
- * 1:可以指定需要移动的widget
- * 2:可设置是否限定鼠标左键拖动
- * 3:支持任意widget控件
+ * 1. 可以指定需要移动的widget
+ * 2. 可设置是否限定鼠标左键拖动
+ * 3. 支持任意widget控件
  */
 
 #include <QWidget>
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT MoveWidget : public QObject
+class Q_DECL_EXPORT MoveWidget : public QObject
 #else
 class MoveWidget : public QObject
 #endif

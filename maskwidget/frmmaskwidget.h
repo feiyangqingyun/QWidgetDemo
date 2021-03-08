@@ -15,11 +15,12 @@ public:
     explicit frmMaskWidget(QWidget *parent = 0);
     ~frmMaskWidget();
 
-private slots:
-    void on_pushButton_clicked();
-
 private:
     Ui::frmMaskWidget *ui;
+
+private slots:
+    void initForm();
+    void on_pushButton_clicked();
 };
 
 #endif // FRMMASKWIDGET_H

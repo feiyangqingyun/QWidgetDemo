@@ -24,6 +24,7 @@ class GifWidget : public QDialog
 
 {
     Q_OBJECT
+
     Q_PROPERTY(int borderWidth READ getBorderWidth WRITE setBorderWidth)
     Q_PROPERTY(QColor bgColor READ getBgColor WRITE setBgColor)
 

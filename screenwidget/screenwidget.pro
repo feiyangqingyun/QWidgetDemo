@@ -14,5 +14,10 @@ DESTDIR     = $$PWD/../bin
 CONFIG      += warn_off
 
 SOURCES     += main.cpp
+SOURCES     += frmscreenwidget.cpp
 SOURCES     += screenwidget.cpp
+
 HEADERS     += screenwidget.h
+HEADERS     += frmscreenwidget.h
+
+FORMS       += frmscreenwidget.ui

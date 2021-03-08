@@ -1,4 +1,5 @@
-﻿#include "frmpngtool.h"
+﻿#pragma execution_character_set("utf-8")
+#include "frmpngtool.h"
 #include "ui_frmpngtool.h"
 #include "qfile.h"
 #include "qfiledialog.h"
@@ -40,7 +41,7 @@ void frmPngTool::on_btnOk_clicked()
 
     //将单个文件加入队列
     QString currentFile = ui->txtFile->text().trimmed();
-    if (currentFile.isEmpty()) {
+    if (!currentFile.isEmpty()) {
         files.append(currentFile);
     }
 
@@ -51,7 +52,6 @@ void frmPngTool::on_btnOk_clicked()
         QStringList filter;
         filter << "*.png";
         QStringList list = imagePath.entryList(filter);
-
         foreach (QString str, list) {
             files.append(currentDir + "/" + str);
         }
@@ -60,9 +60,10 @@ void frmPngTool::on_btnOk_clicked()
     ui->progress->setRange(0, files.count());
     ui->progress->setValue(0);
 
+    ui->txtMain->clear();
     int count = 0;
     foreach (QString file, files) {
-        qDebug() << "current file:" << file;
+        ui->txtMain->append(file);
         QImage image(file);
         image.save(file, "png");
         count++;
@@ -70,5 +71,5 @@ void frmPngTool::on_btnOk_clicked()
         qApp->processEvents();
     }
 
-    qDebug() << "finsh";
+    ui->txtMain->append(QString("处理完成, 共 %1 个文件").arg(files.count()));
 }

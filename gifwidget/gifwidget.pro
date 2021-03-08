@@ -14,7 +14,12 @@ DESTDIR     = $$PWD/../bin
 CONFIG      += warn_off
 
 SOURCES     += main.cpp
+SOURCES     += frmgifwidget.cpp
 SOURCES     += gifwidget.cpp
+
 HEADERS     += gifwidget.h
+HEADERS     += frmgifwidget.h
 HEADERS     += gif.h
+
+FORMS       += frmgifwidget.ui
 RESOURCES   += main.qrc

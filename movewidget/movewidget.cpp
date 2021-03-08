@@ -55,14 +55,6 @@ bool MoveWidget::eventFilter(QObject *watched, QEvent *event)
     return QObject::eventFilter(watched, event);
 }
 
-void MoveWidget::setWidget(QWidget *widget)
-{
-    if (this->widget == 0) {
-        this->widget = widget;
-        this->widget->installEventFilter(this);
-    }
-}
-
 void MoveWidget::setLeftButton(bool leftButton)
 {
     this->leftButton = leftButton;
@@ -71,4 +63,12 @@ void MoveWidget::setLeftButton(bool leftButton)
 void MoveWidget::setInControl(bool inControl)
 {
     this->inControl = inControl;
+}
+
+void MoveWidget::setWidget(QWidget *widget)
+{
+    if (this->widget == 0) {
+        this->widget = widget;
+        this->widget->installEventFilter(this);
+    }
 }
