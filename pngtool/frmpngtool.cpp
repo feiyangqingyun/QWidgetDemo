@@ -3,7 +3,10 @@
 #include "ui_frmpngtool.h"
 #include "qfile.h"
 #include "qfiledialog.h"
+#include "qdatetime.h"
 #include "qdebug.h"
+
+#define TIMEMS QTime::currentTime().toString("hh:mm:ss zzz")
 
 frmPngTool::frmPngTool(QWidget *parent) : QWidget(parent), ui(new Ui::frmPngTool)
 {
@@ -63,7 +66,7 @@ void frmPngTool::on_btnOk_clicked()
     ui->txtMain->clear();
     int count = 0;
     foreach (QString file, files) {
-        ui->txtMain->append(file);
+        ui->txtMain->append(QString("%1 -> %2").arg(TIMEMS).arg(file));
         QImage image(file);
         image.save(file, "png");
         count++;
@@ -71,5 +74,5 @@ void frmPngTool::on_btnOk_clicked()
         qApp->processEvents();
     }
 
-    ui->txtMain->append(QString("处理完成, 共 %1 个文件").arg(files.count()));
+    ui->txtMain->append(QString("%1 -> 处理完成, 共 %2 个文件").arg(TIMEMS).arg(files.count()));
 }

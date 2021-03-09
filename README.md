@@ -98,4 +98,4 @@
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/designer.png)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/miniblink.jpg)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/base64.png)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/smoothcurve.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/smoothcurve.gif)

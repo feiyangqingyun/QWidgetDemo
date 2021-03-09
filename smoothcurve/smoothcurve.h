@@ -1,4 +1,4 @@
-#ifndef SMOOTHCURVE_H
+﻿#ifndef SMOOTHCURVE_H
 #define SMOOTHCURVE_H
 
 #include <QObject>
@@ -16,6 +16,7 @@ class SmoothCurve : public QObject
 public:
     //创建平滑曲线路径
     static QPainterPath createSmoothCurve(const QVector<QPointF> &points);
+    static QPainterPath createSmoothCurve2(const QVector<QPointF> &points);
 
 private:
     static void calculateFirstControlPoints(double *&result, const double *rhs, int n);

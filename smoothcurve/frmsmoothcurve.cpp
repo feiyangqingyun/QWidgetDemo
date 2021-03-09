@@ -5,6 +5,8 @@
 #include "qdatetime.h"
 #include "qdebug.h"
 
+#define TIMEMS QTime::currentTime().toString("hh:mm:ss zzz")
+
 frmSmoothCurve::frmSmoothCurve(QWidget *parent) : QWidget(parent), ui(new Ui::frmSmoothCurve)
 {
     ui->setupUi(this);
@@ -19,17 +21,27 @@ frmSmoothCurve::frmSmoothCurve(QWidget *parent) : QWidget(parent), ui(new Ui::fr
         x += qMin(qrand() % 30 + 5, 300);
     }
 
-    //根据曲线上的点创建平滑曲线
-    smoothCurve = SmoothCurve::createSmoothCurve(datas);
-
-    // 直接连接点的创建非平滑曲线曲线
-    smoothCurve2.moveTo(datas[0]);
+    //正常曲线
+    pathNormal.moveTo(datas.at(0));
     for (int i = 1; i < datas.size(); ++i) {
-        smoothCurve2.lineTo(datas[i]);
+        pathNormal.lineTo(datas.at(i));
     }
 
-    connect(ui->showKnotsCheckBox, SIGNAL(clicked(bool)), this, SLOT(update()));
-    connect(ui->showSmoothCurveCheckBox, SIGNAL(clicked(bool)), this, SLOT(update()));
+    //平滑曲线1
+    qDebug() << TIMEMS << "createSmoothCurve start";
+    pathSmooth1 = SmoothCurve::createSmoothCurve(datas);
+    qDebug() << TIMEMS << "createSmoothCurve stop";
+
+    //平滑曲线2
+    qDebug() << TIMEMS << "createSmoothCurve2 start";
+    pathSmooth2 = SmoothCurve::createSmoothCurve2(datas);
+    qDebug() << TIMEMS << "createSmoothCurve2 stop";
+
+    ui->ckShowPoint->setChecked(true);
+    connect(ui->ckShowPoint, SIGNAL(clicked(bool)), this, SLOT(update()));
+    connect(ui->rbtnPathNormal, SIGNAL(clicked(bool)), this, SLOT(update()));
+    connect(ui->rbtnPathSmooth1, SIGNAL(clicked(bool)), this, SLOT(update()));
+    connect(ui->rbtnPathSmooth2, SIGNAL(clicked(bool)), this, SLOT(update()));
 }
 
 frmSmoothCurve::~frmSmoothCurve()
@@ -49,20 +61,22 @@ void frmSmoothCurve::paintEvent(QPaintEvent *)
     painter.drawLine(-250, 0, 250, 0);
     painter.drawLine(0, 150, 0, -150);
 
-    //被选中时显示平滑曲线,否则显示非平滑曲线
+    //根据选择绘制不同的曲线路径
     painter.setPen(QPen(QColor(80, 80, 80), 2));
-    if (ui->showSmoothCurveCheckBox->isChecked()) {
-        painter.drawPath(smoothCurve);
+    if (ui->rbtnPathSmooth1->isChecked()) {
+        painter.drawPath(pathSmooth1);
+    } else if (ui->rbtnPathSmooth2->isChecked()) {
+        painter.drawPath(pathSmooth2);
     } else {
-        painter.drawPath(smoothCurve2);
+        painter.drawPath(pathNormal);
     }
 
     //如果曲线上的点可见则显示出来
-    if (ui->showKnotsCheckBox->isChecked()) {
+    if (ui->ckShowPoint->isChecked()) {
         painter.setPen(Qt::black);
         painter.setBrush(Qt::gray);
-        foreach (QPointF p, datas) {
-            painter.drawEllipse(p, 3, 3);
+        foreach (QPointF point, datas) {
+            painter.drawEllipse(point, 3, 3);
         }
     }
 }
