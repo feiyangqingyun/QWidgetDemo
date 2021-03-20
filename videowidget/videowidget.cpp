@@ -39,6 +39,7 @@ VideoWidget::VideoWidget(QWidget *parent) : QWidget(parent)
     borderWidth = 5;
     borderColor = "#000000";
     focusColor = "#22A3A9";
+    bgColor = Qt::transparent;
     bgText = "实时视频";
     bgImage = QImage();
 

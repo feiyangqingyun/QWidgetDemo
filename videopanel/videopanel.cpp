@@ -66,7 +66,7 @@ void VideoPanel::initForm()
     //设置样式表
     QStringList qss;
     qss.append("QFrame{border:2px solid #000000;}");
-    qss.append("QLabel{font:75 25px;color:#F0F0F0;border:2px solid #AAAAAA;background:#000000;}");
+    qss.append("QLabel{font:75 25px;color:#F0F0F0;border:2px solid #AAAAAA;background:#303030;}");
     qss.append("QLabel:focus{border:2px solid #00BB9E;background:#555555;}");
     this->setStyleSheet(qss.join(""));
 

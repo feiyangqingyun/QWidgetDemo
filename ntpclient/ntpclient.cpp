@@ -1,6 +1,7 @@
 ﻿#include "ntpclient.h"
 #include "qmutex.h"
 #include "qudpsocket.h"
+#include "qdebug.h"
 
 QScopedPointer<NtpClient> NtpClient::self;
 NtpClient *NtpClient::Instance()

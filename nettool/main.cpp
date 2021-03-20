@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
 
     frmMain w;
     w.setWindowTitle("网络调试助手 V2021 (QQ: 517216493 WX: feiyangqingyun)");
+    w.resize(950, 700);
     QUIHelper::setFormInCenter(&w);
     w.show();    
 

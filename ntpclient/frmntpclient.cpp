@@ -24,5 +24,5 @@ void frmNtpClient::on_btnGetTime_clicked()
 
 void frmNtpClient::receiveTime(const QDateTime &dateTime)
 {
-    ui->txtTime->setText(dateTime.toString("yyyy-MM-dd HH:mm:ss"));
+    ui->txtTime->setText(dateTime.toString("yyyy-MM-dd HH:mm:ss zzz"));
 }
