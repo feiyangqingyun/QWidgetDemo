@@ -274,7 +274,9 @@ void VideoWidget::drawBorder(QPainter *painter)
 void VideoWidget::drawBg(QPainter *painter)
 {
     painter->save();
-    painter->fillRect(rect(), bgColor);
+    if (bgColor != Qt::transparent) {
+        painter->fillRect(rect(), bgColor);
+    }
 
     //背景图片为空则绘制文字,否则绘制背景图片
     if (bgImage.isNull()) {
