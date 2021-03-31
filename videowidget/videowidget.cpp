@@ -568,6 +568,16 @@ QList<QRect> VideoWidget::getFaceRects() const
     return this->faceRects;
 }
 
+QSize VideoWidget::sizeHint() const
+{
+    return QSize(400, 300);
+}
+
+QSize VideoWidget::minimumSizeHint() const
+{
+    return QSize(40, 30);
+}
+
 void VideoWidget::updateImage(const QImage &image)
 {
     //拷贝图片有个好处,当处理器比较差的时候,图片不会产生断层,缺点是占用时间

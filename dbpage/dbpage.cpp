@@ -13,7 +13,7 @@ QVariant SqlQueryModel::data(const QModelIndex &index, int role) const
     QVariant value = QSqlQueryModel::data(index, role);
 
     if (allCenter) {
-        if(role == Qt::TextAlignmentRole ) {
+        if (role == Qt::TextAlignmentRole) {
             value = Qt::AlignCenter;
         }
     } else {
@@ -22,7 +22,7 @@ QVariant SqlQueryModel::data(const QModelIndex &index, int role) const
         bool existCenter = alignCenterColumn.contains(column);
         bool existRight = alignRightColumn.contains(column);
 
-        if(role == Qt::TextAlignmentRole) {
+        if (role == Qt::TextAlignmentRole) {
             if (existCenter) {
                 value = Qt::AlignCenter;
             }
@@ -37,9 +37,9 @@ QVariant SqlQueryModel::data(const QModelIndex &index, int role) const
     if (property("hoverRow").isValid()) {
         int row = property("hoverRow").toInt();
         if (row == index.row()) {
-            if(role == Qt::BackgroundRole) {
+            if (role == Qt::BackgroundRole) {
                 value = QColor(property("hoverBgColor").toString());
-            } else if(role == Qt::TextColorRole) {
+            } else if (role == Qt::TextColorRole) {
                 value = QColor(property("hoverTextColor").toString());
             }
         }
@@ -49,7 +49,7 @@ QVariant SqlQueryModel::data(const QModelIndex &index, int role) const
     if (property("hideColumn").isValid()) {
         int column = property("hideColumn").toInt();
         if (column == index.column()) {
-            if(role == Qt::DisplayRole) {
+            if (role == Qt::DisplayRole) {
                 QString letter = property("hideLetter").toString();
                 int start = property("hideStart").toInt();
                 int end = property("hideEnd").toInt();
@@ -144,8 +144,6 @@ DbPage *DbPage::Instance()
 DbPage::DbPage(QObject *parent) : QObject(parent)
 {
     startIndex = 0;
-    tempSql = "";
-    sql = "";
     queryModel = new SqlQueryModel;
 
     pageCurrent = 1;
@@ -260,6 +258,24 @@ void DbPage::bindData(const QString &sql)
     emit receivePage(pageCurrent, pageCount, resultCount, resultCurrent);
 }
 
+QString DbPage::getPageSql()
+{
+    //组织分页SQL语句,不同的数据库分页语句不一样
+    QString sql = QString("select %1 from %2 %3 order by %4").arg(selectColumn).arg(tableName).arg(whereSql).arg(orderSql);
+    if (dbType == DbType_PostgreSQL || dbType == DbType_KingBase) {
+        sql = QString("%1 limit %3 offset %2;").arg(sql).arg(startIndex).arg(resultCurrent);
+    } else if (dbType == DbType_SqlServer) {
+        //取第m条到第n条记录：select top (n-m+1) id from tablename where id not in (select top m-1 id from tablename)
+        //sql = QString("select %1 from %2 %3 order by %4").arg(selectColumn).arg(tableName).arg(whereSql).arg(orderSql);
+    } else if (dbType == DbType_Oracle) {
+        //暂时没有找到好办法
+    } else {
+        sql = QString("%1 limit %2,%3;").arg(sql).arg(startIndex).arg(resultCurrent);
+    }
+
+    return sql;
+}
+
 void DbPage::slot_receiveCount(quint32 count, double msec)
 {
     if (labResult != 0) {
@@ -294,10 +310,7 @@ void DbPage::slot_receiveCount(quint32 count, double msec)
         btnPre->setEnabled(true);
     }
 
-    tempSql = QString("select %1 from %2 %3 order by %4").arg(selectColumn).arg(tableName).arg(whereSql).arg(orderSql);
-    sql = QString("%1 limit %2,%3;").arg(tempSql).arg(startIndex).arg(resultCurrent); //组织分页SQL语句
-
-    bindData(sql);
+    bindData(getPageSql());
 }
 
 void DbPage::first()
@@ -305,8 +318,7 @@ void DbPage::first()
     if (pageCount > 1) {
         startIndex = 0;
         pageCurrent = 1;
-        sql = QString("%1 limit %2,%3;").arg(tempSql).arg(startIndex).arg(resultCurrent);
-        bindData(sql);
+        bindData(getPageSql());
         btnLast->setEnabled(true);
         btnNext->setEnabled(true);
     }
@@ -320,8 +332,7 @@ void DbPage::previous()
     if (pageCurrent > 1) {
         pageCurrent--;
         startIndex -= resultCurrent;
-        sql = QString("%1 limit %2,%3;").arg(tempSql).arg(startIndex).arg(resultCurrent);
-        bindData(sql);
+        bindData(getPageSql());
         btnLast->setEnabled(true);
         btnNext->setEnabled(true);
     }
@@ -337,8 +348,7 @@ void DbPage::next()
     if (pageCurrent < pageCount) {
         pageCurrent++;
         startIndex += resultCurrent;
-        sql = QString("%1 limit %2,%3;").arg(tempSql).arg(startIndex).arg(resultCurrent);
-        bindData(sql);
+        bindData(getPageSql());
         btnFirst->setEnabled(true);
         btnPre->setEnabled(true);
     }
@@ -354,8 +364,7 @@ void DbPage::last()
     if (pageCount > 0) {
         startIndex = (pageCount - 1) * resultCurrent;
         pageCurrent = pageCount;
-        sql = QString("%1 limit %2,%3;").arg(tempSql).arg(startIndex).arg(resultCurrent);
-        bindData(sql);
+        bindData(getPageSql());
         btnFirst->setEnabled(true);
         btnPre->setEnabled(true);
     }
@@ -514,7 +523,7 @@ void DbPage::select()
     }
 
     //开始分页绑定数据前,计算好总数据量以及行数
-    tempSql = QString("select count(%1) from %2 %3").arg(countName).arg(tableName).arg(whereSql);
+    QString sql = QString("select count(%1) from %2 %3").arg(countName).arg(tableName).arg(whereSql);
 
     //采用线程执行查询复合条件的记录行数
     DbCountThread *dbCountThread = new DbCountThread(this);
@@ -524,7 +533,7 @@ void DbPage::select()
 
     //设置数据库连接名称和查询语句,并启动线程
     dbCountThread->setConnName(connName);
-    dbCountThread->setSql(tempSql);
+    dbCountThread->setSql(sql);
     //从5.10开始不支持数据库在线程中执行
 #if (QT_VERSION <= QT_VERSION_CHECK(5,10,0))
     dbCountThread->start();

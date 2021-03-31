@@ -77,11 +77,14 @@ class DbPage : public QObject
     Q_OBJECT
 public:
     enum DbType {
-        DbType_Sqlite = 0,      //sqlite数据库
-        DbType_MySql = 1,       //mysql数据库
-        DbType_SqlServer = 3,   //sqlserver数据库
-        DbType_Access = 4,      //access数据库
-        DbType_PostgreSQL = 5   //postgresql数据库
+        DbType_ODBC = 0,        //odbc数据源
+        DbType_Sqlite = 1,      //sqlite数据库
+        DbType_MySql = 2,       //mysql数据库
+        DbType_PostgreSQL = 3,  //postgresql数据库
+        DbType_SqlServer = 4,   //sqlserver数据库
+        DbType_Oracle = 5,      //oracle数据库
+        DbType_KingBase = 6,    //人大金仓数据库
+        DbType_Other = 255      //其他数据库
     };
 
     static DbPage *Instance();
@@ -97,8 +100,6 @@ private:
     static QScopedPointer<DbPage> self;
 
     int startIndex;             //分页开始索引,每次翻页都变动
-    QString tempSql;            //临时SQL语句
-    QString sql;                //sql语句
     SqlQueryModel *queryModel;  //查询模型
 
     QLabel *labPageCount;       //总页数标签
@@ -143,6 +144,8 @@ private slots:
 private slots:
     //绑定sql语句到表格
     void bindData(const QString &sql);
+    //生成分页sql语句
+    QString getPageSql();
 
     //收到记录行数
     void slot_receiveCount(quint32 count, double msec);

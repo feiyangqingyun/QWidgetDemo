@@ -204,6 +204,9 @@ public:
     QColor getFaceColor()           const;
     QList<QRect> getFaceRects()     const;
 
+    QSize sizeHint()                const;
+    QSize minimumSizeHint()         const;
+
 private slots:
     //接收图像并绘制
     void updateImage(const QImage &image);
