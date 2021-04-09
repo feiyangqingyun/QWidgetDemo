@@ -14,7 +14,7 @@ ButtonDefence::ButtonDefence(QWidget *parent) : QWidget(parent)
     buttonStatus = ButtonStatus_Arming;
 
     type = "police";
-    imgName = QString(":/image/btn_defence_disarming_%1.png").arg(type);
+    imgName = QString(":/image/buttondefence/btn_defence_disarming_%1.png").arg(type);
     isDark = false;
 
     timer = new QTimer(this);
@@ -142,9 +142,9 @@ QSize ButtonDefence::minimumSizeHint() const
 void ButtonDefence::checkAlarm()
 {
     if (isDark) {
-        imgName = QString(":/image/btn_defence_error_%1.png").arg(type);
+        imgName = QString(":/image/buttondefence/btn_defence_error_%1.png").arg(type);
     } else {
-        imgName = QString(":/image/btn_defence_alarm_%1.png").arg(type);
+        imgName = QString(":/image/buttondefence/btn_defence_alarm_%1.png").arg(type);
     }
 
     isDark = !isDark;
@@ -195,13 +195,13 @@ void ButtonDefence::setButtonStatus(const ButtonDefence::ButtonStatus &buttonSta
     }
 
     if (buttonStatus == ButtonStatus_Arming) {
-        imgName = QString(":/image/btn_defence_arming_%1.png").arg(type);
+        imgName = QString(":/image/buttondefence/btn_defence_arming_%1.png").arg(type);
     } else if (buttonStatus == ButtonStatus_Disarming) {
-        imgName = QString(":/image/btn_defence_disarming_%1.png").arg(type);
+        imgName = QString(":/image/buttondefence/btn_defence_disarming_%1.png").arg(type);
     } else if (buttonStatus == ButtonStatus_Bypass) {
-        imgName = QString(":/image/btn_defence_bypass_%1.png").arg(type);
+        imgName = QString(":/image/buttondefence/btn_defence_bypass_%1.png").arg(type);
     } else if (buttonStatus == ButtonStatus_Error) {
-        imgName = QString(":/image/btn_defence_error_%1.png").arg(type);
+        imgName = QString(":/image/buttondefence/btn_defence_error_%1.png").arg(type);
     } else if (buttonStatus == ButtonStatus_Alarm) {
         checkAlarm();
         if (!timer->isActive()) {

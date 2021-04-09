@@ -1,10 +1,10 @@
 <RCC>
     <qresource prefix="/">
-        <file>image/btncheckoff1.png</file>
-        <file>image/btncheckoff2.png</file>
-        <file>image/btncheckoff3.png</file>
-        <file>image/btncheckon1.png</file>
-        <file>image/btncheckon2.png</file>
-        <file>image/btncheckon3.png</file>
+        <file>image/imageswitch/btncheckoff1.png</file>
+        <file>image/imageswitch/btncheckoff2.png</file>
+        <file>image/imageswitch/btncheckoff3.png</file>
+        <file>image/imageswitch/btncheckon1.png</file>
+        <file>image/imageswitch/btncheckon2.png</file>
+        <file>image/imageswitch/btncheckon3.png</file>
     </qresource>
 </RCC>

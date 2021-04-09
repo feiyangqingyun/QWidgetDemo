@@ -6,9 +6,8 @@
 class ButtonDefence;
 class QPushButton;
 
-namespace Ui
-{
-    class frmButtonDefence;
+namespace Ui {
+class frmButtonDefence;
 }
 
 class frmButtonDefence : public QWidget
