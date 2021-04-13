@@ -34,18 +34,18 @@ void frmMain::initForm()
     ui->tabWidget->addTab(new frmWebServer, "WEB服务端");
 #endif
 #ifdef emsdk
-    App::CurrentIndex = 4;
+    AppConfig::CurrentIndex = 4;
 #endif
 }
 
 void frmMain::initConfig()
 {
-    ui->tabWidget->setCurrentIndex(App::CurrentIndex);
+    ui->tabWidget->setCurrentIndex(AppConfig::CurrentIndex);
     connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(saveConfig()));
 }
 
 void frmMain::saveConfig()
 {
-    App::CurrentIndex = ui->tabWidget->currentIndex();
-    App::writeConfig();
+    AppConfig::CurrentIndex = ui->tabWidget->currentIndex();
+    AppConfig::writeConfig();
 }

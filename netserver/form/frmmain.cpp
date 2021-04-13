@@ -38,18 +38,18 @@ void frmMain::initForm()
 
 void frmMain::initConfig()
 {
-    ui->txtListenPort1->setText(QString::number(App::ListenPort1));
+    ui->txtListenPort1->setText(QString::number(AppConfig::ListenPort1));
     connect(ui->txtListenPort1, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
-    ui->txtListenPort2->setText(QString::number(App::ListenPort2));
+    ui->txtListenPort2->setText(QString::number(AppConfig::ListenPort2));
     connect(ui->txtListenPort2, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 }
 
 void frmMain::saveConfig()
 {
-    App::ListenPort1 = ui->txtListenPort1->text().trimmed().toInt();
-    App::ListenPort2 = ui->txtListenPort2->text().trimmed().toInt();
-    App::writeConfig();
+    AppConfig::ListenPort1 = ui->txtListenPort1->text().trimmed().toInt();
+    AppConfig::ListenPort2 = ui->txtListenPort2->text().trimmed().toInt();
+    AppConfig::writeConfig();
 }
 
 void frmMain::append1(int type, const QString &data, bool clear)

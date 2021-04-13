@@ -32,34 +32,34 @@ void frmWebClient::initForm()
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
 
-    ui->cboxInterval->addItems(App::Intervals);
-    ui->cboxData->addItems(App::Datas);    
+    ui->cboxInterval->addItems(AppConfig::Intervals);
+    ui->cboxData->addItems(AppConfig::Datas);    
 }
 
 void frmWebClient::initConfig()
 {
-    ui->ckHexSend->setChecked(App::HexSendWebClient);
+    ui->ckHexSend->setChecked(AppConfig::HexSendWebClient);
     connect(ui->ckHexSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckHexReceive->setChecked(App::HexReceiveWebClient);
+    ui->ckHexReceive->setChecked(AppConfig::HexReceiveWebClient);
     connect(ui->ckHexReceive, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckAscii->setChecked(App::AsciiWebClient);
+    ui->ckAscii->setChecked(AppConfig::AsciiWebClient);
     connect(ui->ckAscii, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckDebug->setChecked(App::DebugWebClient);
+    ui->ckDebug->setChecked(AppConfig::DebugWebClient);
     connect(ui->ckDebug, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckAutoSend->setChecked(App::AutoSendWebClient);
+    ui->ckAutoSend->setChecked(AppConfig::AutoSendWebClient);
     connect(ui->ckAutoSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(App::IntervalWebClient)));
+    ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(AppConfig::IntervalWebClient)));
     connect(ui->cboxInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
-    ui->txtServerIP->setText(App::WebServerIP);
+    ui->txtServerIP->setText(AppConfig::WebServerIP);
     connect(ui->txtServerIP, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
-    ui->txtServerPort->setText(QString::number(App::WebServerPort));
+    ui->txtServerPort->setText(QString::number(AppConfig::WebServerPort));
     connect(ui->txtServerPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
     this->changeTimer();
@@ -67,23 +67,23 @@ void frmWebClient::initConfig()
 
 void frmWebClient::saveConfig()
 {
-    App::HexSendWebClient = ui->ckHexSend->isChecked();
-    App::HexReceiveWebClient = ui->ckHexReceive->isChecked();
-    App::AsciiWebClient = ui->ckAscii->isChecked();
-    App::DebugWebClient = ui->ckDebug->isChecked();
-    App::AutoSendWebClient = ui->ckAutoSend->isChecked();
-    App::IntervalWebClient = ui->cboxInterval->currentText().toInt();
-    App::WebServerIP = ui->txtServerIP->text().trimmed();
-    App::WebServerPort = ui->txtServerPort->text().trimmed().toInt();
-    App::writeConfig();
+    AppConfig::HexSendWebClient = ui->ckHexSend->isChecked();
+    AppConfig::HexReceiveWebClient = ui->ckHexReceive->isChecked();
+    AppConfig::AsciiWebClient = ui->ckAscii->isChecked();
+    AppConfig::DebugWebClient = ui->ckDebug->isChecked();
+    AppConfig::AutoSendWebClient = ui->ckAutoSend->isChecked();
+    AppConfig::IntervalWebClient = ui->cboxInterval->currentText().toInt();
+    AppConfig::WebServerIP = ui->txtServerIP->text().trimmed();
+    AppConfig::WebServerPort = ui->txtServerPort->text().trimmed().toInt();
+    AppConfig::writeConfig();
 
     this->changeTimer();
 }
 
 void frmWebClient::changeTimer()
 {
-    timer->setInterval(App::IntervalWebClient);
-    if (App::AutoSendWebClient) {
+    timer->setInterval(AppConfig::IntervalWebClient);
+    if (AppConfig::AutoSendWebClient) {
         if (!timer->isActive()) {
             timer->start();
         }
@@ -152,13 +152,13 @@ void frmWebClient::disconnected()
 void frmWebClient::sendData(const QString &data)
 {
     QByteArray buffer;
-    if (App::HexSendWebClient) {
+    if (AppConfig::HexSendWebClient) {
         buffer = QUIHelper::hexStrToByteArray(data);
     } else {
         buffer = data.toUtf8();
     }
 
-    if (App::AsciiWebClient) {
+    if (AppConfig::AsciiWebClient) {
         socket->sendTextMessage(data);
     } else {
         socket->sendBinaryMessage(buffer);
@@ -173,11 +173,11 @@ void frmWebClient::textFrameReceived(const QString &data, bool isLastFrame)
     append(1, buffer);
 
     //自动回复数据,可以回复的数据是以;隔开,每行可以带多个;所以这里不需要继续判断
-    if (App::DebugWebClient) {
-        int count = App::Keys.count();
+    if (AppConfig::DebugWebClient) {
+        int count = AppConfig::Keys.count();
         for (int i = 0; i < count; i++) {
-            if (App::Keys.at(i) == buffer) {
-                sendData(App::Values.at(i));
+            if (AppConfig::Keys.at(i) == buffer) {
+                sendData(AppConfig::Values.at(i));
                 break;
             }
         }
@@ -187,7 +187,7 @@ void frmWebClient::textFrameReceived(const QString &data, bool isLastFrame)
 void frmWebClient::binaryFrameReceived(const QByteArray &data, bool isLastFrame)
 {
     QString buffer;
-    if (App::HexReceiveWebClient) {
+    if (AppConfig::HexReceiveWebClient) {
         buffer = QUIHelper::byteArrayToHexStr(data);
     } else {
         buffer = QString(data);
@@ -209,7 +209,7 @@ void frmWebClient::binaryMessageReceived(const QByteArray &data)
 void frmWebClient::on_btnConnect_clicked()
 {
     if (ui->btnConnect->text() == "连接") {
-        QString url = QString("%1:%2").arg(App::WebServerIP).arg(App::WebServerPort);
+        QString url = QString("%1:%2").arg(AppConfig::WebServerIP).arg(AppConfig::WebServerPort);
         socket->abort();
         socket->open(QUrl(url));
     } else {
@@ -220,7 +220,7 @@ void frmWebClient::on_btnConnect_clicked()
 void frmWebClient::on_btnSave_clicked()
 {
     QString data = ui->txtMain->toPlainText();
-    App::saveData(data);
+    AppConfig::saveData(data);
     on_btnClear_clicked();
 }
 

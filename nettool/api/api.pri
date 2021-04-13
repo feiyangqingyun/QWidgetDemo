@@ -1,9 +1,11 @@
-HEADERS += $$PWD/app.h
+HEADERS += \
+    $$PWD/appconfig.h
 HEADERS += $$PWD/quiwidget.h
 HEADERS += $$PWD/tcpclient.h
 HEADERS += $$PWD/tcpserver.h
 
-SOURCES += $$PWD/app.cpp
+SOURCES += \
+    $$PWD/appconfig.cpp
 SOURCES += $$PWD/quiwidget.cpp
 SOURCES += $$PWD/tcpclient.cpp
 SOURCES += $$PWD/tcpserver.cpp

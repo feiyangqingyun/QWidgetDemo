@@ -37,7 +37,7 @@ void WebServer::disconnected()
 
 bool WebServer::start()
 {
-    bool ok = listen(QHostAddress(App::WebListenIP), App::WebListenPort);
+    bool ok = listen(QHostAddress(AppConfig::WebListenIP), AppConfig::WebListenPort);
     return ok;
 }
 

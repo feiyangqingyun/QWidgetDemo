@@ -1,7 +1,7 @@
 HEADERS += \
-    $$PWD/app.h \
+    $$PWD/appconfig.h \
     $$PWD/quiwidget.h
 
 SOURCES += \
-    $$PWD/app.cpp \
+    $$PWD/appconfig.cpp \
     $$PWD/quiwidget.cpp

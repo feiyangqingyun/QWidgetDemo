@@ -24,8 +24,8 @@ void frmComTool::initForm()
     sendCount = 0;
     isShow = true;
 
-    ui->cboxSendInterval->addItems(App::Intervals);
-    ui->cboxData->addItems(App::Datas);
+    ui->cboxSendInterval->addItems(AppConfig::Intervals);
+    ui->cboxData->addItems(AppConfig::Datas);
 
     //读取数据
     timerRead = new QTimer(this);
@@ -72,7 +72,7 @@ void frmComTool::initConfig()
     comList << "ttymxc1" << "ttymxc2" << "ttymxc3" << "ttymxc4";
     comList << "ttySAC1" << "ttySAC2" << "ttySAC3" << "ttySAC4";
     ui->cboxPortName->addItems(comList);
-    ui->cboxPortName->setCurrentIndex(ui->cboxPortName->findText(App::PortName));
+    ui->cboxPortName->setCurrentIndex(ui->cboxPortName->findText(AppConfig::PortName));
     connect(ui->cboxPortName, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
     QStringList baudList;
@@ -81,14 +81,14 @@ void frmComTool::initConfig()
              << "56000" << "57600" << "76800" << "115200" << "128000" << "256000";
 
     ui->cboxBaudRate->addItems(baudList);
-    ui->cboxBaudRate->setCurrentIndex(ui->cboxBaudRate->findText(QString::number(App::BaudRate)));
+    ui->cboxBaudRate->setCurrentIndex(ui->cboxBaudRate->findText(QString::number(AppConfig::BaudRate)));
     connect(ui->cboxBaudRate, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
     QStringList dataBitsList;
     dataBitsList << "5" << "6" << "7" << "8";
 
     ui->cboxDataBit->addItems(dataBitsList);
-    ui->cboxDataBit->setCurrentIndex(ui->cboxDataBit->findText(QString::number(App::DataBit)));
+    ui->cboxDataBit->setCurrentIndex(ui->cboxDataBit->findText(QString::number(AppConfig::DataBit)));
     connect(ui->cboxDataBit, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
     QStringList parityList;
@@ -99,7 +99,7 @@ void frmComTool::initConfig()
     parityList << "空格";
 
     ui->cboxParity->addItems(parityList);
-    ui->cboxParity->setCurrentIndex(ui->cboxParity->findText(App::Parity));
+    ui->cboxParity->setCurrentIndex(ui->cboxParity->findText(AppConfig::Parity));
     connect(ui->cboxParity, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
     QStringList stopBitsList;
@@ -110,25 +110,25 @@ void frmComTool::initConfig()
     stopBitsList << "2";
 
     ui->cboxStopBit->addItems(stopBitsList);
-    ui->cboxStopBit->setCurrentIndex(ui->cboxStopBit->findText(QString::number(App::StopBit)));
+    ui->cboxStopBit->setCurrentIndex(ui->cboxStopBit->findText(QString::number(AppConfig::StopBit)));
     connect(ui->cboxStopBit, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckHexSend->setChecked(App::HexSend);
+    ui->ckHexSend->setChecked(AppConfig::HexSend);
     connect(ui->ckHexSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckHexReceive->setChecked(App::HexReceive);
+    ui->ckHexReceive->setChecked(AppConfig::HexReceive);
     connect(ui->ckHexReceive, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckDebug->setChecked(App::Debug);
+    ui->ckDebug->setChecked(AppConfig::Debug);
     connect(ui->ckDebug, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckAutoClear->setChecked(App::AutoClear);
+    ui->ckAutoClear->setChecked(AppConfig::AutoClear);
     connect(ui->ckAutoClear, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckAutoSend->setChecked(App::AutoSend);
+    ui->ckAutoSend->setChecked(AppConfig::AutoSend);
     connect(ui->ckAutoSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckAutoSave->setChecked(App::AutoSave);
+    ui->ckAutoSave->setChecked(AppConfig::AutoSave);
     connect(ui->ckAutoSave, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
     QStringList sendInterval;
@@ -143,33 +143,33 @@ void frmComTool::initConfig()
     ui->cboxSendInterval->addItems(sendInterval);
     ui->cboxSaveInterval->addItems(saveInterval);
 
-    ui->cboxSendInterval->setCurrentIndex(ui->cboxSendInterval->findText(QString::number(App::SendInterval)));
+    ui->cboxSendInterval->setCurrentIndex(ui->cboxSendInterval->findText(QString::number(AppConfig::SendInterval)));
     connect(ui->cboxSendInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
-    ui->cboxSaveInterval->setCurrentIndex(ui->cboxSaveInterval->findText(QString::number(App::SaveInterval)));
+    ui->cboxSaveInterval->setCurrentIndex(ui->cboxSaveInterval->findText(QString::number(AppConfig::SaveInterval)));
     connect(ui->cboxSaveInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
-    timerSend->setInterval(App::SendInterval);
-    timerSave->setInterval(App::SaveInterval);
+    timerSend->setInterval(AppConfig::SendInterval);
+    timerSave->setInterval(AppConfig::SaveInterval);
 
-    if (App::AutoSend) {
+    if (AppConfig::AutoSend) {
         timerSend->start();
     }
 
-    if (App::AutoSave) {
+    if (AppConfig::AutoSave) {
         timerSave->start();
     }
 
     //串口转网络部分
-    ui->cboxMode->setCurrentIndex(ui->cboxMode->findText(App::Mode));
+    ui->cboxMode->setCurrentIndex(ui->cboxMode->findText(AppConfig::Mode));
     connect(ui->cboxMode, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
-    ui->txtServerIP->setText(App::ServerIP);
+    ui->txtServerIP->setText(AppConfig::ServerIP);
     connect(ui->txtServerIP, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
-    ui->txtServerPort->setText(QString::number(App::ServerPort));
+    ui->txtServerPort->setText(QString::number(AppConfig::ServerPort));
     connect(ui->txtServerPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
-    ui->txtListenPort->setText(QString::number(App::ListenPort));
+    ui->txtListenPort->setText(QString::number(AppConfig::ListenPort));
     connect(ui->txtListenPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
     QStringList values;
@@ -181,49 +181,49 @@ void frmComTool::initConfig()
 
     ui->cboxSleepTime->addItems(values);
 
-    ui->cboxSleepTime->setCurrentIndex(ui->cboxSleepTime->findText(QString::number(App::SleepTime)));
+    ui->cboxSleepTime->setCurrentIndex(ui->cboxSleepTime->findText(QString::number(AppConfig::SleepTime)));
     connect(ui->cboxSleepTime, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckAutoConnect->setChecked(App::AutoConnect);
+    ui->ckAutoConnect->setChecked(AppConfig::AutoConnect);
     connect(ui->ckAutoConnect, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 }
 
 void frmComTool::saveConfig()
 {
-    App::PortName = ui->cboxPortName->currentText();
-    App::BaudRate = ui->cboxBaudRate->currentText().toInt();
-    App::DataBit = ui->cboxDataBit->currentText().toInt();
-    App::Parity = ui->cboxParity->currentText();
-    App::StopBit = ui->cboxStopBit->currentText().toDouble();
+    AppConfig::PortName = ui->cboxPortName->currentText();
+    AppConfig::BaudRate = ui->cboxBaudRate->currentText().toInt();
+    AppConfig::DataBit = ui->cboxDataBit->currentText().toInt();
+    AppConfig::Parity = ui->cboxParity->currentText();
+    AppConfig::StopBit = ui->cboxStopBit->currentText().toDouble();
 
-    App::HexSend = ui->ckHexSend->isChecked();
-    App::HexReceive = ui->ckHexReceive->isChecked();
-    App::Debug = ui->ckDebug->isChecked();
-    App::AutoClear = ui->ckAutoClear->isChecked();
+    AppConfig::HexSend = ui->ckHexSend->isChecked();
+    AppConfig::HexReceive = ui->ckHexReceive->isChecked();
+    AppConfig::Debug = ui->ckDebug->isChecked();
+    AppConfig::AutoClear = ui->ckAutoClear->isChecked();
 
-    App::AutoSend = ui->ckAutoSend->isChecked();
-    App::AutoSave = ui->ckAutoSave->isChecked();
+    AppConfig::AutoSend = ui->ckAutoSend->isChecked();
+    AppConfig::AutoSave = ui->ckAutoSave->isChecked();
 
     int sendInterval = ui->cboxSendInterval->currentText().toInt();
-    if (sendInterval != App::SendInterval) {
-        App::SendInterval = sendInterval;
-        timerSend->setInterval(App::SendInterval);
+    if (sendInterval != AppConfig::SendInterval) {
+        AppConfig::SendInterval = sendInterval;
+        timerSend->setInterval(AppConfig::SendInterval);
     }
 
     int saveInterval = ui->cboxSaveInterval->currentText().toInt();
-    if (saveInterval != App::SaveInterval) {
-        App::SaveInterval = saveInterval;
-        timerSave->setInterval(App::SaveInterval);
+    if (saveInterval != AppConfig::SaveInterval) {
+        AppConfig::SaveInterval = saveInterval;
+        timerSave->setInterval(AppConfig::SaveInterval);
     }
 
-    App::Mode = ui->cboxMode->currentText();
-    App::ServerIP = ui->txtServerIP->text().trimmed();
-    App::ServerPort = ui->txtServerPort->text().toInt();
-    App::ListenPort = ui->txtListenPort->text().toInt();
-    App::SleepTime = ui->cboxSleepTime->currentText().toInt();
-    App::AutoConnect = ui->ckAutoConnect->isChecked();
+    AppConfig::Mode = ui->cboxMode->currentText();
+    AppConfig::ServerIP = ui->txtServerIP->text().trimmed();
+    AppConfig::ServerPort = ui->txtServerPort->text().toInt();
+    AppConfig::ListenPort = ui->txtListenPort->text().toInt();
+    AppConfig::SleepTime = ui->cboxSleepTime->currentText().toInt();
+    AppConfig::AutoConnect = ui->ckAutoConnect->isChecked();
 
-    App::writeConfig();
+    AppConfig::writeConfig();
 }
 
 void frmComTool::changeEnable(bool b)
@@ -317,10 +317,10 @@ void frmComTool::readData()
 
         //启用调试则模拟调试数据
         if (ui->ckDebug->isChecked()) {
-            int count = App::Keys.count();
+            int count = AppConfig::Keys.count();
             for (int i = 0; i < count; i++) {
-                if (buffer.startsWith(App::Keys.at(i))) {
-                    sendData(App::Values.at(i));
+                if (buffer.startsWith(AppConfig::Keys.at(i))) {
+                    sendData(AppConfig::Values.at(i));
                     break;
                 }
             }
@@ -482,7 +482,7 @@ void frmComTool::on_btnData_clicked()
         file.close();
         ui->txtMain->clear();
         ui->btnData->setText("管理数据");
-        App::readSendData();
+        AppConfig::readSendData();
     }
 }
 
@@ -494,12 +494,12 @@ void frmComTool::on_btnClear_clicked()
 void frmComTool::on_btnStart_clicked()
 {
     if (ui->btnStart->text() == "启动") {
-        if (App::ServerIP == "" || App::ServerPort == 0) {
+        if (AppConfig::ServerIP == "" || AppConfig::ServerPort == 0) {
             append(6, "IP地址和远程端口不能为空");
             return;
         }
 
-        socket->connectToHost(App::ServerIP, App::ServerPort);
+        socket->connectToHost(AppConfig::ServerIP, AppConfig::ServerPort);
         if (socket->waitForConnected(100)) {
             ui->btnStart->setText("停止");
             append(6, "连接服务器成功");
@@ -539,9 +539,9 @@ void frmComTool::on_ckAutoSave_stateChanged(int arg1)
 
 void frmComTool::connectNet()
 {
-    if (!tcpOk && App::AutoConnect && ui->btnStart->text() == "启动") {
-        if (App::ServerIP != "" && App::ServerPort != 0) {
-            socket->connectToHost(App::ServerIP, App::ServerPort);
+    if (!tcpOk && AppConfig::AutoConnect && ui->btnStart->text() == "启动") {
+        if (AppConfig::ServerIP != "" && AppConfig::ServerPort != 0) {
+            socket->connectToHost(AppConfig::ServerIP, AppConfig::ServerPort);
             if (socket->waitForConnected(100)) {
                 ui->btnStart->setText("停止");
                 append(6, "连接服务器成功");
@@ -554,7 +554,7 @@ void frmComTool::connectNet()
 void frmComTool::readDataNet()
 {
     if (socket->bytesAvailable() > 0) {
-        QUIHelper::sleep(App::SleepTime);
+        QUIHelper::sleep(AppConfig::SleepTime);
         QByteArray data = socket->readAll();
 
         QString buffer;

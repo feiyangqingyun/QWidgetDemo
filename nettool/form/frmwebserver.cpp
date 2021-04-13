@@ -26,8 +26,8 @@ void frmWebServer::initForm()
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
 
-    ui->cboxInterval->addItems(App::Intervals);
-    ui->cboxData->addItems(App::Datas);
+    ui->cboxInterval->addItems(AppConfig::Intervals);
+    ui->cboxData->addItems(AppConfig::Datas);
 
     //获取本机所有IP
     QStringList ips = QUIHelper::getLocalIPs();
@@ -39,31 +39,31 @@ void frmWebServer::initForm()
 
 void frmWebServer::initConfig()
 {
-    ui->ckHexSend->setChecked(App::HexSendWebServer);
+    ui->ckHexSend->setChecked(AppConfig::HexSendWebServer);
     connect(ui->ckHexSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckHexReceive->setChecked(App::HexReceiveWebServer);
+    ui->ckHexReceive->setChecked(AppConfig::HexReceiveWebServer);
     connect(ui->ckHexReceive, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckAscii->setChecked(App::AsciiWebServer);
+    ui->ckAscii->setChecked(AppConfig::AsciiWebServer);
     connect(ui->ckAscii, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckDebug->setChecked(App::DebugWebServer);
+    ui->ckDebug->setChecked(AppConfig::DebugWebServer);
     connect(ui->ckDebug, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckAutoSend->setChecked(App::AutoSendWebServer);
+    ui->ckAutoSend->setChecked(AppConfig::AutoSendWebServer);
     connect(ui->ckAutoSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(App::IntervalWebServer)));
+    ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(AppConfig::IntervalWebServer)));
     connect(ui->cboxInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
-    ui->cboxListenIP->setCurrentIndex(ui->cboxListenIP->findText(App::WebListenIP));
+    ui->cboxListenIP->setCurrentIndex(ui->cboxListenIP->findText(AppConfig::WebListenIP));
     connect(ui->cboxListenIP, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
-    ui->txtListenPort->setText(QString::number(App::WebListenPort));
+    ui->txtListenPort->setText(QString::number(AppConfig::WebListenPort));
     connect(ui->txtListenPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
-    ui->ckSelectAll->setChecked(App::SelectAllWebServer);
+    ui->ckSelectAll->setChecked(AppConfig::SelectAllWebServer);
     connect(ui->ckSelectAll, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
     this->changeTimer();
@@ -71,24 +71,24 @@ void frmWebServer::initConfig()
 
 void frmWebServer::saveConfig()
 {
-    App::HexSendWebServer = ui->ckHexSend->isChecked();
-    App::HexReceiveWebServer = ui->ckHexReceive->isChecked();
-    App::AsciiWebServer = ui->ckAscii->isChecked();
-    App::DebugWebServer = ui->ckDebug->isChecked();
-    App::AutoSendWebServer = ui->ckAutoSend->isChecked();
-    App::IntervalWebServer = ui->cboxInterval->currentText().toInt();
-    App::WebListenIP = ui->cboxListenIP->currentText();
-    App::WebListenPort = ui->txtListenPort->text().trimmed().toInt();
-    App::SelectAllWebServer = ui->ckSelectAll->isChecked();
-    App::writeConfig();
+    AppConfig::HexSendWebServer = ui->ckHexSend->isChecked();
+    AppConfig::HexReceiveWebServer = ui->ckHexReceive->isChecked();
+    AppConfig::AsciiWebServer = ui->ckAscii->isChecked();
+    AppConfig::DebugWebServer = ui->ckDebug->isChecked();
+    AppConfig::AutoSendWebServer = ui->ckAutoSend->isChecked();
+    AppConfig::IntervalWebServer = ui->cboxInterval->currentText().toInt();
+    AppConfig::WebListenIP = ui->cboxListenIP->currentText();
+    AppConfig::WebListenPort = ui->txtListenPort->text().trimmed().toInt();
+    AppConfig::SelectAllWebServer = ui->ckSelectAll->isChecked();
+    AppConfig::writeConfig();
 
     this->changeTimer();
 }
 
 void frmWebServer::changeTimer()
 {
-    timer->setInterval(App::IntervalWebServer);
-    if (App::AutoSendWebServer) {
+    timer->setInterval(AppConfig::IntervalWebServer);
+    if (AppConfig::AutoSendWebServer) {
         if (!timer->isActive()) {
             timer->start();
         }
@@ -192,7 +192,7 @@ void frmWebServer::on_btnListen_clicked()
 void frmWebServer::on_btnSave_clicked()
 {
     QString data = ui->txtMain->toPlainText();
-    App::saveData(data);
+    AppConfig::saveData(data);
     on_btnClear_clicked();
 }
 

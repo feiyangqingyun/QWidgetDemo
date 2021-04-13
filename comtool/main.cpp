@@ -17,11 +17,11 @@ int main(int argc, char *argv[])
     QUIHelper::setTranslator(":/widgets.qm");
     QUIHelper::initRand();
 
-    App::Intervals << "1" << "10" << "20" << "50" << "100" << "200" << "300" << "500" << "1000" << "1500" << "2000" << "3000" << "5000" << "10000";
-    App::ConfigFile = QString("%1/%2.ini").arg(QUIHelper::appPath()).arg(QUIHelper::appName());
-    App::readConfig();
-    App::readSendData();
-    App::readDeviceData();
+    AppConfig::Intervals << "1" << "10" << "20" << "50" << "100" << "200" << "300" << "500" << "1000" << "1500" << "2000" << "3000" << "5000" << "10000";
+    AppConfig::ConfigFile = QString("%1/%2.ini").arg(QUIHelper::appPath()).arg(QUIHelper::appName());
+    AppConfig::readConfig();
+    AppConfig::readSendData();
+    AppConfig::readDeviceData();
 
     frmComTool w;
     w.setWindowTitle("串口调试助手 V2021 (QQ: 517216493 WX: feiyangqingyun)");

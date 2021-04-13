@@ -38,9 +38,9 @@ void TcpClient::readData()
     }
 
     QString buffer;
-    if (App::HexReceiveTcpServer) {
+    if (AppConfig::HexReceiveTcpServer) {
         buffer = QUIHelper::byteArrayToHexStr(data);
-    } else if (App::AsciiTcpServer) {
+    } else if (AppConfig::AsciiTcpServer) {
         buffer = QUIHelper::byteArrayToAsciiStr(data);
     } else {
         buffer = QString(data);
@@ -49,11 +49,11 @@ void TcpClient::readData()
     emit receiveData(ip, port, buffer);
 
     //自动回复数据,可以回复的数据是以;隔开,每行可以带多个;所以这里不需要继续判断
-    if (App::DebugTcpServer) {
-        int count = App::Keys.count();
+    if (AppConfig::DebugTcpServer) {
+        int count = AppConfig::Keys.count();
         for (int i = 0; i < count; i++) {
-            if (App::Keys.at(i) == buffer) {
-                sendData(App::Values.at(i));
+            if (AppConfig::Keys.at(i) == buffer) {
+                sendData(AppConfig::Values.at(i));
                 break;
             }
         }
@@ -63,9 +63,9 @@ void TcpClient::readData()
 void TcpClient::sendData(const QString &data)
 {
     QByteArray buffer;
-    if (App::HexSendTcpServer) {
+    if (AppConfig::HexSendTcpServer) {
         buffer = QUIHelper::hexStrToByteArray(data);
-    } else if (App::AsciiTcpServer) {
+    } else if (AppConfig::AsciiTcpServer) {
         buffer = QUIHelper::asciiStrToByteArray(data);
     } else {
         buffer = data.toUtf8();

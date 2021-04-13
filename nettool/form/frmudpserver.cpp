@@ -22,8 +22,8 @@ void frmUdpServer::initForm()
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
 
-    ui->cboxInterval->addItems(App::Intervals);
-    ui->cboxData->addItems(App::Datas);
+    ui->cboxInterval->addItems(AppConfig::Intervals);
+    ui->cboxData->addItems(AppConfig::Datas);
 
     //获取本机所有IP
     QStringList ips = QUIHelper::getLocalIPs();
@@ -35,31 +35,31 @@ void frmUdpServer::initForm()
 
 void frmUdpServer::initConfig()
 {
-    ui->ckHexSend->setChecked(App::HexSendUdpServer);
+    ui->ckHexSend->setChecked(AppConfig::HexSendUdpServer);
     connect(ui->ckHexSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckHexReceive->setChecked(App::HexReceiveUdpServer);
+    ui->ckHexReceive->setChecked(AppConfig::HexReceiveUdpServer);
     connect(ui->ckHexReceive, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckAscii->setChecked(App::AsciiUdpServer);
+    ui->ckAscii->setChecked(AppConfig::AsciiUdpServer);
     connect(ui->ckAscii, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckDebug->setChecked(App::DebugUdpServer);
+    ui->ckDebug->setChecked(AppConfig::DebugUdpServer);
     connect(ui->ckDebug, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckAutoSend->setChecked(App::AutoSendUdpServer);
+    ui->ckAutoSend->setChecked(AppConfig::AutoSendUdpServer);
     connect(ui->ckAutoSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(App::IntervalUdpServer)));
+    ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(AppConfig::IntervalUdpServer)));
     connect(ui->cboxInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
-    ui->cboxListenIP->setCurrentIndex(ui->cboxListenIP->findText(App::UdpListenIP));
+    ui->cboxListenIP->setCurrentIndex(ui->cboxListenIP->findText(AppConfig::UdpListenIP));
     connect(ui->cboxListenIP, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
-    ui->txtListenPort->setText(QString::number(App::UdpListenPort));
+    ui->txtListenPort->setText(QString::number(AppConfig::UdpListenPort));
     connect(ui->txtListenPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
-    ui->ckSelectAll->setChecked(App::SelectAllUdpServer);
+    ui->ckSelectAll->setChecked(AppConfig::SelectAllUdpServer);
     connect(ui->ckSelectAll, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
     this->changeTimer();
@@ -67,24 +67,24 @@ void frmUdpServer::initConfig()
 
 void frmUdpServer::saveConfig()
 {
-    App::HexSendUdpServer = ui->ckHexSend->isChecked();
-    App::HexReceiveUdpServer = ui->ckHexReceive->isChecked();
-    App::AsciiUdpServer = ui->ckAscii->isChecked();
-    App::DebugUdpServer = ui->ckDebug->isChecked();
-    App::AutoSendUdpServer = ui->ckAutoSend->isChecked();
-    App::IntervalUdpServer = ui->cboxInterval->currentText().toInt();
-    App::UdpListenIP = ui->cboxListenIP->currentText();
-    App::UdpListenPort = ui->txtListenPort->text().trimmed().toInt();
-    App::SelectAllUdpServer = ui->ckSelectAll->isChecked();
-    App::writeConfig();
+    AppConfig::HexSendUdpServer = ui->ckHexSend->isChecked();
+    AppConfig::HexReceiveUdpServer = ui->ckHexReceive->isChecked();
+    AppConfig::AsciiUdpServer = ui->ckAscii->isChecked();
+    AppConfig::DebugUdpServer = ui->ckDebug->isChecked();
+    AppConfig::AutoSendUdpServer = ui->ckAutoSend->isChecked();
+    AppConfig::IntervalUdpServer = ui->cboxInterval->currentText().toInt();
+    AppConfig::UdpListenIP = ui->cboxListenIP->currentText();
+    AppConfig::UdpListenPort = ui->txtListenPort->text().trimmed().toInt();
+    AppConfig::SelectAllUdpServer = ui->ckSelectAll->isChecked();
+    AppConfig::writeConfig();
 
     this->changeTimer();
 }
 
 void frmUdpServer::changeTimer()
 {
-    timer->setInterval(App::IntervalUdpServer);
-    if (App::AutoSendUdpServer) {
+    timer->setInterval(AppConfig::IntervalUdpServer);
+    if (AppConfig::AutoSendUdpServer) {
         if (!timer->isActive()) {
             timer->start();
         }
@@ -146,9 +146,9 @@ void frmUdpServer::readData()
         data.resize(socket->pendingDatagramSize());
         socket->readDatagram(data.data(), data.size(), &host, &port);
 
-        if (App::HexReceiveUdpServer) {
+        if (AppConfig::HexReceiveUdpServer) {
             buffer = QUIHelper::byteArrayToHexStr(data);
-        } else if (App::AsciiUdpServer) {
+        } else if (AppConfig::AsciiUdpServer) {
             buffer = QUIHelper::byteArrayToAsciiStr(data);
         } else {
             buffer = QString(data);
@@ -164,11 +164,11 @@ void frmUdpServer::readData()
         append(1, str);
         clientConnected(ip, port);
 
-        if (App::DebugUdpServer) {
-            int count = App::Keys.count();
+        if (AppConfig::DebugUdpServer) {
+            int count = AppConfig::Keys.count();
             for (int i = 0; i < count; i++) {
-                if (App::Keys.at(i) == buffer) {
-                    sendData(ip, port, App::Values.at(i));
+                if (AppConfig::Keys.at(i) == buffer) {
+                    sendData(ip, port, AppConfig::Values.at(i));
                     break;
                 }
             }
@@ -179,9 +179,9 @@ void frmUdpServer::readData()
 void frmUdpServer::sendData(const QString &ip, int port, const QString &data)
 {
     QByteArray buffer;
-    if (App::HexSendUdpServer) {
+    if (AppConfig::HexSendUdpServer) {
         buffer = QUIHelper::hexStrToByteArray(data);
-    } else if (App::AsciiUdpServer) {
+    } else if (AppConfig::AsciiUdpServer) {
         buffer = QUIHelper::asciiStrToByteArray(data);
     } else {
         buffer = data.toUtf8();
@@ -211,7 +211,7 @@ void frmUdpServer::clientConnected(const QString &ip, int port)
 void frmUdpServer::on_btnListen_clicked()
 {
     if (ui->btnListen->text() == "监听") {
-        bool ok = socket->bind(QHostAddress(App::UdpListenIP), App::UdpListenPort);
+        bool ok = socket->bind(QHostAddress(AppConfig::UdpListenIP), AppConfig::UdpListenPort);
         if (ok) {
             ui->btnListen->setText("关闭");
             append(0, "监听成功");
@@ -225,7 +225,7 @@ void frmUdpServer::on_btnListen_clicked()
 void frmUdpServer::on_btnSave_clicked()
 {
     QString data = ui->txtMain->toPlainText();
-    App::saveData(data);
+    AppConfig::saveData(data);
     on_btnClear_clicked();
 }
 

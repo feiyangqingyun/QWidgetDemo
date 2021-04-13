@@ -45,7 +45,7 @@ void TcpClient2::readData()
     }
 
     //取出唯一标识符,并过滤,可自行更改过滤条件
-    QByteArray cmd = data.mid(App::CmdStart2, App::CmdLen2);
+    QByteArray cmd = data.mid(AppConfig::CmdStart2, AppConfig::CmdLen2);
     QString id = QString(cmd);
     if (id.startsWith("S") && deviceID != id) {
         deviceID = id;
@@ -54,7 +54,7 @@ void TcpClient2::readData()
     }
 
     QString buffer;
-    if (App::HexData2) {
+    if (AppConfig::HexData2) {
         buffer = QUIHelper::byteArrayToHexStr(data);
     } else {
         buffer = QString(data);
@@ -66,7 +66,7 @@ void TcpClient2::readData()
 void TcpClient2::sendData(const QString &data)
 {
     QByteArray buffer;
-    if (App::HexData2) {
+    if (AppConfig::HexData2) {
         buffer = QUIHelper::hexStrToByteArray(data);
     } else {
         buffer = data.toLatin1();
@@ -121,9 +121,9 @@ void TcpServer2::disconnected()
 bool TcpServer2::start()
 {
 #if (QT_VERSION > QT_VERSION_CHECK(5,0,0))
-    bool ok = listen(QHostAddress::AnyIPv4, App::ListenPort2);
+    bool ok = listen(QHostAddress::AnyIPv4, AppConfig::ListenPort2);
 #else
-    bool ok = listen(QHostAddress::Any, App::ListenPort2);
+    bool ok = listen(QHostAddress::Any, AppConfig::ListenPort2);
 #endif
     return ok;
 }

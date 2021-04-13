@@ -9,6 +9,6 @@
 #endif
 #endif
 
-#include "app.h"
+#include "appconfig.h"
 
 #pragma execution_character_set("utf-8")

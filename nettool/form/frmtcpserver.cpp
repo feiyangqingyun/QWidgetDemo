@@ -26,8 +26,8 @@ void frmTcpServer::initForm()
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
 
-    ui->cboxInterval->addItems(App::Intervals);
-    ui->cboxData->addItems(App::Datas);
+    ui->cboxInterval->addItems(AppConfig::Intervals);
+    ui->cboxData->addItems(AppConfig::Datas);
 
     //获取本机所有IP
     QStringList ips = QUIHelper::getLocalIPs();
@@ -39,31 +39,31 @@ void frmTcpServer::initForm()
 
 void frmTcpServer::initConfig()
 {
-    ui->ckHexSend->setChecked(App::HexSendTcpServer);
+    ui->ckHexSend->setChecked(AppConfig::HexSendTcpServer);
     connect(ui->ckHexSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckHexReceive->setChecked(App::HexReceiveTcpServer);
+    ui->ckHexReceive->setChecked(AppConfig::HexReceiveTcpServer);
     connect(ui->ckHexReceive, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckAscii->setChecked(App::AsciiTcpServer);
+    ui->ckAscii->setChecked(AppConfig::AsciiTcpServer);
     connect(ui->ckAscii, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckDebug->setChecked(App::DebugTcpServer);
+    ui->ckDebug->setChecked(AppConfig::DebugTcpServer);
     connect(ui->ckDebug, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->ckAutoSend->setChecked(App::AutoSendTcpServer);
+    ui->ckAutoSend->setChecked(AppConfig::AutoSendTcpServer);
     connect(ui->ckAutoSend, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(App::IntervalTcpServer)));
+    ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(AppConfig::IntervalTcpServer)));
     connect(ui->cboxInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
-    ui->cboxListenIP->setCurrentIndex(ui->cboxListenIP->findText(App::TcpListenIP));
+    ui->cboxListenIP->setCurrentIndex(ui->cboxListenIP->findText(AppConfig::TcpListenIP));
     connect(ui->cboxListenIP, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
-    ui->txtListenPort->setText(QString::number(App::TcpListenPort));
+    ui->txtListenPort->setText(QString::number(AppConfig::TcpListenPort));
     connect(ui->txtListenPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
-    ui->ckSelectAll->setChecked(App::SelectAllTcpServer);
+    ui->ckSelectAll->setChecked(AppConfig::SelectAllTcpServer);
     connect(ui->ckSelectAll, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
     this->changeTimer();
@@ -71,24 +71,24 @@ void frmTcpServer::initConfig()
 
 void frmTcpServer::saveConfig()
 {
-    App::HexSendTcpServer = ui->ckHexSend->isChecked();
-    App::HexReceiveTcpServer = ui->ckHexReceive->isChecked();
-    App::AsciiTcpServer = ui->ckAscii->isChecked();
-    App::DebugTcpServer = ui->ckDebug->isChecked();
-    App::AutoSendTcpServer = ui->ckAutoSend->isChecked();
-    App::IntervalTcpServer = ui->cboxInterval->currentText().toInt();
-    App::TcpListenIP = ui->cboxListenIP->currentText();
-    App::TcpListenPort = ui->txtListenPort->text().trimmed().toInt();
-    App::SelectAllTcpServer = ui->ckSelectAll->isChecked();
-    App::writeConfig();
+    AppConfig::HexSendTcpServer = ui->ckHexSend->isChecked();
+    AppConfig::HexReceiveTcpServer = ui->ckHexReceive->isChecked();
+    AppConfig::AsciiTcpServer = ui->ckAscii->isChecked();
+    AppConfig::DebugTcpServer = ui->ckDebug->isChecked();
+    AppConfig::AutoSendTcpServer = ui->ckAutoSend->isChecked();
+    AppConfig::IntervalTcpServer = ui->cboxInterval->currentText().toInt();
+    AppConfig::TcpListenIP = ui->cboxListenIP->currentText();
+    AppConfig::TcpListenPort = ui->txtListenPort->text().trimmed().toInt();
+    AppConfig::SelectAllTcpServer = ui->ckSelectAll->isChecked();
+    AppConfig::writeConfig();
 
     this->changeTimer();
 }
 
 void frmTcpServer::changeTimer()
 {
-    timer->setInterval(App::IntervalTcpServer);
-    if (App::AutoSendTcpServer) {
+    timer->setInterval(AppConfig::IntervalTcpServer);
+    if (AppConfig::AutoSendTcpServer) {
         if (!timer->isActive()) {
             timer->start();
         }
@@ -192,7 +192,7 @@ void frmTcpServer::on_btnListen_clicked()
 void frmTcpServer::on_btnSave_clicked()
 {
     QString data = ui->txtMain->toPlainText();
-    App::saveData(data);
+    AppConfig::saveData(data);
     on_btnClear_clicked();
 }
 

@@ -37,7 +37,7 @@ void TcpServer::disconnected()
 
 bool TcpServer::start()
 {
-    bool ok = listen(QHostAddress(App::TcpListenIP), App::TcpListenPort);
+    bool ok = listen(QHostAddress(AppConfig::TcpListenIP), AppConfig::TcpListenPort);
     return ok;
 }
 
