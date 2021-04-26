@@ -37,13 +37,10 @@ private:
 public:
     //设置所有列居中
     void setAllCenter(bool allCenter);
-
     //设置居中对齐列索引集合
     void setAlignCenterColumn(const QList<int> &alignCenterColumn);
-
     //设置右对齐列索引集合
     void setAlignRightColumn(const QList<int> &alignRightColumn);
-
 };
 
 //计算复合条件的记录总行数,以便分页
@@ -87,7 +84,6 @@ public:
         DbType_Other = 255      //其他数据库
     };
 
-    static DbPage *Instance();
     explicit DbPage(QObject *parent = 0);
 
     //绑定数据到下拉框
@@ -97,21 +93,19 @@ public:
                          QList<QComboBox *> cboxs, const QString &connName = "qt_sql_default_connection");
 
 private:
-    static QScopedPointer<DbPage> self;
-
     int startIndex;             //分页开始索引,每次翻页都变动
     SqlQueryModel *queryModel;  //查询模型
 
-    QLabel *labPageCount;       //总页数标签
+    QLabel *labPageTotal;       //总页数标签
     QLabel *labPageCurrent;     //当前页标签
-    QLabel *labResultCount;     //总记录数标签
-    QLabel *labResultCurrent;   //每页记录数标签
-    QLabel *labResult;          //显示查询用时标签
-    QLabel *labInfo;            //总页数当前页总记录数每页记录数
+    QLabel *labRecordsTotal;    //总记录数标签
+    QLabel *labRecordsPerpage;  //每页记录数标签
+    QLabel *labSelectTime;      //显示查询用时标签
+    QLabel *labSelectInfo;      //总页数当前页总记录数每页记录数
 
     QTableView *tableView;      //显示数据的表格对象
     QAbstractButton *btnFirst;  //第一页按钮对象
-    QAbstractButton *btnPre;    //上一页按钮对象
+    QAbstractButton *btnPrevious;//上一页按钮对象
     QAbstractButton *btnNext;   //下一页按钮对象
     QAbstractButton *btnLast;   //末一页按钮对象
 
@@ -120,9 +114,9 @@ private:
     DbType dbType;              //数据库类型
 
     quint32 pageCurrent;        //当前第几页
-    quint32 pageCount;          //总页数
-    quint32 resultCount;        //总记录数
-    quint32 resultCurrent;      //每页显示记录数
+    quint32 pageTotal;          //总页数
+    quint32 recordsTotal;       //总记录数
+    quint32 recordsPerpage;     //每页显示记录数
 
     QString tableName;          //表名
     QString selectColumn;       //要查询的字段集合
@@ -136,12 +130,6 @@ private:
     int insertColumnWidth;      //插入的列的宽度
 
 private slots:
-    void first();               //第一页
-    void previous();            //上一页
-    void next();                //下一页
-    void last();                //末一页
-
-private slots:
     //绑定sql语句到表格
     void bindData(const QString &sql);
     //生成分页sql语句
@@ -151,66 +139,79 @@ private slots:
     void slot_receiveCount(quint32 count, double msec);
 
 signals:
-    void receivePage(quint32 pageCurrent, quint32 pageCount, quint32 resultCount, quint32 resultCurrent);
+    //将翻页后的页码信息发出去可能其他地方要用到
+    void receivePage(quint32 pageCurrent, quint32 pageTotal, quint32 recordsTotal, quint32 recordsPerpage);
     void receiveCount(quint32 count, double msec);
 
 public slots:
     //设置需要显示数据的表格,数据翻页对应的按钮
     void setControl(QTableView *tableView,
-                    QLabel *labPageCount, QLabel *labPageCurrent,
-                    QLabel *labResultCount, QLabel *labResultCurrent,
-                    QLabel *labResult, QLabel *labInfo,
-                    QAbstractButton *btnFirst, QAbstractButton *btnPre,
+                    QLabel *labPageTotal, QLabel *labPageCurrent,
+                    QLabel *labRecordsTotal, QLabel *labRecordsPerpage,
+                    QLabel *labSelectTime, QLabel *labSelectInfo,
+                    QAbstractButton *btnFirst, QAbstractButton *btnPrevious,
                     QAbstractButton *btnNext, QAbstractButton *btnLast,
+                    const QString &countName, const QString &connName = "qt_sql_default_connection");
+    void setControl(QTableView *tableView,
+                    QLabel *labPageTotal, QLabel *labPageCurrent,
+                    QLabel *labRecordsTotal, QLabel *labRecordsPerpage,
+                    QLabel *labSelectTime, QLabel *labSelectInfo,
+                    const QString &countName, const QString &connName = "qt_sql_default_connection");
+    void setControl(QTableView *tableView,
+                    QAbstractButton *btnFirst, QAbstractButton *btnPrevious,
+                    QAbstractButton *btnNext, QAbstractButton *btnLast,
+                    const QString &countName, const QString &connName = "qt_sql_default_connection");
+    void setControl(QTableView *tableView,
                     const QString &countName, const QString &connName = "qt_sql_default_connection");
 
     //设置数据库连接名称
     void setConnName(const QString &connName);
-
     //设置数据库类型
     void setDbType(const DbType &dbType);
 
     //设置要查询的表名
     void setTableName(const QString &tableName);
-
     //设置要查询的字段列名集合
     void setSelectColumn(const QString &selectColumn);
 
     //设置排序sql
     void setOrderSql(const QString &orderSql);
-
     //设置条件sql
     void setWhereSql(const QString &whereSql);
 
     //设置每页显示多少行数据
-    void setResultCurrent(int resultCurrent);
-
+    void setRecordsPerpage(int recordsPerpage);
     //设置列名称集合
     void setColumnNames(const QList<QString> &columnNames);
-
     //设置列宽度集合
     void setColumnWidths(const QList<int> &columnWidths);
 
     //设置所有列居中
     void setAllCenter(bool allCenter);
-
     //设置居中对齐列索引集合
     void setAlignCenterColumn(const QList<int> &alignCenterColumn);
-
     //设置右对齐列索引集合
     void setAlignRightColumn(const QList<int> &alignRightColumn);
 
     //设置插入的列的索引
     void setInsertColumnIndex(int insertColumnIndex);
-
     //设置插入的列的标题
     void setInsertColumnName(const QString &insertColumnName);
-
     //设置插入的列的宽度
     void setInsertColumnWidth(int insertColumnWidth);
 
+    //根据首页末页禁用按钮
+    void changeBtnEnable();
     //执行查询
     void select();
+    //指定页跳转
+    void selectPage(int page);
+
+    //翻页 第一页+上一页+下一页+末一页
+    void first();
+    void previous();
+    void next();
+    void last();
 };
 
 #endif // DBPAGE_H

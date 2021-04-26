@@ -24,13 +24,12 @@ class QCheckBox;
 class QScrollBar;
 
 #ifdef quc
-class Q_DECL_EXPORT FlatUI : public QObject
+class Q_DECL_EXPORT FlatUI
 #else
-class FlatUI : public QObject
+class FlatUI
 #endif
 
-{
-    Q_OBJECT
+{    
 public:
     //设置按钮样式
     static QString setPushButtonQss(QPushButton *btn,                               //按钮对象
@@ -52,11 +51,11 @@ public:
 
     //设置进度条样式
     static QString setProgressQss(QProgressBar *bar,
-                                     int barHeight = 8,                             //进度条高度
-                                     int barRadius = 5,                             //进度条半径
-                                     int fontSize = 9,                              //文字字号
-                                     const QString &normalColor = "#E8EDF2",        //正常颜色
-                                     const QString &chunkColor = "#E74C3C");        //进度颜色
+                                  int barHeight = 8,                             //进度条高度
+                                  int barRadius = 5,                             //进度条半径
+                                  int fontSize = 9,                              //文字字号
+                                  const QString &normalColor = "#E8EDF2",        //正常颜色
+                                  const QString &chunkColor = "#E74C3C");        //进度颜色
 
     //设置滑块条样式
     static QString setSliderQss(QSlider *slider,                                    //滑动条对象

@@ -88,7 +88,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnPre">
+       <widget class="QPushButton" name="btnPreVious">
         <property name="minimumSize">
          <size>
           <width>50</width>
@@ -164,7 +164,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="labPageCount">
+       <widget class="QLabel" name="labPageTotal">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -186,7 +186,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="labResultCount">
+       <widget class="QLabel" name="labRecordsTotal">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -230,7 +230,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="labResultCurrent">
+       <widget class="QLabel" name="labRecordsPerpage">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -252,7 +252,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="labResult">
+       <widget class="QLabel" name="labSelectTime">
         <property name="minimumSize">
          <size>
           <width>0</width>

@@ -11,12 +11,12 @@
 #include "qdebug.h"
 
 QString FlatUI::setPushButtonQss(QPushButton *btn, int radius, int padding,
-                                    const QString &normalColor,
-                                    const QString &normalTextColor,
-                                    const QString &hoverColor,
-                                    const QString &hoverTextColor,
-                                    const QString &pressedColor,
-                                    const QString &pressedTextColor)
+                                 const QString &normalColor,
+                                 const QString &normalTextColor,
+                                 const QString &hoverColor,
+                                 const QString &hoverTextColor,
+                                 const QString &pressedColor,
+                                 const QString &pressedTextColor)
 {
     QStringList list;
     list.append(QString("QPushButton{border-style:none;padding:%1px;border-radius:%2px;color:%3;background:%4;}")
@@ -32,8 +32,8 @@ QString FlatUI::setPushButtonQss(QPushButton *btn, int radius, int padding,
 }
 
 QString FlatUI::setLineEditQss(QLineEdit *txt, int radius, int borderWidth,
-                                  const QString &normalColor,
-                                  const QString &focusColor)
+                               const QString &normalColor,
+                               const QString &focusColor)
 {
     QStringList list;
     list.append(QString("QLineEdit{border-style:none;padding:3px;border-radius:%1px;border:%2px solid %3;}")
@@ -47,9 +47,9 @@ QString FlatUI::setLineEditQss(QLineEdit *txt, int radius, int borderWidth,
 }
 
 QString FlatUI::setProgressQss(QProgressBar *bar, int barHeight,
-                                     int barRadius, int fontSize,
-                                     const QString &normalColor,
-                                     const QString &chunkColor)
+                               int barRadius, int fontSize,
+                               const QString &normalColor,
+                               const QString &chunkColor)
 {
 
     QStringList list;
@@ -64,10 +64,10 @@ QString FlatUI::setProgressQss(QProgressBar *bar, int barHeight,
 }
 
 QString FlatUI::setSliderQss(QSlider *slider, int sliderHeight,
-                                const QString &normalColor,
-                                const QString &grooveColor,
-                                const QString &handleBorderColor,
-                                const QString &handleColor)
+                             const QString &normalColor,
+                             const QString &grooveColor,
+                             const QString &handleBorderColor,
+                             const QString &handleColor)
 {
     int sliderRadius = sliderHeight / 2;
     int handleWidth = (sliderHeight * 3) / 2 + (sliderHeight / 5);
@@ -105,8 +105,8 @@ QString FlatUI::setSliderQss(QSlider *slider, int sliderHeight,
 }
 
 QString FlatUI::setRadioButtonQss(QRadioButton *rbtn, int indicatorRadius,
-                                     const QString &normalColor,
-                                     const QString &checkColor)
+                                  const QString &normalColor,
+                                  const QString &checkColor)
 {
     int indicatorWidth = indicatorRadius * 2;
 
@@ -124,10 +124,10 @@ QString FlatUI::setRadioButtonQss(QRadioButton *rbtn, int indicatorRadius,
 }
 
 QString FlatUI::setScrollBarQss(QWidget *scroll, int radius, int min, int max,
-                                   const QString &bgColor,
-                                   const QString &handleNormalColor,
-                                   const QString &handleHoverColor,
-                                   const QString &handlePressedColor)
+                                const QString &bgColor,
+                                const QString &handleNormalColor,
+                                const QString &handleHoverColor,
+                                const QString &handlePressedColor)
 {
     //滚动条离背景间隔
     int padding = 0;

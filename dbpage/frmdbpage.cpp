@@ -46,22 +46,20 @@ void frmDbPage::initForm()
     dbPage = new DbPage(this);
     //设置所有列居中显示
     dbPage->setAllCenter(true);
-    dbPage->setControl(ui->tableMain, ui->labPageCount, ui->labPageCurrent, ui->labResultCount, ui->labResultCurrent, ui->labResult, 0,
-                       ui->btnFirst, ui->btnPre, ui->btnNext, ui->btnLast, countName);
+    dbPage->setControl(ui->tableMain, ui->labPageTotal, ui->labPageCurrent, ui->labRecordsTotal, ui->labRecordsPerpage,
+                       ui->labSelectTime, 0, ui->btnFirst, ui->btnPreVious, ui->btnNext, ui->btnLast, countName);
     ui->tableMain->horizontalHeader()->setStretchLastSection(true);
     ui->tableMain->verticalHeader()->setDefaultSectionSize(25);
 }
 
 void frmDbPage::on_btnSelect_clicked()
 {
-    ui->labResult->setText("正在查询...");
-
     //绑定数据到表格
     QString sql = "where 1=1";
     dbPage->setTableName(tableName);
     dbPage->setOrderSql(QString("%1 %2").arg(countName).arg("asc"));
     dbPage->setWhereSql(sql);
-    dbPage->setResultCurrent(20);
+    dbPage->setRecordsPerpage(20);
     dbPage->setColumnNames(columnNames);
     dbPage->setColumnWidths(columnWidths);
     dbPage->select();

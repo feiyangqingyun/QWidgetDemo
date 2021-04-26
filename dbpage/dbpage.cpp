@@ -115,11 +115,13 @@ void DbCountThread::select()
 {
     //计算用时
     QDateTime dtStart = QDateTime::currentDateTime();
-
+    int count = 0;
     QSqlQuery query(QSqlDatabase::database(connName));
-    query.exec(sql);
-    query.next();
-    int count = query.value(0).toUInt();
+    if (query.exec(sql)) {
+        if (query.next()) {
+            count = query.value(0).toUInt();
+        }
+    }
 
     QDateTime dtEnd = QDateTime::currentDateTime();
     double msec = dtStart.msecsTo(dtEnd);
@@ -127,40 +129,26 @@ void DbCountThread::select()
 }
 
 
-QScopedPointer<DbPage> DbPage::self;
-DbPage *DbPage::Instance()
-{
-    if (self.isNull()) {
-        static QMutex mutex;
-        QMutexLocker locker(&mutex);
-        if (self.isNull()) {
-            self.reset(new DbPage);
-        }
-    }
-
-    return self.data();
-}
-
 DbPage::DbPage(QObject *parent) : QObject(parent)
 {
     startIndex = 0;
     queryModel = new SqlQueryModel;
 
     pageCurrent = 1;
-    pageCount = 0;
-    resultCount = 0;
-    resultCurrent = 0;
+    pageTotal = 0;
+    recordsTotal = 0;
+    recordsPerpage = 0;
 
-    labPageCount = 0;
+    labPageTotal = 0;
     labPageCurrent = 0;
-    labResultCount = 0;
-    labResultCurrent = 0;
-    labResult = 0;
-    labInfo = 0;
+    labRecordsTotal = 0;
+    labRecordsPerpage = 0;
+    labSelectTime = 0;
+    labSelectInfo = 0;
 
     tableView = 0;
     btnFirst = 0;
-    btnPre = 0;
+    btnPrevious = 0;
     btnNext = 0;
     btnLast = 0;
 
@@ -169,9 +157,9 @@ DbPage::DbPage(QObject *parent) : QObject(parent)
     dbType = DbType_Sqlite;
 
     pageCurrent = 0;
-    pageCount = 0;
-    resultCount = 0;
-    resultCurrent = 30;
+    pageTotal = 0;
+    recordsTotal = 0;
+    recordsPerpage = 30;
 
     tableName = "";
     selectColumn = "*";
@@ -238,24 +226,30 @@ void DbPage::bindData(const QString &sql)
         labPageCurrent->setText(QString("第 %1 页").arg(pageCurrent));
     }
 
-    if (labPageCount != 0) {
-        labPageCount->setText(QString("共 %1 页").arg(pageCount));
+    if (labPageTotal != 0) {
+        labPageTotal->setText(QString("共 %1 页").arg(pageTotal));
     }
 
-    if (labResultCount != 0) {
-        labResultCount->setText(QString("共 %1 条").arg(resultCount));
+    if (labRecordsTotal != 0) {
+        labRecordsTotal->setText(QString("共 %1 条").arg(recordsTotal));
     }
 
-    if (labResultCurrent != 0) {
-        labResultCurrent->setText(QString("每页 %1 条").arg(resultCurrent));
+    if (labRecordsPerpage != 0) {
+        labRecordsPerpage->setText(QString("每页 %1 条").arg(recordsPerpage));
     }
 
-    if (labInfo != 0) {
-        labInfo->setText(QString("共 %1 条  每页 %2 条  共 %3 页  第 %4 页").arg(resultCount).arg(resultCurrent).arg(pageCount).arg(pageCurrent));
+    if (labSelectInfo != 0) {
+        //labSelectInfo->setText(QString("共 %1 条  每页 %2 条  共 %3 页  第 %4 页").arg(recordsTotal).arg(recordsPerpage).arg(pageTotal).arg(pageCurrent));
+        labSelectInfo->setText(QString("第 %1 页  每页 %2 条  共 %3 页  共 %4 条").arg(pageCurrent).arg(recordsPerpage).arg(pageTotal).arg(recordsTotal));
     }
 
     //发送结果信号
-    emit receivePage(pageCurrent, pageCount, resultCount, resultCurrent);
+    if (recordsTotal != recordsPerpage) {
+        emit receivePage(pageCurrent, pageTotal, recordsTotal, recordsPerpage);
+        //qDebug() << TIMEMS << startIndex << pageCurrent << pageTotal << recordsTotal << recordsPerpage;
+    }
+
+    changeBtnEnable();
 }
 
 QString DbPage::getPageSql()
@@ -263,14 +257,14 @@ QString DbPage::getPageSql()
     //组织分页SQL语句,不同的数据库分页语句不一样
     QString sql = QString("select %1 from %2 %3 order by %4").arg(selectColumn).arg(tableName).arg(whereSql).arg(orderSql);
     if (dbType == DbType_PostgreSQL || dbType == DbType_KingBase) {
-        sql = QString("%1 limit %3 offset %2;").arg(sql).arg(startIndex).arg(resultCurrent);
+        sql = QString("%1 limit %3 offset %2;").arg(sql).arg(startIndex).arg(recordsPerpage);
     } else if (dbType == DbType_SqlServer) {
         //取第m条到第n条记录：select top (n-m+1) id from tablename where id not in (select top m-1 id from tablename)
         //sql = QString("select %1 from %2 %3 order by %4").arg(selectColumn).arg(tableName).arg(whereSql).arg(orderSql);
     } else if (dbType == DbType_Oracle) {
         //暂时没有找到好办法
     } else {
-        sql = QString("%1 limit %2,%3;").arg(sql).arg(startIndex).arg(resultCurrent);
+        sql = QString("%1 limit %2,%3;").arg(sql).arg(startIndex).arg(recordsPerpage);
     }
 
     return sql;
@@ -278,120 +272,46 @@ QString DbPage::getPageSql()
 
 void DbPage::slot_receiveCount(quint32 count, double msec)
 {
-    if (labResult != 0) {
-        labResult->setText(QString("查询用时 %1 秒").arg(QString::number(msec / 1000, 'f', 3)));
+    if (labSelectTime != 0) {
+        labSelectTime->setText(QString("查询用时 %1 秒").arg(QString::number(msec / 1000, 'f', 3)));
     }
 
-    resultCount = count;
-
-    int yushu = resultCount % resultCurrent;
+    recordsTotal = count;
+    int yushu = recordsTotal % recordsPerpage;
 
     //不存在余数,说明是整行,例如300%5==0
     if (yushu == 0) {
-        if (resultCount > 0 && resultCount < resultCurrent) {
-            pageCount = 1;
+        if (recordsTotal > 0 && recordsTotal < recordsPerpage) {
+            pageTotal = 1;
         } else {
-            pageCount = resultCount / resultCurrent;
+            pageTotal = recordsTotal / recordsPerpage;
         }
     } else {
-        pageCount = (resultCount / resultCurrent) + 1;
-    }
-
-    //2014-10-9增加翻页按钮可用不可用处理,如果只有一页数据,则翻页按钮不可用
-    if (pageCount <= 1) {
-        btnFirst->setEnabled(false);
-        btnLast->setEnabled(false);
-        btnNext->setEnabled(false);
-        btnPre->setEnabled(false);
-    } else {
-        btnFirst->setEnabled(true);
-        btnLast->setEnabled(true);
-        btnNext->setEnabled(true);
-        btnPre->setEnabled(true);
+        pageTotal = (recordsTotal / recordsPerpage) + 1;
     }
 
     bindData(getPageSql());
 }
 
-void DbPage::first()
-{
-    if (pageCount > 1) {
-        startIndex = 0;
-        pageCurrent = 1;
-        bindData(getPageSql());
-        btnLast->setEnabled(true);
-        btnNext->setEnabled(true);
-    }
-
-    btnFirst->setEnabled(false);
-    btnPre->setEnabled(false);
-}
-
-void DbPage::previous()
-{
-    if (pageCurrent > 1) {
-        pageCurrent--;
-        startIndex -= resultCurrent;
-        bindData(getPageSql());
-        btnLast->setEnabled(true);
-        btnNext->setEnabled(true);
-    }
-
-    if (pageCurrent == 1) {
-        btnFirst->setEnabled(false);
-        btnPre->setEnabled(false);
-    }
-}
-
-void DbPage::next()
-{
-    if (pageCurrent < pageCount) {
-        pageCurrent++;
-        startIndex += resultCurrent;
-        bindData(getPageSql());
-        btnFirst->setEnabled(true);
-        btnPre->setEnabled(true);
-    }
-
-    if (pageCurrent == pageCount) {
-        btnLast->setEnabled(false);
-        btnNext->setEnabled(false);
-    }
-}
-
-void DbPage::last()
-{
-    if (pageCount > 0) {
-        startIndex = (pageCount - 1) * resultCurrent;
-        pageCurrent = pageCount;
-        bindData(getPageSql());
-        btnFirst->setEnabled(true);
-        btnPre->setEnabled(true);
-    }
-
-    btnLast->setEnabled(false);
-    btnNext->setEnabled(false);
-}
-
 //设置显示数据的表格控件,当前翻页信息的标签控件等
 void DbPage::setControl(QTableView *tableView,
-                        QLabel *labPageCount, QLabel *labPageCurrent,
-                        QLabel *labResultCount, QLabel *labResultCurrent,
-                        QLabel *labResult, QLabel *labInfo,
-                        QAbstractButton *btnFirst, QAbstractButton *btnPre,
+                        QLabel *labPageTotal, QLabel *labPageCurrent,
+                        QLabel *labRecordsTotal, QLabel *labRecordsPerpage,
+                        QLabel *labSelectTime, QLabel *labSelectInfo,
+                        QAbstractButton *btnFirst, QAbstractButton *btnPrevious,
                         QAbstractButton *btnNext, QAbstractButton *btnLast,
                         const QString &countName, const QString &connName)
 {
     this->tableView = tableView;
-    this->labPageCount = labPageCount;
+    this->labPageTotal = labPageTotal;
     this->labPageCurrent = labPageCurrent;
-    this->labResultCount = labResultCount;
-    this->labResultCurrent = labResultCurrent;
-    this->labResult = labResult;
-    this->labInfo = labInfo;
+    this->labRecordsTotal = labRecordsTotal;
+    this->labRecordsPerpage = labRecordsPerpage;
+    this->labSelectTime = labSelectTime;
+    this->labSelectInfo = labSelectInfo;
 
     this->btnFirst = btnFirst;
-    this->btnPre = btnPre;
+    this->btnPrevious = btnPrevious;
     this->btnNext = btnNext;
     this->btnLast = btnLast;
 
@@ -399,11 +319,37 @@ void DbPage::setControl(QTableView *tableView,
     this->connName = connName;
     this->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
+    if (btnFirst == 0 || btnPrevious == 0 || btnNext == 0 || btnLast == 0) {
+        return;
+    }
+
     //挂载翻页按钮事件
     connect(btnFirst, SIGNAL(clicked()), this, SLOT(first()));
-    connect(btnPre, SIGNAL(clicked()), this, SLOT(previous()));
+    connect(btnPrevious, SIGNAL(clicked()), this, SLOT(previous()));
     connect(btnNext, SIGNAL(clicked()), this, SLOT(next()));
     connect(btnLast, SIGNAL(clicked()), this, SLOT(last()));
+}
+
+void DbPage::setControl(QTableView *tableView,
+                        QLabel *labPageTotal, QLabel *labPageCurrent,
+                        QLabel *labRecordsTotal, QLabel *labRecordsPerpage,
+                        QLabel *labSelectTime, QLabel *labSelectInfo,
+                        const QString &countName, const QString &connName)
+{
+    setControl(tableView, labPageTotal, labPageCurrent, labRecordsTotal, labRecordsPerpage, labSelectTime, labSelectInfo, 0, 0, 0, 0, countName, connName);
+}
+
+void DbPage::setControl(QTableView *tableView,
+                        QAbstractButton *btnFirst, QAbstractButton *btnPrevious,
+                        QAbstractButton *btnNext, QAbstractButton *btnLast,
+                        const QString &countName, const QString &connName)
+{
+    setControl(tableView, 0, 0, 0, 0, 0, 0, btnFirst, btnPrevious, btnNext, btnLast, countName, connName);
+}
+
+void DbPage::setControl(QTableView *tableView, const QString &countName, const QString &connName)
+{
+    setControl(tableView, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, countName, connName);
 }
 
 void DbPage::setConnName(const QString &connName)
@@ -436,9 +382,9 @@ void DbPage::setWhereSql(const QString &whereSql)
     this->whereSql = whereSql;
 }
 
-void DbPage::setResultCurrent(int resultCurrent)
+void DbPage::setRecordsPerpage(int recordsPerpage)
 {
-    this->resultCurrent = resultCurrent;
+    this->recordsPerpage = recordsPerpage;
 }
 
 void DbPage::setColumnNames(const QList<QString> &columnNames)
@@ -481,45 +427,62 @@ void DbPage::setInsertColumnWidth(int insertColumnWidth)
     this->insertColumnWidth = insertColumnWidth;
 }
 
+void DbPage::changeBtnEnable()
+{
+    if (btnFirst == 0 || btnPrevious == 0 || btnNext == 0 || btnLast == 0) {
+        return;
+    }
+
+    //下面默认对上一页下一页按钮禁用
+    //也可以取消注释对第一页末一页同样处理
+    //因为到了第一页就可以不必再单击第一页和上一页
+    if (pageTotal <= 1) {
+        //如果只有一页数据则翻页按钮不可用
+        btnFirst->setEnabled(false);
+        btnLast->setEnabled(false);
+        btnPrevious->setEnabled(false);
+        btnNext->setEnabled(false);
+    } else {
+        //判断是否在首页末页禁用按钮
+        bool first = (pageCurrent == 1);
+        bool last = (pageCurrent == pageTotal);
+        btnFirst->setEnabled(!first);
+        btnLast->setEnabled(!last);
+        btnPrevious->setEnabled(!first);
+        btnNext->setEnabled(!last);
+    }
+}
+
 void DbPage::select()
 {
     //重置开始索引
     startIndex = 0;
     pageCurrent = 1;
+    pageTotal = 1;
+    changeBtnEnable();
 
     //假设只有一页
-    slot_receiveCount(resultCurrent, 0);
+    slot_receiveCount(recordsPerpage, 0);
 
-    //全部禁用按钮,文本显示正在查询...
-    btnFirst->setEnabled(false);
-    btnLast->setEnabled(false);
-    btnNext->setEnabled(false);
-    btnPre->setEnabled(false);
-
+    //文本显示正在查询...
     QString info = "正在查询...";
-
-    if (labInfo != 0) {
-        labInfo->setText(info);
+    if (labSelectInfo != 0) {
+        labSelectInfo->setText(info);
     }
-
     if (labPageCurrent != 0) {
         labPageCurrent->setText(info);
     }
-
-    if (labPageCount != 0) {
-        labPageCount->setText(info);
+    if (labPageTotal != 0) {
+        labPageTotal->setText(info);
     }
-
-    if (labResultCount != 0) {
-        labResultCount->setText(info);
+    if (labRecordsTotal != 0) {
+        labRecordsTotal->setText(info);
     }
-
-    if (labResultCurrent != 0) {
-        labResultCurrent->setText(info);
+    if (labRecordsPerpage != 0) {
+        labRecordsPerpage->setText(info);
     }
-
-    if (labResult != 0) {
-        labResult->setText(info);
+    if (labSelectTime != 0) {
+        labSelectTime->setText(info);
     }
 
     //开始分页绑定数据前,计算好总数据量以及行数
@@ -540,4 +503,55 @@ void DbPage::select()
 #else
     dbCountThread->select();
 #endif
+}
+
+void DbPage::selectPage(int page)
+{
+    //必须小于总页数+不是当前页
+    if (page >= 1 && page <= pageTotal && page != pageCurrent) {
+        //计算指定页对应开始的索引
+        startIndex = (page - 1) * recordsPerpage;
+        pageCurrent = page;
+        bindData(getPageSql());
+    }
+}
+
+void DbPage::first()
+{
+    //当前页不是第一页才能切换到第一页
+    if (pageTotal > 1 && pageCurrent != 1) {
+        startIndex = 0;
+        pageCurrent = 1;
+        bindData(getPageSql());
+    }
+}
+
+void DbPage::previous()
+{
+    //当前页不是第一页才能上一页
+    if (pageCurrent > 1) {
+        pageCurrent--;
+        startIndex -= recordsPerpage;
+        bindData(getPageSql());
+    }
+}
+
+void DbPage::next()
+{
+    //当前页小于总页数才能下一页
+    if (pageCurrent < pageTotal) {
+        pageCurrent++;
+        startIndex += recordsPerpage;
+        bindData(getPageSql());
+    }
+}
+
+void DbPage::last()
+{
+    //当前页不是末尾页才能切换到末尾页
+    if (pageTotal > 1 && pageCurrent != pageTotal) {
+        startIndex = (pageTotal - 1) * recordsPerpage;
+        pageCurrent = pageTotal;
+        bindData(getPageSql());
+    }
 }

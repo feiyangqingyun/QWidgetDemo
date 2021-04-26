@@ -7,9 +7,9 @@
 #include <QPainterPath>
 
 #ifdef quc
-class Q_DECL_EXPORT SmoothCurve : public QObject
+class Q_DECL_EXPORT SmoothCurve
 #else
-class SmoothCurve : public QObject
+class SmoothCurve
 #endif
 
 {
