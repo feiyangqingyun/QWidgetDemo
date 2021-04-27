@@ -30,9 +30,6 @@ private slots:
     void initOther();
     void initStyle();
     void initTranslator();
-
-private slots:
-    void on_btnInfo_clicked();
 };
 
 #endif // FRMMAIN_H

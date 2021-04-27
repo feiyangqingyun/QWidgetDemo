@@ -5,7 +5,6 @@
 #include "qtextstream.h"
 #include "qtranslator.h"
 #include "qdesktopwidget.h"
-#include "qmessagebox.h"
 #include "qdebug.h"
 
 frmMain::frmMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::frmMain)
@@ -158,9 +157,9 @@ void frmMain::initStyle()
 {
     //加载样式表
     QString qss;
-    QFile file(":/qss/psblack.css");
+    //QFile file(":/qss/psblack.css");
     //QFile file(":/qss/flatwhite.css");
-    //QFile file(":/qss/lightblue.css");
+    QFile file(":/qss/lightblue.css");
     if (file.open(QFile::ReadOnly)) {
 #if 1
         //用QTextStream读取样式文件不用区分文件编码 带bom也行
@@ -179,7 +178,7 @@ void frmMain::initStyle()
         qss = QLatin1String(file.readAll());
 #endif
         QString paletteColor = qss.mid(20, 7);
-        qApp->setPalette(QPalette(QColor(paletteColor)));
+        qApp->setPalette(QPalette(paletteColor));
         qApp->setStyleSheet(qss);
         file.close();
     }
@@ -196,9 +195,4 @@ void frmMain::initTranslator()
     QTranslator *translator2 = new QTranslator(qApp);
     translator2->load(":/image/widgets.qm");
     qApp->installTranslator(translator2);
-}
-
-void frmMain::on_btnInfo_clicked()
-{
-    QMessageBox::information(this, "提示", "这里是提示信息!");
 }

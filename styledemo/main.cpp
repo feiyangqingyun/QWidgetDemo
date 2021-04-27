@@ -1,4 +1,5 @@
-﻿#include "frmmain.h"
+﻿#pragma execution_character_set("utf-8")
+#include "frmmain.h"
 #include <QApplication>
 #include <QTextCodec>
 #include <QDesktopWidget>
@@ -23,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmMain w;
-    w.setWindowTitle("styledemo  Author: feiyangqingyun@163.com  QQ: 517216493");
+    w.setWindowTitle("样式表示例 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     //居中显示窗体

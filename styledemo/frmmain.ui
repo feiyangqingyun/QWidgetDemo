@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>850</width>
-    <height>626</height>
+    <width>978</width>
+    <height>723</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -1218,8 +1218,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>850</width>
-     <height>23</height>
+     <width>978</width>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -1310,5 +1310,38 @@
   </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>horizontalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>progressBar1</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>422</x>
+     <y>600</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>423</x>
+     <y>627</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>verticalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>progressBar2</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>885</x>
+     <y>589</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>902</x>
+     <y>589</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
