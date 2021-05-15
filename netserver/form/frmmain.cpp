@@ -31,9 +31,6 @@ void frmMain::initForm()
     connect(tcpServer2, SIGNAL(sendData(QString, int, QString, QString)), this, SLOT(sendData2(QString, int, QString, QString)));
     connect(tcpServer2, SIGNAL(receiveData(QString, int, QString, QString)), this, SLOT(receiveData2(QString, int, QString, QString)));
     connect(tcpServer2, SIGNAL(receiveDeviceID(QString, int, QString)), this, SLOT(receiveDeviceID2(QString, int, QString)));
-
-    QUIHelper::setLabStyle(ui->labCount1, 3);
-    QUIHelper::setLabStyle(ui->labCount2, 3);
 }
 
 void frmMain::initConfig()

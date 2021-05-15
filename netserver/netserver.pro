@@ -18,9 +18,12 @@ HEADERS     += head.h
 RESOURCES   += other/main.qrc
 CONFIG      += warn_off
 
-include ($$PWD/api/api.pri)
-include ($$PWD/form/form.pri)
-
 INCLUDEPATH += $$PWD
 INCLUDEPATH += $$PWD/api
 INCLUDEPATH += $$PWD/form
+
+include ($$PWD/api/api.pri)
+include ($$PWD/form/form.pri)
+
+INCLUDEPATH += $$PWD/../core_qui
+include ($$PWD/../core_qui/core_qui.pri)

@@ -35,3 +35,6 @@ INCLUDEPATH += $$PWD/form
 
 include ($$PWD/api/api.pri)
 include ($$PWD/form/form.pri)
+
+INCLUDEPATH += $$PWD/../core_qui
+include ($$PWD/../core_qui/core_qui.pri)

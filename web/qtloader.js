@@ -189,7 +189,7 @@ function QtLoader(config)
             removeChildren(container);
             var loadingText = document.createElement("text");
             loadingText.className = "QtLoading"
-            loadingText.innerHTML = '<p><center> ${loadingState}...</center><p>';
+            loadingText.innerHTML = '<p><center> ${loadingState} ...</center><p>';
             return loadingText;
         };
 
@@ -265,7 +265,7 @@ function QtLoader(config)
 
     function fetchThenCompileWasm(response) {
         return response.arrayBuffer().then(function(data) {
-            self.loaderSubState = "Compiling";
+            self.loaderSubState = "正在编译";
             setStatus("Loading") // trigger loaderSubState udpate
             return WebAssembly.compile(data);
         });
@@ -274,7 +274,7 @@ function QtLoader(config)
     function fetchCompileWasm(filePath) {
         return fetchResource(filePath).then(function(response) {
             if (typeof WebAssembly.compileStreaming !== "undefined") {
-                self.loaderSubState = "Downloading/Compiling";
+                self.loaderSubState = "第一步: 下载 / 第二步: 编译";
                 setStatus("Loading");
                 return WebAssembly.compileStreaming(response).catch(function(error) {
                     // compileStreaming may/will fail if the server does not set the correct
@@ -312,7 +312,7 @@ function QtLoader(config)
         // Continue waiting if loadEmscriptenModule() is called again
         if (publicAPI.status == "Loading")
             return;
-        self.loaderSubState = "Downloading";
+        self.loaderSubState = "正在下载";
         setStatus("Loading");
 
         // Fetch emscripten generated javascript runtime
