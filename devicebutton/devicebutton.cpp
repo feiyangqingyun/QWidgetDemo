@@ -1,20 +1,20 @@
 ﻿#pragma execution_character_set("utf-8")
 
-#include "buttondefence.h"
+#include "devicebutton.h"
 #include "qpainter.h"
 #include "qevent.h"
 #include "qtimer.h"
 #include "qdebug.h"
 
-ButtonDefence::ButtonDefence(QWidget *parent) : QWidget(parent)
+DeviceButton::DeviceButton(QWidget *parent) : QWidget(parent)
 {
     canMove = false;
     text = "1";
     buttonStyle = ButtonStyle_Police;
-    buttonStatus = ButtonStatus_Arming;
+    buttonColor = ButtonColor_Green;
 
     type = "police";
-    imgName = QString(":/image/buttondefence/btn_defence_disarming_%1.png").arg(type);
+    imgName = QString(":/image/devicebutton/devicebutton_green_%1.png").arg(type);
     isDark = false;
 
     timer = new QTimer(this);
@@ -24,14 +24,14 @@ ButtonDefence::ButtonDefence(QWidget *parent) : QWidget(parent)
     this->installEventFilter(this);
 }
 
-ButtonDefence::~ButtonDefence()
+DeviceButton::~DeviceButton()
 {
     if (timer->isActive()) {
         timer->stop();
     }
 }
 
-void ButtonDefence::paintEvent(QPaintEvent *)
+void DeviceButton::paintEvent(QPaintEvent *)
 {
     double width = this->width();
     double height = this->height();
@@ -77,7 +77,7 @@ void ButtonDefence::paintEvent(QPaintEvent *)
     painter.drawText(rect, Qt::AlignCenter, text);
 }
 
-bool ButtonDefence::eventFilter(QObject *watched, QEvent *event)
+bool DeviceButton::eventFilter(QObject *watched, QEvent *event)
 {
     if (canMove) {
         static QPoint lastPoint;
@@ -109,54 +109,54 @@ bool ButtonDefence::eventFilter(QObject *watched, QEvent *event)
     return QWidget::eventFilter(watched, event);
 }
 
-bool ButtonDefence::getCanMove() const
+bool DeviceButton::getCanMove() const
 {
     return this->canMove;
 }
 
-QString ButtonDefence::getText() const
+QString DeviceButton::getText() const
 {
     return this->text;
 }
 
-ButtonDefence::ButtonStyle ButtonDefence::getButtonStyle() const
+DeviceButton::ButtonStyle DeviceButton::getButtonStyle() const
 {
     return this->buttonStyle;
 }
 
-ButtonDefence::ButtonStatus ButtonDefence::getButtonStatus() const
+DeviceButton::ButtonColor DeviceButton::getButtonColor() const
 {
-    return this->buttonStatus;
+    return this->buttonColor;
 }
 
-QSize ButtonDefence::sizeHint() const
+QSize DeviceButton::sizeHint() const
 {
     return QSize(50, 50);
 }
 
-QSize ButtonDefence::minimumSizeHint() const
+QSize DeviceButton::minimumSizeHint() const
 {
     return QSize(10, 10);
 }
 
-void ButtonDefence::checkAlarm()
+void DeviceButton::checkAlarm()
 {
     if (isDark) {
-        imgName = QString(":/image/buttondefence/btn_defence_error_%1.png").arg(type);
+        imgName = QString(":/image/devicebutton/devicebutton_black_%1.png").arg(type);
     } else {
-        imgName = QString(":/image/buttondefence/btn_defence_alarm_%1.png").arg(type);
+        imgName = QString(":/image/devicebutton/devicebutton_red_%1.png").arg(type);
     }
 
     isDark = !isDark;
     this->update();
 }
 
-void ButtonDefence::setCanMove(bool canMove)
+void DeviceButton::setCanMove(bool canMove)
 {
     this->canMove = canMove;
 }
 
-void ButtonDefence::setText(const QString &text)
+void DeviceButton::setText(const QString &text)
 {
     if (this->text != text) {
         this->text = text;
@@ -164,7 +164,7 @@ void ButtonDefence::setText(const QString &text)
     }
 }
 
-void ButtonDefence::setButtonStyle(const ButtonDefence::ButtonStyle &buttonStyle)
+void DeviceButton::setButtonStyle(const DeviceButton::ButtonStyle &buttonStyle)
 {
     this->buttonStyle = buttonStyle;
     if (buttonStyle == ButtonStyle_Circle) {
@@ -183,26 +183,26 @@ void ButtonDefence::setButtonStyle(const ButtonDefence::ButtonStyle &buttonStyle
         type = "circle";
     }
 
-    setButtonStatus(buttonStatus);
+    setButtonColor(buttonColor);
 }
 
-void ButtonDefence::setButtonStatus(const ButtonDefence::ButtonStatus &buttonStatus)
+void DeviceButton::setButtonColor(const DeviceButton::ButtonColor &buttonColor)
 {
-    this->buttonStatus = buttonStatus;
+    this->buttonColor = buttonColor;
     isDark = false;
     if (timer->isActive()) {
         timer->stop();
     }
 
-    if (buttonStatus == ButtonStatus_Arming) {
-        imgName = QString(":/image/buttondefence/btn_defence_arming_%1.png").arg(type);
-    } else if (buttonStatus == ButtonStatus_Disarming) {
-        imgName = QString(":/image/buttondefence/btn_defence_disarming_%1.png").arg(type);
-    } else if (buttonStatus == ButtonStatus_Bypass) {
-        imgName = QString(":/image/buttondefence/btn_defence_bypass_%1.png").arg(type);
-    } else if (buttonStatus == ButtonStatus_Error) {
-        imgName = QString(":/image/buttondefence/btn_defence_error_%1.png").arg(type);
-    } else if (buttonStatus == ButtonStatus_Alarm) {
+    if (buttonColor == ButtonColor_Green) {
+        imgName = QString(":/image/devicebutton/devicebutton_green_%1.png").arg(type);
+    } else if (buttonColor == ButtonColor_Blue) {
+        imgName = QString(":/image/devicebutton/devicebutton_blue_%1.png").arg(type);
+    } else if (buttonColor == ButtonColor_Gray) {
+        imgName = QString(":/image/devicebutton/devicebutton_gray_%1.png").arg(type);
+    } else if (buttonColor == ButtonColor_Black) {
+        imgName = QString(":/image/devicebutton/devicebutton_black_%1.png").arg(type);
+    } else if (buttonColor == ButtonColor_Red) {
         checkAlarm();
         if (!timer->isActive()) {
             timer->start();

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>frmButtonDefence</class>
- <widget class="QWidget" name="frmButtonDefence">
+ <class>frmDeviceButton</class>
+ <widget class="QWidget" name="frmDeviceButton">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -95,37 +95,37 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnArming">
+       <widget class="QPushButton" name="btnGreen">
         <property name="text">
-         <string>布防</string>
+         <string>绿色</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnDisarming">
+       <widget class="QPushButton" name="btnBlue">
         <property name="text">
-         <string>撤防</string>
+         <string>蓝色</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnAlarm">
+       <widget class="QPushButton" name="btnRed">
         <property name="text">
-         <string>报警</string>
+         <string>红色</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnBypass">
+       <widget class="QPushButton" name="btnGray">
         <property name="text">
-         <string>旁路</string>
+         <string>灰色</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnError">
+       <widget class="QPushButton" name="btnBlack">
         <property name="text">
-         <string>故障</string>
+         <string>黑色</string>
         </property>
        </widget>
       </item>

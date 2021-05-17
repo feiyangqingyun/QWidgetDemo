@@ -29,7 +29,7 @@
 | 22 | lineeditnext | 文本框回车焦点下移 |
 | 23 | zhtopy | 汉字转拼音 |
 | 24 | qwtdemo | qwt的源码版本，无需插件，直接源码集成到你的项目即可 |
-| 25 | buttondefence | 通用按钮地图效果 |
+| 25 | devicebutton | 设备按钮地图效果 |
 | 26 | mouseline | 鼠标定位十字线 |
 | 27 | emailtool | 邮件发送工具 |
 | 28 | ntpclient | NTP服务器时间同步 |
@@ -81,7 +81,7 @@
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/lineeditnext.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/zhtopy.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/qwtdemo.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/buttondefence.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/devicebutton.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/mouseline.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/emailtool.gif)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/ntpclient.gif)

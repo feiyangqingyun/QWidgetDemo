@@ -8,18 +8,18 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET      = buttondefence
+TARGET      = devicebutton
 TEMPLATE    = app
 DESTDIR     = $$PWD/../bin
 CONFIG      += warn_off
 
 SOURCES     += main.cpp
-SOURCES     += frmbuttondefence.cpp
-SOURCES     += buttondefence.cpp
+SOURCES     += frmdevicebutton.cpp
+SOURCES     += devicebutton.cpp
 
-HEADERS     += frmbuttondefence.h
-HEADERS     += buttondefence.h
+HEADERS     += frmdevicebutton.h
+HEADERS     += devicebutton.h
 
-FORMS       += frmbuttondefence.ui
+FORMS       += frmdevicebutton.ui
 
 RESOURCES   += main.qrc

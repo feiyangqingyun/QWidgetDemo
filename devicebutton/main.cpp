@@ -1,6 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 
-#include "frmbuttondefence.h"
+#include "frmdevicebutton.h"
 #include <QApplication>
 #include <QTextCodec>
 
@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(codec);
 #endif
 
-    frmButtonDefence w;
-    w.setWindowTitle("防区按钮控件");
+    frmDeviceButton w;
+    w.setWindowTitle("设备按钮控件");
     w.show();
 
     return a.exec();

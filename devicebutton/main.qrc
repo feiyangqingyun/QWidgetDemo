@@ -1,0 +1,35 @@
+﻿<RCC>
+    <qresource prefix="/">
+        <file>image/bg_call.jpg</file>
+        <file>image/devicebutton/devicebutton_black_bubble.png</file>
+        <file>image/devicebutton/devicebutton_black_bubble2.png</file>
+        <file>image/devicebutton/devicebutton_black_circle.png</file>
+        <file>image/devicebutton/devicebutton_black_msg.png</file>
+        <file>image/devicebutton/devicebutton_black_msg2.png</file>
+        <file>image/devicebutton/devicebutton_black_police.png</file>
+        <file>image/devicebutton/devicebutton_blue_bubble.png</file>
+        <file>image/devicebutton/devicebutton_blue_bubble2.png</file>
+        <file>image/devicebutton/devicebutton_blue_circle.png</file>
+        <file>image/devicebutton/devicebutton_blue_msg.png</file>
+        <file>image/devicebutton/devicebutton_blue_msg2.png</file>
+        <file>image/devicebutton/devicebutton_blue_police.png</file>
+        <file>image/devicebutton/devicebutton_gray_bubble.png</file>
+        <file>image/devicebutton/devicebutton_gray_bubble2.png</file>
+        <file>image/devicebutton/devicebutton_gray_circle.png</file>
+        <file>image/devicebutton/devicebutton_gray_msg.png</file>
+        <file>image/devicebutton/devicebutton_gray_msg2.png</file>
+        <file>image/devicebutton/devicebutton_gray_police.png</file>
+        <file>image/devicebutton/devicebutton_green_bubble.png</file>
+        <file>image/devicebutton/devicebutton_green_bubble2.png</file>
+        <file>image/devicebutton/devicebutton_green_circle.png</file>
+        <file>image/devicebutton/devicebutton_green_msg.png</file>
+        <file>image/devicebutton/devicebutton_green_msg2.png</file>
+        <file>image/devicebutton/devicebutton_green_police.png</file>
+        <file>image/devicebutton/devicebutton_red_bubble.png</file>
+        <file>image/devicebutton/devicebutton_red_bubble2.png</file>
+        <file>image/devicebutton/devicebutton_red_circle.png</file>
+        <file>image/devicebutton/devicebutton_red_msg.png</file>
+        <file>image/devicebutton/devicebutton_red_msg2.png</file>
+        <file>image/devicebutton/devicebutton_red_police.png</file>
+    </qresource>
+</RCC>
