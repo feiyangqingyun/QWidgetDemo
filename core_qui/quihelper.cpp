@@ -1076,7 +1076,11 @@ void QUIHelper::showMessageBoxInfo(const QString &info, int closeSec, bool exec)
             QUIMessageBox::Instance()->show();
         }
     } else {
-        QMessageBox::information(0, "提示", info, QMessageBox::Ok);
+        QMessageBox box(QMessageBox::Information, "提示", info);
+        box.setStandardButtons(QMessageBox::Yes);
+        box.setButtonText(QMessageBox::Yes, QString("确 定"));
+        box.exec();
+        //QMessageBox::information(0, "提示", info, QMessageBox::Yes);
     }
 }
 
@@ -1092,7 +1096,11 @@ void QUIHelper::showMessageBoxError(const QString &info, int closeSec, bool exec
             QUIMessageBox::Instance()->show();
         }
     } else {
-        QMessageBox::critical(0, "错误", info, QMessageBox::Ok);
+        QMessageBox box(QMessageBox::Critical, "错误", info);
+        box.setStandardButtons(QMessageBox::Yes);
+        box.setButtonText(QMessageBox::Yes, QString("确 定"));
+        box.exec();
+        //QMessageBox::critical(0, "错误", info, QMessageBox::Yes);
     }
 }
 
@@ -1103,7 +1111,12 @@ int QUIHelper::showMessageBoxQuestion(const QString &info)
         msg.setMessage(info, 1);
         return msg.exec();
     } else {
-        return QMessageBox::question(0, "询问", info, QMessageBox::Yes | QMessageBox::No);
+        QMessageBox box(QMessageBox::Question, "询问", info);
+        box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        box.setButtonText(QMessageBox::Yes, QString("确 定"));
+        box.setButtonText(QMessageBox::No, QString("取 消"));
+        return box.exec();
+        //return QMessageBox::question(0, "询问", info, QMessageBox::Yes | QMessageBox::No);
     }
 }
 

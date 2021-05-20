@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/qt_zh_CN.qm</file>
+        <file>image/widgets.qm</file>
+    </qresource>
+</RCC>

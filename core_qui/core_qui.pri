@@ -22,3 +22,11 @@ SOURCES += \
     $$PWD/quistyle.cpp \
     $$PWD/quitipbox.cpp \
     $$PWD/quiwidget.cpp
+
+!contains(DEFINES, no_qui_qm) {
+RESOURCES += $$PWD/source/qm.qrc
+}
+
+!contains(DEFINES, no_qui_ttf) {
+RESOURCES += $$PWD/source/ttf.qrc
+}

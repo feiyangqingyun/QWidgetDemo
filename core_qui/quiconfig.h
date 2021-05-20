@@ -14,6 +14,7 @@ public:
     static QChar IconNormal;        //还原图标
     static QChar IconClose;         //关闭图标
 
+    //全局字体
     static QString FontName;        //全局字体名称
     static int FontSize;            //全局字体大小
 

@@ -202,8 +202,8 @@ void QUIMessageBox::initControl()
     widgetMain->raise();
     frame->raise();
 
-    btnOk->setText("确定");
-    btnCancel->setText("取消");
+    btnOk->setText("确 定");
+    btnCancel->setText("取 消");
 
     connect(btnOk, SIGNAL(clicked()), this, SLOT(on_btnOk_clicked()));
     connect(btnCancel, SIGNAL(clicked()), this, SLOT(on_btnMenu_Close_clicked()));

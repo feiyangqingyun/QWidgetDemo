@@ -194,8 +194,8 @@ void QUIDateSelect::initControl()
     labTitle->setText("日期时间选择");
     labStart->setText("开始时间");
     labEnd->setText("结束时间");
-    btnOk->setText("确定");
-    btnClose->setText("关闭");
+    btnOk->setText("确 定");
+    btnClose->setText("关 闭");
 
     dateStart->setDate(QDate::currentDate());
     dateEnd->setDate(QDate::currentDate().addDays(1));
