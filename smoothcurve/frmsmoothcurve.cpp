@@ -12,13 +12,13 @@ frmSmoothCurve::frmSmoothCurve(QWidget *parent) : QWidget(parent), ui(new Ui::fr
     ui->setupUi(this);
 
     //初始化随机数种子
-    qsrand(QDateTime::currentDateTime().toMSecsSinceEpoch());
+    srand(QDateTime::currentDateTime().toMSecsSinceEpoch());
 
     //随机生成曲线上的点
     int x = -300;
     while (x < 300) {
-        datas << QPointF(x, qrand() % 300 - 100);
-        x += qMin(qrand() % 30 + 5, 300);
+        datas << QPointF(x, rand() % 300 - 100);
+        x += qMin(rand() % 30 + 5, 300);
     }
 
     //正常曲线
@@ -28,14 +28,14 @@ frmSmoothCurve::frmSmoothCurve(QWidget *parent) : QWidget(parent), ui(new Ui::fr
     }
 
     //平滑曲线1
-    qDebug() << TIMEMS << "createSmoothCurve start";
+    //qDebug() << TIMEMS << "createSmoothCurve start";
     pathSmooth1 = SmoothCurve::createSmoothCurve(datas);
-    qDebug() << TIMEMS << "createSmoothCurve stop";
+    //qDebug() << TIMEMS << "createSmoothCurve stop";
 
     //平滑曲线2
-    qDebug() << TIMEMS << "createSmoothCurve2 start";
+    //qDebug() << TIMEMS << "createSmoothCurve2 start";
     pathSmooth2 = SmoothCurve::createSmoothCurve2(datas);
-    qDebug() << TIMEMS << "createSmoothCurve2 stop";
+    //qDebug() << TIMEMS << "createSmoothCurve2 stop";
 
     ui->ckShowPoint->setChecked(true);
     connect(ui->ckShowPoint, SIGNAL(clicked(bool)), this, SLOT(update()));

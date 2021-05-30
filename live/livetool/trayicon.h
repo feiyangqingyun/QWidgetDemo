@@ -3,10 +3,10 @@
 
 /**
  * 托盘图标控件 作者:feiyangqingyun(QQ:517216493) 2017-1-8
- * 1:可设置托盘图标对应所属主窗体
- * 2:可设置托盘图标
- * 3:可设置提示信息
- * 4:自带右键菜单
+ * 1. 可设置托盘图标对应所属主窗体
+ * 2. 可设置托盘图标
+ * 3. 可设置提示信息
+ * 4. 自带右键菜单
  */
 
 #include <QObject>
@@ -15,13 +15,7 @@
 class QMenu;
 
 #ifdef quc
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-#include <QtDesigner/QDesignerExportWidget>
-#else
-#include <QtUiPlugin/QDesignerExportWidget>
-#endif
-
-class QDESIGNER_WIDGET_EXPORT TrayIcon : public QObject
+class Q_DECL_EXPORT TrayIcon : public QObject
 #else
 class TrayIcon : public QObject
 #endif

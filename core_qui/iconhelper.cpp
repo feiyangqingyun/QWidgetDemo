@@ -39,21 +39,21 @@ QFont IconHelper::getIconFont()
     return this->iconFont;
 }
 
-void IconHelper::setIcon(QLabel *lab, const QChar &icon, quint32 size)
+void IconHelper::setIcon(QLabel *lab, int icon, quint32 size)
 {
     iconFont.setPixelSize(size);
     lab->setFont(iconFont);
-    lab->setText(icon);
+    lab->setText((QChar)icon);
 }
 
-void IconHelper::setIcon(QAbstractButton *btn, const QChar &icon, quint32 size)
+void IconHelper::setIcon(QAbstractButton *btn, int icon, quint32 size)
 {
     iconFont.setPixelSize(size);
     btn->setFont(iconFont);
-    btn->setText(icon);
+    btn->setText((QChar)icon);
 }
 
-QPixmap IconHelper::getPixmap(const QColor &color, const QChar &icon, quint32 size,
+QPixmap IconHelper::getPixmap(const QColor &color, int icon, quint32 size,
                               quint32 pixWidth, quint32 pixHeight, int flags)
 {
     QPixmap pix(pixWidth, pixHeight);
@@ -66,7 +66,7 @@ QPixmap IconHelper::getPixmap(const QColor &color, const QChar &icon, quint32 si
 
     iconFont.setPixelSize(size);
     painter.setFont(iconFont);
-    painter.drawText(pix.rect(), flags, icon);
+    painter.drawText(pix.rect(), flags, (QChar)icon);
     painter.end();
 
     return pix;
@@ -106,7 +106,7 @@ QPixmap IconHelper::getPixmap(QToolButton *btn, int type)
     return pix;
 }
 
-void IconHelper::setStyle(QFrame *frame, QList<QToolButton *> btns, QList<QChar> icons,
+void IconHelper::setStyle(QFrame *frame, QList<QToolButton *> btns, QList<int> icons,
                           quint32 iconSize, quint32 iconWidth, quint32 iconHeight,
                           const QString &normalBgColor, const QString &darkBgColor,
                           const QString &normalTextColor, const QString &darkTextColor)
@@ -127,8 +127,9 @@ void IconHelper::setStyle(QFrame *frame, QList<QToolButton *> btns, QList<QChar>
 
     //存储对应按钮对象,方便鼠标移上去的时候切换图片
     for (int i = 0; i < btnCount; i++) {
-        QPixmap pixNormal = getPixmap(normalTextColor, icons.at(i), iconSize, iconWidth, iconHeight);
-        QPixmap pixDark = getPixmap(darkTextColor, icons.at(i), iconSize, iconWidth, iconHeight);
+        int icon = icons.at(i);
+        QPixmap pixNormal = getPixmap(normalTextColor, icon, iconSize, iconWidth, iconHeight);
+        QPixmap pixDark = getPixmap(darkTextColor, icon, iconSize, iconWidth, iconHeight);
 
         QToolButton *btn = btns.at(i);
         btn->setIcon(QIcon(pixNormal));
@@ -194,7 +195,7 @@ void IconHelper::removeStyle(QList<QToolButton *> btns)
     }
 }
 
-void IconHelper::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<QChar> icons,
+void IconHelper::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<int> icons,
                           quint32 iconSize, quint32 iconWidth, quint32 iconHeight,
                           const QString &type, int borderWidth, const QString &borderColor,
                           const QString &normalBgColor, const QString &darkBgColor,
@@ -247,8 +248,9 @@ void IconHelper::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<QCha
 
     //存储对应按钮对象,方便鼠标移上去的时候切换图片
     for (int i = 0; i < btnCount; i++) {
-        QPixmap pixNormal = getPixmap(normalTextColor, icons.at(i), iconSize, iconWidth, iconHeight);
-        QPixmap pixDark = getPixmap(darkTextColor, icons.at(i), iconSize, iconWidth, iconHeight);
+        int icon = icons.at(i);
+        QPixmap pixNormal = getPixmap(normalTextColor, icon, iconSize, iconWidth, iconHeight);
+        QPixmap pixDark = getPixmap(darkTextColor, icon, iconSize, iconWidth, iconHeight);
 
         QToolButton *btn = btns.at(i);
         btn->setIcon(QIcon(pixNormal));
@@ -264,7 +266,7 @@ void IconHelper::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<QCha
     }
 }
 
-void IconHelper::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<QChar> icons, const IconHelper::StyleColor &styleColor)
+void IconHelper::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<int> icons, const IconHelper::StyleColor &styleColor)
 {
     int btnCount = btns.count();
     int charCount = icons.count();
@@ -320,10 +322,11 @@ void IconHelper::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<QCha
 
     //存储对应按钮对象,方便鼠标移上去的时候切换图片
     for (int i = 0; i < btnCount; i++) {
-        QPixmap pixNormal = getPixmap(styleColor.normalTextColor, icons.at(i), iconSize, iconWidth, iconHeight);
-        QPixmap pixHover = getPixmap(styleColor.hoverTextColor, icons.at(i), iconSize, iconWidth, iconHeight);
-        QPixmap pixPressed = getPixmap(styleColor.pressedTextColor, icons.at(i), iconSize, iconWidth, iconHeight);
-        QPixmap pixChecked = getPixmap(styleColor.checkedTextColor, icons.at(i), iconSize, iconWidth, iconHeight);
+        int icon = icons.at(i);
+        QPixmap pixNormal = getPixmap(styleColor.normalTextColor, icon, iconSize, iconWidth, iconHeight);
+        QPixmap pixHover = getPixmap(styleColor.hoverTextColor, icon, iconSize, iconWidth, iconHeight);
+        QPixmap pixPressed = getPixmap(styleColor.pressedTextColor, icon, iconSize, iconWidth, iconHeight);
+        QPixmap pixChecked = getPixmap(styleColor.checkedTextColor, icon, iconSize, iconWidth, iconHeight);
 
         QToolButton *btn = btns.at(i);
         btn->setIcon(QIcon(pixNormal));

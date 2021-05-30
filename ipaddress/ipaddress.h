@@ -24,6 +24,7 @@ class IPAddress : public QWidget
 
 {
     Q_OBJECT
+
     Q_PROPERTY(QString ip READ getIP WRITE setIP)
 
 public:

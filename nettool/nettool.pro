@@ -14,6 +14,8 @@ QT += websockets
 DEFINES += websocket
 }}
 
+greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
+
 TARGET      = nettool
 TEMPLATE    = app
 RC_FILE     = other/main.rc

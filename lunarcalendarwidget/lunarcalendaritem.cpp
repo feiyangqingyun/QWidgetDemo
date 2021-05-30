@@ -224,7 +224,7 @@ void LunarCalendarItem::drawLunar(QPainter *painter)
 
     QFont font;
     font.setPixelSize(side / 5);
-    painter->setFont(font);    
+    painter->setFont(font);
 
     QRect lunarRect(0, height / 2, width, height / 2);
     painter->drawText(lunarRect, Qt::AlignCenter, lunar);

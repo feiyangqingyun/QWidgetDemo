@@ -25,6 +25,7 @@ class LightButton : public QWidget
 
 {
     Q_OBJECT
+
     Q_PROPERTY(QString text READ getText WRITE setText)
     Q_PROPERTY(QColor textColor READ getTextColor WRITE setTextColor)
     Q_PROPERTY(QColor alarmColor READ getAlarmColor WRITE setAlarmColor)

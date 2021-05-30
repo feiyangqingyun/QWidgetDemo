@@ -36,7 +36,7 @@ void frmFramelessWidget::initWidget(QWidget *w)
 
     //设置下背景颜色区别看
     QPalette palette = w->palette();
-    palette.setBrush(QPalette::Background, QColor(162, 121, 197));
+    palette.setBrush(QPalette::Window, QColor(162, 121, 197));
     w->setPalette(palette);
 
     QPushButton *btn = new QPushButton(w);

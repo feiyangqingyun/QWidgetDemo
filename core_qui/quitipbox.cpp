@@ -198,7 +198,7 @@ void QUITipBox::on_btnMenu_Close_clicked()
     close();
 }
 
-void QUITipBox::setIconMain(const QChar &icon, quint32 size)
+void QUITipBox::setIconMain(int icon, quint32 size)
 {
     IconHelper::Instance()->setIcon(this->labIco, icon, size);
 }
@@ -216,8 +216,7 @@ void QUITipBox::setTip(const QString &title, const QString &tip, bool fullScreen
     this->labInfo->setAlignment(center ? Qt::AlignCenter : Qt::AlignLeft);
     this->setWindowTitle(this->labTitle->text());
 
-    int screenIndex = QUIHelper::getScreenIndex();
-    QRect rect = fullScreen ? qApp->desktop()->screenGeometry(screenIndex) : qApp->desktop()->availableGeometry(screenIndex);
+    QRect rect = QUIHelper::getScreenRect(!fullScreen);
     int width = rect.width();
     int height = rect.height();
     int x = width - this->width() + rect.x();
@@ -235,8 +234,7 @@ void QUITipBox::setTip(const QString &title, const QString &tip, bool fullScreen
 
 void QUITipBox::hide()
 {
-    int screenIndex = QUIHelper::getScreenIndex();
-    QRect rect = fullScreen ? qApp->desktop()->screenGeometry(screenIndex) : qApp->desktop()->availableGeometry(screenIndex);
+    QRect rect = QUIHelper::getScreenRect(!fullScreen);
     int width = rect.width();
     int height = rect.height();
     int x = width - this->width() + rect.x();
@@ -245,7 +243,7 @@ void QUITipBox::hide()
     //启动动画
     animation->stop();
     animation->setStartValue(QPoint(x, y));
-    animation->setEndValue(QPoint(x, qApp->desktop()->geometry().height()));
+    animation->setEndValue(QPoint(x, QUIHelper::getScreenRect(false).height()));
     animation->start();
 }
 

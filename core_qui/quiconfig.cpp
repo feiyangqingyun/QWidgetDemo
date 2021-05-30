@@ -1,11 +1,11 @@
 ﻿#include "quiconfig.h"
 
-QChar QUIConfig::IconMain = 0xf072;
-QChar QUIConfig::IconMenu = 0xf0d7;
-QChar QUIConfig::IconMin = 0xf068;
-QChar QUIConfig::IconMax = 0xf2d2;
-QChar QUIConfig::IconNormal = 0xf2d0;
-QChar QUIConfig::IconClose = 0xf00d;
+int QUIConfig::IconMain = 0xf072;
+int QUIConfig::IconMenu = 0xf0d7;
+int QUIConfig::IconMin = 0xf068;
+int QUIConfig::IconMax = 0xf2d2;
+int QUIConfig::IconNormal = 0xf2d0;
+int QUIConfig::IconClose = 0xf00d;
 
 #ifdef __arm__
 QString QUIConfig::FontName = "WenQuanYi Micro Hei";

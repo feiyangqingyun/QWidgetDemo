@@ -3,7 +3,7 @@
 
 #include <QtCore>
 #include <QtGui>
-#if (QT_VERSION > QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
 #include <QtWidgets>
 #endif
 
@@ -24,12 +24,12 @@ public:
     QFont getIconFont();
 
     //设置图形字体到标签
-    void setIcon(QLabel *lab, const QChar &icon, quint32 size = 12);
+    void setIcon(QLabel *lab, int icon, quint32 size = 12);
     //设置图形字体到按钮
-    void setIcon(QAbstractButton *btn, const QChar &icon, quint32 size = 12);
+    void setIcon(QAbstractButton *btn, int icon, quint32 size = 12);
 
     //获取指定图形字体,可以指定文字大小,图片宽高,文字对齐
-    QPixmap getPixmap(const QColor &color, const QChar &icon, quint32 size = 12,
+    QPixmap getPixmap(const QColor &color, int icon, quint32 size = 12,
                       quint32 pixWidth = 15, quint32 pixHeight = 15,
                       int flags = Qt::AlignCenter);
 
@@ -38,7 +38,7 @@ public:
     QPixmap getPixmap(QToolButton *btn, int type);
 
     //指定QFrame导航按钮样式,带图标
-    void setStyle(QFrame *frame, QList<QToolButton *> btns, QList<QChar> icons,
+    void setStyle(QFrame *frame, QList<QToolButton *> btns, QList<int> icons,
                   quint32 iconSize = 12, quint32 iconWidth = 15, quint32 iconHeight = 15,
                   const QString &normalBgColor = "#2FC5A2",
                   const QString &darkBgColor = "#3EA7E9",
@@ -57,7 +57,7 @@ public:
     void removeStyle(QList<QToolButton *> btns);
 
     //指定QWidget导航面板样式,带图标和效果切换
-    void setStyle(QWidget *widget, QList<QToolButton *> btns, QList<QChar> icons,
+    void setStyle(QWidget *widget, QList<QToolButton *> btns, QList<int> icons,
                   quint32 iconSize = 12, quint32 iconWidth = 15, quint32 iconHeight = 15,
                   const QString &type = "left", int borderWidth = 3,
                   const QString &borderColor = "#029FEA",
@@ -101,7 +101,7 @@ public:
     };
 
     //指定QWidget导航面板样式,带图标和效果切换+悬停颜色+按下颜色+选中颜色
-    void setStyle(QWidget *widget, QList<QToolButton *> btns, QList<QChar> icons, const StyleColor &styleColor);
+    void setStyle(QWidget *widget, QList<QToolButton *> btns, QList<int> icons, const StyleColor &styleColor);
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);

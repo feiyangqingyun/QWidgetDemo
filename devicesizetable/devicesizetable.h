@@ -21,6 +21,7 @@ class DeviceSizeTable : public QTableWidget
 
 {
     Q_OBJECT
+
     Q_PROPERTY(QColor bgColor READ getBgColor WRITE setBgColor)
     Q_PROPERTY(QColor chunkColor1 READ getChunkColor1 WRITE setChunkColor1)
     Q_PROPERTY(QColor chunkColor2 READ getChunkColor2 WRITE setChunkColor2)

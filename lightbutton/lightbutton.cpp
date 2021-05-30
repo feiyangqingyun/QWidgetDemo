@@ -442,7 +442,7 @@ void LightButton::alarm()
         bgColor = normalColor;
     } else {
         textColor = QColor(255, 255, 255);
-        bgColor = alarmColor;        
+        bgColor = alarmColor;
     }
 
     this->update();

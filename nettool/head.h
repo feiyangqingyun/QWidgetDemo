@@ -9,6 +9,9 @@
 #endif
 #endif
 
-#include "appconfig.h"
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#include <QtCore5Compat>
+#endif
 
 #pragma execution_character_set("utf-8")
+#include "appconfig.h"

@@ -4,7 +4,6 @@
 #include "ui_frmflatui.h"
 #include "flatui.h"
 #include "qdebug.h"
-#include "qdesktopwidget.h"
 #include "qdatetime.h"
 
 frmFlatUI::frmFlatUI(QWidget *parent) : QWidget(parent), ui(new Ui::frmFlatUI)
@@ -58,7 +57,7 @@ void frmFlatUI::initForm()
     FlatUI::setScrollBarQss(ui->verticalScrollBar, 8, 120, 20, "#606060", "#34495E", "#1ABC9C", "#E74C3C");
 
     //设置列数和列宽
-    int width = qApp->desktop()->availableGeometry().width() - 120;
+    int width = 1920;
     ui->tableWidget->setColumnCount(5);
     ui->tableWidget->setColumnWidth(0, width * 0.06);
     ui->tableWidget->setColumnWidth(1, width * 0.10);
@@ -82,7 +81,6 @@ void frmFlatUI::initForm()
 
     for (int i = 0; i < 300; i++) {
         ui->tableWidget->setRowHeight(i, 24);
-
         QTableWidgetItem *itemDeviceID = new QTableWidgetItem(QString::number(i + 1));
         QTableWidgetItem *itemDeviceName = new QTableWidgetItem(QString("测试设备%1").arg(i + 1));
         QTableWidgetItem *itemDeviceAddr = new QTableWidgetItem(QString::number(i + 1));
@@ -95,5 +93,4 @@ void frmFlatUI::initForm()
         ui->tableWidget->setItem(i, 3, itemContent);
         ui->tableWidget->setItem(i, 4, itemTime);
     }
-
 }

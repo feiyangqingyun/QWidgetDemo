@@ -4,14 +4,13 @@
 #include "qmutex.h"
 #include "qmenu.h"
 #include "qapplication.h"
-#include "qdesktopwidget.h"
 #include "qdebug.h"
 
 QScopedPointer<TrayIcon> TrayIcon::self;
 TrayIcon *TrayIcon::Instance()
 {
     if (self.isNull()) {
-        QMutex mutex;
+        static QMutex mutex;
         QMutexLocker locker(&mutex);
         if (self.isNull()) {
             self.reset(new TrayIcon);
@@ -27,21 +26,21 @@ TrayIcon::TrayIcon(QObject *parent) : QObject(parent)
     trayIcon = new QSystemTrayIcon(this);
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(iconIsActived(QSystemTrayIcon::ActivationReason)));
-    menu = new QMenu(QApplication::desktop());
+    menu = new QMenu;
     exitDirect = true;
 }
 
 void TrayIcon::iconIsActived(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason) {
-    case QSystemTrayIcon::Trigger:
-    case QSystemTrayIcon::DoubleClick: {
-        mainWidget->showNormal();
-        break;
-    }
+        case QSystemTrayIcon::Trigger:
+        case QSystemTrayIcon::DoubleClick: {
+            mainWidget->showNormal();
+            break;
+        }
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 

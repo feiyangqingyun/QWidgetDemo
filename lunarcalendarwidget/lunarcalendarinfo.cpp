@@ -235,45 +235,45 @@ int LunarCalendarInfo::getMonthDays(int year, int month)
     int loopDay = isLoopYear(year) ? 1 : 0;
 
     switch (month) {
-    case 1:
-        countDay = 31;
-        break;
-    case 2:
-        countDay = 28 + loopDay;
-        break;
-    case 3:
-        countDay = 31;
-        break;
-    case 4:
-        countDay = 30;
-        break;
-    case 5:
-        countDay = 31;
-        break;
-    case 6:
-        countDay = 30;
-        break;
-    case 7:
-        countDay = 31;
-        break;
-    case 8:
-        countDay = 31;
-        break;
-    case 9:
-        countDay = 30;
-        break;
-    case 10:
-        countDay = 31;
-        break;
-    case 11:
-        countDay = 30;
-        break;
-    case 12:
-        countDay = 31;
-        break;
-    default:
-        countDay = 30;
-        break;
+        case 1:
+            countDay = 31;
+            break;
+        case 2:
+            countDay = 28 + loopDay;
+            break;
+        case 3:
+            countDay = 31;
+            break;
+        case 4:
+            countDay = 30;
+            break;
+        case 5:
+            countDay = 31;
+            break;
+        case 6:
+            countDay = 30;
+            break;
+        case 7:
+            countDay = 31;
+            break;
+        case 8:
+            countDay = 31;
+            break;
+        case 9:
+            countDay = 30;
+            break;
+        case 10:
+            countDay = 31;
+            break;
+        case 11:
+            countDay = 30;
+            break;
+        case 12:
+            countDay = 31;
+            break;
+        default:
+            countDay = 30;
+            break;
     }
 
     return countDay;
@@ -286,45 +286,45 @@ int LunarCalendarInfo::getTotalMonthDays(int year, int month)
     int loopDay = isLoopYear(year) ? 1 : 0;
 
     switch (month) {
-    case 1:
-        countDay = 0;
-        break;
-    case 2:
-        countDay = 31;
-        break;
-    case 3:
-        countDay = 59 + loopDay;
-        break;
-    case 4:
-        countDay = 90 + loopDay;
-        break;
-    case 5:
-        countDay = 120 + loopDay;
-        break;
-    case 6:
-        countDay = 151 + loopDay;
-        break;
-    case 7:
-        countDay = 181 + loopDay;
-        break;
-    case 8:
-        countDay = 212 + loopDay;
-        break;
-    case 9:
-        countDay = 243 + loopDay;
-        break;
-    case 10:
-        countDay = 273 + loopDay;
-        break;
-    case 11:
-        countDay = 304 + loopDay;
-        break;
-    case 12:
-        countDay = 334 + loopDay;
-        break;
-    default:
-        countDay = 0;
-        break;
+        case 1:
+            countDay = 0;
+            break;
+        case 2:
+            countDay = 31;
+            break;
+        case 3:
+            countDay = 59 + loopDay;
+            break;
+        case 4:
+            countDay = 90 + loopDay;
+            break;
+        case 5:
+            countDay = 120 + loopDay;
+            break;
+        case 6:
+            countDay = 151 + loopDay;
+            break;
+        case 7:
+            countDay = 181 + loopDay;
+            break;
+        case 8:
+            countDay = 212 + loopDay;
+            break;
+        case 9:
+            countDay = 243 + loopDay;
+            break;
+        case 10:
+            countDay = 273 + loopDay;
+            break;
+        case 11:
+            countDay = 304 + loopDay;
+            break;
+        case 12:
+            countDay = 334 + loopDay;
+            break;
+        default:
+            countDay = 0;
+            break;
     }
 
     return countDay;
@@ -347,89 +347,89 @@ QString LunarCalendarInfo::getHoliday(int month, int day)
     QString strHoliday;
 
     switch (temp) {
-    case 0x0101:
-        strHoliday = "元旦";
-        break;
-    case 0x020E:
-        strHoliday = "情人节";
-        break;
-    case 0x0303:
-        strHoliday = "爱耳日";
-        break;
-    case 0x0305:
-        strHoliday = "志愿者服务日";
-        break;
-    case 0x0308:
-        strHoliday = "妇女节";
-        break;
-    case 0x0309:
-        strHoliday = "保护母亲河";
-        break;
-    case 0x030C:
-        strHoliday = "植树节";
-        break;
-    case 0x030F:
-        strHoliday = "消费者权益日";
-        break;
-    case 0x0401:
-        strHoliday = "愚人节";
-        break;
-    case 0x0501:
-        strHoliday = "劳动节";
-        break;
-    case 0x0504:
-        strHoliday = "青年节";
-        break;
-    case 0x0601:
-        strHoliday = "儿童节";
-        break;
-    case 0x0606:
-        strHoliday = "全国爱眼日";
-        break;
-    case 0x0701:
-        strHoliday = "建党节";
-        break;
-    case 0x0707:
-        strHoliday = "抗战纪念日";
-        break;
-    case 0x0801:
-        strHoliday = "建军节";
-        break;
-    case 0x090A:
-        strHoliday = "教师节";
-        break;
-    case 0x0910:
-        strHoliday = "脑健康日";
-        break;
-    case 0x0914:
-        strHoliday = "爱牙日";
-        break;
-    case 0x0A01:
-        strHoliday = "国庆节";
-        break;
-    case 0x0A0A:
-        strHoliday = "高血压日";
-        break;
-    case 0x0A1C:
-        strHoliday = "男性健康日";
-        break;
-    case 0x0B08:
-        strHoliday = "记者节";
-        break;
-    case 0x0B09:
-        strHoliday = "消防宣传日";
-        break;
-    case 0x0C04:
-        strHoliday = "法制宣传日";
-        break;
-    case 0x0C18:
-        strHoliday = "平安夜";
-        break;
-    case 0x0C19:
-        strHoliday = "圣诞节";
-        break;
-    default:
-        break;
+        case 0x0101:
+            strHoliday = "元旦";
+            break;
+        case 0x020E:
+            strHoliday = "情人节";
+            break;
+        case 0x0303:
+            strHoliday = "爱耳日";
+            break;
+        case 0x0305:
+            strHoliday = "志愿者服务日";
+            break;
+        case 0x0308:
+            strHoliday = "妇女节";
+            break;
+        case 0x0309:
+            strHoliday = "保护母亲河";
+            break;
+        case 0x030C:
+            strHoliday = "植树节";
+            break;
+        case 0x030F:
+            strHoliday = "消费者权益日";
+            break;
+        case 0x0401:
+            strHoliday = "愚人节";
+            break;
+        case 0x0501:
+            strHoliday = "劳动节";
+            break;
+        case 0x0504:
+            strHoliday = "青年节";
+            break;
+        case 0x0601:
+            strHoliday = "儿童节";
+            break;
+        case 0x0606:
+            strHoliday = "全国爱眼日";
+            break;
+        case 0x0701:
+            strHoliday = "建党节";
+            break;
+        case 0x0707:
+            strHoliday = "抗战纪念日";
+            break;
+        case 0x0801:
+            strHoliday = "建军节";
+            break;
+        case 0x090A:
+            strHoliday = "教师节";
+            break;
+        case 0x0910:
+            strHoliday = "脑健康日";
+            break;
+        case 0x0914:
+            strHoliday = "爱牙日";
+            break;
+        case 0x0A01:
+            strHoliday = "国庆节";
+            break;
+        case 0x0A0A:
+            strHoliday = "高血压日";
+            break;
+        case 0x0A1C:
+            strHoliday = "男性健康日";
+            break;
+        case 0x0B08:
+            strHoliday = "记者节";
+            break;
+        case 0x0B09:
+            strHoliday = "消防宣传日";
+            break;
+        case 0x0C04:
+            strHoliday = "法制宣传日";
+            break;
+        case 0x0C18:
+            strHoliday = "平安夜";
+            break;
+        case 0x0C19:
+            strHoliday = "圣诞节";
+            break;
+        default:
+            break;
     }
 
     return strHoliday;
@@ -466,35 +466,35 @@ QString LunarCalendarInfo::getLunarFestival(int month, int day)
     QString strFestival;
 
     switch (temp) {
-    case 0x0101:
-        strFestival = "春节";
-        break;
-    case 0x010F:
-        strFestival = "元宵节";
-        break;
-    case 0x0202:
-        strFestival = "龙抬头";
-        break;
-    case 0x0505:
-        strFestival = "端午节";
-        break;
-    case 0x0707:
-        strFestival = "七夕节";
-        break;
-    case 0x080F:
-        strFestival = "中秋节";
-        break;
-    case 0x0909:
-        strFestival = "重阳节";
-        break;
-    case 0x0C08:
-        strFestival = "腊八节";
-        break;
-    case 0x0C1E:
-        strFestival = "除夕";
-        break;
-    default:
-        break;
+        case 0x0101:
+            strFestival = "春节";
+            break;
+        case 0x010F:
+            strFestival = "元宵节";
+            break;
+        case 0x0202:
+            strFestival = "龙抬头";
+            break;
+        case 0x0505:
+            strFestival = "端午节";
+            break;
+        case 0x0707:
+            strFestival = "七夕节";
+            break;
+        case 0x080F:
+            strFestival = "中秋节";
+            break;
+        case 0x0909:
+            strFestival = "重阳节";
+            break;
+        case 0x0C08:
+            strFestival = "腊八节";
+            break;
+        case 0x0C1E:
+            strFestival = "除夕";
+            break;
+        default:
+            break;
     }
 
     return strFestival;
@@ -641,7 +641,7 @@ void LunarCalendarInfo::getLunarCalendarInfo(int year, int month, int day,
     //记录大小月的天数 29或30
     int monthCount = 0;
 
-    if(((lunarCalendarTable.at(year - 1901) & 0x0060) >> 5) == 1) {
+    if (((lunarCalendarTable.at(year - 1901) & 0x0060) >> 5) == 1) {
         springOffset = (lunarCalendarTable.at(year - 1901) & 0x001F) - 1;
     } else {
         springOffset = (lunarCalendarTable.at(year - 1901) & 0x001F) - 1 + 31;
@@ -649,7 +649,7 @@ void LunarCalendarInfo::getLunarCalendarInfo(int year, int month, int day,
 
     //如果是不闰年且不是2月份 +1
     newYearOffset = monthAdd.at(month - 1) + day - 1;
-    if((!(year % 4)) && (month > 2)) {
+    if ((!(year % 4)) && (month > 2)) {
         newYearOffset++;
     }
 
@@ -665,7 +665,7 @@ void LunarCalendarInfo::getLunarCalendarInfo(int year, int month, int day,
         index = 1;
         flag = 0;
 
-        if((lunarCalendarTable.at(year - 1901) & (0x80000 >> (index - 1))) == 0) {
+        if ((lunarCalendarTable.at(year - 1901) & (0x80000 >> (index - 1))) == 0) {
             monthCount = 29;
         } else {
             monthCount = 30;
@@ -674,7 +674,7 @@ void LunarCalendarInfo::getLunarCalendarInfo(int year, int month, int day,
         while (newYearOffset >= monthCount) {
             newYearOffset -= monthCount;
             index++;
-            if (month == ((lunarCalendarTable.at(year - 1901) & 0xF00000) >> 20) ) {
+            if (month == ((lunarCalendarTable.at(year - 1901) & 0xF00000) >> 20)) {
                 flag = ~flag;
                 if (flag == 0) {
                     month++;
@@ -713,11 +713,11 @@ void LunarCalendarInfo::getLunarCalendarInfo(int year, int month, int day,
             springOffset -= monthCount;
             index--;
 
-            if(flag == 0) {
+            if (flag == 0) {
                 month--;
             }
 
-            if(month == ((lunarCalendarTable.at(year - 1901) & 0xF00000) >> 20)) {
+            if (month == ((lunarCalendarTable.at(year - 1901) & 0xF00000) >> 20)) {
                 flag = ~flag;
             }
 

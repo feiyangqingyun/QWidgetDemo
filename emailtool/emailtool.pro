@@ -4,9 +4,10 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network sql xml
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 TARGET      = emailtool
 TEMPLATE    = app
@@ -14,10 +15,10 @@ DESTDIR     = $$PWD/../bin
 CONFIG      += warn_off
 
 SOURCES     += main.cpp
-SOURCES     += frmemailtool.cpp
-HEADERS     += frmemailtool.h
+SOURCES     += frmemailtool.cpp sendemailthread.cpp
+HEADERS     += frmemailtool.h sendemailthread.h
 FORMS       += frmemailtool.ui
 
-include ($$PWD/sendemail/sendemail.pri)
 INCLUDEPATH += $$PWD
-INCLUDEPATH += $$PWD/sendemail
+INCLUDEPATH += $$PWD/../3rd_smtpclient
+include ($$PWD/../3rd_smtpclient/3rd_smtpclient.pri)

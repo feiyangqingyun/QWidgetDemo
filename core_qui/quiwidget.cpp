@@ -271,7 +271,7 @@ void QUIWidget::changeStyle()
     emit changeStyle(qssFile);
 }
 
-void QUIWidget::setIcon(QUIWidget::Widget widget, const QChar &icon, quint32 size)
+void QUIWidget::setIcon(QUIWidget::Widget widget, int icon, quint32 size)
 {
     if (widget == QUIWidget::Lab_Ico) {
         setIconMain(icon, size);
@@ -293,7 +293,7 @@ void QUIWidget::setIcon(QUIWidget::Widget widget, const QChar &icon, quint32 siz
     }
 }
 
-void QUIWidget::setIconMain(const QChar &icon, quint32 size)
+void QUIWidget::setIconMain(int icon, quint32 size)
 {
     QUIConfig::IconMain = icon;
     IconHelper::Instance()->setIcon(this->labIco, icon, size);
@@ -418,8 +418,7 @@ void QUIWidget::on_btnMenu_Max_clicked()
         setIcon(QUIWidget::BtnMenu_Normal, QUIConfig::IconNormal);
     } else {
         location = this->geometry();
-        int screenIndex = QUIHelper::getScreenIndex();
-        this->setGeometry(qApp->desktop()->availableGeometry(screenIndex));
+        this->setGeometry(QUIHelper::getScreenRect());
         setIcon(QUIWidget::BtnMenu_Max, QUIConfig::IconMax);
     }
 

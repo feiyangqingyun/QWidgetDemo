@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     a.setFont(QFont("Microsoft Yahei", 9));
     a.setWindowIcon(QIcon(":/image/gifwidget.ico"));
 
-#if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
 #if _MSC_VER
     QTextCodec *codec = QTextCodec::codecForName("gbk");
 #else

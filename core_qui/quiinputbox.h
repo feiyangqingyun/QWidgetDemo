@@ -59,7 +59,7 @@ public:
     QString getValue()const;
 
 public Q_SLOTS:
-    void setIconMain(const QChar &icon, quint32 size = 12);
+    void setIconMain(int icon, quint32 size = 12);
     void setParameter(const QString &title, int type = 0, int closeSec = 0,
                       QString placeholderText = QString(), bool pwd = false,
                       const QString &defaultValue = QString());

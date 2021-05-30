@@ -128,11 +128,13 @@ void Battery::updateValue()
     if (isForward) {
         currentValue -= step;
         if (currentValue <= value) {
+            currentValue = value;
             timer->stop();
         }
     } else {
         currentValue += step;
         if (currentValue >= value) {
+            currentValue = value;
             timer->stop();
         }
     }

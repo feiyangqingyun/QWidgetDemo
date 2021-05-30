@@ -39,7 +39,7 @@ QVariant SqlQueryModel::data(const QModelIndex &index, int role) const
         if (row == index.row()) {
             if (role == Qt::BackgroundRole) {
                 value = QColor(property("hoverBgColor").toString());
-            } else if (role == Qt::TextColorRole) {
+            } else if (role == Qt::ForegroundRole) {
                 value = QColor(property("hoverTextColor").toString());
             }
         }

@@ -4,7 +4,6 @@
 #include "qfile.h"
 #include "qtextstream.h"
 #include "qtranslator.h"
-#include "qdesktopwidget.h"
 #include "qdebug.h"
 
 frmMain::frmMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::frmMain)
@@ -38,7 +37,7 @@ void frmMain::initForm()
 void frmMain::initTableWidget()
 {
     //设置列数和列宽
-    int width = qApp->desktop()->availableGeometry().width() - 120;
+    int width = 1920;
     ui->tableWidget->setColumnCount(5);
     ui->tableWidget->setColumnWidth(0, width * 0.06);
     ui->tableWidget->setColumnWidth(1, width * 0.10);

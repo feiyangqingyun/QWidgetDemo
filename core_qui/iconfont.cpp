@@ -15,7 +15,7 @@ IconFont *IconFont::Instance()
 }
 
 IconFont::IconFont(QObject *parent) : QObject(parent)
-{   
+{
     //判断图形字体是否存在,不存在则加入
     QFontDatabase fontDb;
     if (!fontDb.families().contains("iconfont")) {
@@ -34,21 +34,21 @@ IconFont::IconFont(QObject *parent) : QObject(parent)
     }
 }
 
-void IconFont::setIcon(QLabel *lab, const QChar &icon, quint32 size)
+void IconFont::setIcon(QLabel *lab, int icon, quint32 size)
 {
     iconFont.setPixelSize(size);
     lab->setFont(iconFont);
-    lab->setText(icon);
+    lab->setText((QChar)icon);
 }
 
-void IconFont::setIcon(QAbstractButton *btn, const QChar &icon, quint32 size)
+void IconFont::setIcon(QAbstractButton *btn, int icon, quint32 size)
 {
     iconFont.setPixelSize(size);
     btn->setFont(iconFont);
-    btn->setText(icon);
+    btn->setText((QChar)icon);
 }
 
-QPixmap IconFont::getPixmap(const QColor &color, const QChar &icon, quint32 size,
+QPixmap IconFont::getPixmap(const QColor &color, int icon, quint32 size,
                             quint32 pixWidth, quint32 pixHeight, int flags)
 {
     QPixmap pix(pixWidth, pixHeight);
@@ -61,7 +61,7 @@ QPixmap IconFont::getPixmap(const QColor &color, const QChar &icon, quint32 size
 
     iconFont.setPixelSize(size);
     painter.setFont(iconFont);
-    painter.drawText(pix.rect(), flags, icon);
+    painter.drawText(pix.rect(), flags, (QChar)icon);
     painter.end();
 
     return pix;
@@ -90,16 +90,16 @@ void IconFont::setStyle(QWidget *widget, const QString &type, int borderWidth, c
     QString strBorder;
     if (type == "top") {
         strBorder = QString("border-width:%1px 0px 0px 0px;padding:%1px %2px %2px %2px;")
-                .arg(borderWidth).arg(borderWidth * 2);
+                    .arg(borderWidth).arg(borderWidth * 2);
     } else if (type == "right") {
         strBorder = QString("border-width:0px %1px 0px 0px;padding:%2px %1px %2px %2px;")
-                .arg(borderWidth).arg(borderWidth * 2);
+                    .arg(borderWidth).arg(borderWidth * 2);
     } else if (type == "bottom") {
         strBorder = QString("border-width:0px 0px %1px 0px;padding:%2px %2px %1px %2px;")
-                .arg(borderWidth).arg(borderWidth * 2);
+                    .arg(borderWidth).arg(borderWidth * 2);
     } else if (type == "left") {
         strBorder = QString("border-width:0px 0px 0px %1px;padding:%2px %2px %2px %1px;")
-                .arg(borderWidth).arg(borderWidth * 2);
+                    .arg(borderWidth).arg(borderWidth * 2);
     }
 
     QStringList qss;
@@ -115,7 +115,7 @@ void IconFont::setStyle(QWidget *widget, const QString &type, int borderWidth, c
     widget->setStyleSheet(qss.join(""));
 }
 
-void IconFont::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<QChar> icons,
+void IconFont::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<int> icons,
                         quint32 iconSize, quint32 iconWidth, quint32 iconHeight,
                         const QString &type, int borderWidth, const QString &borderColor,
                         const QString &normalBgColor, const QString &darkBgColor,
@@ -130,16 +130,16 @@ void IconFont::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<QChar>
     QString strBorder;
     if (type == "top") {
         strBorder = QString("border-width:%1px 0px 0px 0px;padding:%1px %2px %2px %2px;")
-                .arg(borderWidth).arg(borderWidth * 2);
+                    .arg(borderWidth).arg(borderWidth * 2);
     } else if (type == "right") {
         strBorder = QString("border-width:0px %1px 0px 0px;padding:%2px %1px %2px %2px;")
-                .arg(borderWidth).arg(borderWidth * 2);
+                    .arg(borderWidth).arg(borderWidth * 2);
     } else if (type == "bottom") {
         strBorder = QString("border-width:0px 0px %1px 0px;padding:%2px %2px %1px %2px;")
-                .arg(borderWidth).arg(borderWidth * 2);
+                    .arg(borderWidth).arg(borderWidth * 2);
     } else if (type == "left") {
         strBorder = QString("border-width:0px 0px 0px %1px;padding:%2px %2px %2px %1px;")
-                .arg(borderWidth).arg(borderWidth * 2);
+                    .arg(borderWidth).arg(borderWidth * 2);
     }
 
     //如果图标是左侧显示则需要让没有选中的按钮左侧也有加深的边框,颜色为背景颜色
@@ -168,10 +168,11 @@ void IconFont::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<QChar>
 
     widget->setStyleSheet(qss.join(""));
 
+    //存储对应按钮对象,方便鼠标移上去的时候切换图片
     for (int i = 0; i < btnCount; i++) {
-        //存储对应按钮对象,方便鼠标移上去的时候切换图片
-        QPixmap pixNormal = getPixmap(normalTextColor, icons.at(i), iconSize, iconWidth, iconHeight);
-        QPixmap pixDark = getPixmap(darkTextColor, icons.at(i), iconSize, iconWidth, iconHeight);
+        int icon = icons.at(i);
+        QPixmap pixNormal = getPixmap(normalTextColor, icon, iconSize, iconWidth, iconHeight);
+        QPixmap pixDark = getPixmap(darkTextColor, icon, iconSize, iconWidth, iconHeight);
 
         btns.at(i)->setIcon(QIcon(pixNormal));
         btns.at(i)->setIconSize(QSize(iconWidth, iconHeight));
@@ -183,7 +184,7 @@ void IconFont::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<QChar>
     }
 }
 
-void IconFont::setStyle(QFrame *frame, QList<QToolButton *> btns, QList<QChar> icons,
+void IconFont::setStyle(QFrame *frame, QList<QToolButton *> btns, QList<int> icons,
                         quint32 iconSize, quint32 iconWidth, quint32 iconHeight,
                         const QString &normalBgColor, const QString &darkBgColor,
                         const QString &normalTextColor, const QString &darkTextColor)
@@ -203,10 +204,11 @@ void IconFont::setStyle(QFrame *frame, QList<QToolButton *> btns, QList<QChar> i
 
     frame->setStyleSheet(qss.join(""));
 
-    for (int i = 0; i < btnCount; i++) {
-        //存储对应按钮对象,方便鼠标移上去的时候切换图片
-        QPixmap pixNormal = getPixmap(normalTextColor, icons.at(i), iconSize, iconWidth, iconHeight);
-        QPixmap pixDark = getPixmap(darkTextColor, icons.at(i), iconSize, iconWidth, iconHeight);
+    //存储对应按钮对象,方便鼠标移上去的时候切换图片
+    for (int i = 0; i < btnCount; i++) {        
+        int icon = icons.at(i);
+        QPixmap pixNormal = getPixmap(normalTextColor, icon, iconSize, iconWidth, iconHeight);
+        QPixmap pixDark = getPixmap(darkTextColor, icon, iconSize, iconWidth, iconHeight);
 
         btns.at(i)->setIcon(QIcon(pixNormal));
         btns.at(i)->setIconSize(QSize(iconWidth, iconHeight));

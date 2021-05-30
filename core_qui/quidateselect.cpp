@@ -256,7 +256,7 @@ QString QUIDateSelect::getEndDateTime() const
     return this->endDateTime;
 }
 
-void QUIDateSelect::setIconMain(const QChar &icon, quint32 size)
+void QUIDateSelect::setIconMain(int icon, quint32 size)
 {
     IconHelper::Instance()->setIcon(this->labIco, icon, size);
 }

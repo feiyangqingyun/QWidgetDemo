@@ -4,14 +4,19 @@
 #include "qmutex.h"
 #include "qapplication.h"
 #include "qpainter.h"
-#include "qdesktopwidget.h"
 #include "qfiledialog.h"
 #include "qevent.h"
 #include "qdatetime.h"
 #include "qstringlist.h"
 
-#if (QT_VERSION > QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
 #include "qscreen.h"
+#define deskGeometry qApp->primaryScreen()->geometry()
+#define deskGeometry2 qApp->primaryScreen()->availableGeometry()
+#else
+#include "qdesktopwidget.h"
+#define deskGeometry qApp->desktop()->geometry()
+#define deskGeometry2 qApp->desktop()->availableGeometry()
 #endif
 
 #define STRDATETIME qPrintable (QDateTime::currentDateTime().toString("yyyy-MM-dd-HH-mm-ss"))
@@ -174,7 +179,7 @@ ScreenWidget::ScreenWidget(QWidget *parent) : QWidget(parent)
     menu->addAction("退出截图", this, SLOT(hide()));
 
     //取得屏幕大小
-    screen = new Screen(QApplication::desktop()->size());
+    screen = new Screen(deskGeometry.size());
     //保存全屏图像
     fullScreen = new QPixmap();
 }
@@ -213,11 +218,11 @@ void ScreenWidget::showEvent(QShowEvent *)
     screen->setStart(point);
     screen->setEnd(point);
 
-#if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
-    *fullScreen = fullScreen->grabWindow(QApplication::desktop()->winId(), 0, 0, screen->width(), screen->height());
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
+    *fullScreen = fullScreen->grabWindow(0, 0, 0, screen->width(), screen->height());
 #else
     QScreen *pscreen = QApplication::primaryScreen();
-    *fullScreen = pscreen->grabWindow(QApplication::desktop()->winId(), 0, 0, screen->width(), screen->height());
+    *fullScreen = pscreen->grabWindow(0, 0, 0, screen->width(), screen->height());
 #endif
 
     //设置透明度实现模糊背景

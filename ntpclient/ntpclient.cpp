@@ -34,7 +34,7 @@ void NtpClient::sendData()
     qint8 STRATUM = 0;
     qint8 POLL = 4;
     qint8 PREC = -6;
-    QDateTime epoch(QDate(1900, 1, 1));
+    QDateTime epoch(QDate(1900, 1, 1), QTime(0, 0, 0));
     qint32 second = quint32(epoch.secsTo(QDateTime::currentDateTime()));
 
     qint32 temp = 0;
@@ -59,8 +59,8 @@ void NtpClient::sendData()
 void NtpClient::readData()
 {
     QByteArray newTime;
-    QDateTime epoch(QDate(1900, 1, 1));
-    QDateTime unixStart(QDate(1970, 1, 1));
+    QDateTime epoch(QDate(1900, 1, 1), QTime(0, 0, 0));
+    QDateTime unixStart(QDate(1970, 1, 1), QTime(0, 0, 0));
 
     while (udpSocket->hasPendingDatagrams()) {
         newTime.resize(udpSocket->pendingDatagramSize());
@@ -79,7 +79,9 @@ void NtpClient::readData()
     }
 
     QDateTime dateTime;
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     dateTime.setTime_t(seconds - epoch.secsTo(unixStart));
+#endif
 
 #ifdef __arm__
 #ifdef arma9

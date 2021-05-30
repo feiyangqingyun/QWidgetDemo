@@ -5,8 +5,7 @@
 
 class NavButton;
 
-namespace Ui
-{
+namespace Ui {
 class frmNavButton;
 }
 

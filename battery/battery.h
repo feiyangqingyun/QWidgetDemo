@@ -20,7 +20,8 @@ class Battery : public QWidget
 #endif
 
 {
-    Q_OBJECT    
+    Q_OBJECT
+
     Q_PROPERTY(double minValue READ getMinValue WRITE setMinValue)
     Q_PROPERTY(double maxValue READ getMaxValue WRITE setMaxValue)
     Q_PROPERTY(double value READ getValue WRITE setValue)
@@ -54,7 +55,7 @@ protected:
 private slots:
     void updateValue();
 
-private:    
+private:
     double minValue;                //最小值
     double maxValue;                //最大值
     double value;                   //目标电量
@@ -80,7 +81,7 @@ private:
     QRectF batteryRect;             //电池主体区域
     QTimer *timer;                  //绘制定时器
 
-public:    
+public:
     double getMinValue()            const;
     double getMaxValue()            const;
     double getValue()               const;

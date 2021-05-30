@@ -77,8 +77,8 @@ private slots:
 
 public Q_SLOTS:
     //设置部件图标
-    void setIcon(QUIWidget::Widget widget, const QChar &icon, quint32 size = 12);
-    void setIconMain(const QChar &icon, quint32 size = 12);
+    void setIcon(QUIWidget::Widget widget, int icon, quint32 size = 12);
+    void setIconMain(int icon, quint32 size = 12);
     //设置部件图片
     void setPixmap(QUIWidget::Widget widget, const QString &file, const QSize &size = QSize(16, 16));
     //设置部件是否可见

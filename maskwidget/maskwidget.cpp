@@ -2,9 +2,18 @@
 
 #include "maskwidget.h"
 #include "qmutex.h"
-#include "qdesktopwidget.h"
 #include "qapplication.h"
 #include "qdebug.h"
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+#include "qscreen.h"
+#define deskGeometry qApp->primaryScreen()->geometry()
+#define deskGeometry2 qApp->primaryScreen()->availableGeometry()
+#else
+#include "qdesktopwidget.h"
+#define deskGeometry qApp->desktop()->geometry()
+#define deskGeometry2 qApp->desktop()->availableGeometry()
+#endif
 
 QScopedPointer<MaskWidget> MaskWidget::self;
 MaskWidget *MaskWidget::Instance()
@@ -27,7 +36,7 @@ MaskWidget::MaskWidget(QWidget *parent) : QWidget(parent)
     setBgColor(QColor(0, 0, 0));
 
     //不设置主窗体则遮罩层大小为默认桌面大小
-    this->setGeometry(qApp->desktop()->geometry());
+    this->setGeometry(deskGeometry);
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool);
 
     //绑定全局事件,过滤弹窗窗体进行处理

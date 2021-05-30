@@ -13,13 +13,19 @@
 #include "qtimer.h"
 #include "qdatetime.h"
 #include "qapplication.h"
-#include "qdesktopwidget.h"
 #include "qdesktopservices.h"
 #include "qfiledialog.h"
 #include "qurl.h"
 #include "qdebug.h"
-#if (QT_VERSION > QT_VERSION_CHECK(5,0,0))
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
 #include "qscreen.h"
+#define deskGeometry qApp->primaryScreen()->geometry()
+#define deskGeometry2 qApp->primaryScreen()->availableGeometry()
+#else
+#include "qdesktopwidget.h"
+#define deskGeometry qApp->desktop()->geometry()
+#define deskGeometry2 qApp->desktop()->availableGeometry()
 #endif
 
 QScopedPointer<GifWidget> GifWidget::self;
@@ -267,7 +273,7 @@ void GifWidget::saveImage()
         return;
     }
 
-#if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
     //由于qt4没有RGBA8888,采用最接近RGBA8888的是ARGB32,颜色会有点偏差
     QPixmap pix = QPixmap::grabWindow(0, x() + rectGif.x(), y() + rectGif.y(), rectGif.width(), rectGif.height());
     QImage image = pix.toImage().convertToFormat(QImage::Format_ARGB32);

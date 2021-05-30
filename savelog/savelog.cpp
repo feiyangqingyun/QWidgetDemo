@@ -11,7 +11,7 @@
 #define QDATE qPrintable(QDate::currentDate().toString("yyyy-MM-dd"))
 
 //日志重定向
-#if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
 void Log(QtMsgType type, const char *msg)
 #else
 void Log(QtMsgType type, const QMessageLogContext &, const QString &msg)
@@ -24,21 +24,21 @@ void Log(QtMsgType type, const QMessageLogContext &, const QString &msg)
 
     //这里可以根据不同的类型加上不同的头部用于区分
     switch (type) {
-    case QtDebugMsg:
-        content = QString("%1").arg(msg);
-        break;
+        case QtDebugMsg:
+            content = QString("%1").arg(msg);
+            break;
 
-    case QtWarningMsg:
-        content = QString("%1").arg(msg);
-        break;
+        case QtWarningMsg:
+            content = QString("%1").arg(msg);
+            break;
 
-    case QtCriticalMsg:
-        content = QString("%1").arg(msg);
-        break;
+        case QtCriticalMsg:
+            content = QString("%1").arg(msg);
+            break;
 
-    case QtFatalMsg:
-        content = QString("%1").arg(msg);
-        break;
+        case QtFatalMsg:
+            content = QString("%1").arg(msg);
+            break;
     }
 
     SaveLog::Instance()->save(content);
@@ -77,13 +77,13 @@ SaveLog::SaveLog(QObject *parent) : QObject(parent)
 
 SaveLog::~SaveLog()
 {
-    file->close();    
+    file->close();
 }
 
 //安装日志钩子,输出调试信息到文件,便于调试
 void SaveLog::start()
 {
-#if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
     qInstallMsgHandler(Log);
 #else
     qInstallMessageHandler(Log);
@@ -93,7 +93,7 @@ void SaveLog::start()
 //卸载日志钩子
 void SaveLog::stop()
 {
-#if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
     qInstallMsgHandler(0);
 #else
     qInstallMessageHandler(0);
@@ -161,7 +161,7 @@ SendLog::SendLog(QObject *parent)
     connect(server, SIGNAL(newConnection()), this, SLOT(newConnection()));
 
     int listenPort = 6000;
-#if (QT_VERSION > QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
     server->listen(QHostAddress::AnyIPv4, listenPort);
 #else
     server->listen(QHostAddress::Any, listenPort);

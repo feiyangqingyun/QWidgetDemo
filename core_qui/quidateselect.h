@@ -57,7 +57,7 @@ public:
     QString getEndDateTime()    const;
 
 public Q_SLOTS:
-    void setIconMain(const QChar &icon, quint32 size = 12);
+    void setIconMain(int icon, quint32 size = 12);
     void setFormat(const QString &format);
 };
 

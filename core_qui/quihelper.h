@@ -6,21 +6,32 @@
 class QUIHelper
 {
 public:
-    //获取uuid
-    static QString getUuid();
-    //获取当前鼠标所在屏幕
+    //获取当前鼠标所在屏幕索引+尺寸
     static int getScreenIndex();
+    static QRect getScreenRect(bool available = true);
 
-    //桌面宽度高度
+    //获取桌面宽度高度+居中显示
     static int deskWidth();
     static int deskHeight();
+    static void setFormInCenter(QWidget *form);
 
     //程序文件名称+当前所在路径
     static QString appName();
     static QString appPath();
 
-    //初始化随机数种子
+    //获取uuid+初始化随机数种子+新建目录+延时
+    static QString getUuid();
     static void initRand();
+    static void newDir(const QString &dirName);
+    static void sleep(int msec);
+
+    //设置编码
+    static void setCode(bool utf8 = true);
+    //设置字体
+    static void setFont(const QString &ttfFile = ":/image/DroidSansFallback.ttf",
+                        const QString &fontName = "Microsoft Yahei", int fontSize = 12);
+    //设置翻译文件
+    static void setTranslator(const QString &qmFile = ":/image/qt_zh_CN.qm");
 
     //初始化数据库
     static void initDb(const QString &dbName);
@@ -31,10 +42,7 @@ public:
     static bool checkIniFile(const QString &iniFile);
 
     //设置图标到按钮
-    static void setIconBtn(QAbstractButton *btn, const QString &png, const QChar &str);
-
-    //新建目录
-    static void newDir(const QString &dirName);
+    static void setIconBtn(QAbstractButton *btn, const QString &png, int icon);
 
     //写入消息到额外的的消息日志文件
     static void writeInfo(const QString &info, bool needWrite = false, const QString &filePath = "log");
@@ -47,18 +55,6 @@ public:
                                  QLabel *labIco, QPushButton *btnClose,
                                  bool tool = true, bool top = true, bool menu = false);
 
-    //设置窗体居中显示
-    static void setFormInCenter(QWidget *frm);
-    //设置翻译文件
-    static void setTranslator(const QString &qmFile = ":/image/qt_zh_CN.qm");
-    //设置编码
-    static void setCode();
-    //设置字体
-    static void setFont(const QString &ttfFile = ":/image/DroidSansFallback.ttf",
-                        const QString &fontName = "Microsoft Yahei", int fontSize = 12);
-
-    //设置延时
-    static void sleep(int msec);
     //设置系统时间
     static void setSystemDateTime(const QString &year, const QString &month, const QString &day,
                                   const QString &hour, const QString &min, const QString &sec);

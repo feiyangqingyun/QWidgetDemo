@@ -271,24 +271,24 @@ QString ZhToPY::zhToPY(const QString &chinese)
 QString ZhToPY::zhToJP(const QString &chinese)
 {
     QString strChineseFirstPY = listJP.join("");
-    if(chinese.length() == 0) {
+    if (chinese.length() == 0) {
         return chinese;
     }
 
     QString str;
     int index = 0;
-    for(int i = 0; i < chinese.length(); i++) {
+    for (int i = 0; i < chinese.length(); i++) {
         //若是字母或数字则直接输出
         ushort vChar = chinese.at(i).unicode() ;
-        if((vChar >= 'a' && vChar <= 'z' ) || (vChar >= 'A' && vChar <= 'Z')) {
+        if ((vChar >= 'a' && vChar <= 'z') || (vChar >= 'A' && vChar <= 'Z')) {
             str.append(chinese.at(i).toUpper());
         }
 
-        if((vChar >= '0' && vChar <= '9')) {
+        if ((vChar >= '0' && vChar <= '9')) {
             str.append(chinese.at(i));
         } else {
             index = (int)vChar - 19968;
-            if(index >= 0 && index < strChineseFirstPY.length()) {
+            if (index >= 0 && index < strChineseFirstPY.length()) {
                 str.append(strChineseFirstPY.at(index));
             }
         }

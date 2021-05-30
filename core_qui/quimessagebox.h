@@ -56,8 +56,8 @@ private slots:
     void on_btnMenu_Close_clicked();
 
 public Q_SLOTS:
-    void setIconMain(const QChar &icon, quint32 size = 12);
-    void setIconMsg(const QString &png, const QChar &str);
+    void setIconMain(int icon, quint32 size = 12);
+    void setIconMsg(const QString &png, int icon);
     void setMessage(const QString &msg, int type, int closeSec = 0);
 };
 

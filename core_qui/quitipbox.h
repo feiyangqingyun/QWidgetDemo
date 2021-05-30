@@ -49,7 +49,7 @@ private slots:
     void on_btnMenu_Close_clicked();
 
 public Q_SLOTS:
-    void setIconMain(const QChar &icon, quint32 size = 12);
+    void setIconMain(int icon, quint32 size = 12);
     void setTip(const QString &title, const QString &tip, bool fullScreen = false, bool center = true, int closeSec = 0);
     void hide();
 };

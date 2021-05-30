@@ -29,7 +29,7 @@ class Q_DECL_EXPORT FlatUI
 class FlatUI
 #endif
 
-{    
+{
 public:
     //设置按钮样式
     static QString setPushButtonQss(QPushButton *btn,                               //按钮对象

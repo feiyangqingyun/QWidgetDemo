@@ -2,10 +2,12 @@
 #include "frmmain.h"
 #include <QApplication>
 #include <QTextCodec>
-#include <QDesktopWidget>
 
 int main(int argc, char *argv[])
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
+#endif
     QApplication a(argc, argv);
     a.setFont(QFont("Microsoft Yahei", 9));
 
@@ -25,14 +27,7 @@ int main(int argc, char *argv[])
 
     frmMain w;
     w.setWindowTitle("样式表示例 (QQ: 517216493 WX: feiyangqingyun)");
-    w.show();
-
-    //居中显示窗体
-    QDesktopWidget deskWidget;
-    int deskWidth = deskWidget.availableGeometry().width();
-    int deskHeight = deskWidget.availableGeometry().height();
-    QPoint movePoint(deskWidth / 2 - w.width() / 2, deskHeight / 2 - w.height() / 2);
-    w.move(movePoint);
+    w.show();    
 
     return a.exec();
 }

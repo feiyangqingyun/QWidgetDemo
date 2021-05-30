@@ -1,23 +1,24 @@
 ﻿#include "quihelper.h"
 
-QString QUIHelper::getUuid()
-{
-    QString uuid = QUuid::createUuid().toString();
-    uuid = uuid.replace("{", "");
-    uuid = uuid.replace("}", "");
-    return uuid;
-}
-
 int QUIHelper::getScreenIndex()
 {
     //需要对多个屏幕进行处理
-    int screenIndex = -1;
+    int screenIndex = 0;
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+    int screenCount = qApp->screens().count();
+#else
     int screenCount = qApp->desktop()->screenCount();
+#endif
+
     if (screenCount > 1) {
         //找到当前鼠标所在屏幕
         QPoint pos = QCursor::pos();
         for (int i = 0; i < screenCount; ++i) {
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+            if (qApp->screens().at(i)->geometry().contains(pos)) {
+#else
             if (qApp->desktop()->screenGeometry(i).contains(pos)) {
+#endif
                 screenIndex = i;
                 break;
             }
@@ -26,18 +27,50 @@ int QUIHelper::getScreenIndex()
     return screenIndex;
 }
 
+QRect QUIHelper::getScreenRect(bool available)
+{
+    QRect rect;
+    int screenIndex = QUIHelper::getScreenIndex();
+    if (available) {
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+        rect = qApp->screens().at(screenIndex)->availableGeometry();
+#else
+        rect = qApp->desktop()->availableGeometry(screenIndex);
+#endif
+    } else {
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+        rect = qApp->screens().at(screenIndex)->geometry();
+#else
+        rect = qApp->desktop()->screenGeometry(screenIndex);
+#endif
+    }
+    return rect;
+}
+
 int QUIHelper::deskWidth()
 {
-    int screenIndex = QUIHelper::getScreenIndex();
-    int width = qApp->desktop()->availableGeometry(screenIndex).width();
-    return width;
+    return getScreenRect().width();
 }
 
 int QUIHelper::deskHeight()
 {
-    int screenIndex = QUIHelper::getScreenIndex();
-    int height = qApp->desktop()->availableGeometry(screenIndex).height();
-    return height;
+    return getScreenRect().height();
+}
+
+void QUIHelper::setFormInCenter(QWidget *form)
+{
+    int formWidth = form->width();
+    int formHeight = form->height();
+    QRect rect = getScreenRect();
+    int deskWidth = rect.width();
+    int deskHeight = rect.height();
+    QPoint movePoint(deskWidth / 2 - formWidth / 2 + rect.x(), deskHeight / 2 - formHeight / 2);
+    form->move(movePoint);
+
+    //其他系统自动最大化
+#ifndef Q_OS_WIN
+    QTimer::singleShot(100, form, SLOT(showMaximized()));
+#endif
 }
 
 QString QUIHelper::appName()
@@ -64,11 +97,98 @@ QString QUIHelper::appPath()
 #endif
 }
 
+QString QUIHelper::getUuid()
+{
+    QString uuid = QUuid::createUuid().toString();
+    uuid = uuid.replace("{", "");
+    uuid = uuid.replace("}", "");
+    return uuid;
+}
+
 void QUIHelper::initRand()
 {
     //初始化随机数种子
     QTime t = QTime::currentTime();
-    qsrand(t.msec() + t.second() * 1000);
+    srand(t.msec() + t.second() * 1000);
+}
+
+void QUIHelper::newDir(const QString &dirName)
+{
+    QString strDir = dirName;
+
+    //如果路径中包含斜杠字符则说明是绝对路径
+    //linux系统路径字符带有 /  windows系统 路径字符带有 :/
+    if (!strDir.startsWith("/") && !strDir.contains(":/")) {
+        strDir = QString("%1/%2").arg(QUIHelper::appPath()).arg(strDir);
+    }
+
+    QDir dir(strDir);
+    if (!dir.exists()) {
+        dir.mkpath(strDir);
+    }
+}
+
+void QUIHelper::sleep(int msec)
+{
+    if (msec > 0) {
+#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
+        QTime endTime = QTime::currentTime().addMSecs(msec);
+        while (QTime::currentTime() < endTime) {
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+        }
+#else
+        QThread::msleep(msec);
+#endif
+    }
+}
+
+void QUIHelper::setCode(bool utf8)
+{
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
+#if _MSC_VER
+    QTextCodec *codec = QTextCodec::codecForName("gbk");
+#else
+    QTextCodec *codec = QTextCodec::codecForName("utf-8");
+#endif
+    QTextCodec::setCodecForLocale(codec);
+    QTextCodec::setCodecForCStrings(codec);
+    QTextCodec::setCodecForTr(codec);
+#else
+    //如果想要控制台打印信息中文正常就注释掉这个设置
+    if (utf8) {
+        QTextCodec *codec = QTextCodec::codecForName("utf-8");
+        QTextCodec::setCodecForLocale(codec);
+    }
+#endif
+}
+
+void QUIHelper::setFont(const QString &ttfFile, const QString &fontName, int fontSize)
+{
+    QFont font;
+    font.setFamily(fontName);
+    font.setPixelSize(fontSize);
+
+    //如果存在字体文件则设备字体文件中的字体
+    //安卓版本和网页版本需要字体文件一起打包单独设置字体
+    if (!ttfFile.isEmpty()) {
+        QFontDatabase fontDb;
+        int fontId = fontDb.addApplicationFont(ttfFile);
+        if (fontId != -1) {
+            QStringList androidFont = fontDb.applicationFontFamilies(fontId);
+            if (androidFont.size() != 0) {
+                font.setFamily(androidFont.at(0));
+                font.setPixelSize(fontSize);
+            }
+        }
+    }
+    qApp->setFont(font);
+}
+
+void QUIHelper::setTranslator(const QString &qmFile)
+{
+    QTranslator *translator = new QTranslator(qApp);
+    translator->load(qmFile);
+    qApp->installTranslator(translator);
 }
 
 void QUIHelper::initDb(const QString &dbName)
@@ -122,36 +242,20 @@ bool QUIHelper::checkIniFile(const QString &iniFile)
     return true;
 }
 
-void QUIHelper::setIconBtn(QAbstractButton *btn, const QString &png, const QChar &str)
+void QUIHelper::setIconBtn(QAbstractButton *btn, const QString &png, int icon)
 {
     int size = 16;
     int width = 18;
     int height = 18;
     QPixmap pix;
     if (QPixmap(png).isNull()) {
-        pix = IconHelper::Instance()->getPixmap(QUIConfig::TextColor, str, size, width, height);
+        pix = IconHelper::Instance()->getPixmap(QUIConfig::TextColor, icon, size, width, height);
     } else {
         pix = QPixmap(png);
     }
 
     btn->setIconSize(QSize(width, height));
     btn->setIcon(QIcon(pix));
-}
-
-void QUIHelper::newDir(const QString &dirName)
-{
-    QString strDir = dirName;
-
-    //如果路径中包含斜杠字符则说明是绝对路径
-    //linux系统路径字符带有 /  windows系统 路径字符带有 :/
-    if (!strDir.startsWith("/") && !strDir.contains(":/")) {
-        strDir = QString("%1/%2").arg(QUIHelper::appPath()).arg(strDir);
-    }
-
-    QDir dir(strDir);
-    if (!dir.exists()) {
-        dir.mkpath(strDir);
-    }
 }
 
 void QUIHelper::writeInfo(const QString &info, bool needWrite, const QString &filePath)
@@ -231,80 +335,6 @@ void QUIHelper::setFramelessForm(QWidget *widgetMain, QWidget *widgetTitle,
     IconHelper::Instance()->setIcon(btnClose, QUIConfig::IconClose, QUIConfig::FontSize);
 }
 
-void QUIHelper::setFormInCenter(QWidget *frm)
-{
-    //增加了多屏幕的判断在哪个屏幕就显示在哪个屏幕
-    int screenIndex = QUIHelper::getScreenIndex();
-    int frmX = frm->width();
-    int frmY = frm->height();
-    QDesktopWidget w;
-    QRect rect = w.availableGeometry(screenIndex);
-    int deskWidth = rect.width();
-    int deskHeight = rect.height();
-    QPoint movePoint(deskWidth / 2 - frmX / 2 + rect.x(), deskHeight / 2 - frmY / 2);
-    frm->move(movePoint);
-}
-
-void QUIHelper::setTranslator(const QString &qmFile)
-{
-    QTranslator *translator = new QTranslator(qApp);
-    translator->load(qmFile);
-    qApp->installTranslator(translator);
-}
-
-void QUIHelper::setCode()
-{
-#if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
-#if _MSC_VER
-    QTextCodec *codec = QTextCodec::codecForName("gbk");
-#else
-    QTextCodec *codec = QTextCodec::codecForName("utf-8");
-#endif
-    QTextCodec::setCodecForLocale(codec);
-    QTextCodec::setCodecForCStrings(codec);
-    QTextCodec::setCodecForTr(codec);
-#else
-    QTextCodec *codec = QTextCodec::codecForName("utf-8");
-    QTextCodec::setCodecForLocale(codec);
-#endif
-}
-
-void QUIHelper::setFont(const QString &ttfFile, const QString &fontName, int fontSize)
-{
-    QFont font;
-    font.setFamily(fontName);
-    font.setPixelSize(fontSize);
-
-    //如果存在字体文件则设备字体文件中的字体
-    //安卓版本和网页版本需要字体文件一起打包单独设置字体
-    if (!ttfFile.isEmpty()) {
-        QFontDatabase fontDb;
-        int fontId = fontDb.addApplicationFont(ttfFile);
-        if (fontId != -1) {
-            QStringList androidFont = fontDb.applicationFontFamilies(fontId);
-            if (androidFont.size() != 0) {
-                font.setFamily(androidFont.at(0));
-                font.setPixelSize(fontSize);
-            }
-        }
-    }
-    qApp->setFont(font);
-}
-
-void QUIHelper::sleep(int msec)
-{
-    if (msec > 0) {
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-        QTime endTime = QTime::currentTime().addMSecs(msec);
-        while (QTime::currentTime() < endTime) {
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-        }
-#else
-        QThread::msleep(msec);
-#endif
-    }
-}
-
 void QUIHelper::setSystemDateTime(const QString &year, const QString &month, const QString &day, const QString &hour, const QString &min, const QString &sec)
 {
 #ifdef Q_OS_WIN
@@ -340,8 +370,10 @@ QString QUIHelper::getIP(const QString &url)
 {
     //取出IP地址
     QRegExp regExp("((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d))");
-    regExp.indexIn(url);
-    return url.mid(url.indexOf(regExp), regExp.matchedLength());
+    int start = regExp.indexIn(url);
+    int length = regExp.matchedLength();
+    QString ip = url.mid(start, length);
+    return ip;
 }
 
 bool QUIHelper::isIP(const QString &ip)
@@ -1180,7 +1212,7 @@ void QUIHelper::initTableView(QTableView *tableView, int rowHeight, bool headVis
     tableView->setSelectionMode(QAbstractItemView::SingleSelection);
 
     //表头不可单击
-#if (QT_VERSION > QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
     tableView->horizontalHeader()->setSectionsClickable(false);
 #else
     tableView->horizontalHeader()->setClickable(false);

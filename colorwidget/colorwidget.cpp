@@ -6,13 +6,18 @@
 #include "qlabel.h"
 #include "qlineedit.h"
 #include "qapplication.h"
-#include "qdesktopwidget.h"
 #include "qtimer.h"
 #include "qevent.h"
 #include "qdebug.h"
 
-#if (QT_VERSION > QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
 #include "qscreen.h"
+#define deskGeometry qApp->primaryScreen()->geometry()
+#define deskGeometry2 qApp->primaryScreen()->availableGeometry()
+#else
+#include "qdesktopwidget.h"
+#define deskGeometry qApp->desktop()->geometry()
+#define deskGeometry2 qApp->desktop()->availableGeometry()
 #endif
 
 ColorWidget *ColorWidget::instance = 0;
@@ -130,11 +135,11 @@ void ColorWidget::showColorValue()
     int y = QCursor::pos().y();
     txtPoint->setText(tr("x:%1  y:%2").arg(x).arg(y));
 
-#if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
-    QPixmap pixmap = QPixmap::grabWindow(QApplication::desktop()->winId(), x, y, 2, 2);
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
+    QPixmap pixmap = QPixmap::grabWindow(qApp->desktop()->winId(), x, y, 2, 2);
 #else
-    QScreen *screen = QApplication::primaryScreen();
-    QPixmap pixmap = screen->grabWindow(QApplication::desktop()->winId(), x, y, 2, 2);
+    QScreen *screen = qApp->primaryScreen();
+    QPixmap pixmap = screen->grabWindow(0, x, y, 2, 2);
 #endif
 
     int red, green, blue;
