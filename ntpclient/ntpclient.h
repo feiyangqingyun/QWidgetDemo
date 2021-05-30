@@ -31,6 +31,7 @@ private:
 private slots:
     void readData();
     void sendData();
+    void setTime_t(uint secsSince1Jan1970UTC);
 
 signals:
     //收到时间返回

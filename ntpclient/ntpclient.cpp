@@ -56,6 +56,11 @@ void NtpClient::sendData()
     udpSocket->write(timeRequest);
 }
 
+void NtpClient::setTime_t(uint secsSince1Jan1970UTC)
+{
+
+}
+
 void NtpClient::readData()
 {
     QByteArray newTime;
@@ -79,13 +84,15 @@ void NtpClient::readData()
     }
 
     QDateTime dateTime;
-#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-    dateTime.setTime_t(seconds - epoch.secsTo(unixStart));
-#endif
+    uint secs = seconds - epoch.secsTo(unixStart);
+    //两个方法二选一由于Qt6移除了setTime_t方法所以要自己计算
+    //dateTime.setTime_t(secs);
+    dateTime.setDate(QDate(1970, 1, 1).addDays(secs / 86400));
+    dateTime.setTime(QTime().addSecs(secs % 86400 + (8 * 60 * 60)));
 
 #ifdef __arm__
 #ifdef arma9
-    dateTime = dateTime.addSecs(60 * 60 * 8);
+    dateTime = dateTime.addSecs(8 * 60 * 60);
 #endif
 #endif
     udpSocket->disconnectFromHost();
