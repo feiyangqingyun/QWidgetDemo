@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/ImageViewWindow">
+        <file>Resources/1.jpg</file>
+        <file>Resources/2.jpg</file>
+        <file>Resources/3.jpg</file>
+        <file>Resources/4.jpg</file>
+        <file>Resources/5.jpg</file>
+        <file>Resources/6.jpg</file>
+        <file>Resources/7.jpg</file>
+        <file>Resources/Wblog_left.png</file>
+        <file>Resources/Wblog_right.png</file>
+    </qresource>
+</RCC>
