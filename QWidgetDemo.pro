@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 #定义了ordered表示子项目按照添加的顺序来编译
 CONFIG  += ordered
+SUBDIRS += imagecropper     #图片裁剪
 SUBDIRS += lightbutton      #高亮按钮控件
 SUBDIRS += movewidget       #通用控件移动类
 SUBDIRS += flatui           #模仿flatui类
