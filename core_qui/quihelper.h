@@ -110,8 +110,8 @@ public:
     static int byteToUShort(const QByteArray &data);
     static int byteToUShortRec(const QByteArray &data);
 
-    //异或加密算法
-    static QString getXorEncryptDecrypt(const QString &str, char key);
+    //异或加密-只支持字符,如果是中文需要将其转换base64编码
+    static QString getXorEncryptDecrypt(const QString &value, char key);
     //异或校验
     static uchar getOrCode(const QByteArray &data);
     //计算校验码

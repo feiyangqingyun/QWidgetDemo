@@ -100,8 +100,8 @@ void VideoWidget::initFlowPanel()
     icons << QApplication::style()->standardIcon(QStyle::SP_DialogOkButton);
     icons << QApplication::style()->standardIcon(QStyle::SP_DialogCancelButton);
 #else
-    QList<QChar> chars;
-    chars << QChar(0xe68d) << QChar(0xe672) << QChar(0xe674) << QChar(0xea36) << QChar(0xe74c);
+    QList<int> icons;
+    icons << 0xe68d << 0xe672 << 0xe674 << 0xea36 << 0xe74c;
 
     //判断图形字体是否存在,不存在则加入
     QFont iconFont;
@@ -143,7 +143,7 @@ void VideoWidget::initFlowPanel()
         btn->setIcon(icons.at(i));
 #else
         btn->setFont(iconFont);
-        btn->setText(chars.at(i));
+        btn->setText((QChar)icons.at(i));
 #endif
 
         //将按钮加到布局中

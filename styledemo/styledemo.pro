@@ -18,9 +18,9 @@ DESTDIR     = $$PWD/../bin
 
 CONFIG      += warn_off
 SOURCES     += main.cpp
-SOURCES     += frmmain.cpp
 HEADERS     += head.h
 HEADERS     += frmmain.h
+SOURCES     += frmmain.cpp
 FORMS       += frmmain.ui
 RESOURCES   += other/qss.qrc
 RESOURCES   += other/main.qrc

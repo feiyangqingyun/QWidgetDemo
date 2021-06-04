@@ -85,10 +85,12 @@ void NtpClient::readData()
 
     QDateTime dateTime;
     uint secs = seconds - epoch.secsTo(unixStart);
-    //两个方法二选一由于Qt6移除了setTime_t方法所以要自己计算
-    //dateTime.setTime_t(secs);
-    dateTime.setDate(QDate(1970, 1, 1).addDays(secs / 86400));
-    dateTime.setTime(QTime().addSecs(secs % 86400 + (8 * 60 * 60)));
+
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
+    dateTime.setTime_t(secs);
+#else
+    dateTime.setSecsSinceEpoch(secs);
+#endif
 
 #ifdef __arm__
 #ifdef arma9

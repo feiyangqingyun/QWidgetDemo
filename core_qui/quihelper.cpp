@@ -597,15 +597,19 @@ int QUIHelper::byteToUShortRec(const QByteArray &data)
     return i;
 }
 
-QString QUIHelper::getXorEncryptDecrypt(const QString &str, char key)
+QString QUIHelper::getXorEncryptDecrypt(const QString &value, char key)
 {
-    QByteArray data = str.toLatin1();
-    int size = data.size();
-    for (int i = 0; i < size; i++) {
-        data[i] = data[i] ^ key;
+    //矫正范围外的数据
+    if (key < 0 || key >= 127) {
+        key = 127;
     }
 
-    return QLatin1String(data);
+    QString result = value;
+    int count = result.count();
+    for (int i = 0; i < count; i++) {
+        result[i] = QChar(result.at(i).toLatin1() ^ key);
+    }
+    return result;
 }
 
 uchar QUIHelper::getOrCode(const QByteArray &data)
