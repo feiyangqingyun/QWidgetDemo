@@ -287,5 +287,5 @@ void QUIInputBox::on_btnMenu_Close_clicked()
 
 void QUIInputBox::setIconMain(int icon, quint32 size)
 {
-    IconHelper::Instance()->setIcon(this->labIco, icon, size);
+    IconHelper::setIcon(this->labIco, icon, size);
 }

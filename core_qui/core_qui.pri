@@ -1,5 +1,4 @@
 HEADERS += \
-    $$PWD/iconfont.h \
     $$PWD/iconhelper.h \
     $$PWD/quiconfig.h \
     $$PWD/quidateselect.h \
@@ -12,7 +11,6 @@ HEADERS += \
     $$PWD/quiwidget.h
 
 SOURCES += \
-    $$PWD/iconfont.cpp \
     $$PWD/iconhelper.cpp \
     $$PWD/quiconfig.cpp \
     $$PWD/quidateselect.cpp \

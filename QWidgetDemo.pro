@@ -1,7 +1,6 @@
 TEMPLATE = subdirs
 #定义了ordered表示子项目按照添加的顺序来编译
 CONFIG  += ordered
-SUBDIRS += imagecropper     #图片裁剪
 SUBDIRS += lightbutton      #高亮按钮控件
 SUBDIRS += movewidget       #通用控件移动类
 SUBDIRS += flatui           #模仿flatui类
@@ -36,7 +35,6 @@ SUBDIRS += imageswitch      #图片开关控件
 SUBDIRS += netserver        #网络中转服务器
 SUBDIRS += base64           #图片文字base64互换
 SUBDIRS += smoothcurve      #平滑曲线
-SUBDIRS += imageviewwindow  #图片预览控件
 
 win32 {
 SUBDIRS += ffmpegdemo       #视频流播放ffmpeg内核

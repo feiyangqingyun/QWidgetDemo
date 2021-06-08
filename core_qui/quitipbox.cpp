@@ -200,7 +200,7 @@ void QUITipBox::on_btnMenu_Close_clicked()
 
 void QUITipBox::setIconMain(int icon, quint32 size)
 {
-    IconHelper::Instance()->setIcon(this->labIco, icon, size);
+    IconHelper::setIcon(this->labIco, icon, size);
 }
 
 void QUITipBox::setTip(const QString &title, const QString &tip, bool fullScreen, bool center, int closeSec)

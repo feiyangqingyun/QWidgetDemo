@@ -249,7 +249,7 @@ void QUIHelper::setIconBtn(QAbstractButton *btn, const QString &png, int icon)
     int height = 18;
     QPixmap pix;
     if (QPixmap(png).isNull()) {
-        pix = IconHelper::Instance()->getPixmap(QUIConfig::TextColor, icon, size, width, height);
+        pix = IconHelper::getPixmap(QUIConfig::TextColor, icon, size, width, height);
     } else {
         pix = QPixmap(png);
     }
@@ -331,8 +331,8 @@ void QUIHelper::setFramelessForm(QWidget *widgetMain, QWidget *widgetTitle,
         widgetMain->setWindowFlags(widgetMain->windowFlags() | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
     }
 
-    IconHelper::Instance()->setIcon(labIco, QUIConfig::IconMain, QUIConfig::FontSize + 2);
-    IconHelper::Instance()->setIcon(btnClose, QUIConfig::IconClose, QUIConfig::FontSize);
+    IconHelper::setIcon(labIco, QUIConfig::IconMain, QUIConfig::FontSize + 2);
+    IconHelper::setIcon(btnClose, QUIConfig::IconClose, QUIConfig::FontSize);
 }
 
 void QUIHelper::setSystemDateTime(const QString &year, const QString &month, const QString &day, const QString &hour, const QString &min, const QString &sec)

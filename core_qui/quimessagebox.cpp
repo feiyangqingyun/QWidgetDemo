@@ -264,7 +264,7 @@ void QUIMessageBox::on_btnMenu_Close_clicked()
 
 void QUIMessageBox::setIconMain(int icon, quint32 size)
 {
-    IconHelper::Instance()->setIcon(this->labIco, icon, size);
+    IconHelper::setIcon(this->labIco, icon, size);
 }
 
 void QUIMessageBox::setIconMsg(const QString &png, int icon)
@@ -272,7 +272,7 @@ void QUIMessageBox::setIconMsg(const QString &png, int icon)
     //图片存在则取图片,不存在则取图形字体
     int size = this->labIcoMain->size().height();
     if (QImage(png).isNull()) {
-        IconHelper::Instance()->setIcon(this->labIcoMain, icon, size);
+        IconHelper::setIcon(this->labIcoMain, icon, size);
     } else {
         this->labIcoMain->setStyleSheet(QString("border-image:url(%1);").arg(png));
     }

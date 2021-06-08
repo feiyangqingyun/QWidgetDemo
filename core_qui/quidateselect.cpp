@@ -258,7 +258,7 @@ QString QUIDateSelect::getEndDateTime() const
 
 void QUIDateSelect::setIconMain(int icon, quint32 size)
 {
-    IconHelper::Instance()->setIcon(this->labIco, icon, size);
+    IconHelper::setIcon(this->labIco, icon, size);
 }
 
 void QUIDateSelect::setFormat(const QString &format)

@@ -277,26 +277,26 @@ void QUIWidget::setIcon(QUIWidget::Widget widget, int icon, quint32 size)
         setIconMain(icon, size);
     } else if (widget == QUIWidget::BtnMenu) {
         QUIConfig::IconMenu = icon;
-        IconHelper::Instance()->setIcon(this->btnMenu, icon, size);
+        IconHelper::setIcon(this->btnMenu, icon, size);
     } else if (widget == QUIWidget::BtnMenu_Min) {
         QUIConfig::IconMin = icon;
-        IconHelper::Instance()->setIcon(this->btnMenu_Min, icon, size);
+        IconHelper::setIcon(this->btnMenu_Min, icon, size);
     } else if (widget == QUIWidget::BtnMenu_Max) {
         QUIConfig::IconMax = icon;
-        IconHelper::Instance()->setIcon(this->btnMenu_Max, icon, size);
+        IconHelper::setIcon(this->btnMenu_Max, icon, size);
     } else if (widget == QUIWidget::BtnMenu_Normal) {
         QUIConfig::IconNormal = icon;
-        IconHelper::Instance()->setIcon(this->btnMenu_Max, icon, size);
+        IconHelper::setIcon(this->btnMenu_Max, icon, size);
     } else if (widget == QUIWidget::BtnMenu_Close) {
         QUIConfig::IconClose = icon;
-        IconHelper::Instance()->setIcon(this->btnMenu_Close, icon, size);
+        IconHelper::setIcon(this->btnMenu_Close, icon, size);
     }
 }
 
 void QUIWidget::setIconMain(int icon, quint32 size)
 {
     QUIConfig::IconMain = icon;
-    IconHelper::Instance()->setIcon(this->labIco, icon, size);
+    IconHelper::setIcon(this->labIco, icon, size);
     QUIMessageBox::Instance()->setIconMain(icon, size);
     QUIInputBox::Instance()->setIconMain(icon, size);
     QUIDateSelect::Instance()->setIconMain(icon, size);

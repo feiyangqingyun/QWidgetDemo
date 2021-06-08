@@ -1,62 +1,209 @@
 ﻿#include "iconhelper.h"
 
-QScopedPointer<IconHelper> IconHelper::self;
-IconHelper *IconHelper::Instance()
+IconHelper *IconHelper::iconFontAliBaBa = 0;
+IconHelper *IconHelper::iconFontAwesome = 0;
+void IconHelper::initFont()
 {
-    if (self.isNull()) {
-        static QMutex mutex;
-        QMutexLocker locker(&mutex);
-        if (self.isNull()) {
-            self.reset(new IconHelper);
+    static bool isInit = false;
+    if (!isInit) {
+        isInit = true;
+        if (iconFontAliBaBa == 0) {
+            iconFontAliBaBa = new IconHelper(":/image/iconfont.ttf", "iconfont");
+        }
+        if (iconFontAwesome == 0) {
+            iconFontAwesome = new IconHelper(":/image/fontawesome-webfont.ttf", "FontAwesome");
         }
     }
-
-    return self.data();
 }
 
-IconHelper::IconHelper(QObject *parent) : QObject(parent)
+void IconHelper::setIcon(QLabel *lab, int icon, quint32 size)
+{
+    initFont();
+
+    //自动根据不同的字体的值选择对应的类,fontawesome 0xf开头 iconfont 0xe开头
+    if (icon > 0xe000 && icon < 0xf000) {
+        iconFontAliBaBa->setIcon1(lab, icon, size);
+    } else if (icon > 0xf000) {
+        iconFontAwesome->setIcon1(lab, icon, size);
+    }
+}
+
+void IconHelper::setIcon(QAbstractButton *btn, int icon, quint32 size)
+{
+    initFont();
+
+    //自动根据不同的字体的值选择对应的类,fontawesome 0xf开头 iconfont 0xe开头
+    if (icon > 0xe000 && icon < 0xf000) {
+        iconFontAliBaBa->setIcon1(btn, icon, size);
+    } else if (icon > 0xf000) {
+        iconFontAwesome->setIcon1(btn, icon, size);
+    }
+}
+
+void IconHelper::setPixmap(QAbstractButton *btn, const QColor &color, int icon, quint32 size,
+                           quint32 width, quint32 height, int flags)
+{
+    initFont();
+
+    //自动根据不同的字体的值选择对应的类,fontawesome 0xf开头 iconfont 0xe开头
+    if (icon > 0xe000 && icon < 0xf000) {
+        iconFontAliBaBa->setPixmap1(btn, color, icon, size, width, height, flags);
+    } else if (icon > 0xf000) {
+        iconFontAwesome->setPixmap1(btn, color, icon, size, width, height, flags);
+    }
+}
+
+QPixmap IconHelper::getPixmap(const QColor &color, int icon, quint32 size,
+                              quint32 width, quint32 height, int flags)
+{
+    initFont();
+
+    //自动根据不同的字体的值选择对应的类,fontawesome 0xf开头 iconfont 0xe开头
+    QPixmap pix;
+    if (icon > 0xe000 && icon < 0xf000) {
+        pix = iconFontAliBaBa->getPixmap1(color, icon, size, width, height, flags);
+    } else if (icon > 0xf000) {
+        pix = iconFontAwesome->getPixmap1(color, icon, size, width, height, flags);
+    }
+    return pix;
+}
+
+void IconHelper::setStyle(QWidget *widget, QList<QPushButton *> btns,
+                          QList<int> icons, const IconHelper::StyleColor &styleColor)
+{
+    initFont();
+
+    //自动根据不同的字体的值选择对应的类,fontawesome 0xf开头 iconfont 0xe开头
+    int icon = icons.first();
+    if (icon > 0xe000 && icon < 0xf000) {
+        iconFontAliBaBa->setStyle1(widget, btns, icons, styleColor);
+    } else if (icon > 0xf000) {
+        iconFontAwesome->setStyle1(widget, btns, icons, styleColor);
+    }
+}
+
+void IconHelper::setStyle(QWidget *widget, QList<QToolButton *> btns,
+                          QList<int> icons, const IconHelper::StyleColor &styleColor)
+{
+    initFont();
+
+    //自动根据不同的字体的值选择对应的类,fontawesome 0xf开头 iconfont 0xe开头
+    int icon = icons.first();
+    if (icon > 0xe000 && icon < 0xf000) {
+        iconFontAliBaBa->setStyle1(widget, btns, icons, styleColor);
+    } else if (icon > 0xf000) {
+        iconFontAwesome->setStyle1(widget, btns, icons, styleColor);
+    }
+}
+
+void IconHelper::setStyle(QWidget *widget, QList<QAbstractButton *> btns,
+                          QList<int> icons, const IconHelper::StyleColor &styleColor)
+{
+    initFont();
+
+    //自动根据不同的字体的值选择对应的类,fontawesome 0xf开头 iconfont 0xe开头
+    int icon = icons.first();
+    if (icon > 0xe000 && icon < 0xf000) {
+        iconFontAliBaBa->setStyle1(widget, btns, icons, styleColor);
+    } else if (icon > 0xf000) {
+        iconFontAwesome->setStyle1(widget, btns, icons, styleColor);
+    }
+}
+
+IconHelper::IconHelper(const QString &fontFile, const QString &fontName, QObject *parent) : QObject(parent)
 {
     //判断图形字体是否存在,不存在则加入
     QFontDatabase fontDb;
-    if (!fontDb.families().contains("FontAwesome")) {
-        int fontId = fontDb.addApplicationFont(":/image/fontawesome-webfont.ttf");
-        QStringList fontName = fontDb.applicationFontFamilies(fontId);
-        if (fontName.count() == 0) {
-            qDebug() << "load fontawesome-webfont.ttf error";
+    if (!fontDb.families().contains(fontName)) {
+        int fontId = fontDb.addApplicationFont(fontFile);
+        QStringList listName = fontDb.applicationFontFamilies(fontId);
+        if (listName.count() == 0) {
+            qDebug() << QString("load %1 error").arg(fontName);
         }
     }
 
-    if (fontDb.families().contains("FontAwesome")) {
-        iconFont = QFont("FontAwesome");
+    if (fontDb.families().contains(fontName)) {
+        iconFont = QFont(fontName);
 #if (QT_VERSION >= QT_VERSION_CHECK(4,8,0))
         iconFont.setHintingPreference(QFont::PreferNoHinting);
 #endif
     }
 }
 
-QFont IconHelper::getIconFont()
+bool IconHelper::eventFilter(QObject *watched, QEvent *event)
 {
-    return this->iconFont;
+    //根据不同的
+    if (watched->inherits("QAbstractButton")) {
+        QAbstractButton *btn = (QAbstractButton *)watched;
+        int index = btns.indexOf(btn);
+        if (index >= 0) {
+            //不同的事件设置不同的图标,同时区分选中的和没有选中的
+            if (btn->isChecked()) {
+                if (event->type() == QEvent::MouseButtonPress) {
+                    QMouseEvent *mouseEvent = (QMouseEvent *)event;
+                    if (mouseEvent->button() == Qt::LeftButton) {
+                        btn->setIcon(QIcon(pixChecked.at(index)));
+                    }
+                } else if (event->type() == QEvent::Enter) {
+                    btn->setIcon(QIcon(pixChecked.at(index)));
+                } else if (event->type() == QEvent::Leave) {
+                    btn->setIcon(QIcon(pixChecked.at(index)));
+                }
+            } else {
+                if (event->type() == QEvent::MouseButtonPress) {
+                    QMouseEvent *mouseEvent = (QMouseEvent *)event;
+                    if (mouseEvent->button() == Qt::LeftButton) {
+                        btn->setIcon(QIcon(pixPressed.at(index)));
+                    }
+                } else if (event->type() == QEvent::Enter) {
+                    btn->setIcon(QIcon(pixHover.at(index)));
+                } else if (event->type() == QEvent::Leave) {
+                    btn->setIcon(QIcon(pixNormal.at(index)));
+                }
+            }
+        }
+    }
+
+    return QObject::eventFilter(watched, event);
 }
 
-void IconHelper::setIcon(QLabel *lab, int icon, quint32 size)
+void IconHelper::toggled(bool checked)
+{
+    //选中和不选中设置不同的图标
+    QAbstractButton *btn = (QAbstractButton *)sender();
+    int index = btns.indexOf(btn);
+    if (checked) {
+        btn->setIcon(QIcon(pixChecked.at(index)));
+    } else {
+        btn->setIcon(QIcon(pixNormal.at(index)));
+    }
+}
+
+void IconHelper::setIcon1(QLabel *lab, int icon, quint32 size)
 {
     iconFont.setPixelSize(size);
     lab->setFont(iconFont);
     lab->setText((QChar)icon);
 }
 
-void IconHelper::setIcon(QAbstractButton *btn, int icon, quint32 size)
+void IconHelper::setIcon1(QAbstractButton *btn, int icon, quint32 size)
 {
     iconFont.setPixelSize(size);
     btn->setFont(iconFont);
     btn->setText((QChar)icon);
 }
 
-QPixmap IconHelper::getPixmap(const QColor &color, int icon, quint32 size,
-                              quint32 pixWidth, quint32 pixHeight, int flags)
+void IconHelper::setPixmap1(QAbstractButton *btn, const QColor &color, int icon, quint32 size,
+                            quint32 width, quint32 height, int flags)
 {
-    QPixmap pix(pixWidth, pixHeight);
+    btn->setIcon(getPixmap1(color, icon, size, width, height, flags));
+}
+
+QPixmap IconHelper::getPixmap1(const QColor &color, int icon, quint32 size,
+                               quint32 width, quint32 height, int flags)
+{
+    //主动绘制图形字体到图片
+    QPixmap pix(width, height);
     pix.fill(Qt::transparent);
 
     QPainter painter;
@@ -68,124 +215,100 @@ QPixmap IconHelper::getPixmap(const QColor &color, int icon, quint32 size,
     painter.setFont(iconFont);
     painter.drawText(pix.rect(), flags, (QChar)icon);
     painter.end();
-
     return pix;
 }
 
-QPixmap IconHelper::getPixmap(QToolButton *btn, bool normal)
+void IconHelper::setStyle1(QWidget *widget, QList<QPushButton *> btns, QList<int> icons, const IconHelper::StyleColor &styleColor)
 {
-    QPixmap pix;
-    int index = btns.indexOf(btn);
-    if (index >= 0) {
-        if (normal) {
-            pix = pixNormal.at(index);
-        } else {
-            pix = pixDark.at(index);
-        }
+    QList<QAbstractButton *> list;
+    foreach (QPushButton *btn, btns) {
+        list << btn;
     }
 
-    return pix;
+    setStyle(widget, list, icons, styleColor);
 }
 
-QPixmap IconHelper::getPixmap(QToolButton *btn, int type)
+void IconHelper::setStyle1(QWidget *widget, QList<QToolButton *> btns, QList<int> icons, const IconHelper::StyleColor &styleColor)
 {
-    QPixmap pix;
-    int index = btns.indexOf(btn);
-    if (index >= 0) {
-        if (type == 0) {
-            pix = pixNormal.at(index);
-        } else if (type == 1) {
-            pix = pixHover.at(index);
-        } else if (type == 2) {
-            pix = pixPressed.at(index);
-        } else if (type == 3) {
-            pix = pixChecked.at(index);
-        }
+    QList<QAbstractButton *> list;
+    foreach (QToolButton *btn, btns) {
+        list << btn;
     }
 
-    return pix;
+    setStyle(widget, list, icons, styleColor);
 }
 
-void IconHelper::setStyle(QFrame *frame, QList<QToolButton *> btns, QList<int> icons,
-                          quint32 iconSize, quint32 iconWidth, quint32 iconHeight,
-                          const QString &normalBgColor, const QString &darkBgColor,
-                          const QString &normalTextColor, const QString &darkTextColor)
+void IconHelper::setStyle1(QWidget *widget, QList<QAbstractButton *> btns, QList<int> icons, const IconHelper::StyleColor &styleColor)
 {
     int btnCount = btns.count();
-    int charCount = icons.count();
-    if (btnCount <= 0 || charCount <= 0 || btnCount != charCount) {
+    int iconCount = icons.count();
+    if (btnCount <= 0 || iconCount <= 0 || btnCount != iconCount) {
         return;
     }
 
-    QStringList qss;
-    qss.append(QString("QFrame>QToolButton{border-style:none;border-width:0px;"
-                       "background-color:%1;color:%2;}").arg(normalBgColor).arg(normalTextColor));
-    qss.append(QString("QFrame>QToolButton:hover,QFrame>QToolButton:pressed,QFrame>QToolButton:checked"
-                       "{background-color:%1;color:%2;}").arg(darkBgColor).arg(darkTextColor));
+    QString position = styleColor.position;
+    quint32 iconSize = styleColor.iconSize;
+    quint32 iconWidth = styleColor.iconWidth;
+    quint32 iconHeight = styleColor.iconHeight;
+    quint32 borderWidth = styleColor.borderWidth;
 
-    frame->setStyleSheet(qss.join(""));
-
-    //存储对应按钮对象,方便鼠标移上去的时候切换图片
-    for (int i = 0; i < btnCount; i++) {
-        int icon = icons.at(i);
-        QPixmap pixNormal = getPixmap(normalTextColor, icon, iconSize, iconWidth, iconHeight);
-        QPixmap pixDark = getPixmap(darkTextColor, icon, iconSize, iconWidth, iconHeight);
-
-        QToolButton *btn = btns.at(i);
-        btn->setIcon(QIcon(pixNormal));
-        btn->setIconSize(QSize(iconWidth, iconHeight));
-        btn->installEventFilter(this);
-
-        this->btns.append(btn);
-        this->pixNormal.append(pixNormal);
-        this->pixDark.append(pixDark);
-        this->pixHover.append(pixDark);
-        this->pixPressed.append(pixDark);
-        this->pixChecked.append(pixDark);
-    }
-}
-
-void IconHelper::setStyle(QWidget *widget, const QString &type, int borderWidth, const QString &borderColor,
-                          const QString &normalBgColor, const QString &darkBgColor,
-                          const QString &normalTextColor, const QString &darkTextColor)
-{
+    //根据不同的位置计算边框
     QString strBorder;
-    if (type == "top") {
+    if (position == "top") {
         strBorder = QString("border-width:%1px 0px 0px 0px;padding-top:%1px;padding-bottom:%2px;")
                     .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "right") {
+    } else if (position == "right") {
         strBorder = QString("border-width:0px %1px 0px 0px;padding-right:%1px;padding-left:%2px;")
                     .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "bottom") {
+    } else if (position == "bottom") {
         strBorder = QString("border-width:0px 0px %1px 0px;padding-bottom:%1px;padding-top:%2px;")
                     .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "left") {
+    } else if (position == "left") {
         strBorder = QString("border-width:0px 0px 0px %1px;padding-left:%1px;padding-right:%2px;")
                     .arg(borderWidth).arg(borderWidth * 2);
     }
 
+    //如果图标是左侧显示则需要让没有选中的按钮左侧也有加深的边框,颜色为背景颜色
     QStringList qss;
-    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:none;border-radius:0px;padding:5px;"
-                       "color:%2;background:%3;}").arg(type).arg(normalTextColor).arg(normalBgColor));
+    if (styleColor.textBesideIcon) {
+        qss << QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:solid;border-radius:0px;%2border-color:%3;color:%4;background:%5;}")
+            .arg(position).arg(strBorder).arg(styleColor.normalBgColor).arg(styleColor.normalTextColor).arg(styleColor.normalBgColor);
+    } else {
+        qss << QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:none;border-radius:0px;padding:5px;color:%2;background:%3;}")
+            .arg(position).arg(styleColor.normalTextColor).arg(styleColor.normalBgColor);
+    }
 
-    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton:hover,"
-                       "QWidget[flag=\"%1\"] QAbstractButton:pressed,"
-                       "QWidget[flag=\"%1\"] QAbstractButton:checked{"
-                       "border-style:solid;%2border-color:%3;color:%4;background:%5;}")
-               .arg(type).arg(strBorder).arg(borderColor).arg(darkTextColor).arg(darkBgColor));
+    //悬停+按下+选中
+    qss << QString("QWidget[flag=\"%1\"] QAbstractButton:hover{border-style:solid;%2border-color:%3;color:%4;background:%5;}")
+        .arg(position).arg(strBorder).arg(styleColor.borderColor).arg(styleColor.hoverTextColor).arg(styleColor.hoverBgColor);
+    qss << QString("QWidget[flag=\"%1\"] QAbstractButton:pressed{border-style:solid;%2border-color:%3;color:%4;background:%5;}")
+        .arg(position).arg(strBorder).arg(styleColor.borderColor).arg(styleColor.pressedTextColor).arg(styleColor.pressedBgColor);
+    qss << QString("QWidget[flag=\"%1\"] QAbstractButton:checked{border-style:solid;%2border-color:%3;color:%4;background:%5;}")
+        .arg(position).arg(strBorder).arg(styleColor.borderColor).arg(styleColor.checkedTextColor).arg(styleColor.checkedBgColor);
 
+    //窗体背景颜色+按钮背景颜色
+    qss << QString("QWidget#%1{background:%2;}")
+        .arg(widget->objectName()).arg(styleColor.normalBgColor);
+    qss << QString("QWidget>QAbstractButton{border-width:0px;background-color:%1;color:%2;}")
+        .arg(styleColor.normalBgColor).arg(styleColor.normalTextColor);
+    qss << QString("QWidget>QAbstractButton:hover{background-color:%1;color:%2;}")
+        .arg(styleColor.hoverBgColor).arg(styleColor.hoverTextColor);
+    qss << QString("QWidget>QAbstractButton:pressed{background-color:%1;color:%2;}")
+        .arg(styleColor.pressedBgColor).arg(styleColor.pressedTextColor);
+    qss << QString("QWidget>QAbstractButton:checked{background-color:%1;color:%2;}")
+        .arg(styleColor.checkedBgColor).arg(styleColor.checkedTextColor);
+
+    //设置样式表
     widget->setStyleSheet(qss.join(""));
-}
 
-void IconHelper::removeStyle(QList<QToolButton *> btns)
-{
-    for (int i = 0; i < btns.count(); i++) {
+    //可能会重复调用设置所以先要移除上一次的
+    for (int i = 0; i < btnCount; i++) {
         for (int j = 0; j < this->btns.count(); j++) {
             if (this->btns.at(j) == btns.at(i)) {
+                disconnect(btns.at(i), SIGNAL(toggled(bool)), this, SLOT(toggled(bool)));
                 this->btns.at(j)->removeEventFilter(this);
                 this->btns.removeAt(j);
                 this->pixNormal.removeAt(j);
-                this->pixDark.removeAt(j);
                 this->pixHover.removeAt(j);
                 this->pixPressed.removeAt(j);
                 this->pixChecked.removeAt(j);
@@ -193,174 +316,36 @@ void IconHelper::removeStyle(QList<QToolButton *> btns)
             }
         }
     }
-}
-
-void IconHelper::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<int> icons,
-                          quint32 iconSize, quint32 iconWidth, quint32 iconHeight,
-                          const QString &type, int borderWidth, const QString &borderColor,
-                          const QString &normalBgColor, const QString &darkBgColor,
-                          const QString &normalTextColor, const QString &darkTextColor)
-{
-    int btnCount = btns.count();
-    int charCount = icons.count();
-    if (btnCount <= 0 || charCount <= 0 || btnCount != charCount) {
-        return;
-    }
-
-    QString strBorder;
-    if (type == "top") {
-        strBorder = QString("border-width:%1px 0px 0px 0px;padding-top:%1px;padding-bottom:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "right") {
-        strBorder = QString("border-width:0px %1px 0px 0px;padding-right:%1px;padding-left:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "bottom") {
-        strBorder = QString("border-width:0px 0px %1px 0px;padding-bottom:%1px;padding-top:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "left") {
-        strBorder = QString("border-width:0px 0px 0px %1px;padding-left:%1px;padding-right:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    }
-
-    //如果图标是左侧显示则需要让没有选中的按钮左侧也有加深的边框,颜色为背景颜色
-    QStringList qss;
-    if (btns.at(0)->toolButtonStyle() == Qt::ToolButtonTextBesideIcon) {
-        qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:solid;border-radius:0px;%2border-color:%3;color:%4;background:%5;}")
-                   .arg(type).arg(strBorder).arg(normalBgColor).arg(normalTextColor).arg(normalBgColor));
-    } else {
-        qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:none;border-radius:0px;padding:5px;color:%2;background:%3;}")
-                   .arg(type).arg(normalTextColor).arg(normalBgColor));
-    }
-
-    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton:hover,"
-                       "QWidget[flag=\"%1\"] QAbstractButton:pressed,"
-                       "QWidget[flag=\"%1\"] QAbstractButton:checked{"
-                       "border-style:solid;%2border-color:%3;color:%4;background:%5;}")
-               .arg(type).arg(strBorder).arg(borderColor).arg(darkTextColor).arg(darkBgColor));
-
-    qss.append(QString("QWidget#%1{background:%2;}").arg(widget->objectName()).arg(normalBgColor));
-    qss.append(QString("QWidget>QToolButton{border-width:0px;"
-                       "background-color:%1;color:%2;}").arg(normalBgColor).arg(normalTextColor));
-    qss.append(QString("QWidget>QToolButton:hover,QWidget>QToolButton:pressed,QWidget>QToolButton:checked{"
-                       "background-color:%1;color:%2;}").arg(darkBgColor).arg(darkTextColor));
-
-    widget->setStyleSheet(qss.join(""));
 
     //存储对应按钮对象,方便鼠标移上去的时候切换图片
+    int checkedIndex = -1;
     for (int i = 0; i < btnCount; i++) {
         int icon = icons.at(i);
-        QPixmap pixNormal = getPixmap(normalTextColor, icon, iconSize, iconWidth, iconHeight);
-        QPixmap pixDark = getPixmap(darkTextColor, icon, iconSize, iconWidth, iconHeight);
+        QPixmap pixNormal = getPixmap1(styleColor.normalTextColor, icon, iconSize, iconWidth, iconHeight);
+        QPixmap pixHover = getPixmap1(styleColor.hoverTextColor, icon, iconSize, iconWidth, iconHeight);
+        QPixmap pixPressed = getPixmap1(styleColor.pressedTextColor, icon, iconSize, iconWidth, iconHeight);
+        QPixmap pixChecked = getPixmap1(styleColor.checkedTextColor, icon, iconSize, iconWidth, iconHeight);
 
-        QToolButton *btn = btns.at(i);
-        btn->setIcon(QIcon(pixNormal));
-        btn->setIconSize(QSize(iconWidth, iconHeight));
-        btn->installEventFilter(this);
-
-        this->btns.append(btn);
-        this->pixNormal.append(pixNormal);
-        this->pixDark.append(pixDark);
-        this->pixHover.append(pixDark);
-        this->pixPressed.append(pixDark);
-        this->pixChecked.append(pixDark);
-    }
-}
-
-void IconHelper::setStyle(QWidget *widget, QList<QToolButton *> btns, QList<int> icons, const IconHelper::StyleColor &styleColor)
-{
-    int btnCount = btns.count();
-    int charCount = icons.count();
-    if (btnCount <= 0 || charCount <= 0 || btnCount != charCount) {
-        return;
-    }
-
-    quint32 iconSize = styleColor.iconSize;
-    quint32 iconWidth = styleColor.iconWidth;
-    quint32 iconHeight = styleColor.iconHeight;
-    quint32 borderWidth = styleColor.borderWidth;
-    QString type = styleColor.type;
-
-    QString strBorder;
-    if (type == "top") {
-        strBorder = QString("border-width:%1px 0px 0px 0px;padding-top:%1px;padding-bottom:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "right") {
-        strBorder = QString("border-width:0px %1px 0px 0px;padding-right:%1px;padding-left:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "bottom") {
-        strBorder = QString("border-width:0px 0px %1px 0px;padding-bottom:%1px;padding-top:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    } else if (type == "left") {
-        strBorder = QString("border-width:0px 0px 0px %1px;padding-left:%1px;padding-right:%2px;")
-                    .arg(borderWidth).arg(borderWidth * 2);
-    }
-
-    //如果图标是左侧显示则需要让没有选中的按钮左侧也有加深的边框,颜色为背景颜色
-    QStringList qss;
-    if (btns.at(0)->toolButtonStyle() == Qt::ToolButtonTextBesideIcon) {
-        qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:solid;border-radius:0px;%2border-color:%3;color:%4;background:%5;}")
-                   .arg(type).arg(strBorder).arg(styleColor.normalBgColor).arg(styleColor.normalTextColor).arg(styleColor.normalBgColor));
-    } else {
-        qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:none;border-radius:0px;padding:5px;color:%2;background:%3;}")
-                   .arg(type).arg(styleColor.normalTextColor).arg(styleColor.normalBgColor));
-    }
-
-    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton:hover{border-style:solid;%2border-color:%3;color:%4;background:%5;}")
-               .arg(type).arg(strBorder).arg(styleColor.borderColor).arg(styleColor.hoverTextColor).arg(styleColor.hoverBgColor));
-    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton:pressed{border-style:solid;%2border-color:%3;color:%4;background:%5;}")
-               .arg(type).arg(strBorder).arg(styleColor.borderColor).arg(styleColor.pressedTextColor).arg(styleColor.pressedBgColor));
-    qss.append(QString("QWidget[flag=\"%1\"] QAbstractButton:checked{border-style:solid;%2border-color:%3;color:%4;background:%5;}")
-               .arg(type).arg(strBorder).arg(styleColor.borderColor).arg(styleColor.checkedTextColor).arg(styleColor.checkedBgColor));
-
-    qss.append(QString("QWidget#%1{background:%2;}").arg(widget->objectName()).arg(styleColor.normalBgColor));
-    qss.append(QString("QWidget>QToolButton{border-width:0px;background-color:%1;color:%2;}").arg(styleColor.normalBgColor).arg(styleColor.normalTextColor));
-    qss.append(QString("QWidget>QToolButton:hover{background-color:%1;color:%2;}").arg(styleColor.hoverBgColor).arg(styleColor.hoverTextColor));
-    qss.append(QString("QWidget>QToolButton:pressed{background-color:%1;color:%2;}").arg(styleColor.pressedBgColor).arg(styleColor.pressedTextColor));
-    qss.append(QString("QWidget>QToolButton:checked{background-color:%1;color:%2;}").arg(styleColor.checkedBgColor).arg(styleColor.checkedTextColor));
-
-    widget->setStyleSheet(qss.join(""));
-
-    //存储对应按钮对象,方便鼠标移上去的时候切换图片
-    for (int i = 0; i < btnCount; i++) {
-        int icon = icons.at(i);
-        QPixmap pixNormal = getPixmap(styleColor.normalTextColor, icon, iconSize, iconWidth, iconHeight);
-        QPixmap pixHover = getPixmap(styleColor.hoverTextColor, icon, iconSize, iconWidth, iconHeight);
-        QPixmap pixPressed = getPixmap(styleColor.pressedTextColor, icon, iconSize, iconWidth, iconHeight);
-        QPixmap pixChecked = getPixmap(styleColor.checkedTextColor, icon, iconSize, iconWidth, iconHeight);
-
-        QToolButton *btn = btns.at(i);
-        btn->setIcon(QIcon(pixNormal));
-        btn->setIconSize(QSize(iconWidth, iconHeight));
-        btn->installEventFilter(this);
-
-        this->btns.append(btn);
-        this->pixNormal.append(pixNormal);
-        this->pixDark.append(pixHover);
-        this->pixHover.append(pixHover);
-        this->pixPressed.append(pixPressed);
-        this->pixChecked.append(pixChecked);
-    }
-}
-
-bool IconHelper::eventFilter(QObject *watched, QEvent *event)
-{
-    if (watched->inherits("QToolButton")) {
-        QToolButton *btn = (QToolButton *)watched;
-        int index = btns.indexOf(btn);
-        if (index >= 0) {
-            if (event->type() == QEvent::Enter) {
-                btn->setIcon(QIcon(pixHover.at(index)));
-            } else if (event->type() == QEvent::MouseButtonPress) {
-                btn->setIcon(QIcon(pixPressed.at(index)));
-            } else if (event->type() == QEvent::Leave) {
-                if (btn->isChecked()) {
-                    btn->setIcon(QIcon(pixChecked.at(index)));
-                } else {
-                    btn->setIcon(QIcon(pixNormal.at(index)));
-                }
-            }
+        //记住最后选中的按钮
+        QAbstractButton *btn = btns.at(i);
+        if (btn->isChecked()) {
+            checkedIndex = i;
         }
+
+        btn->setIcon(QIcon(pixNormal));
+        btn->setIconSize(QSize(iconWidth, iconHeight));
+        btn->installEventFilter(this);
+        connect(btn, SIGNAL(toggled(bool)), this, SLOT(toggled(bool)));
+
+        this->btns << btn;
+        this->pixNormal << pixNormal;
+        this->pixHover << pixHover;
+        this->pixPressed << pixPressed;
+        this->pixChecked << pixChecked;
     }
 
-    return QObject::eventFilter(watched, event);
+    //主动触发一下选中的按钮
+    if (checkedIndex >= 0) {
+        QMetaObject::invokeMethod(btns.at(checkedIndex), "toggled", Q_ARG(bool, true));
+    }
 }

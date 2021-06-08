@@ -52,8 +52,6 @@
 
 #include "head.h"
 #include "iconhelper.h"
-#include "iconfont.h"
-
 #include "quihelper.h"
 #include "quiconfig.h"
 #include "quistyle.h"
