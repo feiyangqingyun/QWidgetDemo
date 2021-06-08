@@ -1,5 +1,5 @@
 ﻿#include "appconfig.h"
-#include "quiwidget.h"
+#include "quihelper.h"
 
 QString AppConfig::ConfigFile = "config.ini";
 QString AppConfig::SendFileName = "send.txt";

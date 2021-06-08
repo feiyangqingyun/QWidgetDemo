@@ -1,5 +1,5 @@
 ﻿#include "tcpserver1.h"
-#include "quiwidget.h"
+#include "quihelper.h"
 
 TcpClient1::TcpClient1(QObject *parent) :  QTcpSocket(parent)
 {

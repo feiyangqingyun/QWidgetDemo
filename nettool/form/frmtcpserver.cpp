@@ -1,6 +1,6 @@
 ﻿#include "frmtcpserver.h"
 #include "ui_frmtcpserver.h"
-#include "quiwidget.h"
+#include "quihelper.h"
 
 frmTcpServer::frmTcpServer(QWidget *parent) : QWidget(parent), ui(new Ui::frmTcpServer)
 {

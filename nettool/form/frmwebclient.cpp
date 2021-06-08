@@ -1,6 +1,6 @@
 ﻿#include "frmwebclient.h"
 #include "ui_frmwebclient.h"
-#include "quiwidget.h"
+#include "quihelper.h"
 
 frmWebClient::frmWebClient(QWidget *parent) : QWidget(parent), ui(new Ui::frmWebClient)
 {

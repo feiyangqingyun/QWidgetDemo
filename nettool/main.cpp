@@ -1,5 +1,5 @@
 ﻿#include "frmmain.h"
-#include "quiwidget.h"
+#include "quihelper.h"
 
 int main(int argc, char *argv[])
 {

@@ -1,5 +1,5 @@
 ﻿#include "webserver.h"
-#include "quiwidget.h"
+#include "quihelper.h"
 
 WebServer::WebServer(const QString &serverName, SslMode secureMode, QObject *parent) : QWebSocketServer(serverName, secureMode, parent)
 {

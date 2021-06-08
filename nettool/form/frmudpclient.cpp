@@ -1,6 +1,6 @@
 ﻿#include "frmudpclient.h"
 #include "ui_frmudpclient.h"
-#include "quiwidget.h"
+#include "quihelper.h"
 
 frmUdpClient::frmUdpClient(QWidget *parent) : QWidget(parent), ui(new Ui::frmUdpClient)
 {

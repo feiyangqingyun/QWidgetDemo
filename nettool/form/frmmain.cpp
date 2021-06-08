@@ -1,6 +1,6 @@
 ﻿#include "frmmain.h"
 #include "ui_frmmain.h"
-#include "quiwidget.h"
+#include "quihelper.h"
 
 #include "frmtcpclient.h"
 #include "frmtcpserver.h"

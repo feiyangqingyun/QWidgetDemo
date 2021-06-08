@@ -1,5 +1,5 @@
 ﻿#include "webclient.h"
-#include "quiwidget.h"
+#include "quihelper.h"
 
 WebClient::WebClient(QWebSocket *socket, QObject *parent) : QObject(parent)
 {
