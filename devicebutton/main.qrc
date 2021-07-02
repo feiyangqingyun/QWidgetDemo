@@ -31,5 +31,17 @@
         <file>image/devicebutton/devicebutton_red_msg.png</file>
         <file>image/devicebutton/devicebutton_red_msg2.png</file>
         <file>image/devicebutton/devicebutton_red_police.png</file>
+        <file>image/devicebutton/devicebutton_purple_bubble.png</file>
+        <file>image/devicebutton/devicebutton_purple_bubble2.png</file>
+        <file>image/devicebutton/devicebutton_purple_circle.png</file>
+        <file>image/devicebutton/devicebutton_purple_msg.png</file>
+        <file>image/devicebutton/devicebutton_purple_msg2.png</file>
+        <file>image/devicebutton/devicebutton_purple_police.png</file>
+        <file>image/devicebutton/devicebutton_yellow_bubble.png</file>
+        <file>image/devicebutton/devicebutton_yellow_bubble2.png</file>
+        <file>image/devicebutton/devicebutton_yellow_circle.png</file>
+        <file>image/devicebutton/devicebutton_yellow_msg.png</file>
+        <file>image/devicebutton/devicebutton_yellow_msg2.png</file>
+        <file>image/devicebutton/devicebutton_yellow_police.png</file>
     </qresource>
 </RCC>

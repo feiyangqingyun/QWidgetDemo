@@ -43,11 +43,13 @@ public:
 
     //设备按钮颜色
     enum ButtonColor {
-        ButtonColor_Green = 0,      //绿色 设备激活状态
-        ButtonColor_Blue = 1,       //蓝色 设备在线状态
-        ButtonColor_Red = 2,        //红色 设备报警状态
-        ButtonColor_Gray = 3,       //灰色 设备离线状态
-        ButtonColor_Black = 4       //黑色 设备故障状态
+        ButtonColor_Green = 0,      //绿色 激活状态
+        ButtonColor_Blue = 1,       //蓝色 在线状态
+        ButtonColor_Red = 2,        //红色 报警状态
+        ButtonColor_Gray = 3,       //灰色 离线状态
+        ButtonColor_Black = 4,      //黑色 故障状态
+        ButtonColor_Purple = 5,     //紫色 其他状态
+        ButtonColor_Yellow = 6      //黄色 其他状态
     };
 
     explicit DeviceButton(QWidget *parent = 0);

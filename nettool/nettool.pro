@@ -1,11 +1,4 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2016-09-19T13:33:20
-#
-#-------------------------------------------------
-
-QT       += core gui network
-
+QT += core gui network
 greaterThan(QT_MAJOR_VERSION, 4) {
 QT += widgets
 #判断是否有websocket模块

@@ -100,8 +100,8 @@ QString QUIHelper::appPath()
 QString QUIHelper::getUuid()
 {
     QString uuid = QUuid::createUuid().toString();
-    uuid = uuid.replace("{", "");
-    uuid = uuid.replace("}", "");
+    uuid.replace("{", "");
+    uuid.replace("}", "");
     return uuid;
 }
 
@@ -219,8 +219,8 @@ bool QUIHelper::checkIniFile(const QString &iniFile)
         bool ok = true;
         while (!file.atEnd()) {
             QString line = file.readLine();
-            line = line.replace("\r", "");
-            line = line.replace("\n", "");
+            line.replace("\r", "");
+            line.replace("\n", "");
             QStringList list = line.split("=");
 
             if (list.count() == 2) {

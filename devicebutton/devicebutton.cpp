@@ -202,6 +202,10 @@ void DeviceButton::setButtonColor(const DeviceButton::ButtonColor &buttonColor)
         imgName = QString(":/image/devicebutton/devicebutton_gray_%1.png").arg(type);
     } else if (buttonColor == ButtonColor_Black) {
         imgName = QString(":/image/devicebutton/devicebutton_black_%1.png").arg(type);
+    } else if (buttonColor == ButtonColor_Purple) {
+        imgName = QString(":/image/devicebutton/devicebutton_purple_%1.png").arg(type);
+    } else if (buttonColor == ButtonColor_Yellow) {
+        imgName = QString(":/image/devicebutton/devicebutton_yellow_%1.png").arg(type);
     } else if (buttonColor == ButtonColor_Red) {
         checkAlarm();
         if (!timer->isActive()) {

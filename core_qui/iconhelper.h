@@ -28,7 +28,7 @@ public:
     //样式颜色结构体
     struct StyleColor {
         QString position;           //位置 left right top bottom
-        bool textBesideIcon;        //文字在图标下面
+        bool textBesideIcon;        //文字在图标左侧
 
         quint32 iconSize;           //图标字体尺寸
         quint32 iconWidth;          //图标图片宽度

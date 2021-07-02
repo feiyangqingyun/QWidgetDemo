@@ -130,6 +130,20 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="btnPurple">
+        <property name="text">
+         <string>紫色</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnYellow">
+        <property name="text">
+         <string>黄色</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="ckCanMove">
         <property name="text">
          <string>可移动</string>

@@ -1,11 +1,4 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2018-09-19T13:33:20
-#
-#-------------------------------------------------
-
-QT       += core gui network
-
+QT += core gui network
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 

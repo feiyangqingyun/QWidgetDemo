@@ -36,7 +36,7 @@ void frmDeviceButton::initForm()
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(changeStyle()));
     }
 
-    btnColor << ui->btnGreen << ui->btnBlue << ui->btnRed << ui->btnGray << ui->btnBlack;
+    btnColor << ui->btnGreen << ui->btnBlue << ui->btnRed << ui->btnGray << ui->btnBlack << ui->btnPurple << ui->btnYellow;
     foreach (QPushButton *btn, btnColor) {
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(changeColor()));
     }
