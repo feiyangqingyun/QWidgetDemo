@@ -23,8 +23,8 @@ protected:
 private:
     Ui::frmFramelessWidget *ui;
     QWidget *widget1;
-    FramelessWidget2 *widget2;
     FramelessWidget *frameless;
+    FramelessWidget2 *frameless2;
 
 private slots:
     void initWidget(QWidget *w);

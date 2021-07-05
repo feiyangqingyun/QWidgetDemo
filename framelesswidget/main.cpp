@@ -6,6 +6,9 @@
 
 int main(int argc, char *argv[])
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
+#endif
     QApplication a(argc, argv);
     a.setFont(QFont("Microsoft Yahei", 9));
 

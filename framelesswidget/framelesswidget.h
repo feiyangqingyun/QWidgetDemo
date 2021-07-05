@@ -27,32 +27,28 @@ protected:
     bool eventFilter(QObject *watched, QEvent *event);
 
 private:
-    int padding;                    //边距
-    bool moveEnable;                //可移动
-    bool resizeEnable;              //可拉伸
-    QWidget *widget;                //无边框窗体
+    //边距+可移动+可拉伸
+    int padding;
+    bool moveEnable;
+    bool resizeEnable;
 
-    bool pressed;                   //鼠标按下
-    bool pressedLeft;               //鼠标按下左侧
-    bool pressedRight;              //鼠标按下右侧
-    bool pressedTop;                //鼠标按下上侧
-    bool pressedBottom;             //鼠标按下下侧
-    bool pressedLeftTop;            //鼠标按下左上侧
-    bool pressedRightTop;           //鼠标按下右上侧
-    bool pressedLeftBottom;         //鼠标按下左下侧
-    bool pressedRightBottom;        //鼠标按下右下侧
+    //无边框窗体
+    QWidget *widget;
 
-    int rectX, rectY, rectW, rectH; //窗体坐标+宽高
-    QPoint lastPos;                 //鼠标按下处坐标
+    //鼠标是否按下+按下坐标+按下时窗体区域
+    bool mousePressed;
+    QPoint mousePoint;
+    QRect mouseRect;
 
-    QRect rectLeft;                 //左侧区域
-    QRect rectRight;                //右侧区域
-    QRect rectTop;                  //上侧区域
-    QRect rectBottom;               //下侧区域
-    QRect rectLeftTop;              //左上侧区域
-    QRect rectRightTop;             //右上侧区域
-    QRect rectLeftBottom;           //左下侧区域
-    QRect rectRightBottom;          //右下侧区域
+    //鼠标是否按下某个区域+按下区域的大小
+    //依次为 左侧+右侧+上侧+下侧+左上侧+右上侧+左下侧+右下侧
+    QList<bool> pressedArea;
+    QList<QRect> pressedRect;
+
+    //记录是否最小化
+    bool isMin;
+    //存储窗体默认的属性
+    Qt::WindowFlags flags;
 
 public Q_SLOTS:
     //设置边距

@@ -11,8 +11,8 @@ frmFramelessWidget::frmFramelessWidget(QWidget *parent) : QWidget(parent), ui(ne
 {
     ui->setupUi(this);
     widget1 = 0;
-    widget2 = 0;
     frameless = 0;
+    frameless2 = 0;
 }
 
 frmFramelessWidget::~frmFramelessWidget()
@@ -74,6 +74,9 @@ void frmFramelessWidget::stateChanged1(int arg1)
     if (frameless != 0) {
         frameless->setMoveEnable(arg1 != 0);
     }
+    if (frameless2 != 0) {
+        frameless2->setMoveEnable(arg1 != 0);
+    }
 }
 
 void frmFramelessWidget::stateChanged2(int arg1)
@@ -81,14 +84,17 @@ void frmFramelessWidget::stateChanged2(int arg1)
     if (frameless != 0) {
         frameless->setResizeEnable(arg1 != 0);
     }
+    if (frameless2 != 0) {
+        frameless2->setResizeEnable(arg1 != 0);
+    }
 }
 
 void frmFramelessWidget::on_pushButton_2_clicked()
 {
-    if (widget2 == 0) {
-        widget2 = new FramelessWidget2;
-        this->initWidget(widget2);
+    if (frameless2 == 0) {
+        frameless2 = new FramelessWidget2;
+        this->initWidget(frameless2);
     }
 
-    widget2->show();
+    frameless2->show();
 }
