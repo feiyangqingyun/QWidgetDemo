@@ -10,9 +10,13 @@ public:
     static int getScreenIndex();
     static QRect getScreenRect(bool available = true);
 
-    //获取桌面宽度高度+居中显示
+    //获取桌面宽度高度
     static int deskWidth();
     static int deskHeight();
+
+    //居中显示窗体
+    //定义标志位指定是以桌面为参照还是主程序界面为参照
+    static QWidget *centerBaseForm;
     static void setFormInCenter(QWidget *form);
 
     //程序文件名称+当前所在路径

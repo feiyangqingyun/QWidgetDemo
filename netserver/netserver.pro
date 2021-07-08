@@ -10,7 +10,6 @@ RC_FILE     = other/main.rc
 SOURCES     += main.cpp
 HEADERS     += head.h
 RESOURCES   += other/main.qrc
-CONFIG      += warn_off
 
 INCLUDEPATH += $$PWD
 INCLUDEPATH += $$PWD/api

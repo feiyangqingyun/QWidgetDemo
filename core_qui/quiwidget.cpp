@@ -3,8 +3,7 @@
 QUIWidget::QUIWidget(QWidget *parent) : QDialog(parent)
 {
     this->initControl();
-    this->initForm();
-    QUIHelper::setFormInCenter(this);
+    this->initForm();    
 }
 
 QUIWidget::~QUIWidget()
@@ -66,7 +65,7 @@ QPushButton *QUIWidget::getBtnMenuMax() const
     return this->btnMenu_Max;
 }
 
-QPushButton *QUIWidget::getBtnMenuMClose() const
+QPushButton *QUIWidget::getBtnMenuClose() const
 {
     return this->btnMenu_Close;
 }
@@ -396,6 +395,7 @@ void QUIWidget::setMainWidget(QWidget *mainWidget)
         //自动设置大小
         resize(mainWidget->width(), mainWidget->height() + this->widgetTitle->height());
         this->mainWidget = mainWidget;
+        QUIHelper::setFormInCenter(this);
     }
 }
 

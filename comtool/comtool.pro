@@ -10,7 +10,6 @@ RC_FILE     = other/main.rc
 SOURCES     += main.cpp
 HEADERS     += head.h
 RESOURCES   += other/main.qrc
-CONFIG      += warn_off
 
 INCLUDEPATH += $$PWD
 INCLUDEPATH += $$PWD/api
@@ -24,11 +23,3 @@ include ($$PWD/../core_qui/core_qui.pri)
 
 INCLUDEPATH += $$PWD/../3rd_qextserialport
 include ($$PWD/../3rd_qextserialport/3rd_qextserialport.pri)
-
-unix:!macx {
-contains(arma7, DEFINES) {
-INCLUDEPATH += /usr/local/openssl-1.0.2m-h3-gcc-4.9.2/include
-LIBS += -L/usr/local/openssl-1.0.2m-h3-gcc-4.9.2/lib -lssl -lcrypto
-LIBS += -L/usr/local/h3_rootfsv -lXdmcp
-}}
-

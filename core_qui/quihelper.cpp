@@ -57,20 +57,24 @@ int QUIHelper::deskHeight()
     return getScreenRect().height();
 }
 
+QWidget *QUIHelper::centerBaseForm = 0;
 void QUIHelper::setFormInCenter(QWidget *form)
 {
     int formWidth = form->width();
     int formHeight = form->height();
-    QRect rect = getScreenRect();
+
+    //如果=0表示采用系统桌面屏幕为参照
+    QRect rect;
+    if (centerBaseForm == 0) {
+        rect = getScreenRect();
+    } else {
+        rect = centerBaseForm->geometry();
+    }
+
     int deskWidth = rect.width();
     int deskHeight = rect.height();
-    QPoint movePoint(deskWidth / 2 - formWidth / 2 + rect.x(), deskHeight / 2 - formHeight / 2);
+    QPoint movePoint(deskWidth / 2 - formWidth / 2 + rect.x(), deskHeight / 2 - formHeight / 2 + rect.y());
     form->move(movePoint);
-
-    //其他系统自动最大化
-#ifndef Q_OS_WIN
-    QTimer::singleShot(100, form, SLOT(showMaximized()));
-#endif
 }
 
 QString QUIHelper::appName()
@@ -319,8 +323,8 @@ void QUIHelper::setFramelessForm(QWidget *widgetMain, QWidget *widgetTitle,
     widgetMain->setProperty("form", true);
     widgetMain->setProperty("canMove", true);
 
-    //根据设定逐个追加属性
-    widgetMain->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+    //根据设定逐个追加属性 去掉了 Qt::X11BypassWindowManagerHint
+    widgetMain->setWindowFlags(Qt::FramelessWindowHint);
     if (tool) {
         widgetMain->setWindowFlags(widgetMain->windowFlags() | Qt::Tool);
     }
@@ -1206,8 +1210,8 @@ void QUIHelper::initTableView(QTableView *tableView, int rowHeight, bool headVis
     tableView->horizontalHeader()->setStretchLastSection(stretchLast);
     //行标题最小宽度尺寸
     tableView->horizontalHeader()->setMinimumSectionSize(0);
-    //行标题最大高度
-    tableView->horizontalHeader()->setMaximumHeight(rowHeight);
+    //行标题最小高度,等同于和默认行高一致
+    tableView->horizontalHeader()->setFixedHeight(rowHeight);
     //默认行高
     tableView->verticalHeader()->setDefaultSectionSize(rowHeight);
     //选中时一行整体选中

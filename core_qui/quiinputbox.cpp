@@ -228,6 +228,10 @@ void QUIInputBox::setParameter(const QString &title, int type, int closeSec,
     } else if (type == 1) {
         this->txtValue->setVisible(false);
         this->cboxValue->addItems(defaultValue.split("|"));
+        //回显字符串作为默认的下拉选项
+        if (!placeholderText.isEmpty()) {
+            this->cboxValue->setCurrentIndex(this->cboxValue->findText(placeholderText));
+        }
     }
 }
 

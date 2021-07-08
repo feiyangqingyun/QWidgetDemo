@@ -22,7 +22,6 @@ DESTDIR     = $$PWD/../bin
 SOURCES     += main.cpp
 HEADERS     += head.h
 RESOURCES   += other/main.qrc
-CONFIG      += warn_off
 
 INCLUDEPATH += $$PWD
 INCLUDEPATH += $$PWD/api
