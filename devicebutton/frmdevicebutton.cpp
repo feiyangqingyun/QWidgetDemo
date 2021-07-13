@@ -40,12 +40,18 @@ void frmDeviceButton::initForm()
     foreach (QPushButton *btn, btnColor) {
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(changeColor()));
     }
+
+    //初始化获取当前按钮类型，设置焦点
+    int initstatus = btn1->getButtonStyle();
+    if(initstatus >= DeviceButton::ButtonStyle_Circle || initstatus<= DeviceButton::ButtonStyle_Msg2)
+        btnStyle.at(initstatus)->setFocus();
 }
 
 void frmDeviceButton::changeStyle()
 {
     QPushButton *btn = (QPushButton *)sender();
     int index = btnStyle.indexOf(btn);
+    btn->setFocus();
     DeviceButton::ButtonStyle style = (DeviceButton::ButtonStyle)index;
     btn1->setButtonStyle(style);
     btn2->setButtonStyle(style);
@@ -56,6 +62,7 @@ void frmDeviceButton::changeColor()
 {
     QPushButton *btn = (QPushButton *)sender();
     int index = btnColor.indexOf(btn);
+    btn->setFocus();
     DeviceButton::ButtonColor style = (DeviceButton::ButtonColor)index;
     btn1->setButtonColor(style);
     btn2->setButtonColor(style);
