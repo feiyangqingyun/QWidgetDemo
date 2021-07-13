@@ -72,10 +72,10 @@ void SendEmailThread::run()
             //构建邮件标题
             message.setSubject(emialTitle);
 
-            //构建邮件正文
-            MimeHtml text;
-            text.setHtml(content);
-            message.addPart(&text);
+            //构建邮件正文(传递指针，并且统一将内存控制权交给MimeMessage
+            MimeHtml *ptext = new MimeHtml;
+            ptext->setHtml(content);
+            message.addPart(ptext);
 
             //构建附件-报警图像
             if (fileName.length() > 0) {

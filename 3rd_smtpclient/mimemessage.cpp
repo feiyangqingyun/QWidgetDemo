@@ -5,7 +5,10 @@
 #include <typeinfo>
 
 MimeMessage::MimeMessage(bool createAutoMimeContent) :
-    hEncoding(MimePart::_8Bit)
+    sender(nullptr)
+    , content(nullptr)
+    , hEncoding(MimePart::_8Bit)
+
 {
     if (createAutoMimeContent) {
         this->content = new MimeMultiPart();
@@ -14,6 +17,26 @@ MimeMessage::MimeMessage(bool createAutoMimeContent) :
 
 MimeMessage::~MimeMessage()
 {
+    //释放内存
+    if (sender) {
+        delete sender;
+        sender = nullptr;
+    }
+
+    if (content) {
+        delete content;
+        content = nullptr;
+    }
+
+    qDeleteAll(recipientsTo);
+    recipientsTo.clear();
+
+    qDeleteAll(recipientsCc);
+    recipientsCc.clear();
+
+    qDeleteAll(recipientsBcc);
+    recipientsBcc.clear();
+
 }
 
 MimePart &MimeMessage::getContent()
