@@ -43,5 +43,5 @@ SOURCES += \
     $$PWD/quitipbox.cpp \
     $$PWD/quiwidget.cpp
 
-RESOURCES += $$PWD/source/qm.qrc
-RESOURCES += $$PWD/source/ttf.qrc
+RESOURCES += $$PWD/resource/qm.qrc
+RESOURCES += $$PWD/resource/ttf.qrc

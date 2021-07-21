@@ -360,17 +360,17 @@ public slots:
 
     //打开设备
     void open();
-    //暂停
+    //暂停播放
     void pause();
-    //继续
+    //继续播放
     void next();
     //关闭设备
     void close();
     //重新加载
-    void restart(int delayOpen = 500);
-    //清空
+    void restart(const QString &url, int delayOpen = 500);
+    //清空图片
     void clear();
-    //快照
+    //截图快照
     void snap(const QString &fileName);
 };
 

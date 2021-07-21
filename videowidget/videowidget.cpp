@@ -199,21 +199,19 @@ void VideoWidget::dropEvent(QDropEvent *event)
 {
     //拖放完毕鼠标松开的时候执行
     //判断拖放进来的类型,取出文件,进行播放
+    QString url;
     if (event->mimeData()->hasUrls()) {
-        QString url = event->mimeData()->urls().first().toLocalFile();
-        this->close();
-        this->setUrl(url);
-        this->open();
-        emit fileDrag(url);
+        url = event->mimeData()->urls().first().toLocalFile();
     } else if (event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
         QTreeWidget *treeWidget = (QTreeWidget *)event->source();
         if (treeWidget != 0) {
-            QString url = treeWidget->currentItem()->data(0, Qt::UserRole).toString();
-            this->close();
-            this->setUrl(url);
-            this->open();
-            emit fileDrag(url);
+            url = treeWidget->currentItem()->data(0, Qt::UserRole).toString();
         }
+    }
+
+    if (!url.isEmpty()) {
+        emit fileDrag(url);
+        this->restart(url);
     }
 }
 
@@ -592,7 +590,7 @@ void VideoWidget::checkVideo()
     QDateTime lastTime = now;
     int sec = lastTime.secsTo(now);
     if (sec >= timeout) {
-        restart();
+        restart(this->getUrl());
     }
 }
 
@@ -922,21 +920,30 @@ void VideoWidget::open()
         return;
     }
 
-
+    //thread->play();
+    //thread->start();
 
     if (checkLive) {
         timerCheck->start();
     }
+
+    this->setProperty("isPause", false);
 }
 
 void VideoWidget::pause()
 {
-
+    if (!this->property("isPause").toBool()) {
+        //thread->pause();
+        this->setProperty("isPause", true);
+    }
 }
 
 void VideoWidget::next()
 {
-
+    if (this->property("isPause").toBool()) {
+        //thread->next();
+        this->setProperty("isPause", false);
+    }
 }
 
 void VideoWidget::close()
@@ -945,13 +952,19 @@ void VideoWidget::close()
         timerCheck->stop();
     }
 
-    QTimer::singleShot(1, this, SLOT(clear()));
+    this->clear();
+    //QTimer::singleShot(5, this, SLOT(clear()));
 }
 
-void VideoWidget::restart(int delayOpen)
+void VideoWidget::restart(const QString &url, int delayOpen)
 {
     //qDebug() << TIMEMS << "restart video" << objectName();
+    //关闭视频
     close();
+    //重新设置播放地址
+    setUrl(url);
+
+    //打开视频
     if (delayOpen > 0) {
         QTimer::singleShot(delayOpen, this, SLOT(open()));
     } else {
@@ -969,4 +982,3 @@ void VideoWidget::snap(const QString &fileName)
 {
 
 }
-
