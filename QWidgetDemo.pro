@@ -1,6 +1,8 @@
 TEMPLATE = subdirs
 #定义了ordered表示子项目按照添加的顺序来编译
 CONFIG  += ordered
+
+#挨个添加子项目
 SUBDIRS += lightbutton      #高亮按钮控件
 SUBDIRS += movewidget       #通用控件移动类
 SUBDIRS += flatui           #模仿flatui类
@@ -35,7 +37,9 @@ SUBDIRS += imageswitch      #图片开关控件
 SUBDIRS += netserver        #网络中转服务器
 SUBDIRS += base64           #图片文字base64互换
 SUBDIRS += smoothcurve      #平滑曲线
+SUBDIRS += frameless      	#跨平台无边框窗体
 
+#限定windows系统加载下面的项目
 win32 {
 SUBDIRS += ffmpegdemo       #视频流播放ffmpeg内核
 SUBDIRS += vlcdemo          #视频流播放vlc内核
@@ -46,8 +50,10 @@ SUBDIRS += miniblink        #miniblink示例
 #如果你电脑对应的Qt版本有webkit或者webengine组件可以自行打开
 #SUBDIRS += echartgauge      #echart仪表盘含交互支持webkit及webengine
 
-lessThan(QT_MAJOR_VERSION, 4) {
-#SUBDIRS += designer         #QtDesigner4源码
+#这个项目依赖QtDesigner模块,一般在arm上默认没有这个模块需要自行编译
+#所以arm上如果没有QtDesigner模块不要加载下面这个子项目
+lessThan(QT_MAJOR_VERSION, 5) {
+SUBDIRS += designer         #QtDesigner4源码
 }
 
 #qwt项目需要等官方适配了qwt组件才能适配

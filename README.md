@@ -2,7 +2,7 @@
 1. **可以选择打开QWidgetDemo.pro一次性编译所有的，也可以进入到目录下打开pro进行编译。**
 2. **如果发现有些子项目没有加载请打开QWidgetDemo.pro仔细看里面的注释。**
 3. **编译好的可执行文件在源码同级目录下的bin目录。**
-4. **亲测Qt4.6到Qt6.1所有版本，亲测win、linux、mac、uos等系统。**
+4. **亲测Qt4.6到Qt6.2所有版本，亲测win、linux、mac、uos等系统。**
 
 | 编号 | 文件夹 | 描述 |
 | ------ | ------ | ------ |
@@ -49,6 +49,7 @@
 | 41 | miniblink | miniblink示例 |
 | 42 | base64 | 图片文字base64互换 |
 | 43 | smoothcurve | 平滑曲线 |
+| 44 | frameless | 跨平台无边框窗体 |
 
 ### 二、学习群
 1. **Qt交流大会群 853086607(雨田哥)**
@@ -100,3 +101,4 @@
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/miniblink.jpg)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/base64.png)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/smoothcurve.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/frameless.gif)
