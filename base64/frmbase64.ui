@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>644</width>
-    <height>530</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,13 +15,17 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QLineEdit" name="txtFile"/>
+    <widget class="QLineEdit" name="txtFile">
+     <property name="text">
+      <string>E:/myFile/美女图片/2.jpg</string>
+     </property>
+    </widget>
    </item>
    <item row="0" column="1">
     <widget class="QPushButton" name="btnOpen">
      <property name="minimumSize">
       <size>
-       <width>100</width>
+       <width>110</width>
        <height>0</height>
       </size>
      </property>
@@ -34,7 +38,7 @@
     <widget class="QPushButton" name="btnImageToBase64">
      <property name="minimumSize">
       <size>
-       <width>100</width>
+       <width>110</width>
        <height>0</height>
       </size>
      </property>
@@ -47,7 +51,7 @@
     <widget class="QPushButton" name="btnBase64ToImage">
      <property name="minimumSize">
       <size>
-       <width>100</width>
+       <width>110</width>
        <height>0</height>
       </size>
      </property>
@@ -59,7 +63,7 @@
    <item row="1" column="0">
     <widget class="QLineEdit" name="txtText">
      <property name="text">
-      <string>feiyangqingyun QQ: 517216493</string>
+      <string>游龙 feiyangqingyun QQ: 517216493</string>
      </property>
     </widget>
    </item>
@@ -67,7 +71,7 @@
     <widget class="QPushButton" name="btnClear">
      <property name="minimumSize">
       <size>
-       <width>100</width>
+       <width>110</width>
        <height>0</height>
       </size>
      </property>
@@ -80,7 +84,7 @@
     <widget class="QPushButton" name="btnTextToBase64">
      <property name="minimumSize">
       <size>
-       <width>100</width>
+       <width>110</width>
        <height>0</height>
       </size>
      </property>
@@ -93,7 +97,7 @@
     <widget class="QPushButton" name="btnBase64ToText">
      <property name="minimumSize">
       <size>
-       <width>100</width>
+       <width>110</width>
        <height>0</height>
       </size>
      </property>

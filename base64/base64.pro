@@ -8,7 +8,12 @@ DESTDIR     = $$PWD/../bin
 CONFIG      += warn_off
 
 SOURCES     += main.cpp
+
 SOURCES     += frmbase64.cpp
+SOURCES     += base64.cpp
+
 HEADERS     += frmbase64.h
+HEADERS     += base64.h
+
 FORMS       += frmbase64.ui
 
