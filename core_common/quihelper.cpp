@@ -171,9 +171,7 @@ void QUIHelper::setFont(int fontSize)
 #endif
 
 #ifndef rk3399
-#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     qApp->setFont(font);
-#endif
 #endif
 }
 

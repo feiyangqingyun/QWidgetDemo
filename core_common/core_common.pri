@@ -22,11 +22,13 @@ include ($$PWD/h3.pri)
 
 HEADERS += \
     $$PWD/appinit.h \
+    $$PWD/base64.h \
     $$PWD/iconhelper.h \
     $$PWD/quihelper.h
 
 SOURCES += \
     $$PWD/appinit.cpp \
+    $$PWD/base64.cpp \
     $$PWD/iconhelper.cpp \
     $$PWD/quihelper.cpp
 
