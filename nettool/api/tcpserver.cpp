@@ -44,6 +44,7 @@ bool TcpServer::start()
 void TcpServer::stop()
 {
     remove();
+    this->disconnected();
     this->close();
 }
 

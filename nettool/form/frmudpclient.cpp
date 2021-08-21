@@ -128,10 +128,13 @@ void frmUdpClient::append(int type, const QString &data, bool clear)
     QString strType;
     if (type == 0) {
         strType = "发送";
-        ui->txtMain->setTextColor(QColor("darkgreen"));
-    } else {
+        ui->txtMain->setTextColor(QColor("#22A3A9"));
+    } else if (type == 1) {
         strType = "接收";
-        ui->txtMain->setTextColor(QColor("red"));
+        ui->txtMain->setTextColor(QColor("#D64D54"));
+    } else {
+        strType = "信息";
+        ui->txtMain->setTextColor(QColor("#A279C5"));
     }
 
     strData = QString("时间[%1] %2: %3").arg(TIMEMS).arg(strType).arg(strData);
@@ -190,7 +193,8 @@ void frmUdpClient::sendData(const QString &ip, int port, const QString &data)
         buffer = data.toUtf8();
     }
 
-    //绑定网卡和端口
+    //绑定网卡和端口,没有绑定过才需要绑定
+    //采用端口是否一样来判断是为了方便可以直接动态绑定切换端口
     if (socket->localPort() != AppConfig::UdpBindPort) {
         socket->abort();
         socket->bind(QHostAddress(AppConfig::UdpBindIP), AppConfig::UdpBindPort);

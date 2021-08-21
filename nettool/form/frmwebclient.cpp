@@ -130,10 +130,13 @@ void frmWebClient::append(int type, const QString &data, bool clear)
     QString strType;
     if (type == 0) {
         strType = "发送";
-        ui->txtMain->setTextColor(QColor("darkgreen"));
-    } else {
+        ui->txtMain->setTextColor(QColor("#22A3A9"));
+    } else if (type == 1) {
         strType = "接收";
-        ui->txtMain->setTextColor(QColor("red"));
+        ui->txtMain->setTextColor(QColor("#D64D54"));
+    } else {
+        strType = "信息";
+        ui->txtMain->setTextColor(QColor("#A279C5"));
     }
 
     strData = QString("时间[%1] %2: %3").arg(TIMEMS).arg(strType).arg(strData);
@@ -146,14 +149,20 @@ void frmWebClient::connected()
     isOk = true;
     ui->btnConnect->setText("断开");
     append(0, "服务器连接");
+    append(2, QString("本地地址: %1  本地端口: %2").arg(socket->localAddress().toString()).arg(socket->localPort()));
+    append(2, QString("远程地址: %1  远程端口: %2").arg(socket->peerAddress().toString()).arg(socket->peerPort()));
 }
 
 void frmWebClient::disconnected()
 {
     isOk = false;
-    socket->abort();
+    //socket->abort();
     ui->btnConnect->setText("连接");
     append(1, "服务器断开");
+    //打印下可能的错误信息
+    if (socket->error() != QTcpSocket::UnknownSocketError) {
+        append(2, socket->errorString());
+    }
 }
 
 void frmWebClient::sendData(const QString &data)
