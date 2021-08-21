@@ -16,14 +16,18 @@ frmUdpClient::~frmUdpClient()
 
 void frmUdpClient::initForm()
 {
+    //实例化对象并绑定信号槽
     socket = new QUdpSocket(this);
     connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
 
+    //定时器发送数据
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
 
-    ui->cboxInterval->addItems(AppConfig::Intervals);
-    ui->cboxData->addItems(AppConfig::Datas);
+    //填充数据到下拉框
+    ui->cboxInterval->addItems(AppData::Intervals);
+    ui->cboxData->addItems(AppData::Datas);
+    AppData::loadIP(ui->cboxBindIP);
 }
 
 void frmUdpClient::initConfig()
@@ -46,13 +50,19 @@ void frmUdpClient::initConfig()
     ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(AppConfig::IntervalUdpClient)));
     connect(ui->cboxInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
+    ui->cboxBindIP->setCurrentIndex(ui->cboxBindIP->findText(AppConfig::UdpBindIP));
+    connect(ui->cboxBindIP, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+
+    ui->txtBindPort->setText(QString::number(AppConfig::UdpBindPort));
+    connect(ui->txtBindPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
+
     ui->txtServerIP->setText(AppConfig::UdpServerIP);
     connect(ui->txtServerIP, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
     ui->txtServerPort->setText(QString::number(AppConfig::UdpServerPort));
     connect(ui->txtServerPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
-    this->changeTimer();
+    this->initTimer();
 }
 
 void frmUdpClient::saveConfig()
@@ -63,16 +73,21 @@ void frmUdpClient::saveConfig()
     AppConfig::DebugUdpClient = ui->ckDebug->isChecked();
     AppConfig::AutoSendUdpClient = ui->ckAutoSend->isChecked();
     AppConfig::IntervalUdpClient = ui->cboxInterval->currentText().toInt();
+    AppConfig::UdpBindIP = ui->cboxBindIP->currentText();
+    AppConfig::UdpBindPort = ui->txtBindPort->text().trimmed().toInt();
     AppConfig::UdpServerIP = ui->txtServerIP->text().trimmed();
     AppConfig::UdpServerPort = ui->txtServerPort->text().trimmed().toInt();
     AppConfig::writeConfig();
 
-    this->changeTimer();
+    this->initTimer();
 }
 
-void frmUdpClient::changeTimer()
+void frmUdpClient::initTimer()
 {
-    timer->setInterval(AppConfig::IntervalUdpClient);
+    if (timer->interval() != AppConfig::IntervalUdpClient) {
+        timer->setInterval(AppConfig::IntervalUdpClient);
+    }
+
     if (AppConfig::AutoSendUdpClient) {
         if (!timer->isActive()) {
             timer->start();
@@ -153,10 +168,10 @@ void frmUdpClient::readData()
         append(1, str);
 
         if (AppConfig::DebugUdpClient) {
-            int count = AppConfig::Keys.count();
+            int count = AppData::Keys.count();
             for (int i = 0; i < count; i++) {
-                if (AppConfig::Keys.at(i) == buffer) {
-                    sendData(ip, port, AppConfig::Values.at(i));
+                if (AppData::Keys.at(i) == buffer) {
+                    sendData(ip, port, AppData::Values.at(i));
                     break;
                 }
             }
@@ -175,6 +190,13 @@ void frmUdpClient::sendData(const QString &ip, int port, const QString &data)
         buffer = data.toUtf8();
     }
 
+    //绑定网卡和端口
+    if (socket->localPort() != AppConfig::UdpBindPort) {
+        socket->abort();
+        socket->bind(QHostAddress(AppConfig::UdpBindIP), AppConfig::UdpBindPort);
+    }
+
+    //指定地址和端口发送数据
     socket->writeDatagram(buffer, QHostAddress(ip), port);
 
     QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(data);
@@ -184,7 +206,7 @@ void frmUdpClient::sendData(const QString &ip, int port, const QString &data)
 void frmUdpClient::on_btnSave_clicked()
 {
     QString data = ui->txtMain->toPlainText();
-    AppConfig::saveData(data);
+    AppData::saveData(data);
     on_btnClear_clicked();
 }
 

@@ -1,5 +1,5 @@
-﻿### 特别说明
-1. 编译完成以后记得将dll文件复制到可执行文件同一目录。
+﻿﻿### 特别说明
+1. 编译完成以后记得将动态库文件复制到可执行文件同一目录。
 2. 动态库地址：[https://pan.baidu.com/s/13LDRu6mXC6gaADtrGprNVA](https://pan.baidu.com/s/13LDRu6mXC6gaADtrGprNVA) 提取码: ujm7
 3. 收费增强版：[https://qtchina.blog.csdn.net/article/details/103946067](https://qtchina.blog.csdn.net/article/details/103946067)
 

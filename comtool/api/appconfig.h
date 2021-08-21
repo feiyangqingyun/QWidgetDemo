@@ -33,16 +33,9 @@ public:
     static int SleepTime;               //延时时间
     static bool AutoConnect;            //自动重连
 
-    //读写配置参数及其他操作
+    //读写配置参数
     static void readConfig();           //读取配置参数
     static void writeConfig();          //写入配置参数
-
-    static QStringList Intervals;
-    static QStringList Datas;
-    static QStringList Keys;
-    static QStringList Values;
-    static void readSendData();
-    static void readDeviceData();
 };
 
 #endif // APPCONFIG_H

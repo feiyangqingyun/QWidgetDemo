@@ -2,9 +2,6 @@
 #include "quihelper.h"
 
 QString AppConfig::ConfigFile = "config.ini";
-QString AppConfig::SendFileName = "send.txt";
-QString AppConfig::DeviceFileName = "device.txt";
-
 int AppConfig::CurrentIndex = 0;
 
 bool AppConfig::HexSendTcpClient = false;
@@ -13,6 +10,8 @@ bool AppConfig::AsciiTcpClient = false;
 bool AppConfig::DebugTcpClient = false;
 bool AppConfig::AutoSendTcpClient = false;
 int AppConfig::IntervalTcpClient = 1000;
+QString AppConfig::TcpBindIP = "127.0.0.1";
+int AppConfig::TcpBindPort = 6001;
 QString AppConfig::TcpServerIP = "127.0.0.1";
 int AppConfig::TcpServerPort = 6000;
 
@@ -32,6 +31,8 @@ bool AppConfig::AsciiUdpClient = false;
 bool AppConfig::DebugUdpClient = false;
 bool AppConfig::AutoSendUdpClient = false;
 int AppConfig::IntervalUdpClient = 1000;
+QString AppConfig::UdpBindIP = "127.0.0.1";
+int AppConfig::UdpBindPort = 6001;
 QString AppConfig::UdpServerIP = "127.0.0.1";
 int AppConfig::UdpServerPort = 6000;
 
@@ -84,6 +85,8 @@ void AppConfig::readConfig()
     AppConfig::DebugTcpClient = set.value("DebugTcpClient", AppConfig::DebugTcpClient).toBool();
     AppConfig::AutoSendTcpClient = set.value("AutoSendTcpClient", AppConfig::AutoSendTcpClient).toBool();
     AppConfig::IntervalTcpClient = set.value("IntervalTcpClient", AppConfig::IntervalTcpClient).toInt();
+    AppConfig::TcpBindIP = set.value("TcpBindIP", AppConfig::TcpBindIP).toString();
+    AppConfig::TcpBindPort = set.value("TcpBindPort", AppConfig::TcpBindPort).toInt();
     AppConfig::TcpServerIP = set.value("TcpServerIP", AppConfig::TcpServerIP).toString();
     AppConfig::TcpServerPort = set.value("TcpServerPort", AppConfig::TcpServerPort).toInt();
     set.endGroup();
@@ -107,6 +110,8 @@ void AppConfig::readConfig()
     AppConfig::DebugUdpClient = set.value("DebugUdpClient", AppConfig::DebugUdpClient).toBool();
     AppConfig::AutoSendUdpClient = set.value("AutoSendUdpClient", AppConfig::AutoSendUdpClient).toBool();
     AppConfig::IntervalUdpClient = set.value("IntervalUdpClient", AppConfig::IntervalUdpClient).toInt();
+    AppConfig::UdpBindIP = set.value("UdpBindIP", AppConfig::UdpBindIP).toString();
+    AppConfig::UdpBindPort = set.value("UdpBindPort", AppConfig::UdpBindPort).toInt();
     AppConfig::UdpServerIP = set.value("UdpServerIP", AppConfig::UdpServerIP).toString();
     AppConfig::UdpServerPort = set.value("UdpServerPort", AppConfig::UdpServerPort).toInt();
     set.endGroup();
@@ -161,6 +166,8 @@ void AppConfig::writeConfig()
     set.setValue("DebugTcpClient", AppConfig::DebugTcpClient);
     set.setValue("AutoSendTcpClient", AppConfig::AutoSendTcpClient);
     set.setValue("IntervalTcpClient", AppConfig::IntervalTcpClient);
+    set.setValue("TcpBindIP", AppConfig::TcpBindIP);
+    set.setValue("TcpBindPort", AppConfig::TcpBindPort);
     set.setValue("TcpServerIP", AppConfig::TcpServerIP);
     set.setValue("TcpServerPort", AppConfig::TcpServerPort);
     set.endGroup();
@@ -182,6 +189,8 @@ void AppConfig::writeConfig()
     set.setValue("DebugUdpClient", AppConfig::DebugUdpClient);
     set.setValue("AutoSendUdpClient", AppConfig::AutoSendUdpClient);
     set.setValue("IntervalUdpClient", AppConfig::IntervalUdpClient);
+    set.setValue("UdpBindIP", AppConfig::UdpBindIP);
+    set.setValue("UdpBindPort", AppConfig::UdpBindPort);
     set.setValue("UdpServerIP", AppConfig::UdpServerIP);
     set.setValue("UdpServerPort", AppConfig::UdpServerPort);
     set.endGroup();
@@ -217,80 +226,4 @@ void AppConfig::writeConfig()
     set.setValue("WebListenPort", AppConfig::WebListenPort);
     set.setValue("SelectAllWebServer", AppConfig::SelectAllWebServer);
     set.endGroup();
-}
-
-QStringList AppConfig::Intervals = QStringList();
-QStringList AppConfig::Datas = QStringList();
-QStringList AppConfig::Keys = QStringList();
-QStringList AppConfig::Values = QStringList();
-
-void AppConfig::readSendData()
-{
-    //读取发送数据列表
-    AppConfig::Datas.clear();
-    QString fileName = QString("%1/%2").arg(QUIHelper::appPath()).arg(AppConfig::SendFileName);
-    QFile file(fileName);
-    if (file.size() > 0 && file.open(QFile::ReadOnly | QIODevice::Text)) {
-        while (!file.atEnd()) {
-            QString line = file.readLine();
-            line = line.trimmed();
-            line = line.replace("\r", "");
-            line = line.replace("\n", "");
-            if (!line.isEmpty()) {
-                AppConfig::Datas.append(line);
-            }
-        }
-
-        file.close();
-    }
-
-    if (AppConfig::Datas.count() == 0) {
-        AppConfig::Datas << "16 FF 01 01 E0 E1" << "16 FF 01 01 E1 E2";
-    }
-}
-
-void AppConfig::readDeviceData()
-{
-    //读取转发数据列表
-    AppConfig::Keys.clear();
-    AppConfig::Values.clear();
-    QString fileName = QString("%1/%2").arg(QUIHelper::appPath()).arg(AppConfig::DeviceFileName);
-    QFile file(fileName);
-    if (file.size() > 0 && file.open(QFile::ReadOnly | QIODevice::Text)) {
-        while (!file.atEnd()) {
-            QString line = file.readLine();
-            line = line.trimmed();
-            line = line.replace("\r", "");
-            line = line.replace("\n", "");
-            if (!line.isEmpty()) {
-                QStringList list = line.split(";");
-                QString key = list.at(0);
-                QString value;
-                for (int i = 1; i < list.count(); i++) {
-                    value += QString("%1;").arg(list.at(i));
-                }
-
-                //去掉末尾分号
-                value = value.mid(0, value.length() - 1);
-                AppConfig::Keys.append(key);
-                AppConfig::Values.append(value);
-            }
-        }
-
-        file.close();
-    }
-}
-
-void AppConfig::saveData(const QString &data)
-{
-    if (data.length() <= 0) {
-        return;
-    }
-
-    QString fileName = QString("%1/%2.txt").arg(QUIHelper::appPath()).arg(STRDATETIME);
-    QFile file(fileName);
-    if (file.open(QFile::WriteOnly | QFile::Text)) {
-        file.write(data.toUtf8());
-        file.close();
-    }
 }

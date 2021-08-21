@@ -17,6 +17,8 @@ frmWebClient::~frmWebClient()
 void frmWebClient::initForm()
 {
     isOk = false;
+
+    //实例化对象并绑定信号槽
     socket = new QWebSocket("WebSocket", QWebSocketProtocol::VersionLatest, this);
     connect(socket, SIGNAL(connected()), this, SLOT(connected()));
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(disconnected()));
@@ -29,11 +31,13 @@ void frmWebClient::initForm()
     //connect(socket, SIGNAL(textFrameReceived(QString, bool)), this, SLOT(textFrameReceived(QString, bool)));
     //connect(socket, SIGNAL(binaryFrameReceived(QByteArray, bool)), this, SLOT(binaryFrameReceived(QByteArray, bool)));
 
+    //定时器发送数据
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
 
-    ui->cboxInterval->addItems(AppConfig::Intervals);
-    ui->cboxData->addItems(AppConfig::Datas);    
+    //填充数据到下拉框
+    ui->cboxInterval->addItems(AppData::Intervals);
+    ui->cboxData->addItems(AppData::Datas);
 }
 
 void frmWebClient::initConfig()
@@ -62,7 +66,7 @@ void frmWebClient::initConfig()
     ui->txtServerPort->setText(QString::number(AppConfig::WebServerPort));
     connect(ui->txtServerPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
-    this->changeTimer();
+    this->initTimer();
 }
 
 void frmWebClient::saveConfig()
@@ -77,12 +81,15 @@ void frmWebClient::saveConfig()
     AppConfig::WebServerPort = ui->txtServerPort->text().trimmed().toInt();
     AppConfig::writeConfig();
 
-    this->changeTimer();
+    this->initTimer();
 }
 
-void frmWebClient::changeTimer()
+void frmWebClient::initTimer()
 {
-    timer->setInterval(AppConfig::IntervalWebClient);
+    if (timer->interval() != AppConfig::IntervalWebClient) {
+        timer->setInterval(AppConfig::IntervalWebClient);
+    }
+
     if (AppConfig::AutoSendWebClient) {
         if (!timer->isActive()) {
             timer->start();
@@ -174,10 +181,10 @@ void frmWebClient::textFrameReceived(const QString &data, bool isLastFrame)
 
     //自动回复数据,可以回复的数据是以;隔开,每行可以带多个;所以这里不需要继续判断
     if (AppConfig::DebugWebClient) {
-        int count = AppConfig::Keys.count();
+        int count = AppData::Keys.count();
         for (int i = 0; i < count; i++) {
-            if (AppConfig::Keys.at(i) == buffer) {
-                sendData(AppConfig::Values.at(i));
+            if (AppData::Keys.at(i) == buffer) {
+                sendData(AppData::Values.at(i));
                 break;
             }
         }
@@ -220,7 +227,7 @@ void frmWebClient::on_btnConnect_clicked()
 void frmWebClient::on_btnSave_clicked()
 {
     QString data = ui->txtMain->toPlainText();
-    AppConfig::saveData(data);
+    AppData::saveData(data);
     on_btnClear_clicked();
 }
 

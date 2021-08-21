@@ -8,7 +8,11 @@ TcpClient::TcpClient(QTcpSocket *socket, QObject *parent) : QObject(parent)
     ip = ip.replace("::ffff:", "");
     port = socket->peerPort();
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    connect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)),this, SLOT(disconnected()));
+#else
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(disconnected()));
+#endif
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
     connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
 }
@@ -50,10 +54,10 @@ void TcpClient::readData()
 
     //自动回复数据,可以回复的数据是以;隔开,每行可以带多个;所以这里不需要继续判断
     if (AppConfig::DebugTcpServer) {
-        int count = AppConfig::Keys.count();
+        int count = AppData::Keys.count();
         for (int i = 0; i < count; i++) {
-            if (AppConfig::Keys.at(i) == buffer) {
-                sendData(AppConfig::Values.at(i));
+            if (AppData::Keys.at(i) == buffer) {
+                sendData(AppData::Values.at(i));
                 break;
             }
         }

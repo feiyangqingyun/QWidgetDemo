@@ -7,9 +7,6 @@ class AppConfig
 {
 public:
     static QString ConfigFile;          //配置文件路径
-    static QString SendFileName;        //发送配置文件名
-    static QString DeviceFileName;      //模拟设备数据文件名
-
     static int CurrentIndex;            //当前索引
 
     //TCP客户端配置参数
@@ -19,7 +16,9 @@ public:
     static bool DebugTcpClient;         //启用数据调试
     static bool AutoSendTcpClient;      //自动发送数据
     static int IntervalTcpClient;       //发送数据间隔
-    static QString TcpServerIP;         //服务器IP
+    static QString TcpBindIP;           //绑定地址
+    static int TcpBindPort;             //绑定端口
+    static QString TcpServerIP;         //服务器地址
     static int TcpServerPort;           //服务器端口
 
     //TCP服务器配置参数
@@ -40,7 +39,9 @@ public:
     static bool DebugUdpClient;         //启用数据调试
     static bool AutoSendUdpClient;      //自动发送数据
     static int IntervalUdpClient;       //发送数据间隔
-    static QString UdpServerIP;         //服务器IP
+    static QString UdpBindIP;           //绑定地址
+    static int UdpBindPort;             //绑定端口
+    static QString UdpServerIP;         //服务器地址
     static int UdpServerPort;           //服务器端口
 
     //UDP服务器配置参数
@@ -61,7 +62,7 @@ public:
     static bool DebugWebClient;         //启用数据调试
     static bool AutoSendWebClient;      //自动发送数据
     static int IntervalWebClient;       //发送数据间隔
-    static QString WebServerIP;         //服务器IP
+    static QString WebServerIP;         //服务器地址
     static int WebServerPort;           //服务器端口
 
     //WEB服务器配置参数
@@ -75,17 +76,9 @@ public:
     static int WebListenPort;           //监听端口
     static bool SelectAllWebServer;     //选中所有
 
-    //读写配置参数及其他操作
+    //读写配置参数
     static void readConfig();           //读取配置参数
     static void writeConfig();          //写入配置参数
-
-    static QStringList Intervals;
-    static QStringList Datas;
-    static QStringList Keys;
-    static QStringList Values;
-    static void readSendData();
-    static void readDeviceData();
-    static void saveData(const QString &data);
 };
 
 #endif // APPCONFIG_H

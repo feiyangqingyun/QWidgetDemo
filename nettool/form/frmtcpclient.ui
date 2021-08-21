@@ -53,7 +53,7 @@
      <property name="frameShadow">
       <enum>QFrame::Sunken</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_5">
+     <layout class="QVBoxLayout" name="verticalLayout">
       <property name="leftMargin">
        <number>6</number>
       </property>
@@ -110,6 +110,26 @@
       </item>
       <item>
        <widget class="QComboBox" name="cboxInterval"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="labBindIP">
+        <property name="text">
+         <string>绑定地址</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cboxBindIP"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="labBindPort">
+        <property name="text">
+         <string>绑定端口</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="txtBindPort"/>
       </item>
       <item>
        <widget class="QLabel" name="labServerIP">
@@ -220,6 +240,25 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>txtMain</tabstop>
+  <tabstop>cboxData</tabstop>
+  <tabstop>btnSend</tabstop>
+  <tabstop>ckHexReceive</tabstop>
+  <tabstop>ckHexSend</tabstop>
+  <tabstop>ckAscii</tabstop>
+  <tabstop>ckShow</tabstop>
+  <tabstop>ckDebug</tabstop>
+  <tabstop>ckAutoSend</tabstop>
+  <tabstop>cboxInterval</tabstop>
+  <tabstop>cboxBindIP</tabstop>
+  <tabstop>txtBindPort</tabstop>
+  <tabstop>txtServerIP</tabstop>
+  <tabstop>txtServerPort</tabstop>
+  <tabstop>btnConnect</tabstop>
+  <tabstop>btnSave</tabstop>
+  <tabstop>btnClear</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -17,24 +17,22 @@ frmWebServer::~frmWebServer()
 void frmWebServer::initForm()
 {
     isOk = false;
+
+    //实例化对象并绑定信号槽
     server = new WebServer("WebServer", QWebSocketServer::NonSecureMode, this);
     connect(server, SIGNAL(clientConnected(QString, int)), this, SLOT(clientConnected(QString, int)));
     connect(server, SIGNAL(clientDisconnected(QString, int)), this, SLOT(clientDisconnected(QString, int)));
     connect(server, SIGNAL(sendData(QString, int, QString)), this, SLOT(sendData(QString, int, QString)));
     connect(server, SIGNAL(receiveData(QString, int, QString)), this, SLOT(receiveData(QString, int, QString)));
 
+    //定时器发送数据
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
 
-    ui->cboxInterval->addItems(AppConfig::Intervals);
-    ui->cboxData->addItems(AppConfig::Datas);
-
-    //获取本机所有IP
-    QStringList ips = QUIHelper::getLocalIPs();
-    ui->cboxListenIP->addItems(ips);
-    if (!ips.contains("127.0.0.1")) {
-        ui->cboxListenIP->addItem("127.0.0.1");
-    }
+    //填充数据到下拉框
+    ui->cboxInterval->addItems(AppData::Intervals);
+    ui->cboxData->addItems(AppData::Datas);
+    AppData::loadIP(ui->cboxListenIP);
 }
 
 void frmWebServer::initConfig()
@@ -66,7 +64,7 @@ void frmWebServer::initConfig()
     ui->ckSelectAll->setChecked(AppConfig::SelectAllWebServer);
     connect(ui->ckSelectAll, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    this->changeTimer();
+    this->initTimer();
 }
 
 void frmWebServer::saveConfig()
@@ -82,12 +80,15 @@ void frmWebServer::saveConfig()
     AppConfig::SelectAllWebServer = ui->ckSelectAll->isChecked();
     AppConfig::writeConfig();
 
-    this->changeTimer();
+    this->initTimer();
 }
 
-void frmWebServer::changeTimer()
+void frmWebServer::initTimer()
 {
-    timer->setInterval(AppConfig::IntervalWebServer);
+    if (timer->interval() != AppConfig::IntervalWebServer) {
+        timer->setInterval(AppConfig::IntervalWebServer);
+    }
+
     if (AppConfig::AutoSendWebServer) {
         if (!timer->isActive()) {
             timer->start();
@@ -192,7 +193,7 @@ void frmWebServer::on_btnListen_clicked()
 void frmWebServer::on_btnSave_clicked()
 {
     QString data = ui->txtMain->toPlainText();
-    AppConfig::saveData(data);
+    AppData::saveData(data);
     on_btnClear_clicked();
 }
 

@@ -17,24 +17,22 @@ frmTcpServer::~frmTcpServer()
 void frmTcpServer::initForm()
 {
     isOk = false;
+
+    //实例化对象并绑定信号槽
     server = new TcpServer(this);
     connect(server, SIGNAL(clientConnected(QString, int)), this, SLOT(clientConnected(QString, int)));
     connect(server, SIGNAL(clientDisconnected(QString, int)), this, SLOT(clientDisconnected(QString, int)));
     connect(server, SIGNAL(sendData(QString, int, QString)), this, SLOT(sendData(QString, int, QString)));
     connect(server, SIGNAL(receiveData(QString, int, QString)), this, SLOT(receiveData(QString, int, QString)));
 
+    //定时器发送数据
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
 
-    ui->cboxInterval->addItems(AppConfig::Intervals);
-    ui->cboxData->addItems(AppConfig::Datas);
-
-    //获取本机所有IP
-    QStringList ips = QUIHelper::getLocalIPs();
-    ui->cboxListenIP->addItems(ips);
-    if (!ips.contains("127.0.0.1")) {
-        ui->cboxListenIP->addItem("127.0.0.1");
-    }
+    //填充数据到下拉框
+    ui->cboxInterval->addItems(AppData::Intervals);
+    ui->cboxData->addItems(AppData::Datas);
+    AppData::loadIP(ui->cboxListenIP);
 }
 
 void frmTcpServer::initConfig()
@@ -66,7 +64,7 @@ void frmTcpServer::initConfig()
     ui->ckSelectAll->setChecked(AppConfig::SelectAllTcpServer);
     connect(ui->ckSelectAll, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    this->changeTimer();
+    this->initTimer();
 }
 
 void frmTcpServer::saveConfig()
@@ -82,12 +80,15 @@ void frmTcpServer::saveConfig()
     AppConfig::SelectAllTcpServer = ui->ckSelectAll->isChecked();
     AppConfig::writeConfig();
 
-    this->changeTimer();
+    this->initTimer();
 }
 
-void frmTcpServer::changeTimer()
+void frmTcpServer::initTimer()
 {
-    timer->setInterval(AppConfig::IntervalTcpServer);
+    if (timer->interval() != AppConfig::IntervalTcpServer) {
+        timer->setInterval(AppConfig::IntervalTcpServer);
+    }
+
     if (AppConfig::AutoSendTcpServer) {
         if (!timer->isActive()) {
             timer->start();
@@ -192,7 +193,7 @@ void frmTcpServer::on_btnListen_clicked()
 void frmTcpServer::on_btnSave_clicked()
 {
     QString data = ui->txtMain->toPlainText();
-    AppConfig::saveData(data);
+    AppData::saveData(data);
     on_btnClear_clicked();
 }
 

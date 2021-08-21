@@ -26,7 +26,7 @@ private slots:
     void initForm();
     void initConfig();
     void saveConfig();
-    void changeTimer();
+    void initTimer();
     void append(int type, const QString &data, bool clear = false);
 
 private slots:

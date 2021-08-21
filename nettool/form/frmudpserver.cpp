@@ -16,21 +16,18 @@ frmUdpServer::~frmUdpServer()
 
 void frmUdpServer::initForm()
 {
+    //实例化对象并绑定信号槽
     socket = new QUdpSocket(this);
     connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
 
+    //定时器发送数据
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
 
-    ui->cboxInterval->addItems(AppConfig::Intervals);
-    ui->cboxData->addItems(AppConfig::Datas);
-
-    //获取本机所有IP
-    QStringList ips = QUIHelper::getLocalIPs();
-    ui->cboxListenIP->addItems(ips);
-    if (!ips.contains("127.0.0.1")) {
-        ui->cboxListenIP->addItem("127.0.0.1");
-    }
+    //填充数据到下拉框
+    ui->cboxInterval->addItems(AppData::Intervals);
+    ui->cboxData->addItems(AppData::Datas);
+    AppData::loadIP(ui->cboxListenIP);
 }
 
 void frmUdpServer::initConfig()
@@ -62,7 +59,7 @@ void frmUdpServer::initConfig()
     ui->ckSelectAll->setChecked(AppConfig::SelectAllUdpServer);
     connect(ui->ckSelectAll, SIGNAL(stateChanged(int)), this, SLOT(saveConfig()));
 
-    this->changeTimer();
+    this->initTimer();
 }
 
 void frmUdpServer::saveConfig()
@@ -78,12 +75,15 @@ void frmUdpServer::saveConfig()
     AppConfig::SelectAllUdpServer = ui->ckSelectAll->isChecked();
     AppConfig::writeConfig();
 
-    this->changeTimer();
+    this->initTimer();
 }
 
-void frmUdpServer::changeTimer()
+void frmUdpServer::initTimer()
 {
-    timer->setInterval(AppConfig::IntervalUdpServer);
+    if (timer->interval() != AppConfig::IntervalUdpServer) {
+        timer->setInterval(AppConfig::IntervalUdpServer);
+    }
+
     if (AppConfig::AutoSendUdpServer) {
         if (!timer->isActive()) {
             timer->start();
@@ -165,10 +165,10 @@ void frmUdpServer::readData()
         clientConnected(ip, port);
 
         if (AppConfig::DebugUdpServer) {
-            int count = AppConfig::Keys.count();
+            int count = AppData::Keys.count();
             for (int i = 0; i < count; i++) {
-                if (AppConfig::Keys.at(i) == buffer) {
-                    sendData(ip, port, AppConfig::Values.at(i));
+                if (AppData::Keys.at(i) == buffer) {
+                    sendData(ip, port, AppData::Values.at(i));
                     break;
                 }
             }
@@ -225,7 +225,7 @@ void frmUdpServer::on_btnListen_clicked()
 void frmUdpServer::on_btnSave_clicked()
 {
     QString data = ui->txtMain->toPlainText();
-    AppConfig::saveData(data);
+    AppData::saveData(data);
     on_btnClear_clicked();
 }
 

@@ -24,8 +24,8 @@ void frmComTool::initForm()
     sendCount = 0;
     isShow = true;
 
-    ui->cboxSendInterval->addItems(AppConfig::Intervals);
-    ui->cboxData->addItems(AppConfig::Datas);
+    ui->cboxSendInterval->addItems(AppData::Intervals);
+    ui->cboxData->addItems(AppData::Datas);
 
     //读取数据
     timerRead = new QTimer(this);
@@ -49,7 +49,11 @@ void frmComTool::initForm()
     socket = new QTcpSocket(this);
     socket->abort();
     connect(socket, SIGNAL(readyRead()), this, SLOT(readDataNet()));
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    connect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(readErrorNet()));
+#else
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(readErrorNet()));
+#endif
 
     timerConnect = new QTimer(this);
     connect(timerConnect, SIGNAL(timeout()), this, SLOT(connectNet()));
@@ -317,10 +321,10 @@ void frmComTool::readData()
 
         //启用调试则模拟调试数据
         if (ui->ckDebug->isChecked()) {
-            int count = AppConfig::Keys.count();
+            int count = AppData::Keys.count();
             for (int i = 0; i < count; i++) {
-                if (buffer.startsWith(AppConfig::Keys.at(i))) {
-                    sendData(AppConfig::Values.at(i));
+                if (buffer.startsWith(AppData::Keys.at(i))) {
+                    sendData(AppData::Values.at(i));
                     break;
                 }
             }
@@ -427,7 +431,7 @@ void frmComTool::on_btnOpen_clicked()
         timerRead->stop();
         com->close();
         com->deleteLater();
-        
+
         changeEnable(false);
         ui->btnOpen->setText("打开串口");
         on_btnClear_clicked();
@@ -482,7 +486,7 @@ void frmComTool::on_btnData_clicked()
         file.close();
         ui->txtMain->clear();
         ui->btnData->setText("管理数据");
-        AppConfig::readSendData();
+        AppData::readSendData();
     }
 }
 

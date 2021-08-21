@@ -1,8 +1,10 @@
-HEADERS += $$PWD/appconfig.h
+HEADERS += $$PWD/appconfig.h \
+    $$PWD/appdata.h
 HEADERS += $$PWD/tcpclient.h
 HEADERS += $$PWD/tcpserver.h
 
-SOURCES += $$PWD/appconfig.cpp
+SOURCES += $$PWD/appconfig.cpp \
+    $$PWD/appdata.cpp
 SOURCES += $$PWD/tcpclient.cpp
 SOURCES += $$PWD/tcpserver.cpp
 

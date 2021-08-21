@@ -248,6 +248,8 @@
  </widget>
  <tabstops>
   <tabstop>txtMain</tabstop>
+  <tabstop>cboxData</tabstop>
+  <tabstop>btnSend</tabstop>
   <tabstop>ckHexReceive</tabstop>
   <tabstop>ckHexSend</tabstop>
   <tabstop>ckAscii</tabstop>
@@ -263,8 +265,6 @@
   <tabstop>btnClose</tabstop>
   <tabstop>listWidget</tabstop>
   <tabstop>ckSelectAll</tabstop>
-  <tabstop>cboxData</tabstop>
-  <tabstop>btnSend</tabstop>
  </tabstops>
  <resources/>
  <connections/>

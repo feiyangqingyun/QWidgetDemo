@@ -246,6 +246,26 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>txtMain</tabstop>
+  <tabstop>cboxData</tabstop>
+  <tabstop>btnSend</tabstop>
+  <tabstop>ckHexReceive</tabstop>
+  <tabstop>ckHexSend</tabstop>
+  <tabstop>ckAscii</tabstop>
+  <tabstop>ckShow</tabstop>
+  <tabstop>ckDebug</tabstop>
+  <tabstop>ckAutoSend</tabstop>
+  <tabstop>cboxInterval</tabstop>
+  <tabstop>cboxListenIP</tabstop>
+  <tabstop>txtListenPort</tabstop>
+  <tabstop>btnListen</tabstop>
+  <tabstop>btnSave</tabstop>
+  <tabstop>btnClear</tabstop>
+  <tabstop>btnClose</tabstop>
+  <tabstop>listWidget</tabstop>
+  <tabstop>ckSelectAll</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

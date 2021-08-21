@@ -17,18 +17,28 @@ frmTcpClient::~frmTcpClient()
 void frmTcpClient::initForm()
 {
     isOk = false;
+
+    //实例化对象并绑定信号槽
     socket = new QTcpSocket(this);
     connect(socket, SIGNAL(connected()), this, SLOT(connected()));
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    connect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)),this, SLOT(disconnected()));
+#else
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(disconnected()));
+#endif
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
     connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
 
+    //定时器发送数据
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(on_btnSend_clicked()));
 
-    ui->cboxInterval->addItems(AppConfig::Intervals);
-    ui->cboxData->addItems(AppConfig::Datas);
+    //填充数据到下拉框
+    ui->cboxInterval->addItems(AppData::Intervals);
+    ui->cboxData->addItems(AppData::Datas);
+    AppData::loadIP(ui->cboxBindIP);
 
+    //打印下外网地址
 #ifndef emsdk
     QString ip = QUIHelper::getNetIP(QUIHelper::getHtml("http://whois.pconline.com.cn/"));
     append(1, QString("外网IP -> %1").arg(ip));
@@ -55,13 +65,19 @@ void frmTcpClient::initConfig()
     ui->cboxInterval->setCurrentIndex(ui->cboxInterval->findText(QString::number(AppConfig::IntervalTcpClient)));
     connect(ui->cboxInterval, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
 
+    ui->cboxBindIP->setCurrentIndex(ui->cboxBindIP->findText(AppConfig::TcpBindIP));
+    connect(ui->cboxBindIP, SIGNAL(currentIndexChanged(int)), this, SLOT(saveConfig()));
+
+    ui->txtBindPort->setText(QString::number(AppConfig::TcpBindPort));
+    connect(ui->txtBindPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
+
     ui->txtServerIP->setText(AppConfig::TcpServerIP);
     connect(ui->txtServerIP, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
     ui->txtServerPort->setText(QString::number(AppConfig::TcpServerPort));
     connect(ui->txtServerPort, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 
-    this->changeTimer();
+    this->initTimer();
 }
 
 void frmTcpClient::saveConfig()
@@ -72,16 +88,21 @@ void frmTcpClient::saveConfig()
     AppConfig::DebugTcpClient = ui->ckDebug->isChecked();
     AppConfig::AutoSendTcpClient = ui->ckAutoSend->isChecked();
     AppConfig::IntervalTcpClient = ui->cboxInterval->currentText().toInt();
+    AppConfig::TcpBindIP = ui->cboxBindIP->currentText();
+    AppConfig::TcpBindPort = ui->txtBindPort->text().trimmed().toInt();
     AppConfig::TcpServerIP = ui->txtServerIP->text().trimmed();
     AppConfig::TcpServerPort = ui->txtServerPort->text().trimmed().toInt();
     AppConfig::writeConfig();
 
-    this->changeTimer();
+    this->initTimer();
 }
 
-void frmTcpClient::changeTimer()
+void frmTcpClient::initTimer()
 {
-    timer->setInterval(AppConfig::IntervalTcpClient);
+    if (timer->interval() != AppConfig::IntervalTcpClient) {
+        timer->setInterval(AppConfig::IntervalTcpClient);
+    }
+
     if (AppConfig::AutoSendTcpClient) {
         if (!timer->isActive()) {
             timer->start();
@@ -168,10 +189,10 @@ void frmTcpClient::readData()
 
     //自动回复数据,可以回复的数据是以;隔开,每行可以带多个;所以这里不需要继续判断
     if (AppConfig::DebugTcpClient) {
-        int count = AppConfig::Keys.count();
+        int count = AppData::Keys.count();
         for (int i = 0; i < count; i++) {
-            if (AppConfig::Keys.at(i) == buffer) {
-                sendData(AppConfig::Values.at(i));
+            if (AppData::Keys.at(i) == buffer) {
+                sendData(AppData::Values.at(i));
                 break;
             }
         }
@@ -196,7 +217,13 @@ void frmTcpClient::sendData(const QString &data)
 void frmTcpClient::on_btnConnect_clicked()
 {
     if (ui->btnConnect->text() == "连接") {
+        //断开所有连接和操作
         socket->abort();
+        //绑定网卡和端口
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+        socket->bind(QHostAddress(AppConfig::TcpBindIP), AppConfig::TcpBindPort);
+#endif
+        //连接服务器
         socket->connectToHost(AppConfig::TcpServerIP, AppConfig::TcpServerPort);
     } else {
         socket->abort();
@@ -206,7 +233,7 @@ void frmTcpClient::on_btnConnect_clicked()
 void frmTcpClient::on_btnSave_clicked()
 {
     QString data = ui->txtMain->toPlainText();
-    AppConfig::saveData(data);
+    AppData::saveData(data);
     on_btnClear_clicked();
 }
 
