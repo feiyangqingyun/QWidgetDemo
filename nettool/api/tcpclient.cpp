@@ -8,13 +8,13 @@ TcpClient::TcpClient(QTcpSocket *socket, QObject *parent) : QObject(parent)
     ip = ip.replace("::ffff:", "");
     port = socket->peerPort();
 
+    connect(socket, SIGNAL(disconnected()), this, SLOT(slot_disconnected()));
 #if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
-    connect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)),this, SLOT(disconnected()));
+    connect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(slot_error()));
 #else
-    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(disconnected()));
+    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(slot_error()));
 #endif
-    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
-    connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
+    connect(socket, SIGNAL(readyRead()), this, SLOT(slot_readData()));
 }
 
 QString TcpClient::getIP() const
@@ -27,14 +27,19 @@ int TcpClient::getPort() const
     return this->port;
 }
 
-void TcpClient::disconnected()
+void TcpClient::slot_disconnected()
 {
+    emit disconnected(ip, port);
     socket->deleteLater();
     this->deleteLater();
-    emit clientDisconnected();
 }
 
-void TcpClient::readData()
+void TcpClient::slot_error()
+{
+    emit error(ip, port, socket->errorString());
+}
+
+void TcpClient::slot_readData()
 {
     QByteArray data = socket->readAll();
     if (data.length() <= 0) {
@@ -77,6 +82,11 @@ void TcpClient::sendData(const QString &data)
 
     socket->write(buffer);
     emit sendData(ip, port, data);
+}
+
+void TcpClient::disconnectFromHost()
+{
+    socket->disconnectFromHost();
 }
 
 void TcpClient::abort()

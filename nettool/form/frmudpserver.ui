@@ -153,6 +153,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="btnRemove">
+        <property name="text">
+         <string>移除</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QLabel" name="labCount">
         <property name="minimumSize">
          <size>

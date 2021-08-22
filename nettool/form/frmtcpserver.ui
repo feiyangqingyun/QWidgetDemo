@@ -153,9 +153,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="btnClose">
+       <widget class="QPushButton" name="btnRemove">
         <property name="text">
-         <string>断开</string>
+         <string>移除</string>
         </property>
        </widget>
       </item>
@@ -262,7 +262,7 @@
   <tabstop>btnListen</tabstop>
   <tabstop>btnSave</tabstop>
   <tabstop>btnClear</tabstop>
-  <tabstop>btnClose</tabstop>
+  <tabstop>btnRemove</tabstop>
   <tabstop>listWidget</tabstop>
   <tabstop>ckSelectAll</tabstop>
  </tabstops>

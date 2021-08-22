@@ -26,16 +26,20 @@ public:
     int getPort()   const;
 
 private slots:
-    void disconnected();
-    void readData();
+    void slot_disconnected();
+    void slot_error();
+    void slot_readData();
 
 signals:
-    void clientDisconnected();
+    void disconnected(const QString &ip, int port);
+    void error(const QString &ip, int port, const QString &error);
+
     void sendData(const QString &ip, int port, const QString &data);
     void receiveData(const QString &ip, int port, const QString &data);
 
 public slots:
     void sendData(const QString &data);
+    void disconnectFromHost();
     void abort();
 };
 

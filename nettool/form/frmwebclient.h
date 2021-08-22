@@ -16,6 +16,9 @@ public:
     explicit frmWebClient(QWidget *parent = 0);
     ~frmWebClient();
 
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
+
 private:
     Ui::frmWebClient *ui;
 
@@ -33,6 +36,7 @@ private slots:
 private slots:
     void connected();
     void disconnected();
+    void error();
     void sendData(const QString &data);
 
     void textFrameReceived(const QString &data, bool isLastFrame);

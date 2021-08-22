@@ -15,14 +15,32 @@ frmWebServer::~frmWebServer()
     delete ui;
 }
 
+bool frmWebServer::eventFilter(QObject *watched, QEvent *event)
+{
+    //双击清空
+    if (watched == ui->txtMain->viewport()) {
+        if (event->type() == QEvent::MouseButtonDblClick) {
+            on_btnClear_clicked();
+        }
+    }
+
+    return QWidget::eventFilter(watched, event);
+}
+
 void frmWebServer::initForm()
 {
+    QFont font;
+    font.setPixelSize(16);
+    ui->txtMain->setFont(font);
+    ui->txtMain->viewport()->installEventFilter(this);
+
     isOk = false;
 
     //实例化对象并绑定信号槽
     server = new WebServer("WebServer", QWebSocketServer::NonSecureMode, this);
-    connect(server, SIGNAL(clientConnected(QString, int)), this, SLOT(clientConnected(QString, int)));
-    connect(server, SIGNAL(clientDisconnected(QString, int)), this, SLOT(clientDisconnected(QString, int)));
+    connect(server, SIGNAL(connected(QString, int)), this, SLOT(connected(QString, int)));
+    connect(server, SIGNAL(disconnected(QString, int)), this, SLOT(disconnected(QString, int)));
+    connect(server, SIGNAL(error(QString, int, QString)), this, SLOT(error(QString, int, QString)));
     connect(server, SIGNAL(sendData(QString, int, QString)), this, SLOT(sendData(QString, int, QString)));
     connect(server, SIGNAL(receiveData(QString, int, QString)), this, SLOT(receiveData(QString, int, QString)));
 
@@ -133,10 +151,10 @@ void frmWebServer::append(int type, const QString &data, bool clear)
         ui->txtMain->setTextColor(QColor("#22A3A9"));
     } else if (type == 1) {
         strType = "接收";
-        ui->txtMain->setTextColor(QColor("#D64D54"));
+        ui->txtMain->setTextColor(QColor("#753775"));
     } else {
-        strType = "信息";
-        ui->txtMain->setTextColor(QColor("#A279C5"));
+        strType = "错误";
+        ui->txtMain->setTextColor(QColor("#D64D54"));
     }
 
     strData = QString("时间[%1] %2: %3").arg(TIMEMS).arg(strType).arg(strData);
@@ -144,15 +162,19 @@ void frmWebServer::append(int type, const QString &data, bool clear)
     currentCount++;
 }
 
-void frmWebServer::clientConnected(const QString &ip, int port)
+void frmWebServer::connected(const QString &ip, int port)
 {
+    append(0, QString("[%1:%2] %3").arg(ip).arg(port).arg("客户端上线"));
+
     QString str = QString("%1:%2").arg(ip).arg(port);
     ui->listWidget->addItem(str);
     ui->labCount->setText(QString("共 %1 个客户端").arg(ui->listWidget->count()));
 }
 
-void frmWebServer::clientDisconnected(const QString &ip, int port)
+void frmWebServer::disconnected(const QString &ip, int port)
 {
+    append(2, QString("[%1:%2] %3").arg(ip).arg(port).arg("客户端下线"));
+
     int row = -1;
     QString str = QString("%1:%2").arg(ip).arg(port);
     for (int i = 0; i < ui->listWidget->count(); i++) {
@@ -166,17 +188,19 @@ void frmWebServer::clientDisconnected(const QString &ip, int port)
     ui->labCount->setText(QString("共 %1 个客户端").arg(ui->listWidget->count()));
 }
 
+void frmWebServer::error(const QString &ip, int port, const QString &error)
+{
+    append(2, QString("[%1:%2] %3").arg(ip).arg(port).arg(error));
+}
+
 void frmWebServer::sendData(const QString &ip, int port, const QString &data)
 {
-    QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(data);
-    bool error = (data.contains("下线") || data.contains("离线"));
-    append(error ? 1 : 0, str);
+    append(0, QString("[%1:%2] %3").arg(ip).arg(port).arg(data));
 }
 
 void frmWebServer::receiveData(const QString &ip, int port, const QString &data)
 {
-    QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(data);
-    append(1, str);
+    append(1, QString("[%1:%2] %3").arg(ip).arg(port).arg(data));
 }
 
 void frmWebServer::on_btnListen_clicked()
@@ -229,7 +253,7 @@ void frmWebServer::on_btnSend_clicked()
     }
 }
 
-void frmWebServer::on_btnClose_clicked()
+void frmWebServer::on_btnRemove_clicked()
 {
     if (ui->ckSelectAll->isChecked()) {
         server->remove();

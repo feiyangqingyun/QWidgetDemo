@@ -16,6 +16,9 @@ public:
     explicit frmWebServer(QWidget *parent = 0);
     ~frmWebServer();
 
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
+
 private:
     Ui::frmWebServer *ui;
 
@@ -31,8 +34,10 @@ private slots:
     void append(int type, const QString &data, bool clear = false);
 
 private slots:
-    void clientConnected(const QString &ip, int port);
-    void clientDisconnected(const QString &ip, int port);
+    void connected(const QString &ip, int port);
+    void disconnected(const QString &ip, int port);
+    void error(const QString &ip, int port, const QString &error);
+
     void sendData(const QString &ip, int port, const QString &data);
     void receiveData(const QString &ip, int port, const QString &data);
 
@@ -41,7 +46,7 @@ private slots:
     void on_btnSave_clicked();
     void on_btnClear_clicked();
     void on_btnSend_clicked();
-    void on_btnClose_clicked();
+    void on_btnRemove_clicked();
 };
 
 #endif // FRMWEBSERVER_H

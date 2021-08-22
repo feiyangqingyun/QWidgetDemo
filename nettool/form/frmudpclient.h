@@ -16,6 +16,9 @@ public:
     explicit frmUdpClient(QWidget *parent = 0);
     ~frmUdpClient();
 
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
+
 private:
     Ui::frmUdpClient *ui;
 
@@ -30,6 +33,7 @@ private slots:
     void append(int type, const QString &data, bool clear = false);
 
 private slots:
+    void error();
     void readData();
     void sendData(const QString &ip, int port, const QString &data);
 

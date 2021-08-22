@@ -16,6 +16,9 @@ public:
     explicit frmTcpClient(QWidget *parent = 0);
     ~frmTcpClient();
 
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
+
 private:
     Ui::frmTcpClient *ui;
 
@@ -33,6 +36,7 @@ private slots:
 private slots:
     void connected();
     void disconnected();
+    void error();
     void readData();
     void sendData(const QString &data);
 

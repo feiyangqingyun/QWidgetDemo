@@ -26,14 +26,18 @@ public:
     int getPort()   const;
 
 private slots:
-    void disconnected();
+    void slot_disconnected();
+    void slot_error();
+
     void textFrameReceived(const QString &data, bool isLastFrame);
     void binaryFrameReceived(const QByteArray &data, bool isLastFrame);
     void textMessageReceived(const QString &data);
     void binaryMessageReceived(const QByteArray &data);
 
 signals:
-    void clientDisconnected();
+    void disconnected(const QString &ip, int port);
+    void error(const QString &ip, int port, const QString &error);
+
     void sendData(const QString &ip, int port, const QString &data);
     void receiveData(const QString &ip, int port, const QString &data);
 

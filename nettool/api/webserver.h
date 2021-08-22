@@ -13,15 +13,16 @@ private:
     QList<WebClient *> clients;
 
 private slots:
-    void newConnection();
-    void disconnected();
+    void slot_newConnection();
+    void slot_disconnected(const QString &ip, int port);
 
 signals:
-    void sendData(const QString &ip, int port, const QString &data);
-    void receiveData(const QString &ip, int port, const QString &data);
+    void connected(const QString &ip, int port);
+    void disconnected(const QString &ip, int port);
+    void error(const QString &ip, int port, const QString &error);
 
-    void clientConnected(const QString &ip, int port);
-    void clientDisconnected(const QString &ip, int port);
+    void sendData(const QString &ip, int port, const QString &data);
+    void receiveData(const QString &ip, int port, const QString &data);    
 
 public slots:
     //启动服务

@@ -12,17 +12,37 @@ frmTcpServer::frmTcpServer(QWidget *parent) : QWidget(parent), ui(new Ui::frmTcp
 
 frmTcpServer::~frmTcpServer()
 {
+    //结束的时候停止服务
+    server->stop();
     delete ui;
+}
+
+bool frmTcpServer::eventFilter(QObject *watched, QEvent *event)
+{
+    //双击清空
+    if (watched == ui->txtMain->viewport()) {
+        if (event->type() == QEvent::MouseButtonDblClick) {
+            on_btnClear_clicked();
+        }
+    }
+
+    return QWidget::eventFilter(watched, event);
 }
 
 void frmTcpServer::initForm()
 {
+    QFont font;
+    font.setPixelSize(16);
+    ui->txtMain->setFont(font);
+    ui->txtMain->viewport()->installEventFilter(this);
+
     isOk = false;
 
     //实例化对象并绑定信号槽
     server = new TcpServer(this);
-    connect(server, SIGNAL(clientConnected(QString, int)), this, SLOT(clientConnected(QString, int)));
-    connect(server, SIGNAL(clientDisconnected(QString, int)), this, SLOT(clientDisconnected(QString, int)));
+    connect(server, SIGNAL(connected(QString, int)), this, SLOT(connected(QString, int)));
+    connect(server, SIGNAL(disconnected(QString, int)), this, SLOT(disconnected(QString, int)));
+    connect(server, SIGNAL(error(QString, int, QString)), this, SLOT(error(QString, int, QString)));
     connect(server, SIGNAL(sendData(QString, int, QString)), this, SLOT(sendData(QString, int, QString)));
     connect(server, SIGNAL(receiveData(QString, int, QString)), this, SLOT(receiveData(QString, int, QString)));
 
@@ -133,10 +153,10 @@ void frmTcpServer::append(int type, const QString &data, bool clear)
         ui->txtMain->setTextColor(QColor("#22A3A9"));
     } else if (type == 1) {
         strType = "接收";
-        ui->txtMain->setTextColor(QColor("#D64D54"));
+        ui->txtMain->setTextColor(QColor("#753775"));
     } else {
-        strType = "信息";
-        ui->txtMain->setTextColor(QColor("#A279C5"));
+        strType = "错误";
+        ui->txtMain->setTextColor(QColor("#D64D54"));
     }
 
     strData = QString("时间[%1] %2: %3").arg(TIMEMS).arg(strType).arg(strData);
@@ -144,15 +164,19 @@ void frmTcpServer::append(int type, const QString &data, bool clear)
     currentCount++;
 }
 
-void frmTcpServer::clientConnected(const QString &ip, int port)
+void frmTcpServer::connected(const QString &ip, int port)
 {
+    append(0, QString("[%1:%2] %3").arg(ip).arg(port).arg("客户端上线"));
+
     QString str = QString("%1:%2").arg(ip).arg(port);
     ui->listWidget->addItem(str);
     ui->labCount->setText(QString("共 %1 个客户端").arg(ui->listWidget->count()));
 }
 
-void frmTcpServer::clientDisconnected(const QString &ip, int port)
+void frmTcpServer::disconnected(const QString &ip, int port)
 {
+    append(2, QString("[%1:%2] %3").arg(ip).arg(port).arg("客户端下线"));
+
     int row = -1;
     QString str = QString("%1:%2").arg(ip).arg(port);
     for (int i = 0; i < ui->listWidget->count(); i++) {
@@ -166,17 +190,19 @@ void frmTcpServer::clientDisconnected(const QString &ip, int port)
     ui->labCount->setText(QString("共 %1 个客户端").arg(ui->listWidget->count()));
 }
 
+void frmTcpServer::error(const QString &ip, int port, const QString &error)
+{
+    append(2, QString("[%1:%2] %3").arg(ip).arg(port).arg(error));
+}
+
 void frmTcpServer::sendData(const QString &ip, int port, const QString &data)
 {
-    QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(data);
-    bool error = (data.contains("下线") || data.contains("离线"));
-    append(error ? 1 : 0, str);
+    append(0, QString("[%1:%2] %3").arg(ip).arg(port).arg(data));
 }
 
 void frmTcpServer::receiveData(const QString &ip, int port, const QString &data)
 {
-    QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(data);
-    append(1, str);
+    append(1, QString("[%1:%2] %3").arg(ip).arg(port).arg(data));
 }
 
 void frmTcpServer::on_btnListen_clicked()
@@ -229,7 +255,7 @@ void frmTcpServer::on_btnSend_clicked()
     }
 }
 
-void frmTcpServer::on_btnClose_clicked()
+void frmTcpServer::on_btnRemove_clicked()
 {
     if (ui->ckSelectAll->isChecked()) {
         server->remove();

@@ -14,10 +14,32 @@ frmUdpClient::~frmUdpClient()
     delete ui;
 }
 
+bool frmUdpClient::eventFilter(QObject *watched, QEvent *event)
+{
+    //双击清空
+    if (watched == ui->txtMain->viewport()) {
+        if (event->type() == QEvent::MouseButtonDblClick) {
+            on_btnClear_clicked();
+        }
+    }
+
+    return QWidget::eventFilter(watched, event);
+}
+
 void frmUdpClient::initForm()
 {
+    QFont font;
+    font.setPixelSize(16);
+    ui->txtMain->setFont(font);
+    ui->txtMain->viewport()->installEventFilter(this);
+
     //实例化对象并绑定信号槽
     socket = new QUdpSocket(this);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    connect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(error()));
+#else
+    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error()));
+#endif
     connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
 
     //定时器发送数据
@@ -131,15 +153,20 @@ void frmUdpClient::append(int type, const QString &data, bool clear)
         ui->txtMain->setTextColor(QColor("#22A3A9"));
     } else if (type == 1) {
         strType = "接收";
-        ui->txtMain->setTextColor(QColor("#D64D54"));
+        ui->txtMain->setTextColor(QColor("#753775"));
     } else {
-        strType = "信息";
-        ui->txtMain->setTextColor(QColor("#A279C5"));
+        strType = "错误";
+        ui->txtMain->setTextColor(QColor("#D64D54"));
     }
 
     strData = QString("时间[%1] %2: %3").arg(TIMEMS).arg(strType).arg(strData);
     ui->txtMain->append(strData);
     currentCount++;
+}
+
+void frmUdpClient::error()
+{
+    append(2, socket->errorString());
 }
 
 void frmUdpClient::readData()

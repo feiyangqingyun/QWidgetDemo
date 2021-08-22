@@ -8,10 +8,10 @@ WebClient::WebClient(QWebSocket *socket, QObject *parent) : QObject(parent)
     ip = ip.replace("::ffff:", "");
     port = socket->peerPort();
 
-    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(disconnected()));
-    connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    connect(socket, SIGNAL(disconnected()), this, SLOT(slot_disconnected()));
+    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(slot_error()));
 
-    //暂时使用前面两个信号,部分系统上后面两个信号Qt没实现,目前测试到5.15.2
+    //暂时使用前面两个信号,部分系统后面两个信号Qt没实现,目前测试到5.15.2
     //在win上如果两组信号都关联了则都会触发,另外一组信号就是多个参数表示是否是最后一个数据包
     connect(socket, SIGNAL(textMessageReceived(QString)), this, SLOT(textMessageReceived(QString)));
     connect(socket, SIGNAL(binaryMessageReceived(QByteArray)), this, SLOT(binaryMessageReceived(QByteArray)));
@@ -29,11 +29,16 @@ int WebClient::getPort() const
     return this->port;
 }
 
-void WebClient::disconnected()
+void WebClient::slot_disconnected()
 {
+    emit disconnected(ip, port);
     socket->deleteLater();
     this->deleteLater();
-    emit clientDisconnected();
+}
+
+void WebClient::slot_error()
+{
+    emit error(ip, port, socket->errorString());
 }
 
 void WebClient::textFrameReceived(const QString &data, bool isLastFrame)

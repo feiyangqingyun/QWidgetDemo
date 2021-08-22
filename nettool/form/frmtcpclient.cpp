@@ -14,19 +14,36 @@ frmTcpClient::~frmTcpClient()
     delete ui;
 }
 
+bool frmTcpClient::eventFilter(QObject *watched, QEvent *event)
+{
+    //双击清空
+    if (watched == ui->txtMain->viewport()) {
+        if (event->type() == QEvent::MouseButtonDblClick) {
+            on_btnClear_clicked();
+        }
+    }
+
+    return QWidget::eventFilter(watched, event);
+}
+
 void frmTcpClient::initForm()
 {
+    QFont font;
+    font.setPixelSize(16);
+    ui->txtMain->setFont(font);
+    ui->txtMain->viewport()->installEventFilter(this);
+
     isOk = false;
 
     //实例化对象并绑定信号槽
     socket = new QTcpSocket(this);
     connect(socket, SIGNAL(connected()), this, SLOT(connected()));
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
-    connect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(disconnected()));
-#else
-    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(disconnected()));
-#endif
     connect(socket, SIGNAL(disconnected()), this, SLOT(disconnected()));
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    connect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(error()));
+#else
+    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error()));
+#endif
     connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
 
     //定时器发送数据
@@ -146,10 +163,10 @@ void frmTcpClient::append(int type, const QString &data, bool clear)
         ui->txtMain->setTextColor(QColor("#22A3A9"));
     } else if (type == 1) {
         strType = "接收";
-        ui->txtMain->setTextColor(QColor("#D64D54"));
+        ui->txtMain->setTextColor(QColor("#753775"));
     } else {
-        strType = "信息";
-        ui->txtMain->setTextColor(QColor("#A279C5"));
+        strType = "错误";
+        ui->txtMain->setTextColor(QColor("#D64D54"));
     }
 
     strData = QString("时间[%1] %2: %3").arg(TIMEMS).arg(strType).arg(strData);
@@ -162,20 +179,20 @@ void frmTcpClient::connected()
     isOk = true;
     ui->btnConnect->setText("断开");
     append(0, "服务器连接");
-    append(2, QString("本地地址: %1  本地端口: %2").arg(socket->localAddress().toString()).arg(socket->localPort()));
-    append(2, QString("远程地址: %1  远程端口: %2").arg(socket->peerAddress().toString()).arg(socket->peerPort()));
+    append(0, QString("本地地址: %1  本地端口: %2").arg(socket->localAddress().toString()).arg(socket->localPort()));
+    append(0, QString("远程地址: %1  远程端口: %2").arg(socket->peerAddress().toString()).arg(socket->peerPort()));
 }
 
 void frmTcpClient::disconnected()
 {
     isOk = false;
-    //socket->abort();
     ui->btnConnect->setText("连接");
     append(1, "服务器断开");
-    //打印下可能的错误信息
-    if (socket->error() != QTcpSocket::UnknownSocketError) {
-        append(2, socket->errorString());
-    }
+}
+
+void frmTcpClient::error()
+{
+    append(2, socket->errorString());
 }
 
 void frmTcpClient::readData()
@@ -227,9 +244,10 @@ void frmTcpClient::on_btnConnect_clicked()
 {
     if (ui->btnConnect->text() == "连接") {
         //断开所有连接和操作
-        socket->abort();        
+        //socket->abort();
         //绑定网卡和端口
-        //有个后遗症,关闭连接或者关闭程序后还会保持几分钟导致不能重复绑定
+        //有个后遗症,客户端这边断开连接后还会保持几分钟导致不能重复绑定
+        //如果是服务器断开则可以继续使用
         //提示 The bound address is already in use
         //参考 https://www.cnblogs.com/baiduboy/p/7426822.html
 #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))

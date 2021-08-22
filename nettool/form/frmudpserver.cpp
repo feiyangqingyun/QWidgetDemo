@@ -15,10 +15,32 @@ frmUdpServer::~frmUdpServer()
     delete ui;
 }
 
+bool frmUdpServer::eventFilter(QObject *watched, QEvent *event)
+{
+    //双击清空
+    if (watched == ui->txtMain->viewport()) {
+        if (event->type() == QEvent::MouseButtonDblClick) {
+            on_btnClear_clicked();
+        }
+    }
+
+    return QWidget::eventFilter(watched, event);
+}
+
 void frmUdpServer::initForm()
 {
+    QFont font;
+    font.setPixelSize(16);
+    ui->txtMain->setFont(font);
+    ui->txtMain->viewport()->installEventFilter(this);
+
     //实例化对象并绑定信号槽
     socket = new QUdpSocket(this);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    connect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(error()));
+#else
+    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error()));
+#endif
     connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
 
     //定时器发送数据
@@ -128,15 +150,20 @@ void frmUdpServer::append(int type, const QString &data, bool clear)
         ui->txtMain->setTextColor(QColor("#22A3A9"));
     } else if (type == 1) {
         strType = "接收";
-        ui->txtMain->setTextColor(QColor("#D64D54"));
+        ui->txtMain->setTextColor(QColor("#753775"));
     } else {
-        strType = "信息";
-        ui->txtMain->setTextColor(QColor("#A279C5"));
+        strType = "错误";
+        ui->txtMain->setTextColor(QColor("#D64D54"));
     }
 
     strData = QString("时间[%1] %2: %3").arg(TIMEMS).arg(strType).arg(strData);
     ui->txtMain->append(strData);
     currentCount++;
+}
+
+void frmUdpServer::error()
+{
+    append(2, socket->errorString());
 }
 
 void frmUdpServer::readData()
@@ -166,7 +193,19 @@ void frmUdpServer::readData()
 
         QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(buffer);
         append(1, str);
-        clientConnected(ip, port);
+
+        //先过滤重复的
+        str = QString("%1:%2").arg(ip).arg(port);
+        for (int i = 0; i < ui->listWidget->count(); i++) {
+            QString s = ui->listWidget->item(i)->text();
+            if (str == s) {
+                return;
+            }
+        }
+
+        //添加到列表
+        ui->listWidget->addItem(str);
+        ui->labCount->setText(QString("共 %1 个客户端").arg(ui->listWidget->count()));
 
         if (AppConfig::DebugUdpServer) {
             int count = AppData::Keys.count();
@@ -195,21 +234,6 @@ void frmUdpServer::sendData(const QString &ip, int port, const QString &data)
 
     QString str = QString("[%1:%2] %3").arg(ip).arg(port).arg(data);
     append(0, str);
-}
-
-void frmUdpServer::clientConnected(const QString &ip, int port)
-{
-    //先过滤重复的
-    QString str = QString("%1:%2").arg(ip).arg(port);
-    for (int i = 0; i < ui->listWidget->count(); i++) {
-        QString s = ui->listWidget->item(i)->text();
-        if (str == s) {
-            return;
-        }
-    }
-
-    ui->listWidget->addItem(str);
-    ui->labCount->setText(QString("共 %1 个客户端").arg(ui->listWidget->count()));
 }
 
 void frmUdpServer::on_btnListen_clicked()
@@ -257,6 +281,18 @@ void frmUdpServer::on_btnSend_clicked()
             QString str = ui->listWidget->item(row)->text();
             QStringList list = str.split(":");
             sendData(list.at(0), list.at(1).toInt(), data);
+        }
+    }
+}
+
+void frmUdpServer::on_btnRemove_clicked()
+{
+    if (ui->ckSelectAll->isChecked()) {
+        ui->listWidget->clear();
+    } else {
+        int row = ui->listWidget->currentRow();
+        if (row >= 0) {
+            delete ui->listWidget->takeItem(row);
         }
     }
 }

@@ -3,34 +3,27 @@
 
 TcpServer::TcpServer(QObject *parent) : QTcpServer(parent)
 {
-    connect(this, SIGNAL(newConnection()), this, SLOT(newConnection()));
+    connect(this, SIGNAL(newConnection()), this, SLOT(slot_newConnection()));
 }
 
-void TcpServer::newConnection()
+void TcpServer::slot_newConnection()
 {
     QTcpSocket *socket = this->nextPendingConnection();
     TcpClient *client = new TcpClient(socket, this);
-    connect(client, SIGNAL(clientDisconnected()), this, SLOT(disconnected()));
+    connect(client, SIGNAL(disconnected(QString, int)), this, SLOT(slot_disconnected(QString, int)));
+    connect(client, SIGNAL(error(QString, int, QString)), this, SIGNAL(error(QString, int, QString)));
     connect(client, SIGNAL(sendData(QString, int, QString)), this, SIGNAL(sendData(QString, int, QString)));
     connect(client, SIGNAL(receiveData(QString, int, QString)), this, SIGNAL(receiveData(QString, int, QString)));
 
-    QString ip = client->getIP();
-    int port = client->getPort();
-    emit clientConnected(ip, port);
-    emit sendData(ip, port, "客户端上线");
-
+    emit connected(client->getIP(), client->getPort());
     //连接后加入链表
     clients.append(client);
 }
 
-void TcpServer::disconnected()
+void TcpServer::slot_disconnected(const QString &ip, int port)
 {
     TcpClient *client = (TcpClient *)sender();
-    QString ip = client->getIP();
-    int port = client->getPort();
-    emit clientDisconnected(ip, port);
-    emit sendData(ip, port, "客户端下线");
-
+    emit disconnected(ip, port);
     //断开连接后从链表中移除
     clients.removeOne(client);
 }
@@ -44,7 +37,6 @@ bool TcpServer::start()
 void TcpServer::stop()
 {
     remove();
-    this->disconnected();
     this->close();
 }
 
