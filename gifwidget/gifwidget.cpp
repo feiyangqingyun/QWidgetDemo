@@ -16,6 +16,7 @@
 #include "qdesktopservices.h"
 #include "qfiledialog.h"
 #include "qurl.h"
+#include "qtextcodec.h"
 #include "qdebug.h"
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
@@ -307,9 +308,21 @@ void GifWidget::record()
         int height = txtHeight->text().toInt();
         fps = txtFps->text().toInt();
 
+#ifdef Q_OS_WIN
+        //windows上需要先转码
+#if defined(_MSC_VER) && (_MSC_VER >= 1400)
+        QTextCodec *code = QTextCodec::codecForName("utf-8");
+#else
+        QTextCodec *code = QTextCodec::codecForName("gbk");
+#endif
+        const char *name = code->fromUnicode(fileName).constData();
+#else
+        const char *name = fileName.toUtf8().constData();
+#endif
+
         gifWriter = new Gif::GifWriter;
-        bool bOk = gif.GifBegin(gifWriter, fileName.toLocal8Bit().data(), width, height, fps);
-        if (!bOk) {
+        bool ok = gif.GifBegin(gifWriter, name, width, height, fps);
+        if (!ok) {
             delete gifWriter;
             gifWriter = 0;
             return;
@@ -331,7 +344,7 @@ void GifWidget::record()
 
         labStatus->setText(QString("录制完成 共 %1 帧").arg(count));
         btnStart->setText("开始");
-        QDesktopServices::openUrl(QUrl(fileName));
+        QDesktopServices::openUrl(QUrl::fromLocalFile(fileName));
     }
 }
 

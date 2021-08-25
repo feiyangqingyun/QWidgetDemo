@@ -14,5 +14,7 @@ frmGifWidget::~frmGifWidget()
 
 void frmGifWidget::on_pushButton_clicked()
 {
+    //设置截图窗口置顶显示
+    GifWidget::Instance()->setWindowFlags(GifWidget::Instance()->windowFlags() | Qt::WindowStaysOnTopHint);
     GifWidget::Instance()->show();
 }
