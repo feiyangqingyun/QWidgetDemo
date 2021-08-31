@@ -164,8 +164,11 @@ public:
 
     //判断IP地址及端口是否在线
     static bool ipLive(const QString &ip, int port, int timeout = 1000);
+    //下载网络文件
+    static bool download(const QString &url, const QString &fileName, int timeout = 1000);
     //获取网页所有源代码
-    static QString getHtml(const QString &url);
+    static QByteArray getHtml(const QString &url, int timeout = 1000);
+
     //获取本机公网IP地址
     static QString getNetIP(const QString &html);
     //获取本机IP
@@ -177,8 +180,6 @@ public:
 
     //字符串补全
     static QString getValue(quint8 value);
-    //判断是否通外网
-    static bool isWebOk();
 
     //定义标志位启用系统的还是自定义的对话框
     static bool isCustomUI;

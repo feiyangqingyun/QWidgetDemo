@@ -5,6 +5,7 @@
 
 #ifdef Q_OS_WIN
 #include "windows.h"
+#include "windowsx.h"
 #pragma comment (lib,"user32.lib")
 #endif
 
@@ -274,8 +275,10 @@ bool FramelessDialog::nativeEvent(const QByteArray &eventType, void *message, lo
             return true;
         } else if (msg->message == WM_NCHITTEST) {
             //计算鼠标对应的屏幕坐标
-            long x = LOWORD(msg->lParam);
-            long y = HIWORD(msg->lParam);
+            //这里最开始用的 LOWORD HIWORD 在多屏幕的时候会有问题
+            //官方说明在这里 https://docs.microsoft.com/zh-cn/windows/win32/inputdev/wm-nchittest
+            long x = GET_X_LPARAM(msg->lParam);
+            long y = GET_Y_LPARAM(msg->lParam);
             QPoint pos = mapFromGlobal(QPoint(x, y));
 
             //判断当前鼠标位置在哪个区域

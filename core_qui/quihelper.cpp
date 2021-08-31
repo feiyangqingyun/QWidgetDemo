@@ -300,7 +300,11 @@ void QUIHelper::setFramelessForm(QWidget *widgetMain, bool tool, bool top, bool 
     widgetMain->setProperty("canMove", true);
 
     //根据设定逐个追加属性
+#ifdef __arm__
     widgetMain->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+#else
+    widgetMain->setWindowFlags(Qt::FramelessWindowHint);
+#endif
     if (tool) {
         widgetMain->setWindowFlags(widgetMain->windowFlags() | Qt::Tool);
     }
@@ -323,8 +327,12 @@ void QUIHelper::setFramelessForm(QWidget *widgetMain, QWidget *widgetTitle,
     widgetMain->setProperty("form", true);
     widgetMain->setProperty("canMove", true);
 
-    //根据设定逐个追加属性 去掉了 Qt::X11BypassWindowManagerHint
+    //根据设定逐个追加属性
+#ifdef __arm__
+    widgetMain->setWindowFlags(Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
+#else
     widgetMain->setWindowFlags(Qt::FramelessWindowHint);
+#endif
     if (tool) {
         widgetMain->setWindowFlags(widgetMain->windowFlags() | Qt::Tool);
     }
@@ -982,24 +990,58 @@ bool QUIHelper::ipLive(const QString &ip, int port, int timeout)
     timer.setSingleShot(true);
     timer.start(timeout);
 
+    //主动测试下连接
     QTcpSocket tcpSocket;
     QObject::connect(&tcpSocket, SIGNAL(connected()), &eventLoop, SLOT(quit()));
     tcpSocket.connectToHost(ip, port);
     eventLoop.exec();
+
+    //判断最终状态
     bool ok = (tcpSocket.state() == QAbstractSocket::ConnectedState);
     return ok;
 }
 
-QString QUIHelper::getHtml(const QString &url)
+bool QUIHelper::download(const QString &url, const QString &fileName, int timeout)
 {
+    QByteArray data = getHtml(url, timeout);
+    if (!data.isEmpty()) {
+        QFile file(fileName);
+        if (file.open(QFile::WriteOnly | QFile::Truncate)) {
+            file.write(data);
+            file.close();
+        }
+        return true;
+    }
+
+    return false;
+}
+
+QByteArray QUIHelper::getHtml(const QString &url, int timeout)
+{
+    //初始化网络请求对象
     QNetworkAccessManager manager;
-    QNetworkReply *reply = manager.get(QNetworkRequest(QUrl(url)));
+    //局部的事件循环,不卡主界面
     QEventLoop eventLoop;
-    QObject::connect(&manager, SIGNAL(finished(QNetworkReply *)), &eventLoop, SLOT(quit()));
+
+    //设置超时 5.15开始自带了超时时间函数 默认30秒
+#if (QT_VERSION >= QT_VERSION_CHECK(5,15,0))
+    manager.setTransferTimeout(timeout);
+#else
+    QTimer timer;
+    QObject::connect(&timer, SIGNAL(timeout()), &eventLoop, SLOT(quit()));
+    timer.setSingleShot(true);
+    timer.start(timeout);
+#endif
+
+    //启动网络请求
+    QNetworkReply *reply = manager.get(QNetworkRequest(QUrl(url)));
+    QObject::connect(reply, SIGNAL(finished()), &eventLoop, SLOT(quit()));
     eventLoop.exec();
+
+    //读取结果
     QByteArray data = reply->readAll();
     reply->deleteLater();
-    return QString(data);
+    return data;
 }
 
 QString QUIHelper::getNetIP(const QString &html)
@@ -1081,12 +1123,6 @@ QString QUIHelper::getValue(quint8 value)
         result = QString("0%1").arg(result);
     }
     return result;
-}
-
-bool QUIHelper::isWebOk()
-{
-    //能接通百度IP 115.239.211.112 说明可以通外网
-    return ipLive("www.baidu.com", 80);
 }
 
 bool QUIHelper::isCustomUI = false;
