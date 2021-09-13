@@ -3,8 +3,8 @@
 
 /**
  * Ntp校时类 作者:feiyangqingyun(QQ:517216493) 2017-2-16
- * 1. 可设置Ntp服务器IP地址
- * 2. 收到时间信号发出
+ * 1. 可设置Ntp服务器IP地址。
+ * 2. 收到时间信号发出。
  */
 
 #include <QObject>
