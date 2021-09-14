@@ -440,17 +440,19 @@ QString LunarCalendarInfo::getSolarTerms(int year, int month, int day)
 {
     QString strSolarTerms;
     int dayTemp = 0;
+    //24节气对应表在1970年以后指定?
     int index = (year - 1970) * 12 + month - 1;
+    if (index < 0) {
+        return "";
+    }
 
     if (day < 15) {
         dayTemp = 15 - day;
-
         if ((chineseTwentyFourData.at(index) >> 4) == dayTemp) {
             strSolarTerms = listSolarTerm.at(2 * (month - 1));
         }
     } else if (day > 15) {
         dayTemp = day - 15;
-
         if ((chineseTwentyFourData.at(index) & 0x0f) == dayTemp) {
             strSolarTerms = listSolarTerm.at(2 * (month - 1) + 1);
         }
