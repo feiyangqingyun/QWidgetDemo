@@ -4,15 +4,13 @@
 #include "ui_frmframelesswidget.h"
 #include "qpushbutton.h"
 #include "qcheckbox.h"
-#include "framelesswidget.h"
 #include "framelesswidget2.h"
 
 frmFramelessWidget::frmFramelessWidget(QWidget *parent) : QWidget(parent), ui(new Ui::frmFramelessWidget)
 {
     ui->setupUi(this);
-    widget1 = 0;
+    widget = 0;
     frameless = 0;
-    frameless2 = 0;
 }
 
 frmFramelessWidget::~frmFramelessWidget()
@@ -59,23 +57,20 @@ void frmFramelessWidget::initWidget(QWidget *w)
 
 void frmFramelessWidget::on_pushButton_clicked()
 {
-    if (widget1 == 0) {
-        widget1 = new QWidget;
-        this->initWidget(widget1);
-        frameless = new FramelessWidget(widget1);
-        frameless->setWidget(widget1);
+    if (widget == 0) {
+        widget = new QWidget;
+        this->initWidget(widget);
+        frameless = new FramelessWidget2(widget);
+        frameless->setWidget(widget);
     }
 
-    widget1->show();
+    widget->show();
 }
 
 void frmFramelessWidget::stateChanged1(int arg1)
 {
     if (frameless != 0) {
         frameless->setMoveEnable(arg1 != 0);
-    }
-    if (frameless2 != 0) {
-        frameless2->setMoveEnable(arg1 != 0);
     }
 }
 
@@ -84,17 +79,4 @@ void frmFramelessWidget::stateChanged2(int arg1)
     if (frameless != 0) {
         frameless->setResizeEnable(arg1 != 0);
     }
-    if (frameless2 != 0) {
-        frameless2->setResizeEnable(arg1 != 0);
-    }
-}
-
-void frmFramelessWidget::on_pushButton_2_clicked()
-{
-    if (frameless2 == 0) {
-        frameless2 = new FramelessWidget2;
-        this->initWidget(frameless2);
-    }
-
-    frameless2->show();
 }

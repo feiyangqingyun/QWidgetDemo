@@ -80,7 +80,7 @@ TcpServer1::TcpServer1(QObject *parent) : QTcpServer(parent)
 {
 }
 
-#if (QT_VERSION > QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
 void TcpServer1::incomingConnection(qintptr handle)
 #else
 void TcpServer1::incomingConnection(int handle)
@@ -120,7 +120,7 @@ void TcpServer1::disconnected()
 
 bool TcpServer1::start()
 {
-#if (QT_VERSION > QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
     bool ok = listen(QHostAddress::AnyIPv4, AppConfig::ListenPort1);
 #else
     bool ok = listen(QHostAddress::Any, AppConfig::ListenPort1);

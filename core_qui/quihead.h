@@ -55,7 +55,6 @@
 #include "quihelper.h"
 #include "quiconfig.h"
 #include "quistyle.h"
-#include "quihead.h"
 #include "quimessagebox.h"
 #include "quitipbox.h"
 #include "quidateselect.h"

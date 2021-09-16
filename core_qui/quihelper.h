@@ -65,6 +65,16 @@ public:
     //设置开机自启动
     static void runWithSystem(const QString &strName, const QString &strPath, bool autoRun = true);
 
+    //获取内置颜色集合
+    static QList<QColor> colors;
+    static QList<QColor> getColorList();
+    static QStringList getColorNames();
+    //随机获取颜色集合中的颜色
+    static QColor getRandColor();
+
+    //获取随机数,指定最小值和最大值
+    static double getRandValue(int min, int max, bool contansMin = false, bool contansMax = false);
+
     //从字符串获取IP地址
     static QString getIP(const QString &url);
     //判断是否是IP地址

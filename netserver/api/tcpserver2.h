@@ -45,7 +45,7 @@ private:
     QList<TcpClient2 *> clients;
 
 protected:
-#if (QT_VERSION > QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
     void incomingConnection(qintptr handle);
 #else
     void incomingConnection(int handle);

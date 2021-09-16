@@ -274,14 +274,14 @@ void GifWidget::saveImage()
         return;
     }
 
-#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
-    //由于qt4没有RGBA8888,采用最接近RGBA8888的是ARGB32,颜色会有点偏差
-    QPixmap pix = QPixmap::grabWindow(0, x() + rectGif.x(), y() + rectGif.y(), rectGif.width(), rectGif.height());
-    QImage image = pix.toImage().convertToFormat(QImage::Format_ARGB32);
-#else
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
     QScreen *screen = QApplication::primaryScreen();
     QPixmap pix = screen->grabWindow(0, x() + rectGif.x(), y() + rectGif.y(), rectGif.width(), rectGif.height());
     QImage image = pix.toImage().convertToFormat(QImage::Format_RGBA8888);
+#else
+    //由于qt4没有RGBA8888,采用最接近RGBA8888的是ARGB32,颜色会有点偏差
+    QPixmap pix = QPixmap::grabWindow(0, x() + rectGif.x(), y() + rectGif.y(), rectGif.width(), rectGif.height());
+    QImage image = pix.toImage().convertToFormat(QImage::Format_ARGB32);
 #endif
 
     gif.GifWriteFrame(gifWriter, image.bits(), rectGif.width(), rectGif.height(), fps);

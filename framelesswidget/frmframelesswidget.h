@@ -2,7 +2,6 @@
 #define FRMFRAMELESSWIDGET_H
 
 #include <QWidget>
-class FramelessWidget;
 class FramelessWidget2;
 
 namespace Ui {
@@ -22,16 +21,14 @@ protected:
 
 private:
     Ui::frmFramelessWidget *ui;
-    QWidget *widget1;
-    FramelessWidget *frameless;
-    FramelessWidget2 *frameless2;
+    QWidget *widget;
+    FramelessWidget2 *frameless;
 
 private slots:
     void initWidget(QWidget *w);
     void on_pushButton_clicked();
     void stateChanged1(int arg1);
     void stateChanged2(int arg1);
-    void on_pushButton_2_clicked();
 };
 
 #endif // FRMFRAMELESSWIDGET_H

@@ -1,17 +1,11 @@
 ﻿#pragma execution_character_set("utf-8")
 
-#include "frmframelesswidget.h"
-#include "dialog.h"
-#include "widget.h"
-#include "mainwindow.h"
+#include "frmbase64helper.h"
 #include <QApplication>
 #include <QTextCodec>
 
 int main(int argc, char *argv[])
 {
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
-    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
-#endif
     QApplication a(argc, argv);
     a.setFont(QFont("Microsoft Yahei", 9));
 
@@ -29,12 +23,8 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(codec);
 #endif
 
-    frmFramelessWidget w;
-    //Dialog w;
-    //Widget w;
-    //MainWindow w;
-    w.setWindowTitle("无边框窗体类");
-    w.resize(800, 600);
+    frmBase64Helper w;
+    w.setWindowTitle("图片文字base64编码互换");
     w.show();
 
     return a.exec();

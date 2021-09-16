@@ -1,7 +1,7 @@
 ﻿#include "widget.h"
 #include "ui_widget.h"
-#include "head.h"
 
+#pragma execution_character_set("utf-8")
 Widget::Widget(QWidget *parent) : FramelessWidget(parent), ui(new Ui::Widget)
 {
     ui->setupUi(this);

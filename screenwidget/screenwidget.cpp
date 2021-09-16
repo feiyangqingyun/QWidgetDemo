@@ -218,11 +218,11 @@ void ScreenWidget::showEvent(QShowEvent *)
     screen->setStart(point);
     screen->setEnd(point);
 
-#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
-    *fullScreen = fullScreen->grabWindow(0, 0, 0, screen->width(), screen->height());
-#else
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
     QScreen *pscreen = QApplication::primaryScreen();
     *fullScreen = pscreen->grabWindow(0, 0, 0, screen->width(), screen->height());
+#else
+    *fullScreen = fullScreen->grabWindow(0, 0, 0, screen->width(), screen->height());
 #endif
 
     //设置透明度实现模糊背景

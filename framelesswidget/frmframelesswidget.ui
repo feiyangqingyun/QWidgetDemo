@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,19 +24,6 @@
    </property>
    <property name="text">
     <string>弹出</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_2">
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>10</y>
-     <width>92</width>
-     <height>28</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>无边框2</string>
    </property>
   </widget>
  </widget>

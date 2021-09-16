@@ -135,11 +135,11 @@ void ColorWidget::showColorValue()
     int y = QCursor::pos().y();
     txtPoint->setText(tr("x:%1  y:%2").arg(x).arg(y));
 
-#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
-    QPixmap pixmap = QPixmap::grabWindow(qApp->desktop()->winId(), x, y, 2, 2);
-#else
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
     QScreen *screen = qApp->primaryScreen();
     QPixmap pixmap = screen->grabWindow(0, x, y, 2, 2);
+#else
+    QPixmap pixmap = QPixmap::grabWindow(qApp->desktop()->winId(), x, y, 2, 2);
 #endif
 
     int red, green, blue;

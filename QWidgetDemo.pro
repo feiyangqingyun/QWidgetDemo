@@ -14,7 +14,7 @@ SUBDIRS += devicesizetable  #硬盘容量控件
 SUBDIRS += styledemo        #高仿PS黑色+扁平白色+淡蓝色风格主题
 SUBDIRS += navbutton        #导航按钮控件
 SUBDIRS += videopanel       #视频监控画面分割demo
-SUBDIRS += framelesswidget  #通用无边框拖动拉伸类
+SUBDIRS += framelesswidget  #跨平台无边框窗体
 SUBDIRS += ipaddress        #IP地址输入控件
 SUBDIRS += bgdemo           #无边框背景透明窗体
 SUBDIRS += dbpage           #通用数据库翻页查询
@@ -35,9 +35,8 @@ SUBDIRS += videowidget      #通用视频控件
 SUBDIRS += screenwidget     #屏幕截图控件
 SUBDIRS += imageswitch      #图片开关控件
 SUBDIRS += netserver        #网络中转服务器
-SUBDIRS += base64           #图片文字base64互换
+SUBDIRS += base64helper     #图片文字base64互换
 SUBDIRS += smoothcurve      #平滑曲线
-SUBDIRS += frameless      	#跨平台无边框窗体
 
 #限定windows系统加载下面的项目
 win32 {

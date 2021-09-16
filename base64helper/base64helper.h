@@ -1,5 +1,5 @@
-﻿#ifndef BASE64_H
-#define BASE64_H
+﻿#ifndef BASE64HELPER_H
+#define BASE64HELPER_H
 
 /**
  * base64编码转换类 作者:feiyangqingyun(QQ:517216493) 2016-12-16
@@ -14,9 +14,9 @@
 #include <QImage>
 
 #ifdef quc
-class Q_DECL_EXPORT Base64
+class Q_DECL_EXPORT Base64Helper
 #else
-class Base64
+class Base64Helper
 #endif
 
 {
@@ -34,4 +34,4 @@ public:
     static QString base64ToText(const QString &text);
 };
 
-#endif // BASE64_H
+#endif // BASE64HELPER_H

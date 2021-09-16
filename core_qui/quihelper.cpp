@@ -134,21 +134,29 @@ void QUIHelper::newDir(const QString &dirName)
 
 void QUIHelper::sleep(int msec)
 {
-    if (msec > 0) {
-#if (QT_VERSION < QT_VERSION_CHECK(5,7,0))
-        QTime endTime = QTime::currentTime().addMSecs(msec);
-        while (QTime::currentTime() < endTime) {
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-        }
-#else
-        QThread::msleep(msec);
-#endif
+    if (msec <= 0) {
+        return;
     }
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+    QThread::msleep(msec);
+#else
+    QTime endTime = QTime::currentTime().addMSecs(msec);
+    while (QTime::currentTime() < endTime) {
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+    }
+#endif
 }
 
 void QUIHelper::setCode(bool utf8)
 {
-#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+    //如果想要控制台打印信息中文正常就注释掉这个设置
+    if (utf8) {
+        QTextCodec *codec = QTextCodec::codecForName("utf-8");
+        QTextCodec::setCodecForLocale(codec);
+    }
+#else
 #if _MSC_VER
     QTextCodec *codec = QTextCodec::codecForName("gbk");
 #else
@@ -157,12 +165,6 @@ void QUIHelper::setCode(bool utf8)
     QTextCodec::setCodecForLocale(codec);
     QTextCodec::setCodecForCStrings(codec);
     QTextCodec::setCodecForTr(codec);
-#else
-    //如果想要控制台打印信息中文正常就注释掉这个设置
-    if (utf8) {
-        QTextCodec *codec = QTextCodec::codecForName("utf-8");
-        QTextCodec::setCodecForLocale(codec);
-    }
 #endif
 }
 
@@ -376,6 +378,75 @@ void QUIHelper::runWithSystem(const QString &strName, const QString &strPath, bo
     QSettings reg("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
     reg.setValue(strName, autoRun ? strPath : "");
 #endif
+}
+
+QList<QColor> QUIHelper::colors = QList<QColor>();
+QList<QColor> QUIHelper::getColorList()
+{
+    //备用颜色集合 可以自行添加
+    if (colors.count() == 0) {
+        colors << QColor(0, 176, 180) << QColor(0, 113, 193) << QColor(255, 192, 0);
+        colors << QColor(72, 103, 149) << QColor(185, 87, 86) << QColor(0, 177, 125);
+        colors << QColor(214, 77, 84) << QColor(71, 164, 233) << QColor(34, 163, 169);
+        colors << QColor(59, 123, 156) << QColor(162, 121, 197) << QColor(72, 202, 245);
+        colors << QColor(0, 150, 121) << QColor(111, 9, 176) << QColor(250, 170, 20);
+    }
+
+    return colors;
+}
+
+QStringList QUIHelper::getColorNames()
+{
+    QList<QColor> colors = getColorList();
+    QStringList colorNames;
+    foreach (QColor color, colors) {
+        colorNames << color.name();
+    }
+    return colorNames;
+}
+
+QColor QUIHelper::getRandColor()
+{
+    QList<QColor> colors = getColorList();
+    int index = getRandValue(0, colors.count(), true);
+    return colors.at(index);
+}
+
+double QUIHelper::getRandValue(int min, int max, bool contansMin, bool contansMax)
+{
+    int value;
+#if (QT_VERSION <= QT_VERSION_CHECK(5,10,0))
+    //通用公式 a是起始值,n是整数的范围
+    //int value = a + rand() % n;
+    if (contansMin) {
+        if (contansMax) {
+            value = min + 0 + (rand() % (max - min + 1));
+        } else {
+            value = min + 0 + (rand() % (max - min + 0));
+        }
+    } else {
+        if (contansMax) {
+            value = min + 1 + (rand() % (max - min + 0));
+        } else {
+            value = min + 1 + (rand() % (max - min - 1));
+        }
+    }
+#else
+    if (contansMin) {
+        if (contansMax) {
+            value = QRandomGenerator::global()->bounded(min + 0, max + 1);
+        } else {
+            value = QRandomGenerator::global()->bounded(min + 0, max + 0);
+        }
+    } else {
+        if (contansMax) {
+            value = QRandomGenerator::global()->bounded(min + 1, max + 1);
+        } else {
+            value = QRandomGenerator::global()->bounded(min + 1, max + 0);
+        }
+    }
+#endif
+    return value;
 }
 
 QString QUIHelper::getIP(const QString &url)

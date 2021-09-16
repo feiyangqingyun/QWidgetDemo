@@ -1,35 +1,30 @@
 ﻿#ifndef FRAMELESSWIDGET2_H
 #define FRAMELESSWIDGET2_H
 
+/**
+ * 无边框窗体类 作者:feiyangqingyun(QQ:517216493) 2019-10-03
+ * 1. 可以指定需要无边框的widget。
+ * 2. 边框四周八个方位都可以自由拉伸。
+ * 3. 可设置对应位置的边距，以便识别更大区域。
+ * 4. 可设置是否允许拖动。
+ * 5. 可设置是否允许拉伸。
+ */
+
 #include <QWidget>
 
 #ifdef quc
-class Q_DECL_EXPORT FramelessWidget2 : public QWidget
+class Q_DECL_EXPORT FramelessWidget2 : public QObject
 #else
-class FramelessWidget2 : public QWidget
+class FramelessWidget2 : public QObject
 #endif
 
 {
     Q_OBJECT
 public:
-    explicit FramelessWidget2(QWidget *parent = 0);
+    explicit FramelessWidget2(QObject *parent = 0);
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
-
-    //拦截系统事件用于修复系统休眠后唤醒程序的BUG
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
-    bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result);
-#else
-    bool nativeEvent(const QByteArray &eventType, void *message, long *result);
-#endif
-
-    //Qt4的写法
-#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
-#ifdef Q_OS_WIN
-    bool winEvent(MSG *message, long *result);
-#endif
-#endif
 
 private:
     //边距+可移动+可拉伸
@@ -37,11 +32,33 @@ private:
     bool moveEnable;
     bool resizeEnable;
 
-public:
-    //设置边距+可拖动+可拉伸
+    //无边框窗体
+    QWidget *widget;
+
+    //鼠标是否按下+按下坐标+按下时窗体区域
+    bool mousePressed;
+    QPoint mousePoint;
+    QRect mouseRect;
+
+    //鼠标是否按下某个区域+按下区域的大小
+    //依次为 左侧+右侧+上侧+下侧+左上侧+右上侧+左下侧+右下侧
+    QList<bool> pressedArea;
+    QList<QRect> pressedRect;
+
+    //记录是否最小化
+    bool isMin;
+    //存储窗体默认的属性
+    Qt::WindowFlags flags;
+
+public Q_SLOTS:
+    //设置边距
     void setPadding(int padding);
+    //设置是否可拖动+拉伸
     void setMoveEnable(bool moveEnable);
     void setResizeEnable(bool resizeEnable);
+
+    //设置要无边框的窗体
+    void setWidget(QWidget *widget);
 };
 
 #endif // FRAMELESSWIDGET2_H

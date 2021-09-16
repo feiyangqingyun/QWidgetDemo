@@ -9,11 +9,15 @@ CONFIG      += warn_off
 
 SOURCES     += main.cpp
 SOURCES     += frmframelesswidget.cpp
-SOURCES     += framelesswidget.cpp
 SOURCES     += framelesswidget2.cpp
 
 HEADERS     += frmframelesswidget.h
-HEADERS     += framelesswidget.h
 HEADERS     += framelesswidget2.h
 
 FORMS       += frmframelesswidget.ui
+
+INCLUDEPATH += $$PWD/framelesscore
+INCLUDEPATH += $$PWD/framelessform
+
+include ($$PWD/framelesscore/framelesscore.pri)
+include ($$PWD/framelessform/framelessform.pri)

@@ -1,19 +1,19 @@
-﻿#include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "head.h"
+﻿#include "dialog.h"
+#include "ui_dialog.h"
 
-MainWindow::MainWindow(QWidget *parent) : FramelessMainWindow(parent), ui(new Ui::MainWindow)
+#pragma execution_character_set("utf-8")
+Dialog::Dialog(QWidget *parent) : FramelessDialog(parent), ui(new Ui::Dialog)
 {
     ui->setupUi(this);
     this->initForm();
 }
 
-MainWindow::~MainWindow()
+Dialog::~Dialog()
 {
     delete ui;
 }
 
-void MainWindow::initForm()
+void Dialog::initForm()
 {
     //设置标题栏控件
     ui->labTitle->setText("无边框窗体示例-支持win、linux、mac等系统 (QQ: 517216493 WX: feiyangqingyun)");
@@ -33,17 +33,17 @@ void MainWindow::initForm()
     this->setStyleSheet(list.join(""));
 }
 
-void MainWindow::titleDblClick()
+void Dialog::titleDblClick()
 {
     on_btnMenu_Max_clicked();
 }
 
-void MainWindow::windowStateChange(bool max)
+void Dialog::windowStateChange(bool max)
 {
     ui->btnMenu_Max->setText(max ? "还原" : "最大");
 }
 
-void MainWindow::on_btnMenu_Min_clicked()
+void Dialog::on_btnMenu_Min_clicked()
 {
 #ifdef Q_OS_MACOS
     this->setWindowFlags(this->windowFlags() & ~Qt::FramelessWindowHint);
@@ -51,7 +51,7 @@ void MainWindow::on_btnMenu_Min_clicked()
     this->showMinimized();
 }
 
-void MainWindow::on_btnMenu_Max_clicked()
+void Dialog::on_btnMenu_Max_clicked()
 {
     if (this->isMaximized()) {
         this->showNormal();
@@ -62,7 +62,8 @@ void MainWindow::on_btnMenu_Max_clicked()
     }
 }
 
-void MainWindow::on_btnMenu_Close_clicked()
+void Dialog::on_btnMenu_Close_clicked()
 {
     this->close();
 }
+

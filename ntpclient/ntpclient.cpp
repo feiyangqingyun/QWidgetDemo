@@ -86,10 +86,10 @@ void NtpClient::readData()
     QDateTime dateTime;
     uint secs = seconds - epoch.secsTo(unixStart);
 
-#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-    dateTime.setTime_t(secs);
-#else
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
     dateTime.setSecsSinceEpoch(secs);
+#else
+    dateTime.setTime_t(secs);
 #endif
 
 #ifdef __arm__
