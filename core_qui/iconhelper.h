@@ -28,7 +28,7 @@ public:
     //样式颜色结构体
     struct StyleColor {
         QString position;           //位置 left right top bottom
-        bool textBesideIcon;        //文字在图标左侧
+        bool defaultBorder;         //默认有边框
 
         quint32 iconSize;           //图标字体尺寸
         quint32 iconWidth;          //图标图片宽度
@@ -48,7 +48,7 @@ public:
 
         StyleColor() {
             position = "left";
-            textBesideIcon = false;
+            defaultBorder = false;
 
             iconSize = 12;
             iconWidth = 15;
@@ -87,20 +87,38 @@ public:
     static IconHelper *iconFontAliBaBa;
     //FontAwesome图形字体类
     static IconHelper *iconFontAwesome;
+    //天气图形字体类
+    static IconHelper *iconFontWeather;
+    //图形字体索引
+    static int iconFontIndex;
+
     //初始化图形字体
     static void initFont();
 
+    //获取图形字体
+    static QFont getIconFontAliBaBa();
+    static QFont getIconFontAwesome();
+    static QFont getIconFontWeather();
+
+    //根据值获取图形字体类
+    static IconHelper *getIconHelper(int icon);
+
+    //设置图形字体到标签
     static void setIcon(QLabel *lab, int icon, quint32 size = 12);
+    //设置图形字体到按钮
     static void setIcon(QAbstractButton *btn, int icon, quint32 size = 12);
 
+    //设置图形字体到图标
     static void setPixmap(QAbstractButton *btn, const QColor &color,
                           int icon, quint32 size = 12,
                           quint32 width = 15, quint32 height = 15,
                           int flags = Qt::AlignCenter);
+    //获取指定图形字体,可以指定文字大小,图片宽高,文字对齐
     static QPixmap getPixmap(const QColor &color, int icon, quint32 size = 12,
                              quint32 width = 15, quint32 height = 15,
                              int flags = Qt::AlignCenter);
 
+    //指定导航面板样式,带图标和效果切换+悬停颜色+按下颜色+选中颜色
     static void setStyle(QWidget *widget, QList<QPushButton *> btns, QList<int> icons, const StyleColor &styleColor);
     static void setStyle(QWidget *widget, QList<QToolButton *> btns, QList<int> icons, const StyleColor &styleColor);
     static void setStyle(QWidget *widget, QList<QAbstractButton *> btns, QList<int> icons, const StyleColor &styleColor);
@@ -124,6 +142,9 @@ private slots:
     void toggled(bool checked);
 
 public:
+    //获取图形字体
+    QFont getIconFont();
+
     //设置图形字体到标签
     void setIcon1(QLabel *lab, int icon, quint32 size = 12);
     //设置图形字体到按钮

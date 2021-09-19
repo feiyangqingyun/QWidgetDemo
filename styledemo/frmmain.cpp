@@ -1,10 +1,6 @@
-﻿#pragma execution_character_set("utf-8")
-#include "frmmain.h"
+﻿#include "frmmain.h"
 #include "ui_frmmain.h"
-#include "qfile.h"
-#include "qtextstream.h"
-#include "qtranslator.h"
-#include "qdebug.h"
+#include "head.h"
 
 frmMain::frmMain(QWidget *parent) : QMainWindow(parent), ui(new Ui::frmMain)
 {
@@ -31,6 +27,10 @@ void frmMain::initForm()
     this->initOther();
     this->initStyle();
     this->initTranslator();
+
+    ui->rbtn1->setChecked(true);
+    ui->ck2->setChecked(true);
+    ui->ck3->setCheckState(Qt::PartiallyChecked);
     ui->tabWidget->setCurrentIndex(0);
 }
 
@@ -133,11 +133,7 @@ void frmMain::initListWidget()
 
 void frmMain::initOther()
 {
-    ui->rbtn1->setChecked(true);
-    ui->ck2->setChecked(true);
-    ui->ck3->setCheckState(Qt::PartiallyChecked);
     ui->horizontalSlider->setValue(88);
-
     ui->tab9->setStyleSheet("QPushButton{font:20pt;}");
     ui->widgetVideo->setStyleSheet("QLabel{font:20pt;}");
 
@@ -156,9 +152,9 @@ void frmMain::initStyle()
 {
     //加载样式表
     QString qss;
-    //QFile file(":/qss/psblack.css");
+    QFile file(":/qss/psblack.css");
     //QFile file(":/qss/flatwhite.css");
-    QFile file(":/qss/lightblue.css");
+    //QFile file(":/qss/lightblue.css");
     if (file.open(QFile::ReadOnly)) {
 #if 1
         //用QTextStream读取样式文件不用区分文件编码 带bom也行

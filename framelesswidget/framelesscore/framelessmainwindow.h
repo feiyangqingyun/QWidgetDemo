@@ -3,7 +3,12 @@
 
 #include <QMainWindow>
 
+#ifdef quc
+class Q_DECL_EXPORT FramelessMainWindow : public QMainWindow
+#else
 class FramelessMainWindow : public QMainWindow
+#endif
+
 {
     Q_OBJECT
 public:

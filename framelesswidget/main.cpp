@@ -1,9 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 
 #include "frmframelesswidget.h"
-#include "dialog.h"
-#include "widget.h"
-#include "mainwindow.h"
 #include <QApplication>
 #include <QTextCodec>
 
@@ -29,11 +26,8 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(codec);
 #endif
 
-    frmFramelessWidget w;
-    //Dialog w;
-    //Widget w;
-    //MainWindow w;
-    w.setWindowTitle("无边框窗体类");
+    frmFramelessWidget w;    
+    w.setWindowTitle("无边框窗体");
     w.resize(800, 600);
     w.show();
 

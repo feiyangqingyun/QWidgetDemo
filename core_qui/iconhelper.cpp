@@ -2,6 +2,9 @@
 
 IconHelper *IconHelper::iconFontAliBaBa = 0;
 IconHelper *IconHelper::iconFontAwesome = 0;
+IconHelper *IconHelper::iconFontWeather = 0;
+int IconHelper::iconFontIndex = -1;
+
 void IconHelper::initFont()
 {
     static bool isInit = false;
@@ -13,102 +16,100 @@ void IconHelper::initFont()
         if (iconFontAwesome == 0) {
             iconFontAwesome = new IconHelper(":/image/fontawesome-webfont.ttf", "FontAwesome");
         }
+        if (iconFontWeather == 0) {
+            iconFontWeather = new IconHelper(":/image/pe-icon-set-weather.ttf", "pe-icon-set-weather");
+        }
     }
+}
+
+QFont IconHelper::getIconFontAliBaBa()
+{
+    initFont();
+    return iconFontAliBaBa->getIconFont();
+}
+
+QFont IconHelper::getIconFontAwesome()
+{
+    initFont();
+    return iconFontAwesome->getIconFont();
+}
+
+QFont IconHelper::getIconFontWeather()
+{
+    initFont();
+    return iconFontWeather->getIconFont();
+}
+
+IconHelper *IconHelper::getIconHelper(int icon)
+{
+    initFont();
+
+    //指定了字体索引则取对应索引的字体类
+    //没指定则自动根据不同的字体的值选择对应的类
+    //由于部分值范围冲突所以可以指定索引来取
+    //fontawesome   0xf000-0xf2e0
+    //iconfont      0xe501-0xe793 0xe8d5-0xea5d
+    //weather       0xe900-0xe9cf
+
+    IconHelper *iconHelper = iconFontAwesome;
+    if (iconFontIndex < 0) {
+        if ((icon > 0xe501 && icon < 0xe793) || (icon > 0xe8d5 && icon < 0xea5d)) {
+            iconHelper = iconFontAliBaBa;
+        }
+    } else if (iconFontIndex == 0) {
+        iconHelper = iconFontAliBaBa;
+    } else if (iconFontIndex == 1) {
+        iconHelper = iconFontAwesome;
+    } else if (iconFontIndex == 2) {
+        iconHelper = iconFontWeather;
+    }
+
+    return iconHelper;
 }
 
 void IconHelper::setIcon(QLabel *lab, int icon, quint32 size)
 {
-    initFont();
-
-    //自动根据不同的字体的值选择对应的类,fontawesome 0xf开头 iconfont 0xe开头
-    if (icon > 0xe000 && icon < 0xf000) {
-        iconFontAliBaBa->setIcon1(lab, icon, size);
-    } else if (icon > 0xf000) {
-        iconFontAwesome->setIcon1(lab, icon, size);
-    }
+    getIconHelper(icon)->setIcon1(lab, icon, size);
 }
 
 void IconHelper::setIcon(QAbstractButton *btn, int icon, quint32 size)
 {
-    initFont();
-
-    //自动根据不同的字体的值选择对应的类,fontawesome 0xf开头 iconfont 0xe开头
-    if (icon > 0xe000 && icon < 0xf000) {
-        iconFontAliBaBa->setIcon1(btn, icon, size);
-    } else if (icon > 0xf000) {
-        iconFontAwesome->setIcon1(btn, icon, size);
-    }
+    getIconHelper(icon)->setIcon1(btn, icon, size);
 }
 
 void IconHelper::setPixmap(QAbstractButton *btn, const QColor &color, int icon, quint32 size,
                            quint32 width, quint32 height, int flags)
 {
-    initFont();
-
-    //自动根据不同的字体的值选择对应的类,fontawesome 0xf开头 iconfont 0xe开头
-    if (icon > 0xe000 && icon < 0xf000) {
-        iconFontAliBaBa->setPixmap1(btn, color, icon, size, width, height, flags);
-    } else if (icon > 0xf000) {
-        iconFontAwesome->setPixmap1(btn, color, icon, size, width, height, flags);
-    }
+    getIconHelper(icon)->setPixmap1(btn, color, icon, size, width, height, flags);
 }
 
 QPixmap IconHelper::getPixmap(const QColor &color, int icon, quint32 size,
                               quint32 width, quint32 height, int flags)
 {
-    initFont();
-
-    //自动根据不同的字体的值选择对应的类,fontawesome 0xf开头 iconfont 0xe开头
-    QPixmap pix;
-    if (icon > 0xe000 && icon < 0xf000) {
-        pix = iconFontAliBaBa->getPixmap1(color, icon, size, width, height, flags);
-    } else if (icon > 0xf000) {
-        pix = iconFontAwesome->getPixmap1(color, icon, size, width, height, flags);
-    }
-    return pix;
+    return getIconHelper(icon)->getPixmap1(color, icon, size, width, height, flags);
 }
 
 void IconHelper::setStyle(QWidget *widget, QList<QPushButton *> btns,
                           QList<int> icons, const IconHelper::StyleColor &styleColor)
 {
-    initFont();
-
-    //自动根据不同的字体的值选择对应的类,fontawesome 0xf开头 iconfont 0xe开头
     int icon = icons.first();
-    if (icon > 0xe000 && icon < 0xf000) {
-        iconFontAliBaBa->setStyle1(widget, btns, icons, styleColor);
-    } else if (icon > 0xf000) {
-        iconFontAwesome->setStyle1(widget, btns, icons, styleColor);
-    }
+    getIconHelper(icon)->setStyle1(widget, btns, icons, styleColor);
 }
 
 void IconHelper::setStyle(QWidget *widget, QList<QToolButton *> btns,
                           QList<int> icons, const IconHelper::StyleColor &styleColor)
 {
-    initFont();
-
-    //自动根据不同的字体的值选择对应的类,fontawesome 0xf开头 iconfont 0xe开头
     int icon = icons.first();
-    if (icon > 0xe000 && icon < 0xf000) {
-        iconFontAliBaBa->setStyle1(widget, btns, icons, styleColor);
-    } else if (icon > 0xf000) {
-        iconFontAwesome->setStyle1(widget, btns, icons, styleColor);
-    }
+    getIconHelper(icon)->setStyle1(widget, btns, icons, styleColor);
 }
 
 void IconHelper::setStyle(QWidget *widget, QList<QAbstractButton *> btns,
                           QList<int> icons, const IconHelper::StyleColor &styleColor)
 {
-    initFont();
-
-    //自动根据不同的字体的值选择对应的类,fontawesome 0xf开头 iconfont 0xe开头
     int icon = icons.first();
-    if (icon > 0xe000 && icon < 0xf000) {
-        iconFontAliBaBa->setStyle1(widget, btns, icons, styleColor);
-    } else if (icon > 0xf000) {
-        iconFontAwesome->setStyle1(widget, btns, icons, styleColor);
-    }
+    getIconHelper(icon)->setStyle1(widget, btns, icons, styleColor);
 }
+
 
 IconHelper::IconHelper(const QString &fontFile, const QString &fontName, QObject *parent) : QObject(parent)
 {
@@ -122,6 +123,7 @@ IconHelper::IconHelper(const QString &fontFile, const QString &fontName, QObject
         }
     }
 
+    //再次判断是否包含字体名称防止加载失败
     if (fontDb.families().contains(fontName)) {
         iconFont = QFont(fontName);
 #if (QT_VERSION >= QT_VERSION_CHECK(4,8,0))
@@ -177,6 +179,11 @@ void IconHelper::toggled(bool checked)
     } else {
         btn->setIcon(QIcon(pixNormal.at(index)));
     }
+}
+
+QFont IconHelper::getIconFont()
+{
+    return this->iconFont;
 }
 
 void IconHelper::setIcon1(QLabel *lab, int icon, quint32 size)
@@ -269,8 +276,9 @@ void IconHelper::setStyle1(QWidget *widget, QList<QAbstractButton *> btns, QList
     }
 
     //如果图标是左侧显示则需要让没有选中的按钮左侧也有加深的边框,颜色为背景颜色
+    //如果图标在文字上面而设置的边框是 top bottom 也需要启用加深边框
     QStringList qss;
-    if (styleColor.textBesideIcon) {
+    if (styleColor.defaultBorder) {
         qss << QString("QWidget[flag=\"%1\"] QAbstractButton{border-style:solid;border-radius:0px;%2border-color:%3;color:%4;background:%5;}")
             .arg(position).arg(strBorder).arg(styleColor.normalBgColor).arg(styleColor.normalTextColor).arg(styleColor.normalBgColor);
     } else {

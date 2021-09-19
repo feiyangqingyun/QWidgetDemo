@@ -3,7 +3,12 @@
 
 #include <QWidget>
 
+#ifdef quc
+class Q_DECL_EXPORT FramelessWidget : public QWidget
+#else
 class FramelessWidget : public QWidget
+#endif
+
 {
     Q_OBJECT
 public:

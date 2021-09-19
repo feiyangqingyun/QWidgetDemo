@@ -5,6 +5,9 @@
 #include "qpushbutton.h"
 #include "qcheckbox.h"
 #include "framelesswidget2.h"
+#include "framelessform/dialog.h"
+#include "framelessform/widget.h"
+#include "framelessform/mainwindow.h"
 
 frmFramelessWidget::frmFramelessWidget(QWidget *parent) : QWidget(parent), ui(new Ui::frmFramelessWidget)
 {
@@ -79,4 +82,25 @@ void frmFramelessWidget::stateChanged2(int arg1)
     if (frameless != 0) {
         frameless->setResizeEnable(arg1 != 0);
     }
+}
+
+void frmFramelessWidget::on_btnDialog_clicked()
+{
+    Dialog dialog;
+    dialog.resize(800, 600);
+    dialog.exec();
+}
+
+void frmFramelessWidget::on_btnWidget_clicked()
+{
+    Widget *widget = new Widget;
+    widget->resize(800, 600);
+    widget->show();
+}
+
+void frmFramelessWidget::on_btnMainWindow_clicked()
+{
+    MainWindow *window = new MainWindow;
+    window->resize(800, 600);
+    window->show();
 }

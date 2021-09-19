@@ -32,7 +32,7 @@ QWidget[nav="top"] QAbstractButton:hover,QWidget[nav="top"] QAbstractButton:pres
 border-style:solid;
 border-width:0px 0px 2px 0px;
 padding:4px 4px 2px 4px;
-border-color:#00BB9E;
+border-color:#575959;
 background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #F6F6F6,stop:1 #F6F6F6);
 }
 
@@ -45,7 +45,7 @@ border-style:none;
 
 QWidget[nav="left"] QAbstractButton:hover{
 color:#FFFFFF;
-background-color:#00BB9E;
+background-color:#575959;
 }
 
 QWidget[nav="left"] QAbstractButton:checked,QWidget[nav="left"] QAbstractButton:pressed{
@@ -53,7 +53,7 @@ color:#57595B;
 border-style:solid;
 border-width:0px 0px 0px 2px;
 padding:4px 4px 4px 2px;
-border-color:#00BB9E;
+border-color:#575959;
 background-color:#FFFFFF;
 }
 
@@ -64,7 +64,7 @@ background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #E4E4E4,stop:1 
 }
 
 QWidget[video="true"] QLabel:focus{
-border:1px solid #00BB9E;
+border:1px solid #575959;
 background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #F6F6F6,stop:1 #F6F6F6);
 }
 
@@ -73,7 +73,7 @@ border:1px solid #B6B6B6;
 border-radius:3px;
 padding:2px;
 background:none;
-selection-background-color:#00BB9E;
+selection-background-color:#575959;
 selection-color:#FFFFFF;
 }
 
@@ -356,11 +356,11 @@ border-radius:6px;
 }
 
 QScrollBar::handle:horizontal:hover{
-background:#00BB9E;
+background:#575959;
 }
 
 QScrollBar::handle:horizontal:pressed{
-background:#00BB9E;
+background:#575959;
 }
 
 QScrollBar::add-page:horizontal{
@@ -393,11 +393,11 @@ border-radius:6px;
 }
 
 QScrollBar::handle:vertical:hover{
-background:#00BB9E;
+background:#575959;
 }
 
 QScrollBar::handle:vertical:pressed{
-background:#00BB9E;
+background:#575959;
 }
 
 QScrollBar::add-page:vertical{
@@ -478,7 +478,7 @@ background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #F6F6F6,stop:1 
 
 QTabBar::tab:selected,QTabBar::tab:hover{
 border-style:solid;
-border-color:#00BB9E;
+border-color:#575959;
 background:#FFFFFF;
 }
 
@@ -632,7 +632,16 @@ QTabWidget::pane:bottom{bottom:-1px;}
 QTabWidget::pane:left{right:-1px;}
 QTabWidget::pane:right{left:-1px;}
 
-*:disabled{
+QDialog {
+background-color:#FFFFFF;
+color:#57595B;
+}
+
+QDialogButtonBox > QPushButton {
+min-width:50px;
+}
+
+*:disabled,QMenu::item:disabled{
 background:#FFFFFF;
 border-color:#E4E4E4;
 color:#B6B6B6;
@@ -645,4 +654,4 @@ color:#B6B6B6;
 /*NormalColorEnd:#E4E4E4*/
 /*DarkColorStart:#F6F6F6*/
 /*DarkColorEnd:#F6F6F6*/
-/*HighColor:#00BB9E*/
+/*HighColor:#575959*/

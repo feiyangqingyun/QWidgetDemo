@@ -3,7 +3,12 @@
 
 #include <QDialog>
 
+#ifdef quc
+class Q_DECL_EXPORT FramelessDialog : public QDialog
+#else
 class FramelessDialog : public QDialog
+#endif
+
 {
     Q_OBJECT
 public:
