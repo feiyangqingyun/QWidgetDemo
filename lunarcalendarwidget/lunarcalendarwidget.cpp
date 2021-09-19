@@ -203,8 +203,8 @@ void LunarCalendarWidget::initWidget()
     connect(btnPrevMonth, SIGNAL(clicked(bool)), this, SLOT(showPreviousMonth()));
     connect(btnNextMonth, SIGNAL(clicked(bool)), this, SLOT(showNextMonth()));
     connect(btnToday, SIGNAL(clicked(bool)), this, SLOT(showToday()));
-    connect(cboxYear, SIGNAL(currentIndexChanged(QString)), this, SLOT(yearChanged(QString)));
-    connect(cboxMonth, SIGNAL(currentIndexChanged(QString)), this, SLOT(monthChanged(QString)));
+    connect(cboxYear, SIGNAL(currentIndexChanged(int)), this, SLOT(yearChanged(int)));
+    connect(cboxMonth, SIGNAL(currentIndexChanged(int)), this, SLOT(monthChanged(int)));
 }
 
 void LunarCalendarWidget::initStyle()
@@ -351,26 +351,28 @@ void LunarCalendarWidget::initDate()
     dayChanged(this->date);
 }
 
-void LunarCalendarWidget::yearChanged(const QString &arg1)
+void LunarCalendarWidget::yearChanged(int)
 {
     //如果是单击按钮切换的日期变动则不需要触发
     if (btnClick) {
         return;
     }
 
+    QString arg1 = cboxYear->currentText();
     int year = arg1.mid(0, arg1.length() - 1).toInt();
     int month = date.month();
     int day = date.day();
     dateChanged(year, month, day);
 }
 
-void LunarCalendarWidget::monthChanged(const QString &arg1)
+void LunarCalendarWidget::monthChanged(int)
 {
     //如果是单击按钮切换的日期变动则不需要触发
     if (btnClick) {
         return;
     }
 
+    QString arg1 = cboxMonth->currentText();
     int year = date.year();
     int month = arg1.mid(0, arg1.length() - 1).toInt();
     int day = date.day();

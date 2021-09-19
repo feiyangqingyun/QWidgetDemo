@@ -16,23 +16,18 @@ public:
     explicit frmFramelessWidget(QWidget *parent = 0);
     ~frmFramelessWidget();
 
-protected:
-    void closeEvent(QCloseEvent *);
-
 private:
     Ui::frmFramelessWidget *ui;
     QWidget *widget;
     FramelessWidget2 *frameless;
 
 private slots:
+    void initForm();
     void initWidget(QWidget *w);
     void on_pushButton_clicked();
     void stateChanged1(int arg1);
     void stateChanged2(int arg1);
-
-    void on_btnDialog_clicked();
-    void on_btnWidget_clicked();
-    void on_btnMainWindow_clicked();
+    void buttonClicked();
 };
 
 #endif // FRMFRAMELESSWIDGET_H

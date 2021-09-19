@@ -4,16 +4,19 @@
 #include "ui_frmframelesswidget.h"
 #include "qpushbutton.h"
 #include "qcheckbox.h"
+#include "qdebug.h"
 #include "framelesswidget2.h"
+
+#ifndef Q_CC_MSVC
 #include "framelessform/dialog.h"
 #include "framelessform/widget.h"
 #include "framelessform/mainwindow.h"
+#endif
 
 frmFramelessWidget::frmFramelessWidget(QWidget *parent) : QWidget(parent), ui(new Ui::frmFramelessWidget)
 {
     ui->setupUi(this);
-    widget = 0;
-    frameless = 0;
+    this->initForm();
 }
 
 frmFramelessWidget::~frmFramelessWidget()
@@ -21,9 +24,14 @@ frmFramelessWidget::~frmFramelessWidget()
     delete ui;
 }
 
-void frmFramelessWidget::closeEvent(QCloseEvent *)
+void frmFramelessWidget::initForm()
 {
-    exit(0);
+    widget = 0;
+    frameless = 0;
+
+    connect(ui->btnDialog, SIGNAL(clicked(bool)), this, SLOT(buttonClicked()));
+    connect(ui->btnWidget, SIGNAL(clicked(bool)), this, SLOT(buttonClicked()));
+    connect(ui->btnMainWindow, SIGNAL(clicked(bool)), this, SLOT(buttonClicked()));
 }
 
 void frmFramelessWidget::initWidget(QWidget *w)
@@ -84,23 +92,19 @@ void frmFramelessWidget::stateChanged2(int arg1)
     }
 }
 
-void frmFramelessWidget::on_btnDialog_clicked()
+void frmFramelessWidget::buttonClicked()
 {
-    Dialog dialog;
-    dialog.resize(800, 600);
-    dialog.exec();
-}
-
-void frmFramelessWidget::on_btnWidget_clicked()
-{
-    Widget *widget = new Widget;
-    widget->resize(800, 600);
-    widget->show();
-}
-
-void frmFramelessWidget::on_btnMainWindow_clicked()
-{
-    MainWindow *window = new MainWindow;
-    window->resize(800, 600);
-    window->show();
+#ifndef Q_CC_MSVC
+    QString objName = sender()->objectName();
+    if (objName == "btnDialog") {
+        Dialog dialog;
+        dialog.exec();
+    } else if (objName == "btnWidget") {
+        Widget *widget = new Widget;
+        widget->show();
+    } else if (objName == "btnMainWindow") {
+        MainWindow *window = new MainWindow;
+        window->show();
+    }
+#endif
 }
