@@ -25,8 +25,7 @@ private slots:
     void on_btnDebug_clicked();
     void on_ckTimer_stateChanged(int arg1);
     void on_ckNet_stateChanged(int arg1);
-    void on_ckSave_stateChanged(int arg1);
-
+    void on_ckSave_stateChanged(int arg1);    
 };
 
 #endif // FRMSAVELOG_H

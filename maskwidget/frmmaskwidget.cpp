@@ -16,7 +16,6 @@ frmMaskWidget::frmMaskWidget(QWidget *parent) : QWidget(parent), ui(new Ui::frmM
 frmMaskWidget::~frmMaskWidget()
 {
     delete ui;
-    exit(0);
 }
 
 void frmMaskWidget::initForm()

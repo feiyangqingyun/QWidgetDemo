@@ -19,6 +19,7 @@ public:
 
 private:
     Ui::frmNavButton *ui;
+    QList<int> icons;
     QList<NavButton *> btns1;
     QList<NavButton *> btns2;
     QList<NavButton *> btns3;
@@ -29,6 +30,14 @@ private:
 
 private slots:
     void initForm();
+    void initBtn1();
+    void initBtn2();
+    void initBtn3();
+    void initBtn4();
+    void initBtn5();
+    void initBtn6();
+    void initBtn7();
+
     void buttonClick1();
     void buttonClick2();
     void buttonClick3();

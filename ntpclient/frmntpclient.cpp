@@ -3,6 +3,7 @@
 #include "frmntpclient.h"
 #include "ui_frmntpclient.h"
 #include "ntpclient.h"
+#include "qdebug.h"
 
 frmNtpClient::frmNtpClient(QWidget *parent) : QWidget(parent), ui(new Ui::frmNtpClient)
 {

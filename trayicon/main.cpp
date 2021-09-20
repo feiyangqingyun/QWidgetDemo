@@ -1,6 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 
-#include "frmntpclient.h"
+#include "frmtrayicon.h"
 #include <QApplication>
 #include <QTextCodec>
 
@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(codec);
 #endif
 
-    frmNtpClient w;
-    w.setWindowTitle("Ntp校时");
+    frmTrayIcon w;
+    w.setWindowTitle("托盘图标");
     w.show();
 
     return a.exec();

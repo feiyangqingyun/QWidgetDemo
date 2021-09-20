@@ -6,19 +6,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>300</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>9</x>
-     <y>9</y>
-     <width>481</width>
+     <x>10</x>
+     <y>10</y>
+     <width>281</width>
      <height>71</height>
     </rect>
    </property>
@@ -29,7 +29,7 @@
     <item row="1" column="0">
      <widget class="QPushButton" name="btnSetIP">
       <property name="text">
-       <string>设置IP</string>
+       <string>填入IP</string>
       </property>
      </widget>
     </item>

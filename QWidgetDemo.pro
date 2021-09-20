@@ -59,3 +59,8 @@ SUBDIRS += designer         #QtDesigner4源码
 lessThan(QT_MAJOR_VERSION, 6) {
 SUBDIRS += qwtdemo          #qwt的源码版本，无需插件，直接源码集成到你的项目即可
 }
+
+#6.0到6.2之间的版本还有点问题等待正式发布的时候再试试
+greaterThan(QT_MAJOR_VERSION, 5) {
+SUBDIRS -= emailtool
+}

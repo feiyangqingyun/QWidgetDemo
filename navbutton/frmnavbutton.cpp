@@ -10,6 +10,13 @@ frmNavButton::frmNavButton(QWidget *parent) : QWidget(parent), ui(new Ui::frmNav
 {
     ui->setupUi(this);
     this->initForm();
+    this->initBtn1();
+    this->initBtn2();
+    this->initBtn3();
+    this->initBtn4();
+    this->initBtn5();
+    this->initBtn6();
+    this->initBtn7();
 }
 
 frmNavButton::~frmNavButton()
@@ -18,6 +25,22 @@ frmNavButton::~frmNavButton()
 }
 
 void frmNavButton::initForm()
+{
+    icons << 0xf17b << 0xf002 << 0xf013 << 0xf021 << 0xf0e0 << 0xf135;
+
+    ui->navButton11->setChecked(true);
+    ui->navButton23->setChecked(true);
+    ui->navButton31->setChecked(true);
+    ui->navButton44->setChecked(true);
+    ui->navButton53->setChecked(true);
+    ui->navButton61->setChecked(true);
+    ui->navButton75->setChecked(true);
+
+    //设置整体圆角
+    ui->widgetNav5->setStyleSheet(".QWidget{background:#292929;border:1px solid #292929;border-radius:20px;}");
+}
+
+void frmNavButton::initBtn1()
 {
     quint32 size = 15;
     quint32 pixWidth = 15;
@@ -44,13 +67,14 @@ void frmNavButton::initForm()
 
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(buttonClick1()));
     }
+}
 
-    size = 15;
-    pixWidth = 20;
-    pixHeight = 20;
+void frmNavButton::initBtn2()
+{
+    quint32 size = 15;
+    quint32 pixWidth = 20;
+    quint32 pixHeight = 20;
 
-    QList<int> icons;
-    icons << 0xf17b << 0xf002 << 0xf013 << 0xf021 << 0xf0e0 << 0xf135;
     QColor normalBgColor = QColor("#2D9191");
     QColor hoverBgColor = QColor("#187294");
     QColor checkBgColor = QColor("#145C75");
@@ -90,13 +114,20 @@ void frmNavButton::initForm()
 
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(buttonClick2()));
     }
+}
 
-    normalBgColor = QColor("#292F38");
-    hoverBgColor = QColor("#1D2025");
-    checkBgColor = QColor("#1D2025");
-    normalTextColor = QColor("#54626F");
-    hoverTextColor = QColor("#FDFDFD");
-    checkTextColor = QColor("#FDFDFD");
+void frmNavButton::initBtn3()
+{
+    quint32 size = 15;
+    quint32 pixWidth = 20;
+    quint32 pixHeight = 20;
+
+    QColor normalBgColor = QColor("#292F38");
+    QColor hoverBgColor = QColor("#1D2025");
+    QColor checkBgColor = QColor("#1D2025");
+    QColor normalTextColor = QColor("#54626F");
+    QColor hoverTextColor = QColor("#FDFDFD");
+    QColor checkTextColor = QColor("#FDFDFD");
 
     btns3 << ui->navButton31 << ui->navButton32 << ui->navButton33 << ui->navButton34;
     for (int i = 0; i < btns3.count(); i++) {
@@ -132,15 +163,18 @@ void frmNavButton::initForm()
 
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(buttonClick3()));
     }
+}
 
-    size = 15;
-    pixWidth = 15;
-    pixHeight = 15;
+void frmNavButton::initBtn4()
+{
+    quint32 size = 15;
+    quint32 pixWidth = 15;
+    quint32 pixHeight = 15;
 
-    icon = 0xf105;
-    iconNormal = IconHelper::getPixmap(QColor(100, 100, 100).name(), icon, size, pixWidth, pixHeight);
-    iconHover = IconHelper::getPixmap(QColor(255, 255, 255).name(), icon, size, pixWidth, pixHeight);
-    iconCheck = IconHelper::getPixmap(QColor(255, 255, 255).name(), icon, size, pixWidth, pixHeight);
+    int icon = 0xf105;
+    QPixmap iconNormal = IconHelper::getPixmap(QColor(100, 100, 100).name(), icon, size, pixWidth, pixHeight);
+    QPixmap iconHover = IconHelper::getPixmap(QColor(255, 255, 255).name(), icon, size, pixWidth, pixHeight);
+    QPixmap iconCheck = IconHelper::getPixmap(QColor(255, 255, 255).name(), icon, size, pixWidth, pixHeight);
 
     btns4 << ui->navButton41 << ui->navButton42 << ui->navButton43 << ui->navButton44;
     for (int i = 0; i < btns4.count(); i++) {
@@ -154,7 +188,7 @@ void frmNavButton::initForm()
         btn->setLinePosition(NavButton::LinePosition_Right);
 
         btn->setShowIcon(true);
-        btn->setIconSpace(25);
+        btn->setIconSpace(10);
         btn->setIconSize(QSize(15, 15));
         btn->setIconNormal(iconNormal);
         btn->setIconHover(iconHover);
@@ -162,21 +196,24 @@ void frmNavButton::initForm()
 
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(buttonClick4()));
     }
+}
 
-    size = 15;
-    pixWidth = 20;
-    pixHeight = 20;
-
+void frmNavButton::initBtn5()
+{
     QFont font;
     font.setPixelSize(15);
     font.setBold(true);
 
-    normalBgColor = QColor("#292929");
-    hoverBgColor = QColor("#064077");
-    checkBgColor = QColor("#10689A");
-    normalTextColor = QColor("#FFFFFF");
-    hoverTextColor = Qt::yellow;
-    checkTextColor = QColor("#FFFFFF");
+    quint32 size = 15;
+    quint32 pixWidth = 20;
+    quint32 pixHeight = 20;
+
+    QColor normalBgColor = QColor("#292929");
+    QColor hoverBgColor = QColor("#064077");
+    QColor checkBgColor = QColor("#10689A");
+    QColor normalTextColor = QColor("#FFFFFF");
+    QColor hoverTextColor = Qt::yellow;
+    QColor checkTextColor = QColor("#FFFFFF");
 
     btns5 << ui->navButton51 << ui->navButton52 << ui->navButton53 << ui->navButton54 << ui->navButton55;
     for (int i = 0; i < btns5.count(); i++) {
@@ -210,13 +247,24 @@ void frmNavButton::initForm()
 
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(buttonClick5()));
     }
+}
 
-    normalBgColor = QColor("#E6393D");
-    hoverBgColor = QColor("#EE0000");
-    checkBgColor = QColor("#A40001");
-    normalTextColor = QColor("#FFFFFF");
-    hoverTextColor = QColor("#FFFFFF");
-    checkTextColor = QColor("#FFFFFF");
+void frmNavButton::initBtn6()
+{
+    QFont font;
+    font.setPixelSize(15);
+    font.setBold(true);
+
+    quint32 size = 15;
+    quint32 pixWidth = 20;
+    quint32 pixHeight = 20;
+
+    QColor normalBgColor = QColor("#E6393D");
+    QColor hoverBgColor = QColor("#EE0000");
+    QColor checkBgColor = QColor("#A40001");
+    QColor normalTextColor = QColor("#FFFFFF");
+    QColor hoverTextColor = QColor("#FFFFFF");
+    QColor checkTextColor = QColor("#FFFFFF");
 
     btns6 << ui->navButton61 << ui->navButton62 << ui->navButton63 << ui->navButton64 << ui->navButton65;
     for (int i = 0; i < btns6.count(); i++) {
@@ -250,14 +298,25 @@ void frmNavButton::initForm()
 
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(buttonClick6()));
     }
+}
+
+void frmNavButton::initBtn7()
+{
+    QFont font;
+    font.setPixelSize(15);
+    font.setBold(true);
+
+    QColor normalTextColor = QColor("#FFFFFF");
+    QColor hoverTextColor = QColor("#FFFFFF");
+    QColor checkTextColor = QColor("#FFFFFF");
 
     //设置背景色为画刷
-    QLinearGradient normalBgBrush(0, 0, 0, ui->navButton61->height());
+    QLinearGradient normalBgBrush(0, 0, 0, ui->navButton71->height());
     normalBgBrush.setColorAt(0.0, QColor("#3985BF"));
     normalBgBrush.setColorAt(0.5, QColor("#2972A9"));
     normalBgBrush.setColorAt(1.0, QColor("#1C6496"));
 
-    QLinearGradient hoverBgBrush(0, 0, 0, ui->navButton61->height());
+    QLinearGradient hoverBgBrush(0, 0, 0, ui->navButton71->height());
     hoverBgBrush.setColorAt(0.0, QColor("#4897D1"));
     hoverBgBrush.setColorAt(0.5, QColor("#3283BC"));
     hoverBgBrush.setColorAt(1.0, QColor("#3088C3"));
@@ -283,17 +342,6 @@ void frmNavButton::initForm()
 
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(buttonClick7()));
     }
-
-    ui->navButton11->setChecked(true);
-    ui->navButton23->setChecked(true);
-    ui->navButton31->setChecked(true);
-    ui->navButton44->setChecked(true);
-    ui->navButton53->setChecked(true);
-    ui->navButton61->setChecked(true);
-    ui->navButton75->setChecked(true);
-
-    //设置整体圆角
-    ui->widgetNav5->setStyleSheet(".QWidget{background:#292929;border:1px solid #292929;border-radius:20px;}");
 }
 
 void frmNavButton::buttonClick1()

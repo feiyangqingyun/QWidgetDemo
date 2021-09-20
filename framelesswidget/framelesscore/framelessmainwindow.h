@@ -61,7 +61,7 @@ private:
     //存储窗体默认的属性
     Qt::WindowFlags flags;
 
-public:
+public slots:
     //设置边距+可拖动+可拉伸
     void setPadding(int padding);
     void setMoveEnable(bool moveEnable);
