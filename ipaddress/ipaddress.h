@@ -2,7 +2,7 @@
 #define IPADDRESS_H
 
 /**
- * IP地址输入框控件 作者:feiyangqingyun(QQ:517216493) 2017-8-11
+ * IP地址输入框控件 作者:feiyangqingyun(QQ:517216493) 2017-08-11
  * 1. 可设置IP地址，自动填入框。
  * 2. 可清空IP地址。
  * 3. 支持按下小圆点自动切换。

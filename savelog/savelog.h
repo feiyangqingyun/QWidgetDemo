@@ -1,6 +1,16 @@
 ﻿#ifndef SAVELOG_H
 #define SAVELOG_H
 
+/**
+ * 日志重定向输出 作者:feiyangqingyun(QQ:517216493) 2016-12-16
+ * 1. 支持动态启动和停止。
+ * 2. 支持日志存储的目录。
+ * 3. 支持网络发出打印日志。
+ * 4. 支持Qt4+Qt5+Qt6，开箱即用。
+ * 5. 支持多线程。
+ * 6. 使用做到最简单，start即可。
+ */
+
 #include <QObject>
 
 class QFile;

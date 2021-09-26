@@ -61,7 +61,7 @@ private:
     //存储窗体默认的属性
     Qt::WindowFlags flags;
 
-public:
+public Q_SLOTS:
     //设置边距+可拖动+可拉伸
     void setPadding(int padding);
     void setMoveEnable(bool moveEnable);
@@ -70,7 +70,7 @@ public:
     //设置标题栏控件
     void setTitleBar(QWidget *titleBar);
 
-signals:
+Q_SIGNALS:
     void titleDblClick();
     void windowStateChange(bool max);
 };

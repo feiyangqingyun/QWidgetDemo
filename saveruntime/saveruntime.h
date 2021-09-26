@@ -1,6 +1,15 @@
 ﻿#ifndef SAVERUNTIME_H
 #define SAVERUNTIME_H
 
+/**
+ * 运行时间记录 作者:feiyangqingyun(QQ:517216493) 2016-12-16
+ * 1. 可以启动和停止服务，在需要的时候启动。
+ * 2. 可以指定日志文件存放目录。
+ * 3. 可以指定时间日志输出间隔。
+ * 4. 可以单独追加一条记录到日志文件。
+ * 5. 日志为文本格式，清晰明了。
+ */
+
 #include <QObject>
 #include <QDateTime>
 class QTimer;

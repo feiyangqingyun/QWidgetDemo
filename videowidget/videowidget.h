@@ -2,7 +2,7 @@
 #define VIDEOWIDGET_H
 
 /**
- * 通用视频播放控件 作者:feiyangqingyun(QQ:517216493) 2018-5-1
+ * 通用视频播放控件 作者:feiyangqingyun(QQ:517216493) 2018-05-01
  * 1. 可设置边框大小。
  * 2. 可设置边框颜色。
  * 3. 可设置两路OSD标签。

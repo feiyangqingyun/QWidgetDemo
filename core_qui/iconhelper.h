@@ -1,11 +1,6 @@
 ﻿#ifndef ICONHELPER_H
 #define ICONHELPER_H
 
-#include <QtGui>
-#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
-#include <QtWidgets>
-#endif
-
 /**
  * 超级图形字体类 作者:feiyangqingyun(QQ:517216493) 2016-11-23
  * 1. 可传入多种图形字体文件，一个类通用所有图形字体。
@@ -21,6 +16,11 @@
  * 11. 导航面板的各种切换效果比如鼠标悬停、按下、选中等都自动处理掉样式设置。
  * 12. 全局静态方法，接口丰富，使用极其简单方便。
  */
+
+#include <QtGui>
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+#include <QtWidgets>
+#endif
 
 #ifdef quc
 class Q_DECL_EXPORT IconHelper : public QObject
