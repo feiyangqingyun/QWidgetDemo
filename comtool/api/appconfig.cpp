@@ -30,11 +30,6 @@ bool AppConfig::AutoConnect = false;
 
 void AppConfig::readConfig()
 {
-    if (!QUIHelper::checkIniFile(AppConfig::ConfigFile)) {
-        writeConfig();
-        return;
-    }
-
     QSettings set(AppConfig::ConfigFile, QSettings::IniFormat);
 
     set.beginGroup("ComConfig");
@@ -63,6 +58,12 @@ void AppConfig::readConfig()
     AppConfig::SleepTime = set.value("SleepTime", AppConfig::SleepTime).toInt();
     AppConfig::AutoConnect = set.value("AutoConnect", AppConfig::AutoConnect).toBool();
     set.endGroup();
+
+    //配置文件不存在或者不全则重新生成
+    if (!QUIHelper::checkIniFile(AppConfig::ConfigFile)) {
+        writeConfig();
+        return;
+    }
 }
 
 void AppConfig::writeConfig()

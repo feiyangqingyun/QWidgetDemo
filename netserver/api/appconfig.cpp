@@ -14,11 +14,6 @@ bool AppConfig::HexData2 = false;
 
 void AppConfig::readConfig()
 {
-    if (!QUIHelper::checkIniFile(AppConfig::ConfigFile)) {
-        writeConfig();
-        return;
-    }
-
     QSettings set(AppConfig::ConfigFile, QSettings::IniFormat);
 
     set.beginGroup("AppConfig");
@@ -31,6 +26,12 @@ void AppConfig::readConfig()
     AppConfig::CmdLen2 = set.value("CmdLen2").toInt();
     AppConfig::HexData2 = set.value("HexData2").toBool();
     set.endGroup();
+
+    //配置文件不存在或者不全则重新生成
+    if (!QUIHelper::checkIniFile(AppConfig::ConfigFile)) {
+        writeConfig();
+        return;
+    }
 }
 
 void AppConfig::writeConfig()

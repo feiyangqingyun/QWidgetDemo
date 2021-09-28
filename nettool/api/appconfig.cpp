@@ -66,12 +66,7 @@ int AppConfig::WebListenPort = 6000;
 bool AppConfig::SelectAllWebServer = true;
 
 void AppConfig::readConfig()
-{
-    if (!QUIHelper::checkIniFile(AppConfig::ConfigFile)) {
-        writeConfig();
-        return;
-    }
-
+{    
     QSettings set(AppConfig::ConfigFile, QSettings::IniFormat);
 
     set.beginGroup("AppConfig");
@@ -150,6 +145,12 @@ void AppConfig::readConfig()
     AppConfig::WebListenPort = set.value("WebListenPort", AppConfig::WebListenPort).toInt();
     AppConfig::SelectAllWebServer = set.value("SelectAllWebServer", AppConfig::SelectAllWebServer).toBool();
     set.endGroup();
+
+    //配置文件不存在或者不全则重新生成
+    if (!QUIHelper::checkIniFile(AppConfig::ConfigFile)) {
+        writeConfig();
+        return;
+    }
 }
 
 void AppConfig::writeConfig()

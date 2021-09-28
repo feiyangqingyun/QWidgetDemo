@@ -1,8 +1,9 @@
-﻿﻿#### 一、目录说明
+﻿#### 一、目录说明
 1. **可以选择打开QWidgetDemo.pro一次性编译所有的，也可以进入到目录下打开pro进行编译。**
 2. **如果发现有些子项目没有加载请打开QWidgetDemo.pro仔细看里面的注释。**
 3. **编译好的可执行文件在源码同级目录下的bin目录。**
 4. **亲测Qt4.6到Qt6.2所有版本，亲测win、linux、mac、uos等系统。**
+5. **本项目开源的是下面表格中描述的内容，并未开源左侧的树状导航菜单控件，只是方便演示效果图直接用的自定义控件大全的效果图，懒得重新截图。**
 
 | 编号 | 文件夹 | 描述 |
 | ------ | ------ | ------ |
@@ -50,54 +51,54 @@
 | 42 | base64 | 图片文字base64互换 |
 | 43 | smoothcurve | 平滑曲线 |
 
-### 二、学习群
+#### 二、学习群
 1. **Qt交流大会群 853086607(雨田哥)**
 2. **Qt技术交流群 46679801(3000人群)**
 3. **Qt进阶之路群 734623697(武威的涛哥)**
 
-### 三、效果图
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/lightbutton.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/movewidget.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/flatui.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/countcode.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/gifwidget.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/comtool.jpg)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/nettool.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/devicesizetable.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/styledemo_psblack.png)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/styledemo_lightblue.png)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/styledemo_flatwhite.png)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/navbutton.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/videopanel.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/framelesswidget.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/ipaddress.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/bgdemo.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/dbpage.png)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/pngtool.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/savelog.png)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/saveruntime.jpg)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/colorwidget.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/maskwidget.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/battery.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/lineeditnext.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/zhtopy.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/qwtdemo.jpg)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/devicebutton.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/mouseline.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/emailtool.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/ntpclient.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/lunarcalendarwidget.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/videowidget.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/screenwidget.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/echartgauge.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/imageswitch.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/ffmpegdemo.png)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/vlcdemo.png)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/key.png)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/live.png)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/netserver.jpg)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/designer.png)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/miniblink.jpg)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/base64.png)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/smoothcurve.gif)
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/frameless.gif)
+#### 三、效果图
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/lightbutton.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/movewidget.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/flatui.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/countcode.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/gifwidget.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/comtool.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/nettool.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/devicesizetable.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/styledemo_psblack.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/styledemo_lightblue.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/styledemo_flatwhite.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/navbutton.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/videopanel.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/framelesswidget.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/ipaddress.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/bgdemo.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/dbpage.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/pngtool.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/savelog.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/saveruntime.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/colorwidget.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/maskwidget.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/battery.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/lineeditnext.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/zhtopy.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/qwtdemo.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/devicebutton.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/mouseline.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/emailtool.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/ntpclient.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/lunarcalendarwidget.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/videowidget.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/screenwidget.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/echartgauge.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/imageswitch.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/ffmpegdemo.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/vlcdemo.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/key.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/live.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/netserver.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/designer.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/miniblink.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/base64.png)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/smoothcurve.gif)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/0snap/frameless.gif)
