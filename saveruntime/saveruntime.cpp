@@ -42,23 +42,6 @@ SaveRunTime::SaveRunTime(QObject *parent) : QObject(parent)
     connect(timerSave, SIGNAL(timeout()), this, SLOT(saveLog()));
 }
 
-void SaveRunTime::start()
-{
-    //开始时间变量必须在这,在部分嵌入式系统上开机后的时间不准确比如是1970,而后会变成1999或者其他时间
-    //会在getDiffValue函数执行很久很久
-    startTime = QDateTime::currentDateTime();
-    timerSave->start();
-
-    initLog();
-    appendLog();
-    saveLog();
-}
-
-void SaveRunTime::stop()
-{
-    timerSave->stop();
-}
-
 void SaveRunTime::getDiffValue(const QDateTime &startTime, const QDateTime &endTime, int &day, int &hour, int &minute)
 {
     qint64 sec = startTime.secsTo(endTime);
@@ -86,6 +69,32 @@ void SaveRunTime::getDiffValue(const QDateTime &startTime, const QDateTime &endT
     }
 }
 
+void SaveRunTime::start()
+{
+    //开始时间变量必须在这,在部分嵌入式系统上开机后的时间不准确比如是1970,而后会变成1999或者其他时间
+    //会在getDiffValue函数执行很久很久
+    startTime = QDateTime::currentDateTime();
+    timerSave->start();
+
+    initLog();
+    appendLog();
+    saveLog();
+}
+
+void SaveRunTime::stop()
+{
+    timerSave->stop();
+}
+
+void SaveRunTime::newPath()
+{
+    //检查目录是否存在,不存在则先新建
+    QDir dir(path);
+    if (!dir.exists()) {
+        dir.mkdir(path);
+    }
+}
+
 void SaveRunTime::initLog()
 {
     //判断当前年份的记事本文件是否存在,不存在则新建并且写入标题
@@ -93,6 +102,7 @@ void SaveRunTime::initLog()
     //幢号    开始时间                结束时间                已运行时间
     //1      2016-01-01 12:33:33    2016-02-05 12:12:12     day: 0  hour: 0  minute: 0
 
+    newPath();
     logFile = QString("%1/%2_runtime_%3.txt").arg(path).arg(name).arg(QDate::currentDate().year());
     QFile file(logFile);
 
@@ -127,6 +137,7 @@ void SaveRunTime::initLog()
 
 void SaveRunTime::appendLog()
 {
+    newPath();
     logFile = QString("%1/%2_runtime_%3.txt").arg(path).arg(name).arg(QDate::currentDate().year());
     QFile file(logFile);
 
@@ -150,6 +161,7 @@ void SaveRunTime::appendLog()
 void SaveRunTime::saveLog()
 {
     //每次保存都是将之前的所有文本读取出来,然后替换最后一行即可
+    newPath();
     logFile = QString("%1/%2_runtime_%3.txt").arg(path).arg(name).arg(QDate::currentDate().year());
     QFile file(logFile);
 
@@ -199,16 +211,12 @@ void SaveRunTime::saveLog()
 
 void SaveRunTime::setPath(const QString &path)
 {
-    if (this->path != path) {
-        this->path = path;
-    }
+    this->path = path;
 }
 
 void SaveRunTime::setName(const QString &name)
 {
-    if (this->name != name) {
-        this->name = name;
-    }
+    this->name = name;
 }
 
 void SaveRunTime::setSaveInterval(int saveInterval)

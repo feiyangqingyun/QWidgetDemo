@@ -106,6 +106,12 @@ void SaveLog::save(const QString &content)
     if (toNet) {
         emit send(content);
     } else {
+        //检查目录是否存在,不存在则先新建
+        QDir dir(path);
+        if (!dir.exists()) {
+            dir.mkdir(path);
+        }
+
         //方法改进:之前每次输出日志都打开文件,改成只有当日期改变时才新建和打开文件
         QString fileName = QString("%1/%2_log_%3.txt").arg(path).arg(name).arg(QDATE);
         if (this->fileName != fileName) {

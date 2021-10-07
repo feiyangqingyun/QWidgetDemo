@@ -44,10 +44,11 @@ private:
     //日志文件完整名称
     QString fileName;
 
-signals:
+Q_SIGNALS:
+    //发送内容信号
     void send(const QString &content);
 
-public slots:
+public Q_SLOTS:
     //启动日志服务
     void start();
     //暂停日志服务
@@ -61,7 +62,6 @@ public slots:
     void setPath(const QString &path);
     //设置日志文件名称
     void setName(const QString &name);
-
 };
 
 class SendLog : public QObject
@@ -74,13 +74,17 @@ public:
 
 private:
     static QScopedPointer<SendLog> self;
+
+    //网络通信对象
     QTcpSocket *socket;
+    //网络监听服务器
     QTcpServer *server;
 
 private slots:
+    //新连接到来
     void newConnection();
 
-public slots:
+public Q_SLOTS:
     //发送日志
     void send(const QString &content);
 };
