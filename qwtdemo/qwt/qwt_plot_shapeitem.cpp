@@ -207,7 +207,7 @@ QRectF QwtPlotShapeItem::boundingRect() const
   \param rect Rectangle
   \sa setShape(), setPolygon(), shape()
  */
-void QwtPlotShapeItem::setRect( const QRectF &rect ) 
+void QwtPlotShapeItem::setRect( const QRectF &rect )
 {
     QPainterPath path;
     path.addRect( rect );
@@ -262,21 +262,21 @@ QPainterPath QwtPlotShapeItem::shape() const
     return d_data->shape;
 }
 
-/*! 
+/*!
   Build and assign a pen
-    
+
   In Qt5 the default pen width is 1.0 ( 0.0 in Qt4 ) what makes it
   non cosmetic ( see QPen::isCosmetic() ). This method has been introduced
   to hide this incompatibility.
-    
+
   \param color Pen color
   \param width Pen width
   \param style Pen style
-    
+
   \sa pen(), brush()
- */ 
+ */
 void QwtPlotShapeItem::setPen( const QColor &color, qreal width, Qt::PenStyle style )
-{   
+{
     setPen( QPen( color, width, style ) );
 }
 
@@ -335,7 +335,7 @@ QBrush QwtPlotShapeItem::brush() const
 /*!
   \brief Set the tolerance for the weeding optimization
 
-  After translating the shape into target device coordinate 
+  After translating the shape into target device coordinate
   ( usually widget geometries ) the painter path can be simplified
   by a point weeding algorithm ( Douglas-Peucker ).
 
@@ -383,7 +383,7 @@ void QwtPlotShapeItem::draw( QPainter *painter,
     if ( d_data->shape.isEmpty() )
         return;
 
-    if ( d_data->pen.style() == Qt::NoPen 
+    if ( d_data->pen.style() == Qt::NoPen
         && d_data->brush.style() == Qt::NoBrush )
     {
         return;
@@ -403,7 +403,7 @@ void QwtPlotShapeItem::draw( QPainter *painter,
 
     const bool doAlign = QwtPainter::roundingAlignment( painter );
 
-    QPainterPath path = qwtTransformPath( xMap, yMap, 
+    QPainterPath path = qwtTransformPath( xMap, yMap,
         d_data->shape, doAlign );
 
     if ( testPaintAttribute( QwtPlotShapeItem::ClipPolygons ) )
@@ -450,7 +450,7 @@ void QwtPlotShapeItem::draw( QPainter *painter,
 /*!
   \return A rectangle filled with the color of the brush ( or the pen )
 
-  \param index Index of the legend entry 
+  \param index Index of the legend entry
                 ( usually there is only one )
   \param size Icon size
 

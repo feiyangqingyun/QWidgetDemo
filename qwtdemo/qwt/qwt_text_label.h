@@ -63,7 +63,7 @@ public:
     virtual void drawText( QPainter *, const QRectF & );
 
 protected:
-    virtual void paintEvent( QPaintEvent *e );
+    virtual void paintEvent( QPaintEvent * );
     virtual void drawContents( QPainter * );
 
 private:

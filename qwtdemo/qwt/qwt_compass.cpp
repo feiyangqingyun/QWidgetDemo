@@ -17,7 +17,7 @@
 #include <qpixmap.h>
 #include <qevent.h>
 
-/*! 
+/*!
   \brief Constructor
 
   Initializes a label map for multiples of 45 degrees
@@ -48,7 +48,7 @@ QwtCompassScaleDraw::QwtCompassScaleDraw()
 #endif
 }
 
-/*! 
+/*!
   \brief Constructor
 
   \param map Value to label map
@@ -95,7 +95,7 @@ QMap<double, QString> QwtCompassScaleDraw::labelMap() const
   label() looks in the labelMap() for a corresponding label for value
   or returns an null text.
 
-  \return Label, or QString::null
+  \return Label
   \sa labelMap(), setLabelMap()
 */
 

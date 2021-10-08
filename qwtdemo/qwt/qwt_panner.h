@@ -43,9 +43,9 @@ public:
     void setEnabled( bool );
     bool isEnabled() const;
 
-    void setMouseButton( Qt::MouseButton, 
+    void setMouseButton( Qt::MouseButton,
         Qt::KeyboardModifiers = Qt::NoModifier );
-    void getMouseButton( Qt::MouseButton &button, 
+    void getMouseButton( Qt::MouseButton &button,
         Qt::KeyboardModifiers & ) const;
 
     void setAbortKey( int key, Qt::KeyboardModifiers = Qt::NoModifier );

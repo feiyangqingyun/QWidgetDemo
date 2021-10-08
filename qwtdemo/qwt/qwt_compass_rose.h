@@ -45,7 +45,7 @@ public:
         \param north Position
         \param colorGroup Color group
      */
-    virtual void draw( QPainter *painter, 
+    virtual void draw( QPainter *painter,
         const QPointF &center, double radius, double north,
         QPalette::ColorGroup colorGroup = QPalette::Active ) const = 0;
 
@@ -62,13 +62,13 @@ public:
     QwtSimpleCompassRose( int numThorns = 8, int numThornLevels = -1 );
     virtual ~QwtSimpleCompassRose();
 
-    void setWidth( double w );
+    void setWidth( double );
     double width() const;
 
-    void setNumThorns( int count );
+    void setNumThorns( int );
     int numThorns() const;
 
-    void setNumThornLevels( int count );
+    void setNumThornLevels( int );
     int numThornLevels() const;
 
     void setShrinkFactor( double factor );
@@ -78,7 +78,7 @@ public:
         double north, QPalette::ColorGroup = QPalette::Active ) const;
 
     static void drawRose( QPainter *, const QPalette &,
-        const QPointF &center, double radius, double origin, double width,
+        const QPointF &center, double radius, double north, double width,
         int numThorns, int numThornLevels, double shrinkFactor );
 
 private:
@@ -86,4 +86,4 @@ private:
     PrivateData *d_data;
 };
 
-#endif 
+#endif

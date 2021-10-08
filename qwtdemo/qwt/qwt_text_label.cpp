@@ -89,7 +89,7 @@ QString QwtTextLabel::plainText() const
 
   \sa QwtText
 */
-void QwtTextLabel::setText( const QString &text, 
+void QwtTextLabel::setText( const QString &text,
     QwtText::TextFormat textFormat )
 {
     d_data->text.setText( text, textFormat );

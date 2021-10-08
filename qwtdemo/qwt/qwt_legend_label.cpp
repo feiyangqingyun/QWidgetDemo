@@ -139,7 +139,7 @@ void QwtLegendLabel::setItemMode( QwtLegendData::Mode mode )
         d_data->itemMode = mode;
         d_data->isDown = false;
 
-        setFocusPolicy( ( mode != QwtLegendData::ReadOnly ) 
+        setFocusPolicy( ( mode != QwtLegendData::ReadOnly )
             ? Qt::TabFocus : Qt::NoFocus );
         setMargin( ButtonFrame + Margin );
 

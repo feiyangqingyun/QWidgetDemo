@@ -137,8 +137,8 @@ void QwtPlotDict::removeItem( QwtPlotItem *item )
 void QwtPlotDict::detachItems( int rtti, bool autoDelete )
 {
     PrivateData::ItemList list = d_data->itemList;
-    QwtPlotItemIterator it = list.begin();
-    while ( it != list.end() )
+    QwtPlotItemIterator it = list.constBegin();
+    while ( it != list.constEnd() )
     {
         QwtPlotItem *item = *it;
 
@@ -180,7 +180,7 @@ QwtPlotItemList QwtPlotDict::itemList( int rtti ) const
     QwtPlotItemList items;
 
     PrivateData::ItemList list = d_data->itemList;
-    for ( QwtPlotItemIterator it = list.begin(); it != list.end(); ++it )
+    for ( QwtPlotItemIterator it = list.constBegin(); it != list.constEnd(); ++it )
     {
         QwtPlotItem *item = *it;
         if ( item->rtti() == rtti )

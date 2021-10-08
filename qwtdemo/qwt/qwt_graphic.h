@@ -1,4 +1,4 @@
-﻿/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -15,7 +15,6 @@
 #include <qmetatype.h>
 #include <qimage.h>
 #include <qpixmap.h>
-#include "qpainterpath.h"
 
 class QwtPainterCommand;
 
@@ -37,37 +36,37 @@ class QwtPainterCommand;
 
     - QSvgRenderer/QSvgGenerator\n
       Unfortunately QSvgRenderer hides to much information about
-      its nodes in internal APIs, that are necessary for proper 
-      layout calculations. Also it is derived from QObject and 
+      its nodes in internal APIs, that are necessary for proper
+      layout calculations. Also it is derived from QObject and
       can't be copied like QImage/QPixmap.
 
     QwtGraphic maps all scalable drawing primitives to a QPainterPath
-    and stores them together with the painter state changes 
-    ( pen, brush, transformation ... ) in a list of QwtPaintCommands. 
-    For being a complete QPaintDevice it also stores pixmaps or images, 
-    what is somehow against the idea of the class, because these objects 
+    and stores them together with the painter state changes
+    ( pen, brush, transformation ... ) in a list of QwtPaintCommands.
+    For being a complete QPaintDevice it also stores pixmaps or images,
+    what is somehow against the idea of the class, because these objects
     can't be scaled without a loss in quality.
 
     The main issue about scaling a QwtGraphic object are the pens used for
-    drawing the outlines of the painter paths. While non cosmetic pens 
-    ( QPen::isCosmetic() ) are scaled with the same ratio as the path, 
-    cosmetic pens have a fixed width. A graphic might have paths with 
+    drawing the outlines of the painter paths. While non cosmetic pens
+    ( QPen::isCosmetic() ) are scaled with the same ratio as the path,
+    cosmetic pens have a fixed width. A graphic might have paths with
     different pens - cosmetic and non-cosmetic.
 
     QwtGraphic caches 2 different rectangles:
 
     - control point rectangle\n
       The control point rectangle is the bounding rectangle of all
-      control point rectangles of the painter paths, or the target 
+      control point rectangles of the painter paths, or the target
       rectangle of the pixmaps/images.
 
     - bounding rectangle\n
       The bounding rectangle extends the control point rectangle by
       what is needed for rendering the outline with an unscaled pen.
 
-    Because the offset for drawing the outline depends on the shape 
-    of the painter path ( the peak of a triangle is different than the flat side ) 
-    scaling with a fixed aspect ratio always needs to be calculated from the 
+    Because the offset for drawing the outline depends on the shape
+    of the painter path ( the peak of a triangle is different than the flat side )
+    scaling with a fixed aspect ratio always needs to be calculated from the
     control point rectangle.
 
     \sa QwtPainterCommand
@@ -75,14 +74,14 @@ class QwtPainterCommand;
 class QWT_EXPORT QwtGraphic: public QwtNullPaintDevice
 {
 public:
-    /*! 
+    /*!
         Hint how to render a graphic
         \sa setRenderHint(), testRenderHint()
      */
     enum RenderHint
     {
         /*!
-           When rendering a QwtGraphic a specific scaling between 
+           When rendering a QwtGraphic a specific scaling between
            the controlPointRect() and the coordinates of the target rectangle
            is set up internally in render().
 
@@ -96,7 +95,7 @@ public:
         RenderPensUnscaled = 0x1
     };
 
-    /*! 
+    /*!
         \brief Render hints
 
         The default setting is to disable all hints
@@ -117,21 +116,21 @@ public:
 
     void render( QPainter * ) const;
 
-    void render( QPainter *, const QSizeF &, 
+    void render( QPainter *, const QSizeF &,
             Qt::AspectRatioMode = Qt::IgnoreAspectRatio  ) const;
 
-    void render( QPainter *, const QRectF &, 
+    void render( QPainter *, const QRectF &,
             Qt::AspectRatioMode = Qt::IgnoreAspectRatio  ) const;
 
     void render( QPainter *, const QPointF &,
         Qt::Alignment = Qt::AlignTop | Qt::AlignLeft ) const;
 
-    QPixmap toPixmap() const; 
-    QPixmap toPixmap( const QSize &, 
+    QPixmap toPixmap() const;
+    QPixmap toPixmap( const QSize &,
         Qt::AspectRatioMode = Qt::IgnoreAspectRatio  ) const;
 
-    QImage toImage() const; 
-    QImage toImage( const QSize &, 
+    QImage toImage() const;
+    QImage toImage( const QSize &,
         Qt::AspectRatioMode = Qt::IgnoreAspectRatio  ) const;
 
     QRectF scaledBoundingRect( double sx, double sy ) const;
@@ -144,7 +143,7 @@ public:
 
     void setDefaultSize( const QSizeF & );
     QSizeF defaultSize() const;
-    
+
     void setRenderHint( RenderHint, bool on = true );
     bool testRenderHint( RenderHint ) const;
 

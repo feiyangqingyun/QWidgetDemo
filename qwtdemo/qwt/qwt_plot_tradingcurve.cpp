@@ -134,19 +134,19 @@ void QwtPlotTradingCurve::setSamples(
 
 /*!
   Assign a series of samples
-    
+
   setSamples() is just a wrapper for setData() without any additional
   value - beside that it is easier to find for the developer.
-    
+
   \param data Data
   \warning The item takes ownership of the data object, deleting
-           it when its not used anymore. 
+           it when its not used anymore.
 */
 void QwtPlotTradingCurve::setSamples(
     QwtSeriesData<QwtOHLCSample> *data )
 {
     setData( data );
-}   
+}
 
 /*!
   Set the symbol style
@@ -176,22 +176,22 @@ QwtPlotTradingCurve::SymbolStyle QwtPlotTradingCurve::symbolStyle() const
     return d_data->symbolStyle;
 }
 
-/*! 
+/*!
   Build and assign the symbol pen
-    
+
   In Qt5 the default pen width is 1.0 ( 0.0 in Qt4 ) what makes it
   non cosmetic ( see QPen::isCosmetic() ). This method has been introduced
   to hide this incompatibility.
-    
+
   \param color Pen color
   \param width Pen width
   \param style Pen style
-    
+
   \sa pen(), brush()
- */ 
-void QwtPlotTradingCurve::setSymbolPen( 
+ */
+void QwtPlotTradingCurve::setSymbolPen(
     const QColor &color, qreal width, Qt::PenStyle style )
-{   
+{
     setSymbolPen( QPen( color, width, style ) );
 }
 
@@ -235,12 +235,14 @@ QPen QwtPlotTradingCurve::symbolPen() const
 void QwtPlotTradingCurve::setSymbolBrush(
     Direction direction, const QBrush &brush )
 {
-    if ( direction < 0 || direction >= 2 )
+    // silencing -Wtautological-constant-out-of-range-compare
+    const int index = static_cast< int >( direction );
+    if ( index < 0 || index >= 2 )
         return;
 
-    if ( brush != d_data->symbolBrush[ direction ] )
+    if ( brush != d_data->symbolBrush[ index ] )
     {
-        d_data->symbolBrush[ direction ] = brush;
+        d_data->symbolBrush[ index ] = brush;
 
         legendChanged();
         itemChanged();
@@ -256,10 +258,11 @@ void QwtPlotTradingCurve::setSymbolBrush(
 */
 QBrush QwtPlotTradingCurve::symbolBrush( Direction direction ) const
 {
-    if ( direction < 0 || direction >= 2 )
+    const int index = static_cast< int >( direction );
+    if ( index < 0 || index >= 2 )
         return QBrush();
 
-    return d_data->symbolBrush[ direction ];
+    return d_data->symbolBrush[ index ];
 }
 
 /*!
@@ -272,7 +275,7 @@ QBrush QwtPlotTradingCurve::symbolBrush( Direction direction ) const
 
   \param extent Symbol width in scale coordinates
 
-  \sa symbolExtent(), scaledSymbolWidth(), 
+  \sa symbolExtent(), scaledSymbolWidth(),
       setMinSymbolWidth(), setMaxSymbolWidth()
 */
 void QwtPlotTradingCurve::setSymbolExtent( double extent )
@@ -337,7 +340,7 @@ void QwtPlotTradingCurve::setMaxSymbolWidth( double width )
     if ( width != d_data->maxSymbolWidth )
     {
         d_data->maxSymbolWidth = width;
-    
+
         legendChanged();
         itemChanged();
     }
@@ -359,7 +362,7 @@ double QwtPlotTradingCurve::maxSymbolWidth() const
 QRectF QwtPlotTradingCurve::boundingRect() const
 {
     QRectF rect = QwtPlotSeriesItem::boundingRect();
-    if ( rect.isValid() && orientation() == Qt::Vertical )
+    if ( orientation() == Qt::Vertical )
         rect.setRect( rect.y(), rect.x(), rect.height(), rect.width() );
 
     return rect;
@@ -486,14 +489,14 @@ void QwtPlotTradingCurve::drawSymbols( QPainter *painter,
             {
                 case Bar:
                 {
-                    drawBar( painter, translatedSample, 
+                    drawBar( painter, translatedSample,
                         orient, inverted, symbolWidth );
                     break;
                 }
                 case CandleStick:
                 {
                     painter->setBrush( d_data->symbolBrush[ brushIndex ] );
-                    drawCandleStick( painter, translatedSample, 
+                    drawCandleStick( painter, translatedSample,
                         orient, symbolWidth );
                     break;
                 }
@@ -520,7 +523,7 @@ void QwtPlotTradingCurve::drawSymbols( QPainter *painter,
   \param symbolStyle Symbol style
   \param sample Samples already translated into paint device coordinates
   \param orientation Vertical or horizontal
-  \param inverted True, when the opposite scale 
+  \param inverted True, when the opposite scale
                   ( Qt::Vertical: x, Qt::Horizontal: y ) is increasing
                   in the opposite direction as QPainter coordinates.
   \param symbolWidth Width of the symbol in paint device coordinates
@@ -554,7 +557,7 @@ void QwtPlotTradingCurve::drawUserSymbol( QPainter *painter,
   \sa Bar
 */
 void QwtPlotTradingCurve::drawBar( QPainter *painter,
-    const QwtOHLCSample &sample, Qt::Orientation orientation, 
+    const QwtOHLCSample &sample, Qt::Orientation orientation,
     bool inverted, double width ) const
 {
     double w2 = 0.5 * width;
@@ -593,7 +596,7 @@ void QwtPlotTradingCurve::drawBar( QPainter *painter,
   \sa CandleStick
 */
 void QwtPlotTradingCurve::drawCandleStick( QPainter *painter,
-    const QwtOHLCSample &sample, Qt::Orientation orientation, 
+    const QwtOHLCSample &sample, Qt::Orientation orientation,
     double width ) const
 {
     const double t = sample.time;
@@ -627,7 +630,7 @@ void QwtPlotTradingCurve::drawCandleStick( QPainter *painter,
 /*!
   \return A rectangle filled with the color of the symbol pen
 
-  \param index Index of the legend entry 
+  \param index Index of the legend entry
                 ( usually there is only one )
   \param size Icon size
 
@@ -670,7 +673,7 @@ double QwtPlotTradingCurve::scaledSymbolWidth(
     const QwtScaleMap *map =
         ( orientation() == Qt::Vertical ) ? &xMap : &yMap;
 
-    const double pos = map->transform( map->s1() + d_data->symbolExtent ); 
+    const double pos = map->transform( map->s1() + d_data->symbolExtent );
 
     double width = qAbs( pos - map->p1() );
 

@@ -190,7 +190,7 @@ double QwtMagnifier::mouseFactor() const
 
    \sa getMouseButton()
 */
-void QwtMagnifier::setMouseButton( 
+void QwtMagnifier::setMouseButton(
     Qt::MouseButton button, Qt::KeyboardModifiers modifiers )
 {
     d_data->mouseButton = button;
@@ -238,14 +238,14 @@ double QwtMagnifier::keyFactor() const
    \param modifiers
    \sa getZoomInKey(), setZoomOutKey()
 */
-void QwtMagnifier::setZoomInKey( int key, 
+void QwtMagnifier::setZoomInKey( int key,
     Qt::KeyboardModifiers modifiers )
 {
     d_data->zoomInKey = key;
     d_data->zoomInKeyModifiers = modifiers;
 }
 
-/*! 
+/*!
    \brief Retrieve the settings of the zoom in key
 
    \param key Key code, see Qt::Key
@@ -253,7 +253,7 @@ void QwtMagnifier::setZoomInKey( int key,
 
    \sa setZoomInKey()
 */
-void QwtMagnifier::getZoomInKey( int &key, 
+void QwtMagnifier::getZoomInKey( int &key,
     Qt::KeyboardModifiers &modifiers ) const
 {
     key = d_data->zoomInKey;
@@ -268,14 +268,14 @@ void QwtMagnifier::getZoomInKey( int &key,
    \param modifiers
    \sa getZoomOutKey(), setZoomOutKey()
 */
-void QwtMagnifier::setZoomOutKey( int key, 
+void QwtMagnifier::setZoomOutKey( int key,
     Qt::KeyboardModifiers modifiers )
 {
     d_data->zoomOutKey = key;
     d_data->zoomOutKeyModifiers = modifiers;
 }
 
-/*! 
+/*!
    \brief Retrieve the settings of the zoom out key
 
    \param key Key code, see Qt::Key
@@ -283,7 +283,7 @@ void QwtMagnifier::setZoomOutKey( int key,
 
    \sa setZoomOutKey()
 */
-void QwtMagnifier::getZoomOutKey( int &key, 
+void QwtMagnifier::getZoomOutKey( int &key,
     Qt::KeyboardModifiers &modifiers ) const
 {
     key = d_data->zoomOutKey;
@@ -437,7 +437,7 @@ void QwtMagnifier::widgetWheelEvent( QWheelEvent *wheelEvent )
             in which case the delta value is a multiple
             of 120 (== 15 * 8).
          */
-        double f = qPow( d_data->wheelFactor, 
+        double f = qPow( d_data->wheelFactor,
             qAbs( wheelEvent->delta() / 120.0 ) );
 
         if ( wheelEvent->delta() > 0 )

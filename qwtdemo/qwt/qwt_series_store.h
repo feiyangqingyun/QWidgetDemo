@@ -27,6 +27,7 @@ protected:
     //! Destructor
     virtual ~QwtAbstractSeriesStore() {}
 
+#ifndef QWT_PYTHON_WRAPPER
     //! dataChanged() indicates, that the series has been changed.
     virtual void dataChanged() = 0;
 
@@ -41,6 +42,13 @@ protected:
 
     //! \return Number of samples
     virtual size_t dataSize() const = 0;
+#else
+    // Needed for generating the python bindings, but not for using them !
+    virtual void dataChanged() {}
+    virtual void setRectOfInterest( const QRectF & ) {}
+    virtual QRectF dataRect() const { return  QRectF( 0.0, 0.0, -1.0, -1.0 ); }
+    virtual size_t dataSize() const { return 0; }
+#endif
 };
 
 /*!

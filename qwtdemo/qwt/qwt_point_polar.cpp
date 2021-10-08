@@ -111,7 +111,7 @@ QwtPointPolar QwtPointPolar::normalized() const
 
 QDebug operator<<( QDebug debug, const QwtPointPolar &point )
 {
-    debug.nospace() << "QwtPointPolar(" 
+    debug.nospace() << "QwtPointPolar("
         << point.azimuth() << "," << point.radius() << ")";
 
     return debug.space();

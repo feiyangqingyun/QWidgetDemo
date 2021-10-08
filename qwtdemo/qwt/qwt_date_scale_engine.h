@@ -27,12 +27,12 @@
 
   QwtDateScaleEngine supports representations depending
   on Qt::TimeSpec specifications. The valid range for scales
-  is limited by the range of QDateTime, that differs 
+  is limited by the range of QDateTime, that differs
   between Qt4 and Qt5.
-  
+
   Datetime values are expected as the number of milliseconds since
   1970-01-01T00:00:00 Universal Coordinated Time - also known
-  as "The Epoch", that can be converted to QDateTime using 
+  as "The Epoch", that can be converted to QDateTime using
   QwtDate::toDateTime().
 
   \sa QwtDate, QwtPlot::setAxisScaleEngine(),
@@ -52,19 +52,19 @@ public:
 
     void setWeek0Type( QwtDate::Week0Type );
     QwtDate::Week0Type week0Type() const;
-    
+
     void setMaxWeeks( int );
     int maxWeeks() const;
 
     virtual void autoScale( int maxNumSteps,
         double &x1, double &x2, double &stepSize ) const;
 
-    virtual QwtScaleDiv divideScale( 
+    virtual QwtScaleDiv divideScale(
         double x1, double x2,
         int maxMajorSteps, int maxMinorSteps,
         double stepSize = 0.0 ) const;
 
-    virtual QwtDate::IntervalType intervalType( 
+    virtual QwtDate::IntervalType intervalType(
         const QDateTime &, const QDateTime &, int maxSteps ) const;
 
     QDateTime toDateTime( double ) const;
@@ -75,7 +75,7 @@ protected:
 
 private:
     QwtScaleDiv buildScaleDiv( const QDateTime &, const QDateTime &,
-        int maxMajorSteps, int maxMinorSteps, 
+        int maxMajorSteps, int maxMinorSteps,
         QwtDate::IntervalType ) const;
 
 private:

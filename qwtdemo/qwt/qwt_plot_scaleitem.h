@@ -32,16 +32,16 @@ class QPalette;
   aligned to a canvas border.
 
   \par Example
-  The following example shows how to replace the left axis, by a scale item
-  at the x position 0.0.
-  \verbatim
-QwtPlotScaleItem *scaleItem =
-    new QwtPlotScaleItem(QwtScaleDraw::RightScale, 0.0);
-scaleItem->setFont(plot->axisWidget(QwtPlot::yLeft)->font());
-scaleItem->attach(plot);
+    The following example shows how to replace the left axis, by a scale item
+    at the x position 0.0.
+    \code
+      QwtPlotScaleItem *scaleItem = new QwtPlotScaleItem( QwtScaleDraw::RightScale, 0.0 );
+      scaleItem->setFont( plot->axisWidget( QwtPlot::yLeft )->font() );
+      scaleItem->attach(plot);
 
-plot->enableAxis(QwtPlot::yLeft, false);
-\endverbatim
+      plot->enableAxis( QwtPlot::yLeft, false );
+    \endcode
+  \endpar
 */
 
 class QWT_EXPORT QwtPlotScaleItem: public QwtPlotItem
@@ -75,14 +75,14 @@ public:
     void setPosition( double pos );
     double position() const;
 
-    void setBorderDistance( int numPixels );
+    void setBorderDistance( int );
     int borderDistance() const;
 
     void setAlignment( QwtScaleDraw::Alignment );
 
-    virtual void draw( QPainter *p,
+    virtual void draw( QPainter *,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &rect ) const;
+        const QRectF &canvasRect ) const;
 
     virtual void updateScaleDiv( const QwtScaleDiv &, const QwtScaleDiv & );
 

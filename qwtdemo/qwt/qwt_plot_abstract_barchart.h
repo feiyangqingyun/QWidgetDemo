@@ -17,7 +17,7 @@
 /*!
   \brief Abstract base class for bar chart items
 
-  In opposite to almost all other plot items bar charts can't be 
+  In opposite to almost all other plot items bar charts can't be
   displayed inside of their bounding rectangle and need a special
   API  how to calculate the width of the bars and how they affect
   the layout of the attached plot.
@@ -78,7 +78,7 @@ public:
     void setBaseline( double );
     double baseline() const;
 
-    virtual void getCanvasMarginHint( 
+    virtual void getCanvasMarginHint(
         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
         const QRectF &canvasRect,
         double &left, double &top, double &right, double &bottom) const;
@@ -86,7 +86,7 @@ public:
 
 protected:
     double sampleWidth( const QwtScaleMap &map,
-        double canvasSize, double dataSize,
+        double canvasSize, double boundingSize,
         double value ) const;
 
 private:

@@ -55,7 +55,7 @@ public:
         NTickTypes
     };
 
-    explicit QwtScaleDiv( double lowerBound = 0.0, 
+    explicit QwtScaleDiv( double lowerBound = 0.0,
         double upperBound = 0.0 );
 
     explicit QwtScaleDiv( const QwtInterval &, QList<double>[NTickTypes] );
@@ -63,7 +63,7 @@ public:
     explicit QwtScaleDiv( double lowerBound, double upperBound,
         QList<double>[NTickTypes] );
 
-    explicit QwtScaleDiv( double lowerBound, double upperBound, 
+    explicit QwtScaleDiv( double lowerBound, double upperBound,
         const QList<double> &minorTicks, const QList<double> &mediumTicks,
         const QList<double> &majorTicks );
 

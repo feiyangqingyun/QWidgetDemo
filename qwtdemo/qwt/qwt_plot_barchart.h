@@ -23,8 +23,8 @@ class QwtColumnSymbol;
   Each bar might be customized individually by implementing
   a specialSymbol(). Otherwise it is rendered using a default symbol.
 
-  Depending on its orientation() the bars are displayed horizontally 
-  or vertically. The bars cover the interval between the baseline() 
+  Depending on its orientation() the bars are displayed horizontally
+  or vertically. The bars cover the interval between the baseline()
   and the value.
 
   By activating the LegendBarTitles mode each sample will have
@@ -50,7 +50,7 @@ public:
     */
     enum LegendMode
     {
-        /*! 
+        /*!
           One entry on the legend showing the default symbol
           and the title() of the chart
 
@@ -67,7 +67,7 @@ public:
         LegendBarTitles
     };
 
-    explicit QwtPlotBarChart( const QString &title = QString::null );
+    explicit QwtPlotBarChart( const QString &title = QString() );
     explicit QwtPlotBarChart( const QwtText &title );
 
     virtual ~QwtPlotBarChart();
@@ -76,7 +76,7 @@ public:
 
     void setSamples( const QVector<QPointF> & );
     void setSamples( const QVector<double> & );
-    void setSamples( QwtSeriesData<QPointF> *series );
+    void setSamples( QwtSeriesData<QPointF> * );
 
     void setSymbol( QwtColumnSymbol * );
     const QwtColumnSymbol *symbol() const;
@@ -90,7 +90,7 @@ public:
 
     virtual QRectF boundingRect() const;
 
-    virtual QwtColumnSymbol *specialSymbol( 
+    virtual QwtColumnSymbol *specialSymbol(
         int sampleIndex, const QPointF& ) const;
 
     virtual QwtText barTitle( int sampleIndex ) const;
@@ -102,7 +102,7 @@ protected:
         int index, const QPointF& sample ) const;
 
     virtual void drawBar( QPainter *,
-        int sampleIndex, const QPointF& point, 
+        int sampleIndex, const QPointF& sample,
         const QwtColumnRect & ) const;
 
     QList<QwtLegendData> legendData() const;

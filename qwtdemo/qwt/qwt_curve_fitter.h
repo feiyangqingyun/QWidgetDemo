@@ -77,7 +77,7 @@ public:
     const QwtSpline &spline() const;
     QwtSpline &spline();
 
-    void setSplineSize( int size );
+    void setSplineSize( int );
     int splineSize() const;
 
     virtual QPolygonF fitCurve( const QPolygonF & ) const;

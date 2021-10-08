@@ -1,4 +1,4 @@
-﻿/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -13,16 +13,15 @@
 #include "qwt_global.h"
 #include <qpaintdevice.h>
 #include <qpaintengine.h>
-#include "qpainterpath.h"
 
 /*!
   \brief A null paint device doing nothing
 
-  Sometimes important layout/rendering geometries are not 
-  available or changeable from the public Qt class interface. 
+  Sometimes important layout/rendering geometries are not
+  available or changeable from the public Qt class interface.
   ( f.e hidden in the style implementation ).
 
-  QwtNullPaintDevice can be used to manipulate or filter out 
+  QwtNullPaintDevice can be used to manipulate or filter out
   this information by analyzing the stream of paint primitives.
 
   F.e. QwtNullPaintDevice is used by QwtPlotCanvas to identify
@@ -43,7 +42,7 @@ public:
            All vector graphic primitives are painted by
            the corresponding draw methods
          */
-        NormalMode, 
+        NormalMode,
 
         /*!
            Vector graphic primitives ( beside polygons ) are mapped to a QPainterPath
@@ -77,7 +76,7 @@ public:
 
     virtual QPaintEngine *paintEngine() const;
 
-    virtual int metric( PaintDeviceMetric metric ) const;
+    virtual int metric( PaintDeviceMetric ) const;
 
     virtual void drawRects(const QRect *, int );
     virtual void drawRects(const QRectF *, int );
@@ -105,12 +104,12 @@ public:
     virtual void drawTextItem(const QPointF &, const QTextItem &);
 
     virtual void drawTiledPixmap(const QRectF &,
-        const QPixmap &, const QPointF &s);
+        const QPixmap &, const QPointF & );
 
     virtual void drawImage(const QRectF &,
         const QImage &, const QRectF &, Qt::ImageConversionFlags );
 
-    virtual void updateState( const QPaintEngineState &state );
+    virtual void updateState( const QPaintEngineState & );
 
 protected:
     //! \return Size needed to implement metric()

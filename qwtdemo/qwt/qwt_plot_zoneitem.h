@@ -20,15 +20,15 @@ class QBrush;
 /*!
   \brief A plot item, which displays a zone
 
-  A horizontal zone highlights an interval of the y axis - a vertical 
+  A horizontal zone highlights an interval of the y axis - a vertical
   zone an interval of the x axis - and is unbounded in the opposite direction.
-  It is filled with a brush and its border lines are optionally displayed with a pen. 
+  It is filled with a brush and its border lines are optionally displayed with a pen.
 
-  \note For displaying an area that is bounded for x and y coordinates 
+  \note For displaying an area that is bounded for x and y coordinates
         use QwtPlotShapeItem
 */
 
-class QWT_EXPORT QwtPlotZoneItem: 
+class QWT_EXPORT QwtPlotZoneItem:
     public QwtPlotItem
 {
 public:

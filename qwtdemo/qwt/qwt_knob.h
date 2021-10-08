@@ -25,9 +25,9 @@ class QwtRoundScaleDraw;
 
   The layout of the knob depends on the knobWidth().
 
-  - width > 0 
+  - width > 0
     The diameter of the knob is fixed and the knob is aligned
-    according to the alignment() flags inside of the contentsRect(). 
+    according to the alignment() flags inside of the contentsRect().
 
   - width <= 0
     The knob is extended to the minimum of width/height of the contentsRect()
@@ -35,7 +35,7 @@ class QwtRoundScaleDraw;
 
   Setting a fixed knobWidth() is helpful to align several knobs with different
   scale labels.
-  
+
   \image html knob.png
 */
 
@@ -55,7 +55,7 @@ class QWT_EXPORT QwtKnob: public QwtAbstractSlider
     Q_PROPERTY( int borderWidth READ borderWidth WRITE setBorderWidth )
 
 public:
-    /*! 
+    /*!
        \brief Style of the knob surface
 
        Depending on the KnobStyle the surface of the knob is
@@ -71,13 +71,13 @@ public:
         //! Build a gradient from QPalette::Midlight and QPalette::Button
         Raised,
 
-        /*! 
+        /*!
           Build a gradient from QPalette::Midlight, QPalette::Button
           and QPalette::Midlight
          */
         Sunken,
 
-        /*! 
+        /*!
           Build a radial gradient from QPalette::Button
           like it is used for QDial in various Qt styles.
          */
@@ -86,37 +86,37 @@ public:
 
     /*!
         \brief Marker type
- 
+
         The marker indicates the current value on the knob
         The default setting is a Notch marker.
 
         \sa setMarkerStyle(), setMarkerSize()
     */
-    enum MarkerStyle 
-    { 
+    enum MarkerStyle
+    {
         //! Don't paint any marker
         NoMarker = -1,
 
         //! Paint a single tick in QPalette::ButtonText color
-        Tick, 
+        Tick,
 
         //! Paint a triangle in QPalette::ButtonText color
-        Triangle, 
+        Triangle,
 
         //! Paint a circle in QPalette::ButtonText color
-        Dot, 
+        Dot,
 
-        /*! 
+        /*!
           Draw a raised ellipse with a gradient build from
           QPalette::Light and QPalette::Mid
-         */ 
-        Nub, 
+         */
+        Nub,
 
-        /*! 
+        /*!
           Draw a sunken ellipse with a gradient build from
           QPalette::Light and QPalette::Mid
-         */ 
-        Notch 
+         */
+        Notch
     };
 
     explicit QwtKnob( QWidget* parent = NULL );
@@ -137,7 +137,7 @@ public:
     void setKnobStyle( KnobStyle );
     KnobStyle knobStyle() const;
 
-    void setBorderWidth( int bw );
+    void setBorderWidth( int );
     int borderWidth() const;
 
     void setMarkerStyle( MarkerStyle );
@@ -164,8 +164,8 @@ protected:
 
     virtual void drawFocusIndicator( QPainter * ) const;
 
-    virtual void drawMarker( QPainter *, 
-        const QRectF &, double arc ) const;
+    virtual void drawMarker( QPainter *,
+        const QRectF &, double angle ) const;
 
     virtual double scrolledTo( const QPoint & ) const;
     virtual bool isScrollPosition( const QPoint & ) const;

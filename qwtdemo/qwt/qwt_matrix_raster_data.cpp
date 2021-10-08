@@ -81,10 +81,10 @@ QwtMatrixRasterData::ResampleMode QwtMatrixRasterData::resampleMode() const
 
    \param axis X, Y or Z axis
    \param interval Interval
-   
+
    \sa QwtRasterData::interval(), setValueMatrix()
 */
-void QwtMatrixRasterData::setInterval( 
+void QwtMatrixRasterData::setInterval(
     Qt::Axis axis, const QwtInterval &interval )
 {
     QwtRasterData::setInterval( axis, interval );
@@ -96,7 +96,7 @@ void QwtMatrixRasterData::setInterval(
 
    The positions of the values are calculated by dividing
    the bounding rectangle of the X/Y intervals into equidistant
-   rectangles ( pixels ). Each value corresponds to the center of 
+   rectangles ( pixels ). Each value corresponds to the center of
    a pixel.
 
    \param values Vector of values
@@ -104,7 +104,7 @@ void QwtMatrixRasterData::setInterval(
 
    \sa valueMatrix(), numColumns(), numRows(), setInterval()()
 */
-void QwtMatrixRasterData::setValueMatrix( 
+void QwtMatrixRasterData::setValueMatrix(
     const QVector<double> &values, int numColumns )
 {
     d_data->values = values;
@@ -161,17 +161,17 @@ int QwtMatrixRasterData::numRows() const
 /*!
    \brief Calculate the pixel hint
 
-   pixelHint() returns the geometry of a pixel, that can be used 
+   pixelHint() returns the geometry of a pixel, that can be used
    to calculate the resolution and alignment of the plot item, that is
-   representing the data. 
+   representing the data.
 
    - NearestNeighbour\n
-     pixelHint() returns the surrounding pixel of the top left value 
+     pixelHint() returns the surrounding pixel of the top left value
      in the matrix.
 
    - BilinearInterpolation\n
      Returns an empty rectangle recommending
-     to render in target device ( f.e. screen ) resolution. 
+     to render in target device ( f.e. screen ) resolution.
 
    \param area Requested area, ignored
    \return Calculated hint
@@ -239,11 +239,11 @@ double QwtMatrixRasterData::value( double x, double y ) const
             const double v12 = d_data->value( row2, col1 );
             const double v22 = d_data->value( row2, col2 );
 
-            const double x2 = xInterval.minValue() + 
+            const double x2 = xInterval.minValue() +
                 ( col2 + 0.5 ) * d_data->dx;
-            const double y2 = yInterval.minValue() + 
+            const double y2 = yInterval.minValue() +
                 ( row2 + 0.5 ) * d_data->dy;
-                
+
             const double rx = ( x2 - x ) / d_data->dx;
             const double ry = ( y2 - y ) / d_data->dy;
 

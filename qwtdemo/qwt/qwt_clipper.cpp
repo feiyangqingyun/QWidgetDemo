@@ -150,29 +150,29 @@ public:
         ::memcpy( m_buffer, points, m_size * sizeof( Point ) );
     }
 
-    inline void reset() 
-    { 
-        m_size = 0; 
+    inline void reset()
+    {
+        m_size = 0;
     }
 
-    inline int size() const 
-    { 
-        return m_size; 
+    inline int size() const
+    {
+        return m_size;
     }
 
-    inline Point *data() const 
-    { 
-        return m_buffer; 
+    inline Point *data() const
+    {
+        return m_buffer;
     }
 
-    inline Point &operator[]( int i ) 
-    { 
-        return m_buffer[i]; 
+    inline Point &operator[]( int i )
+    {
+        return m_buffer[i];
     }
 
-    inline const Point &operator[]( int i ) const 
-    { 
-        return m_buffer[i]; 
+    inline const Point &operator[]( int i ) const
+    {
+        return m_buffer[i];
     }
 
     inline void add( const Point &point )
@@ -192,7 +192,7 @@ private:
         while ( m_capacity < size )
             m_capacity *= 2;
 
-        m_buffer = static_cast<Point *>( 
+        m_buffer = static_cast<Point *>(
             ::realloc( m_buffer, m_capacity * sizeof( Point ) ) );
     }
 

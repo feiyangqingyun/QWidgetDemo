@@ -85,14 +85,15 @@ public:
         const QString fontKey = font.key();
 
         QMap<QString, int>::const_iterator it =
-            d_ascentCache.find( fontKey );
-        if ( it == d_ascentCache.end() )
-        {
-            int ascent = findAscent( font );
-            it = d_ascentCache.insert( fontKey, ascent );
-        }
+            d_ascentCache.constFind( fontKey );
 
-        return ( *it );
+        if ( it != d_ascentCache.constEnd() )
+            return *it;
+
+        const int ascent = findAscent( font );
+        d_ascentCache.insert( fontKey, ascent );
+
+        return ascent;
     }
 
 private:
@@ -115,7 +116,7 @@ private:
         int row = 0;
         for ( row = 0; row < img.height(); row++ )
         {
-            const QRgb *line = reinterpret_cast<const QRgb *>( 
+            const QRgb *line = reinterpret_cast<const QRgb *>(
                 img.scanLine( row ) );
 
             const int w = pm.width();

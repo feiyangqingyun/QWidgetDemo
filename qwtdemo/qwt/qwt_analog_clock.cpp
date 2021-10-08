@@ -52,7 +52,7 @@ QwtAnalogClock::QwtAnalogClock( QWidget *parent ):
 
     setTotalSteps( 60 );
 
-    const int secondsPerHour = 60.0 * 60.0; 
+    const int secondsPerHour = 60.0 * 60.0;
 
     QList<double> majorTicks;
     QList<double> minorTicks;
@@ -200,7 +200,7 @@ void QwtAnalogClock::drawNeedle( QPainter *painter, const QPointF &center,
     if ( isValid() )
     {
         const double hours = value() / ( 60.0 * 60.0 );
-        const double minutes = 
+        const double minutes =
             ( value() - qFloor(hours) * 60.0 * 60.0 ) / 60.0;
         const double seconds = value() - qFloor(hours) * 60.0 * 60.0
             - qFloor(minutes) * 60.0;
@@ -213,7 +213,7 @@ void QwtAnalogClock::drawNeedle( QPainter *painter, const QPointF &center,
         for ( int hand = 0; hand < NHands; hand++ )
         {
             const double d = 360.0 - angle[hand] - origin();
-            drawHand( painter, static_cast<Hand>( hand ), 
+            drawHand( painter, static_cast<Hand>( hand ),
                 center, radius, d, colorGroup );
         }
     }

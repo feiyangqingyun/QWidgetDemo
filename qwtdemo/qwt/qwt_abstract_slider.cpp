@@ -17,7 +17,7 @@
 #define qFabs(x) ::fabs(x)
 #endif
 
-static double qwtAlignToScaleDiv( 
+static double qwtAlignToScaleDiv(
     const QwtAbstractSlider *slider, double value )
 {
     const QwtScaleDiv &sd = slider->scaleDiv();
@@ -27,7 +27,7 @@ static double qwtAlignToScaleDiv(
     if ( tValue == slider->transform( sd.lowerBound() ) )
         return sd.lowerBound();
 
-    if ( tValue == slider->transform( sd.lowerBound() ) )
+    if ( tValue == slider->transform( sd.upperBound() ) )
         return sd.upperBound();
 
     for ( int i = 0; i < QwtScaleDiv::NTickTypes; i++ )
@@ -106,7 +106,7 @@ QwtAbstractSlider::~QwtAbstractSlider()
     delete d_data;
 }
 
-/*! 
+/*!
   Set the value to be valid/invalid
 
   \param on When true, the value is invalidated
@@ -121,14 +121,14 @@ void QwtAbstractSlider::setValid( bool on )
         sliderChange();
 
         Q_EMIT valueChanged( d_data->value );
-    }   
-}   
+    }
+}
 
 //! \return True, when the value is invalid
 bool QwtAbstractSlider::isValid() const
 {
     return d_data->isValid;
-}   
+}
 
 /*!
   En/Disable read only mode
@@ -167,9 +167,9 @@ bool QwtAbstractSlider::isReadOnly() const
 /*!
   \brief Enables or disables tracking.
 
-  If tracking is enabled, the slider emits the valueChanged() 
-  signal while the movable part of the slider is being dragged. 
-  If tracking is disabled, the slider emits the valueChanged() signal 
+  If tracking is enabled, the slider emits the valueChanged()
+  signal while the movable part of the slider is being dragged.
+  If tracking is disabled, the slider emits the valueChanged() signal
   only when the user releases the slider.
 
   Tracking is enabled by default.
@@ -287,7 +287,7 @@ void QwtAbstractSlider::mouseReleaseEvent( QMouseEvent *event )
 /*!
    Wheel Event handler
 
-   In/decreases the value by s number of steps. The direction 
+   In/decreases the value by s number of steps. The direction
    depends on the invertedControls() property.
 
    When the control or shift modifier is pressed the wheel delta
@@ -458,7 +458,7 @@ void QwtAbstractSlider::keyPressEvent( QKeyEvent *event )
   \brief Set the number of steps
 
   The range of the slider is divided into a number of steps from
-  which the value increments according to user inputs depend. 
+  which the value increments according to user inputs depend.
 
   The default setting is 100.
 
@@ -484,7 +484,7 @@ uint QwtAbstractSlider::totalSteps() const
   \brief Set the number of steps for a single increment
 
   The range of the slider is divided into a number of steps from
-  which the value increments according to user inputs depend. 
+  which the value increments according to user inputs depend.
 
   \param stepCount Number of steps
 
@@ -494,7 +494,7 @@ uint QwtAbstractSlider::totalSteps() const
 void QwtAbstractSlider::setSingleSteps( uint stepCount )
 {
     d_data->singleSteps = stepCount;
-}   
+}
 
 /*!
   \return Number of steps
@@ -503,13 +503,13 @@ void QwtAbstractSlider::setSingleSteps( uint stepCount )
 uint QwtAbstractSlider::singleSteps() const
 {
     return d_data->singleSteps;
-}   
+}
 
-/*! 
+/*!
   \brief Set the number of steps for a page increment
-    
+
   The range of the slider is divided into a number of steps from
-  which the value increments according to user inputs depend. 
+  which the value increments according to user inputs depend.
 
   \param stepCount Number of steps
 
@@ -540,13 +540,13 @@ uint QwtAbstractSlider::pageSteps() const
   \sa stepAlignment()
 */
 void QwtAbstractSlider::setStepAlignment( bool on )
-{   
+{
     if ( on != d_data->stepAlignment )
     {
         d_data->stepAlignment = on;
     }
-}   
-    
+}
+
 /*!
   \return True, when step alignment is enabled
   \sa setStepAlignment()
@@ -585,8 +585,8 @@ double QwtAbstractSlider::value() const
 }
 
 /*!
-  If wrapping is true stepping up from upperBound() value will 
-  take you to the minimum() value and vice versa. 
+  If wrapping is true stepping up from upperBound() value will
+  take you to the minimum() value and vice versa.
 
   \param on En/Disable wrapping
   \sa wrapping()
@@ -594,12 +594,12 @@ double QwtAbstractSlider::value() const
 void QwtAbstractSlider::setWrapping( bool on )
 {
     d_data->wrapping = on;
-}   
+}
 
 /*!
   \return True, when wrapping is set
   \sa setWrapping()
- */ 
+ */
 bool QwtAbstractSlider::wrapping() const
 {
     return d_data->wrapping;
@@ -608,8 +608,8 @@ bool QwtAbstractSlider::wrapping() const
 /*!
   Invert wheel and key events
 
-  Usually scrolling the mouse wheel "up" and using keys like page 
-  up will increase the slider's value towards its maximum. 
+  Usually scrolling the mouse wheel "up" and using keys like page
+  up will increase the slider's value towards its maximum.
   When invertedControls() is enabled the value is scrolled
   towards its minimum.
 
@@ -644,7 +644,7 @@ bool QwtAbstractSlider::invertedControls() const
  */
 void QwtAbstractSlider::incrementValue( int stepCount )
 {
-    const double value = incrementedValue( 
+    const double value = incrementedValue(
         d_data->value, stepCount );
 
     if ( value != d_data->value )
@@ -655,14 +655,14 @@ void QwtAbstractSlider::incrementValue( int stepCount )
 }
 
 /*!
-  Increment a value 
+  Increment a value
 
-  \param value Value 
+  \param value Value
   \param stepCount Number of steps
 
   \return Incremented value
  */
-double QwtAbstractSlider::incrementedValue( 
+double QwtAbstractSlider::incrementedValue(
     double value, int stepCount ) const
 {
     if ( d_data->totalSteps == 0 )
@@ -683,14 +683,14 @@ double QwtAbstractSlider::incrementedValue(
 
         // we need equidant steps according to
         // paint device coordinates
-        const double range = transformation->transform( maximum() ) 
+        const double range = transformation->transform( maximum() )
             - transformation->transform( minimum() );
 
         const double stepSize = range / d_data->totalSteps;
 
         double v = transformation->transform( value );
 
-        v = qRound( v / stepSize ) * stepSize; 
+        v = qRound( v / stepSize ) * stepSize;
         v += stepCount * range / d_data->totalSteps;
 
         value = transformation->invTransform( v );
@@ -756,7 +756,7 @@ double QwtAbstractSlider::alignedValue( double value ) const
         stepSize = ( maximum() - minimum() ) / d_data->totalSteps;
         if ( stepSize > 0.0 )
         {
-            value = lowerBound() + 
+            value = lowerBound() +
                 qRound( ( value - lowerBound() ) / stepSize ) * stepSize;
         }
     }

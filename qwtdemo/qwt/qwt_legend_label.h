@@ -77,4 +77,4 @@ private:
     PrivateData *d_data;
 };
 
-#endif 
+#endif

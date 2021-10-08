@@ -51,15 +51,15 @@ public:
     virtual bool eventFilter( QObject *, QEvent * );
 
     virtual QSize sizeHint() const;
-    virtual int heightForWidth( int w ) const;
+    virtual int heightForWidth( int width ) const;
 
     QScrollBar *horizontalScrollBar() const;
     QScrollBar *verticalScrollBar() const;
 
-    virtual void renderLegend( QPainter *, 
+    virtual void renderLegend( QPainter *,
         const QRectF &, bool fillBackground ) const;
 
-    virtual void renderItem( QPainter *, 
+    virtual void renderItem( QPainter *,
         const QWidget *, const QRectF &, bool fillBackground ) const;
 
     virtual bool isEmpty() const;
@@ -105,7 +105,7 @@ protected Q_SLOTS:
 
 protected:
     virtual QWidget *createWidget( const QwtLegendData & ) const;
-    virtual void updateWidget( QWidget *widget, const QwtLegendData &data );
+    virtual void updateWidget( QWidget *widget, const QwtLegendData & );
 
 private:
     void updateTabOrder();
@@ -114,4 +114,4 @@ private:
     PrivateData *d_data;
 };
 
-#endif 
+#endif

@@ -136,7 +136,7 @@ public:
     QwtColumnSymbol( Style = NoStyle );
     virtual ~QwtColumnSymbol();
 
-    void setFrameStyle( FrameStyle style );
+    void setFrameStyle( FrameStyle );
     FrameStyle frameStyle() const;
 
     void setLineWidth( int width );

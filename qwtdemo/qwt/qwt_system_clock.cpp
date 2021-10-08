@@ -32,12 +32,12 @@ QwtSystemClock::~QwtSystemClock()
 {
     delete d_data;
 }
-    
+
 bool QwtSystemClock::isNull() const
 {
     return d_data->timer.isValid();
 }
-        
+
 void QwtSystemClock::start()
 {
     d_data->timer.start();
@@ -54,7 +54,7 @@ double QwtSystemClock::elapsed() const
     const qint64 nsecs = d_data->timer.nsecsElapsed();
     return nsecs / 1e6;
 }
-    
+
 #else // !USE_ELAPSED_TIMER
 
 #include <qdatetime.h>
@@ -356,7 +356,7 @@ void QwtSystemClock::start()
 }
 
 /*!
-  Set the start time to the current time 
+  Set the start time to the current time
   \return Time, that is elapsed since the previous start time.
 */
 double QwtSystemClock::restart()

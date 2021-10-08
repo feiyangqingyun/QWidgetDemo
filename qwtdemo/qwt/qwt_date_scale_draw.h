@@ -72,7 +72,7 @@ public:
     QDateTime toDateTime( double ) const;
 
 protected:
-    virtual QwtDate::IntervalType 
+    virtual QwtDate::IntervalType
         intervalType( const QwtScaleDiv & ) const;
 
     virtual QString dateFormatOfDate( const QDateTime &,

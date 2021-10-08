@@ -25,10 +25,10 @@ class QPainter;
   specific text format. They are used by QwtText to render a text.
 
   QwtPlainTextEngine and QwtRichTextEngine are part of the Qwt library.
-  The implementation of QwtMathMLTextEngine uses code from the 
+  The implementation of QwtMathMLTextEngine uses code from the
   Qt solution package. Because of license implications it is built into
   a separate library.
- 
+
   \sa QwtText::setTextEngine()
 */
 

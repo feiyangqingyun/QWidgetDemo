@@ -15,7 +15,7 @@
 #include <qpainterpath.h>
 
 /*!
-  \brief A plot item, which displays any graphical shape, 
+  \brief A plot item, which displays any graphical shape,
          that can be defined by a QPainterPath
 
   A QPainterPath is a shape composed from intersecting and uniting
@@ -60,11 +60,11 @@ public:
         //! Display a scaled down version of the shape
         LegendShape,
 
-        //! Display a filled rectangle 
+        //! Display a filled rectangle
         LegendColor
     };
 
-    explicit QwtPlotShapeItem( const QString &title = QString::null );
+    explicit QwtPlotShapeItem( const QString &title = QString() );
     explicit QwtPlotShapeItem( const QwtText &title );
 
     virtual ~QwtPlotShapeItem();
@@ -93,9 +93,9 @@ public:
 
     virtual QRectF boundingRect() const;
 
-    virtual void draw( QPainter *p,
+    virtual void draw( QPainter *,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-        const QRectF &rect ) const;
+        const QRectF &canvasRect ) const;
 
     virtual QwtGraphic legendIcon( int index, const QSizeF & ) const;
 

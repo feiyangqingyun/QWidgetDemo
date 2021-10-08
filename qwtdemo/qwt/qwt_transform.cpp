@@ -18,7 +18,7 @@
 
 //! Smallest allowed value for logarithmic scales: 1.0e-150
 const double QwtLogTransform::LogMin = 1.0e-150;
-    
+
 //! Largest allowed value for logarithmic scales: 1.0e150
 const double QwtLogTransform::LogMax = 1.0e150;
 
@@ -42,7 +42,7 @@ QwtTransform::~QwtTransform()
 {
 }
 
-/*! 
+/*!
   \param value Value to be bounded
   \return value unmodified
  */
@@ -62,7 +62,7 @@ QwtNullTransform::~QwtNullTransform()
 {
 }
 
-/*! 
+/*!
   \param value Value to be transformed
   \return value unmodified
  */
@@ -71,7 +71,7 @@ double QwtNullTransform::transform( double value ) const
     return value;
 }
 
-/*! 
+/*!
   \param value Value to be transformed
   \return value unmodified
  */
@@ -97,7 +97,7 @@ QwtLogTransform::~QwtLogTransform()
 {
 }
 
-/*! 
+/*!
   \param value Value to be transformed
   \return log( value )
  */
@@ -106,7 +106,7 @@ double QwtLogTransform::transform( double value ) const
     return ::log( value );
 }
 
-/*! 
+/*!
   \param value Value to be transformed
   \return exp( value )
  */
@@ -115,7 +115,7 @@ double QwtLogTransform::invTransform( double value ) const
     return qExp( value );
 }
 
-/*! 
+/*!
   \param value Value to be bounded
   \return qBound( LogMin, value, LogMax )
  */
@@ -145,7 +145,7 @@ QwtPowerTransform::~QwtPowerTransform()
 {
 }
 
-/*! 
+/*!
   \param value Value to be transformed
   \return Exponentiation preserving the sign
  */
@@ -155,10 +155,10 @@ double QwtPowerTransform::transform( double value ) const
         return -qPow( -value, 1.0 / d_exponent );
     else
         return qPow( value, 1.0 / d_exponent );
-    
+
 }
 
-/*! 
+/*!
   \param value Value to be transformed
   \return Inverse exponentiation preserving the sign
  */

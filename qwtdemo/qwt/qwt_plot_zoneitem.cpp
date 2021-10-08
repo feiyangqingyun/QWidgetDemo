@@ -13,7 +13,7 @@
 #include <qpainter.h>
 
 class QwtPlotZoneItem::PrivateData
-{   
+{
 public:
     PrivateData():
         orientation( Qt::Vertical ),
@@ -23,12 +23,12 @@ public:
         c.setAlpha( 100 );
         brush = QBrush( c );
     }
-        
+
     Qt::Orientation orientation;
     QPen pen;
     QBrush brush;
     QwtInterval interval;
-};  
+};
 
 /*!
    \brief Constructor
@@ -67,26 +67,26 @@ int QwtPlotZoneItem::rtti() const
     return QwtPlotItem::Rtti_PlotZone;
 }
 
-/*! 
+/*!
   Build and assign a pen
-    
+
   In Qt5 the default pen width is 1.0 ( 0.0 in Qt4 ) what makes it
   non cosmetic ( see QPen::isCosmetic() ). This method has been introduced
   to hide this incompatibility.
-    
+
   \param color Pen color
   \param width Pen width
   \param style Pen style
-    
+
   \sa pen(), brush()
- */ 
+ */
 void QwtPlotZoneItem::setPen( const QColor &color, qreal width, Qt::PenStyle style )
-{   
+{
     setPen( QPen( color, width, style ) );
 }
 
 /*!
-  \brief Assign a pen 
+  \brief Assign a pen
 
   The pen is used to draw the border lines of the zone
 
@@ -111,9 +111,9 @@ const QPen &QwtPlotZoneItem::pen() const
     return d_data->pen;
 }
 
-/*! 
-  \brief Assign a brush 
-    
+/*!
+  \brief Assign a brush
+
   The brush is used to fill the zone
 
   \param brush Brush
@@ -140,8 +140,8 @@ const QBrush &QwtPlotZoneItem::brush() const
 /*!
   \brief Set the orientation of the zone
 
-  A horizontal zone highlights an interval of the y axis, 
-  a vertical zone of the x axis. It is unbounded in the 
+  A horizontal zone highlights an interval of the y axis,
+  a vertical zone of the x axis. It is unbounded in the
   opposite direction.
 
   \sa orientation(), QwtPlotItem::setAxes()
@@ -195,9 +195,9 @@ void QwtPlotZoneItem::setInterval( const QwtInterval &interval )
     if ( d_data->interval != interval )
     {
         d_data->interval = interval;
-        itemChanged(); 
-    }   
-}   
+        itemChanged();
+    }
+}
 
 /*!
   \return Zone interval
@@ -206,7 +206,7 @@ void QwtPlotZoneItem::setInterval( const QwtInterval &interval )
 QwtInterval QwtPlotZoneItem::interval() const
 {
     return d_data->interval;
-}   
+}
 
 /*!
   Draw the zone
@@ -285,7 +285,7 @@ void QwtPlotZoneItem::draw( QPainter *painter,
     }
 }
 
-/*! 
+/*!
   The bounding rectangle is build from the interval in one direction
   and something invalid for the opposite direction.
 

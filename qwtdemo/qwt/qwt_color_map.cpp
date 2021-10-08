@@ -46,8 +46,8 @@ private:
             b = qBlue( rgb );
             a = qAlpha( rgb );
 
-            /* 
-                when mapping a value to rgb we will have to calcualate: 
+            /*
+                when mapping a value to rgb we will have to calcualate:
                    - const int v = int( ( s1.v0 + ratio * s1.vStep ) + 0.5 );
 
                 Thus adding 0.5 ( for rounding ) can be done in advance

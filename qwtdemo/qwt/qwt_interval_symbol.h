@@ -65,7 +65,7 @@ public:
     void setWidth( int );
     int width() const;
 
-    void setBrush( const QBrush& b );
+    void setBrush( const QBrush & );
     const QBrush& brush() const;
 
     void setPen( const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine );
@@ -79,7 +79,6 @@ public:
         const QPointF& from, const QPointF& to ) const;
 
 private:
-
     class PrivateData;
     PrivateData* d_data;
 };

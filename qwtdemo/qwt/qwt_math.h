@@ -27,7 +27,7 @@
 #include "qwt_global.h"
 
 #ifndef M_PI_2
-// For Qt <= 4.8.4 M_PI_2 is not known by MinGW-w64 
+// For Qt <= 4.8.4 M_PI_2 is not known by MinGW-w64
 // when compiling with -std=c++11
 #define M_PI_2 (1.57079632679489661923)
 #endif

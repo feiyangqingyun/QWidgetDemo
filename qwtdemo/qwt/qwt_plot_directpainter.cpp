@@ -17,7 +17,7 @@
 #include <qapplication.h>
 #include <qpixmap.h>
 
-static inline void qwtRenderItem( 
+static inline void qwtRenderItem(
     QPainter *painter, const QRect &canvasRect,
     QwtPlotSeriesItem *seriesItem, int from, int to )
 {
@@ -109,7 +109,7 @@ bool QwtPlotDirectPainter::testAttribute( Attribute attribute ) const
 }
 
 /*!
-  En/Disables clipping 
+  En/Disables clipping
 
   \param enable Enables clipping is true, disable it otherwise
   \sa hasClipping(), clipRegion(), setClipRegion()
@@ -131,11 +131,11 @@ bool QwtPlotDirectPainter::hasClipping() const
 /*!
    \brief Assign a clip region and enable clipping
 
-   Depending on the environment setting a proper clip region might improve 
+   Depending on the environment setting a proper clip region might improve
    the performance heavily. F.e. on Qt embedded only the clipped part of
    the backing store will be copied to a ( maybe unaccelerated ) frame buffer
    device.
-   
+
    \param region Clip region
    \sa clipRegion(), hasClipping(), setClipping()
 */
@@ -200,7 +200,7 @@ void QwtPlotDirectPainter::drawSeries(
     }
 
     bool immediatePaint = true;
-    if ( !canvas->testAttribute( Qt::WA_WState_InPaintEvent ) ) 
+    if ( !canvas->testAttribute( Qt::WA_WState_InPaintEvent ) )
     {
 #if QT_VERSION < 0x050000
         if ( !canvas->testAttribute( Qt::WA_PaintOutsidePaintEvent ) )
@@ -220,7 +220,7 @@ void QwtPlotDirectPainter::drawSeries(
 
         if ( d_data->hasClipping )
         {
-            d_data->painter.setClipRegion( 
+            d_data->painter.setClipRegion(
                 QRegion( canvasRect ) & d_data->clipRegion );
         }
         else
@@ -294,14 +294,14 @@ bool QwtPlotDirectPainter::eventFilter( QObject *, QEvent *event )
 
             if ( doCopyCache )
             {
-                QwtPlotCanvas *plotCanvas = 
+                QwtPlotCanvas *plotCanvas =
                     qobject_cast<QwtPlotCanvas *>( canvas );
                 if ( plotCanvas )
                 {
                     doCopyCache = qwtHasBackingStore( plotCanvas );
                     if ( doCopyCache )
                     {
-                        painter.drawPixmap( plotCanvas->contentsRect().topLeft(), 
+                        painter.drawPixmap( plotCanvas->rect().topLeft(),
                             *plotCanvas->backingStore() );
                     }
                 }

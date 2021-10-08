@@ -80,10 +80,13 @@ public:
         /*!
           Use a MathML (http://en.wikipedia.org/wiki/MathML) render engine
           to display the text. The Qwt MathML extension offers such an engine
-          based on the MathML renderer of the Qt solutions package. 
+          based on the MathML renderer of the former Qt solutions package.
           To enable MathML support the following code needs to be added to the
           application:
-\verbatim QwtText::setTextEngine(QwtText::MathMLText, new QwtMathMLTextEngine()); \endverbatim
+
+          \code
+            QwtText::setTextEngine( QwtText::MathMLText, new QwtMathMLTextEngine() );
+          \endcode
          */
         MathMLText,
 
@@ -139,7 +142,7 @@ public:
     //! Layout attributes
     typedef QFlags<LayoutAttribute> LayoutAttributes;
 
-    QwtText( const QString & = QString::null,
+    QwtText( const QString & = QString(),
              TextFormat textFormat = AutoText );
     QwtText( const QwtText & );
     ~QwtText();
@@ -161,7 +164,7 @@ public:
 
     QFont usedFont( const QFont & ) const;
 
-    void setRenderFlags( int flags );
+    void setRenderFlags( int );
     int renderFlags() const;
 
     void setColor( const QColor & );
@@ -189,7 +192,7 @@ public:
 
     void draw( QPainter *painter, const QRectF &rect ) const;
 
-    static const QwtTextEngine *textEngine( 
+    static const QwtTextEngine *textEngine(
         const QString &text, QwtText::TextFormat = AutoText );
 
     static const QwtTextEngine *textEngine( QwtText::TextFormat );

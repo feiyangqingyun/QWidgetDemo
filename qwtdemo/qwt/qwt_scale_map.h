@@ -24,7 +24,7 @@ class QRectF;
    \brief A scale map
 
    QwtScaleMap offers transformations from the coordinate system
-   of a scale into the linear coordinate system of a paint device 
+   of a scale into the linear coordinate system of a paint device
    and vice versa.
 */
 class QWT_EXPORT QwtScaleMap

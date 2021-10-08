@@ -35,7 +35,7 @@ public:
 protected:
     virtual void paintEvent( QPaintEvent *event );
 
-    virtual void drawButtonLabel( QPainter *p );
+    virtual void drawButtonLabel( QPainter * );
     virtual void drawArrow( QPainter *,
         const QRect &, Qt::ArrowType ) const;
     virtual QRect labelRect() const;

@@ -22,15 +22,15 @@
 
   A double is interpreted as the number of milliseconds since
   1970-01-01T00:00:00 Universal Coordinated Time - also known
-  as "The Epoch". 
+  as "The Epoch".
 
-  While the range of the Julian day in Qt4 is limited to [0, MAX_INT], 
-  Qt5 stores it as qint64 offering a huge range of valid dates. 
-  As the significance of a double is below this ( assuming a 
-  fraction of 52 bits ) the translation is not 
-  bijective with rounding errors for dates very far from Epoch. 
-  For a resolution of 1 ms those start to happen for dates above the 
-  year 144683. 
+  While the range of the Julian day in Qt4 is limited to [0, MAX_INT],
+  Qt5 stores it as qint64 offering a huge range of valid dates.
+  As the significance of a double is below this ( assuming a
+  fraction of 52 bits ) the translation is not
+  bijective with rounding errors for dates very far from Epoch.
+  For a resolution of 1 ms those start to happen for dates above the
+  year 144683.
 
   An axis for a date/time interval is expected to be aligned
   and divided in time/date units like seconds, minutes, ...
@@ -42,9 +42,9 @@
 class QWT_EXPORT QwtDate
 {
 public:
-    /*! 
+    /*!
        How to identify the first week of year differs between
-       countries. 
+       countries.
      */
     enum Week0Type
     {
@@ -59,14 +59,14 @@ public:
 
         /*!
             "The week with January 1.1 in it."
-           
+
             In the U.S. this definition is more common than
             FirstThursday.
         */
         FirstDay
     };
 
-    /*! 
+    /*!
       Classification of an time interval
 
       Time intervals needs to be classified to decide how to
@@ -108,7 +108,7 @@ public:
     static QDate minDate();
     static QDate maxDate();
 
-    static QDateTime toDateTime( double value, 
+    static QDateTime toDateTime( double value,
         Qt::TimeSpec = Qt::UTC );
 
     static double toDouble( const QDateTime & );
@@ -121,7 +121,7 @@ public:
 
     static int utcOffset( const QDateTime & );
 
-    static QString toString( const QDateTime &, 
+    static QString toString( const QDateTime &,
         const QString & format, Week0Type );
 };
 

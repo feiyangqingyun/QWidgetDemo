@@ -1,4 +1,4 @@
-﻿/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -12,7 +12,6 @@
 
 #include "qwt_global.h"
 #include <qpolygon.h>
-#include "qpainterpath.h"
 
 class QPainter;
 class QRect;
@@ -22,6 +21,7 @@ class QPen;
 class QColor;
 class QPointF;
 class QPolygonF;
+class QPainterPath;
 class QPixmap;
 class QByteArray;
 class QwtGraphic;
@@ -85,7 +85,7 @@ public:
         Hexagon,
 
         /*!
-          The symbol is represented by a painter path, where the 
+          The symbol is represented by a painter path, where the
           origin ( 0, 0 ) of the path coordinate system is mapped to
           the position of the symbol.
 
@@ -131,7 +131,7 @@ public:
       to a pixmap and to paint this pixmap.
 
       F.e. the raster paint engine is a pure software renderer
-      where in cache mode a draw operation usually ends in 
+      where in cache mode a draw operation usually ends in
       raster operation with the the backing store, that are usually
       faster, than the algorithms for rendering polygons.
       But the opposite can be expected for graphic pipelines
@@ -141,7 +141,7 @@ public:
 
       \sa setCachePolicy(), cachePolicy()
 
-      \note The policy has no effect, when the symbol is painted 
+      \note The policy has no effect, when the symbol is painted
             to a vector graphics format ( PDF, SVG ).
       \warning Since Qt 4.8 raster is the default backend on X11
      */
@@ -154,10 +154,10 @@ public:
         //! Always use a pixmap cache
         Cache,
 
-        /*! 
+        /*!
            Use a cache when one of the following conditions is true:
 
-           - The symbol is rendered with the software 
+           - The symbol is rendered with the software
              renderer ( QPaintEngine::Raster )
          */
         AutoCache
@@ -175,7 +175,7 @@ public:
 
     void setSize( const QSize & );
     void setSize( int width, int height = -1 );
-    const QSize& size() const;
+    const QSize &size() const;
 
     void setPinPoint( const QPointF &pos, bool enable = true );
     QPointF pinPoint() const;
@@ -185,12 +185,12 @@ public:
 
     virtual void setColor( const QColor & );
 
-    void setBrush( const QBrush& b );
-    const QBrush& brush() const;
+    void setBrush( const QBrush & );
+    const QBrush &brush() const;
 
     void setPen( const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine );
     void setPen( const QPen & );
-    const QPen& pen() const;
+    const QPen &pen() const;
 
     void setStyle( Style );
     Style style() const;

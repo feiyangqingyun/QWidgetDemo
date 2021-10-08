@@ -1,4 +1,4 @@
-﻿/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -14,27 +14,64 @@
 #include "qwt_abstract_legend.h"
 #include "qwt_scale_widget.h"
 #include "qwt_scale_engine.h"
+#include "qwt_scale_map.h"
 #include "qwt_text.h"
 #include "qwt_text_label.h"
 #include "qwt_math.h"
+
 #include <qpainter.h>
-#include "qpainterpath.h"
-#include <qpaintengine.h>
 #include <qtransform.h>
 #include <qprinter.h>
-#include <qprintdialog.h>
 #include <qfiledialog.h>
 #include <qfileinfo.h>
-#include <qstyle.h>
-#include <qstyleoption.h>
 #include <qimagewriter.h>
+#include <qvariant.h>
+
 #ifndef QWT_NO_SVG
 #ifdef QT_SVG_LIB
-#include <qsvggenerator.h>
+#if QT_VERSION >= 0x040500
+#define QWT_FORMAT_SVG 1
+#endif
 #endif
 #endif
 
-static QPainterPath qwtCanvasClip( 
+#ifndef QT_NO_PRINTER
+#define QWT_FORMAT_PDF 1
+#endif
+
+#ifndef QT_NO_PDF
+
+// QPdfWriter::setResolution() has been introduced with
+// Qt 5.3. Guess it is o.k. to stay with QPrinter for older
+// versions.
+
+#if QT_VERSION >= 0x050300
+
+#ifndef QWT_FORMAT_PDF
+#define QWT_FORMAT_PDF 1
+#endif
+
+#define QWT_PDF_WRITER 1
+
+#endif
+#endif
+
+#ifndef QT_NO_PRINTER
+// postscript support has been dropped in Qt5
+#if QT_VERSION < 0x050000
+#define QWT_FORMAT_POSTSCRIPT 1
+#endif
+#endif
+
+#if QWT_FORMAT_SVG
+#include <qsvggenerator.h>
+#endif
+
+#if QWT_PDF_WRITER
+#include <qpdfwriter.h>
+#endif
+
+static QPainterPath qwtCanvasClip(
     const QWidget* canvas, const QRectF &canvasRect )
 {
     // The clip region is calculated in integers
@@ -58,6 +95,14 @@ static QPainterPath qwtCanvasClip(
     return clipPath;
 }
 
+static inline QFont qwtResolvedFont( const QWidget *widget )
+{
+    QFont font = widget->font();
+    font.resolve( QFont::AllPropertiesResolved );
+
+    return font;
+}
+
 class QwtPlotRenderer::PrivateData
 {
 public:
@@ -71,7 +116,7 @@ public:
     QwtPlotRenderer::LayoutFlags layoutFlags;
 };
 
-/*! 
+/*!
    Constructor
    \param parent Parent object
 */
@@ -239,9 +284,20 @@ void QwtPlotRenderer::renderDocument( QwtPlot *plot,
     const QRectF documentRect( 0.0, 0.0, size.width(), size.height() );
 
     const QString fmt = format.toLower();
-    if ( fmt == "pdf" )
+    if ( fmt == QLatin1String( "pdf" ) )
     {
-#ifndef QT_NO_PRINTER
+#if QWT_FORMAT_PDF
+
+#if QWT_PDF_WRITER
+        QPdfWriter pdfWriter( fileName );
+        pdfWriter.setPageSizeMM( sizeMM );
+        pdfWriter.setTitle( title );
+        pdfWriter.setPageMargins( QMarginsF() );
+        pdfWriter.setResolution( resolution );
+
+        QPainter painter( &pdfWriter );
+        render( plot, &painter, documentRect );
+#else
         QPrinter printer;
         printer.setOutputFormat( QPrinter::PdfFormat );
         printer.setColorMode( QPrinter::Color );
@@ -254,11 +310,11 @@ void QwtPlotRenderer::renderDocument( QwtPlot *plot,
         QPainter painter( &printer );
         render( plot, &painter, documentRect );
 #endif
+#endif
     }
-    else if ( fmt == "ps" )
+    else if ( fmt == QLatin1String( "ps" ) )
     {
-#if QT_VERSION < 0x050000
-#ifndef QT_NO_PRINTER
+#if QWT_FORMAT_POSTSCRIPT
         QPrinter printer;
         printer.setOutputFormat( QPrinter::PostScriptFormat );
         printer.setColorMode( QPrinter::Color );
@@ -271,13 +327,10 @@ void QwtPlotRenderer::renderDocument( QwtPlot *plot,
         QPainter painter( &printer );
         render( plot, &painter, documentRect );
 #endif
-#endif
     }
-    else if ( fmt == "svg" )
+    else if ( fmt == QLatin1String( "svg" ) )
     {
-#ifndef QWT_NO_SVG
-#ifdef QT_SVG_LIB
-#if QT_VERSION >= 0x040500
+#if QWT_FORMAT_SVG
         QSvgGenerator generator;
         generator.setTitle( title );
         generator.setFileName( fileName );
@@ -286,8 +339,6 @@ void QwtPlotRenderer::renderDocument( QwtPlot *plot,
 
         QPainter painter( &generator );
         render( plot, &painter, documentRect );
-#endif
-#endif
 #endif
     }
     else
@@ -367,9 +418,7 @@ void QwtPlotRenderer::renderTo(
 
 #endif
 
-#ifndef QWT_NO_SVG
-#ifdef QT_SVG_LIB
-#if QT_VERSION >= 0x040500
+#if QWT_FORMAT_SVG
 
 /*!
   \brief Render the plot to a QSvgGenerator
@@ -395,8 +444,7 @@ void QwtPlotRenderer::renderTo(
     QPainter p( &generator );
     render( plot, &p, rect );
 }
-#endif
-#endif
+
 #endif
 
 /*!
@@ -461,11 +509,6 @@ void QwtPlotRenderer::render( QwtPlot *plot,
 
             if ( !plot->axisEnabled( axisId ) )
             {
-                int left = 0;
-                int right = 0;
-                int top = 0;
-                int bottom = 0;
-
                 // When we have a scale the frame is painted on
                 // the position of the backbone - otherwise we
                 // need to introduce a margin around the canvas
@@ -487,7 +530,6 @@ void QwtPlotRenderer::render( QwtPlot *plot,
                     default:
                         break;
                 }
-                layoutRect.adjust( left, top, right, bottom );
             }
         }
     }
@@ -500,8 +542,7 @@ void QwtPlotRenderer::render( QwtPlot *plot,
         ( d_data->discardFlags & DiscardCanvasFrame ) )
     {
         layoutOptions |= QwtPlotLayout::IgnoreFrames;
-    } 
-
+    }
 
     if ( d_data->discardFlags & DiscardLegend )
         layoutOptions |= QwtPlotLayout::IgnoreLegend;
@@ -591,18 +632,18 @@ void QwtPlotRenderer::render( QwtPlot *plot,
 
   \param plot Plot widget
   \param painter Painter
-  \param rect Bounding rectangle
+  \param titleRect Bounding rectangle for the title
 */
 void QwtPlotRenderer::renderTitle( const QwtPlot *plot,
-    QPainter *painter, const QRectF &rect ) const
+    QPainter *painter, const QRectF &titleRect ) const
 {
-    painter->setFont( plot->titleLabel()->font() );
+    painter->setFont( qwtResolvedFont( plot->titleLabel() ) );
 
     const QColor color = plot->titleLabel()->palette().color(
             QPalette::Active, QPalette::Text );
 
     painter->setPen( color );
-    plot->titleLabel()->text().draw( painter, rect );
+    plot->titleLabel()->text().draw( painter, titleRect );
 }
 
 /*!
@@ -610,35 +651,34 @@ void QwtPlotRenderer::renderTitle( const QwtPlot *plot,
 
   \param plot Plot widget
   \param painter Painter
-  \param rect Bounding rectangle
+  \param footerRect Bounding rectangle for the footer
 */
 void QwtPlotRenderer::renderFooter( const QwtPlot *plot,
-    QPainter *painter, const QRectF &rect ) const
+    QPainter *painter, const QRectF &footerRect ) const
 {
-    painter->setFont( plot->footerLabel()->font() );
+    painter->setFont( qwtResolvedFont( plot->footerLabel() ) );
 
     const QColor color = plot->footerLabel()->palette().color(
             QPalette::Active, QPalette::Text );
 
     painter->setPen( color );
-    plot->footerLabel()->text().draw( painter, rect );
+    plot->footerLabel()->text().draw( painter, footerRect );
 }
-
 
 /*!
   Render the legend into a given rectangle.
 
   \param plot Plot widget
   \param painter Painter
-  \param rect Bounding rectangle
+  \param legendRect Bounding rectangle for the legend
 */
 void QwtPlotRenderer::renderLegend( const QwtPlot *plot,
-    QPainter *painter, const QRectF &rect ) const
+    QPainter *painter, const QRectF &legendRect ) const
 {
     if ( plot->legend() )
     {
         bool fillBackground = !( d_data->discardFlags & DiscardBackground );
-        plot->legend()->renderLegend( painter, rect, fillBackground );
+        plot->legend()->renderLegend( painter, legendRect, fillBackground );
     }
 }
 
@@ -652,12 +692,12 @@ void QwtPlotRenderer::renderLegend( const QwtPlot *plot,
   \param startDist Start border distance
   \param endDist End border distance
   \param baseDist Base distance
-  \param rect Bounding rectangle
+  \param scaleRect Bounding rectangle for the scale
 */
 void QwtPlotRenderer::renderScale( const QwtPlot *plot,
     QPainter *painter,
     int axisId, int startDist, int endDist, int baseDist,
-    const QRectF &rect ) const
+    const QRectF &scaleRect ) const
 {
     if ( !plot->axisEnabled( axisId ) )
         return;
@@ -666,7 +706,7 @@ void QwtPlotRenderer::renderScale( const QwtPlot *plot,
     if ( scaleWidget->isColorBarEnabled()
         && scaleWidget->colorBarWidth() > 0 )
     {
-        scaleWidget->drawColorBar( painter, scaleWidget->colorBarRect( rect ) );
+        scaleWidget->drawColorBar( painter, scaleWidget->colorBarRect( scaleRect ) );
         baseDist += scaleWidget->colorBarWidth() + scaleWidget->spacing();
     }
 
@@ -679,33 +719,33 @@ void QwtPlotRenderer::renderScale( const QwtPlot *plot,
     {
         case QwtPlot::yLeft:
         {
-            x = rect.right() - 1.0 - baseDist;
-            y = rect.y() + startDist;
-            w = rect.height() - startDist - endDist;
+            x = scaleRect.right() - 1.0 - baseDist;
+            y = scaleRect.y() + startDist;
+            w = scaleRect.height() - startDist - endDist;
             align = QwtScaleDraw::LeftScale;
             break;
         }
         case QwtPlot::yRight:
         {
-            x = rect.left() + baseDist;
-            y = rect.y() + startDist;
-            w = rect.height() - startDist - endDist;
+            x = scaleRect.left() + baseDist;
+            y = scaleRect.y() + startDist;
+            w = scaleRect.height() - startDist - endDist;
             align = QwtScaleDraw::RightScale;
             break;
         }
         case QwtPlot::xTop:
         {
-            x = rect.left() + startDist;
-            y = rect.bottom() - 1.0 - baseDist;
-            w = rect.width() - startDist - endDist;
+            x = scaleRect.left() + startDist;
+            y = scaleRect.bottom() - 1.0 - baseDist;
+            w = scaleRect.width() - startDist - endDist;
             align = QwtScaleDraw::TopScale;
             break;
         }
         case QwtPlot::xBottom:
         {
-            x = rect.left() + startDist;
-            y = rect.top() + baseDist;
-            w = rect.width() - startDist - endDist;
+            x = scaleRect.left() + startDist;
+            y = scaleRect.top() + baseDist;
+            w = scaleRect.width() - startDist - endDist;
             align = QwtScaleDraw::BottomScale;
             break;
         }
@@ -713,9 +753,9 @@ void QwtPlotRenderer::renderScale( const QwtPlot *plot,
             return;
     }
 
-    scaleWidget->drawTitle( painter, align, rect );
+    scaleWidget->drawTitle( painter, align, scaleRect );
 
-    painter->setFont( scaleWidget->font() );
+    painter->setFont( qwtResolvedFont( scaleWidget ) );
 
     QwtScaleDraw *sd = const_cast<QwtScaleDraw *>( scaleWidget->scaleDraw() );
     const QPointF sdPos = sd->pos();
@@ -740,12 +780,12 @@ void QwtPlotRenderer::renderScale( const QwtPlot *plot,
 
   \param plot Plot widget
   \param painter Painter
-  \param map Maps mapping between plot and paint device coordinates
+  \param maps Maps mapping between plot and paint device coordinates
   \param canvasRect Canvas rectangle
 */
 void QwtPlotRenderer::renderCanvas( const QwtPlot *plot,
-    QPainter *painter, const QRectF &canvasRect, 
-    const QwtScaleMap *map ) const
+    QPainter *painter, const QRectF &canvasRect,
+    const QwtScaleMap *maps ) const
 {
     const QWidget *canvas = plot->canvas();
 
@@ -771,7 +811,7 @@ void QwtPlotRenderer::renderCanvas( const QwtPlot *plot,
         painter->save();
 
         painter->setClipRect( canvasRect );
-        plot->drawItems( painter, canvasRect, map );
+        plot->drawItems( painter, canvasRect, maps );
 
         painter->restore();
     }
@@ -795,7 +835,7 @@ void QwtPlotRenderer::renderCanvas( const QwtPlot *plot,
         else
             painter->setClipPath( clipPath );
 
-        plot->drawItems( painter, canvasRect, map );
+        plot->drawItems( painter, canvasRect, maps );
 
         painter->restore();
     }
@@ -814,7 +854,7 @@ void QwtPlotRenderer::renderCanvas( const QwtPlot *plot,
             clipPath = qwtCanvasClip( canvas, canvasRect );
         }
 
-        QRectF innerRect = canvasRect.adjusted( 
+        QRectF innerRect = canvasRect.adjusted(
             frameWidth, frameWidth, -frameWidth, -frameWidth );
 
         painter->save();
@@ -833,7 +873,7 @@ void QwtPlotRenderer::renderCanvas( const QwtPlot *plot,
             QwtPainter::drawBackgound( painter, innerRect, canvas );
         }
 
-        plot->drawItems( painter, innerRect, map );
+        plot->drawItems( painter, innerRect, maps );
 
         painter->restore();
 
@@ -845,17 +885,14 @@ void QwtPlotRenderer::renderCanvas( const QwtPlot *plot,
                 canvas->property( "frameShadow" ).toInt() |
                 canvas->property( "frameShape" ).toInt();
 
-            const int frameWidth = canvas->property( "frameWidth" ).toInt();
-
-
             const QVariant borderRadius = canvas->property( "borderRadius" );
-            if ( borderRadius.type() == QVariant::Double 
+            if ( borderRadius.type() == QVariant::Double
                 && borderRadius.toDouble() > 0.0 )
             {
-                const double r = borderRadius.toDouble();
+                const double radius = borderRadius.toDouble();
 
                 QwtPainter::drawRoundedFrame( painter, canvasRect,
-                    r, r, canvas->palette(), frameWidth, frameStyle );
+                    radius, radius, canvas->palette(), frameWidth, frameStyle );
             }
             else
             {
@@ -933,7 +970,7 @@ bool QwtPlotRenderer::updateCanvasMargins( QwtPlot *plot,
 {
     double margins[QwtPlot::axisCnt];
     plot->getCanvasMarginsHint( maps, canvasRect,
-        margins[QwtPlot::yLeft], margins[QwtPlot::xTop], 
+        margins[QwtPlot::yLeft], margins[QwtPlot::xTop],
         margins[QwtPlot::yRight], margins[QwtPlot::xBottom] );
 
     bool marginsChanged = false;
@@ -963,29 +1000,29 @@ bool QwtPlotRenderer::updateCanvasMargins( QwtPlot *plot,
 */
 bool QwtPlotRenderer::exportTo( QwtPlot *plot, const QString &documentName,
      const QSizeF &sizeMM, int resolution )
-{       
+{
     if ( plot == NULL )
         return false;
-    
+
     QString fileName = documentName;
 
-    // What about translation 
+    // What about translation
 
 #ifndef QT_NO_FILEDIALOG
     const QList<QByteArray> imageFormats =
         QImageWriter::supportedImageFormats();
-        
+
     QStringList filter;
-#ifndef QT_NO_PRINTER
+#if QWT_FORMAT_PDF
     filter += QString( "PDF " ) + tr( "Documents" ) + " (*.pdf)";
 #endif
-#ifndef QWT_NO_SVG 
+#if QWT_FORMAT_SVG
     filter += QString( "SVG " ) + tr( "Documents" ) + " (*.svg)";
 #endif
-#ifndef QT_NO_PRINTER
+#if QWT_FORMAT_POSTSCRIPT
     filter += QString( "Postscript " ) + tr( "Documents" ) + " (*.ps)";
 #endif
-    
+
     if ( imageFormats.size() > 0 )
     {
         QString imageFilter( tr( "Images" ) );
@@ -994,22 +1031,22 @@ bool QwtPlotRenderer::exportTo( QwtPlot *plot, const QString &documentName,
         {
             if ( i > 0 )
                 imageFilter += " ";
-            imageFilter += "*."; 
+            imageFilter += "*.";
             imageFilter += imageFormats[i];
-        }   
+        }
         imageFilter += ")";
-        
+
         filter += imageFilter;
-    }   
-    
+    }
+
     fileName = QFileDialog::getSaveFileName(
         NULL, tr( "Export File Name" ), fileName,
         filter.join( ";;" ), NULL, QFileDialog::DontConfirmOverwrite );
-#endif  
+#endif
     if ( fileName.isEmpty() )
         return false;
 
     renderDocument( plot, fileName, sizeMM, resolution );
 
     return true;
-}   
+}

@@ -29,7 +29,7 @@ class QwtPlotSeriesItem;
 
     On certain environments it might be important to calculate a proper
     clip region before painting. F.e. for Qt Embedded only the clipped part
-    of the backing store will be copied to a ( maybe unaccelerated ) 
+    of the backing store will be copied to a ( maybe unaccelerated )
     frame buffer.
 
     \warning Incremental painting will only help when no replot is triggered
@@ -61,8 +61,8 @@ public:
 
         /*!
           When QwtPlotCanvas::BackingStore is enabled the painter
-          has to paint to the backing store and the widget. In certain 
-          situations/environments it might be faster to paint to 
+          has to paint to the backing store and the widget. In certain
+          situations/environments it might be faster to paint to
           the backing store only and then copy the backing store to the canvas.
           This flag can also be useful for settings, where Qt fills the
           the clip region with the widget background.

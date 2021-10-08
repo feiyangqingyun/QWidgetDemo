@@ -128,7 +128,7 @@ void QwtPanner::getMouseButton( Qt::MouseButton &button,
    \param key Key ( See Qt::Keycode )
    \param modifiers Keyboard modifiers
 */
-void QwtPanner::setAbortKey( int key, 
+void QwtPanner::setAbortKey( int key,
     Qt::KeyboardModifiers modifiers )
 {
     d_data->abortKey = key;
@@ -136,7 +136,7 @@ void QwtPanner::setAbortKey( int key,
 }
 
 //! Get the abort key and modifiers
-void QwtPanner::getAbortKey( int &key, 
+void QwtPanner::getAbortKey( int &key,
     Qt::KeyboardModifiers &modifiers ) const
 {
     key = d_data->abortKey;
@@ -247,17 +247,21 @@ bool QwtPanner::isEnabled() const
    Repaint the grabbed pixmap on its current position and
    fill the empty spaces by the background of the parent widget.
 
-   \param pe Paint event
+   \param event Paint event
 */
-void QwtPanner::paintEvent( QPaintEvent *pe )
+void QwtPanner::paintEvent( QPaintEvent *event )
 {
     int dx = d_data->pos.x() - d_data->initialPos.x();
     int dy = d_data->pos.y() - d_data->initialPos.y();
 
-    QRect r( 0, 0, d_data->pixmap.width(), d_data->pixmap.height() );
-    r.moveCenter( QPoint( r.center().x() + dx, r.center().y() + dy ) );
+    QRectF r;
+    r.setSize( d_data->pixmap.size() );
+#if QT_VERSION >= 0x050000
+    r.setSize( r.size() / d_data->pixmap.devicePixelRatio() );
+#endif
+    r.moveCenter( QPointF( r.center().x() + dx, r.center().y() + dy ) );
 
-    QPixmap pm( size() );
+    QPixmap pm = QwtPainter::backingStore( this, size() );
     QwtPainter::fillPixmap( parentWidget(), pm );
 
     QPainter painter( &pm );
@@ -266,11 +270,11 @@ void QwtPanner::paintEvent( QPaintEvent *pe )
     {
         QPixmap masked = d_data->pixmap;
         masked.setMask( d_data->contentsMask );
-        painter.drawPixmap( r, masked );
+        painter.drawPixmap( r.toRect(), masked );
     }
     else
     {
-        painter.drawPixmap( r, d_data->pixmap );
+        painter.drawPixmap( r.toRect(), d_data->pixmap );
     }
 
     painter.end();
@@ -279,7 +283,7 @@ void QwtPanner::paintEvent( QPaintEvent *pe )
         pm.setMask( d_data->contentsMask );
 
     painter.begin( this );
-    painter.setClipRegion( pe->region() );
+    painter.setClipRegion( event->region() );
     painter.drawPixmap( 0, 0, pm );
 }
 

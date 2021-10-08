@@ -190,7 +190,7 @@ static QImage qwtExpandImage(const QImage &image,
                         yy2 = sz.height();
                 }
 
-                const quint32 *line1 = 
+                const quint32 *line1 =
                     reinterpret_cast<const quint32 *>( image.scanLine( y1 ) );
 
                 for ( int x1 = 0; x1 < w; x1++ )
@@ -222,14 +222,14 @@ static QImage qwtExpandImage(const QImage &image,
                     const quint32 rgb( line1[x1] );
                     for ( int y2 = yy1; y2 < yy2; y2++ )
                     {
-                        quint32 *line2 = reinterpret_cast<quint32 *>( 
+                        quint32 *line2 = reinterpret_cast<quint32 *>(
                             expanded.scanLine( y2 ) );
 
-                        for ( int x2 = xx1; x2 < xx2; x2++ ) 
+                        for ( int x2 = xx1; x2 < xx2; x2++ )
                             line2[x2] = rgb;
-                    }       
-                }   
-            }   
+                    }
+                }
+            }
             break;
         }
         case 8:
@@ -240,26 +240,26 @@ static QImage qwtExpandImage(const QImage &image,
                 if ( y1 == 0 )
                 {
                     yy1 = 0;
-                }   
+                }
                 else
                 {
                     yy1 = qRound( y1 * ph - py0 );
                     if ( yy1 < 0 )
-                        yy1 = 0; 
-                }       
-                
+                        yy1 = 0;
+                }
+
                 int yy2;
                 if ( y1 == h - 1 )
                 {
                     yy2 = sz.height();
-                }   
+                }
                 else
                 {
                     yy2 = qRound( ( y1 + 1 ) * ph - py0 );
                     if ( yy2 > sz.height() )
                         yy2 = sz.height();
                 }
-    
+
                 const uchar *line1 = image.scanLine( y1 );
 
                 for ( int x1 = 0; x1 < w; x1++ )
@@ -292,17 +292,17 @@ static QImage qwtExpandImage(const QImage &image,
                     {
                         uchar *line2 = expanded.scanLine( y2 );
                         memset( line2 + xx1, line1[x1], xx2 - xx1 );
-                    }       
-                }   
+                    }
+                }
             }
             break;
         }
         default:
             expanded = image;
     }
-    
+
     return expanded;
-}   
+}
 
 static QRectF qwtExpandToPixels(const QRectF &rect, const QRectF &pixelRect)
 {
@@ -384,7 +384,7 @@ static bool qwtUseCache( QwtPlotRasterItem::CachePolicy policy,
     return doCache;
 }
 
-static void qwtToRgba( const QImage* from, QImage* to,  
+static void qwtToRgba( const QImage* from, QImage* to,
     const QRect& tile, int alpha )
 {
     const QRgb mask1 = qRgba( 0, 0, 0, alpha );
@@ -572,16 +572,16 @@ void QwtPlotRasterItem::invalidateCache()
    \brief Pixel hint
 
    The geometry of a pixel is used to calculated the resolution and
-   alignment of the rendered image. 
+   alignment of the rendered image.
 
-   Width and height of the hint need to be the horizontal  
-   and vertical distances between 2 neighbored points. 
-   The center of the hint has to be the position of any point 
+   Width and height of the hint need to be the horizontal
+   and vertical distances between 2 neighbored points.
+   The center of the hint has to be the position of any point
    ( it doesn't matter which one ).
 
    Limiting the resolution of the image might significantly improve
    the performance and heavily reduce the amount of memory when rendering
-   a QImage from the raster data. 
+   a QImage from the raster data.
 
    The default implementation returns an empty rectangle (QRectF()),
    meaning, that the image will be rendered in target device ( f.e screen )
@@ -663,7 +663,7 @@ void QwtPlotRasterItem::draw( QPainter *painter,
         else
         {
             /*
-              If only one dimension is of the data pixel is higher 
+              If only one dimension is of the data pixel is higher
               we expand the pixel rect to the resolution of the target device.
              */
 
@@ -689,7 +689,7 @@ void QwtPlotRasterItem::draw( QPainter *painter,
         // When we have no information about position and size of
         // data pixels we render in resolution of the paint device.
 
-        image = compose(xxMap, yyMap, 
+        image = compose(xxMap, yyMap,
             area, paintRect, paintRect.size().toSize(), doCache);
         if ( image.isNull() )
             return;
@@ -697,19 +697,19 @@ void QwtPlotRasterItem::draw( QPainter *painter,
         // Remove pixels at the boundaries, when explicitly
         // excluded in the intervals
 
-        imageRect = qwtStripRect(paintRect, area, 
+        imageRect = qwtStripRect(paintRect, area,
             xxMap, yyMap, xInterval, yInterval);
 
         if ( imageRect != paintRect )
         {
-            const QRect r( 
+            const QRect r(
                 qRound( imageRect.x() - paintRect.x()),
                 qRound( imageRect.y() - paintRect.y() ),
                 qRound( imageRect.width() ),
                 qRound( imageRect.height() ) );
-                
+
             image = image.copy(r);
-        }   
+        }
     }
     else
     {
@@ -734,30 +734,30 @@ void QwtPlotRasterItem::draw( QPainter *painter,
         imageSize.setWidth( qRound( imageArea.width() / pixelRect.width() ) );
         imageSize.setHeight( qRound( imageArea.height() / pixelRect.height() ) );
 
-        image = compose(xxMap, yyMap, 
+        image = compose(xxMap, yyMap,
             imageArea, paintRect, imageSize, doCache );
 
         if ( image.isNull() )
             return;
 
-        imageRect = qwtStripRect(paintRect, area, 
+        imageRect = qwtStripRect(paintRect, area,
             xxMap, yyMap, xInterval, yInterval);
 
         if ( ( image.width() > 1 || image.height() > 1 ) &&
             testPaintAttribute( PaintInDeviceResolution ) )
         {
-            // Because of rounding errors the pixels 
-            // need to be expanded manually to rectangles of 
+            // Because of rounding errors the pixels
+            // need to be expanded manually to rectangles of
             // different sizes
 
-            image = qwtExpandImage(image, xxMap, yyMap, 
+            image = qwtExpandImage(image, xxMap, yyMap,
                 imageArea, area, paintRect, xInterval, yInterval );
         }
     }
 
     painter->save();
     painter->setWorldTransform( QTransform() );
-    
+
     QwtPainter::drawImage( painter, imageRect, image );
 
     painter->restore();
@@ -768,7 +768,7 @@ void QwtPlotRasterItem::draw( QPainter *painter,
 
    This method is intended to be reimplemented by derived classes.
    The default implementation returns an invalid interval.
-   
+
    \param axis X, Y, or Z axis
 */
 QwtInterval QwtPlotRasterItem::interval(Qt::Axis axis) const
@@ -816,9 +816,9 @@ QRectF QwtPlotRasterItem::boundingRect() const
     return r.normalized();
 }
 
-QImage QwtPlotRasterItem::compose( 
+QImage QwtPlotRasterItem::compose(
     const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QRectF &imageArea, const QRectF &paintRect, 
+    const QRectF &imageArea, const QRectF &paintRect,
     const QSize &imageSize, bool doCache) const
 {
     QImage image;
@@ -841,14 +841,14 @@ QImage QwtPlotRasterItem::compose(
         if ( paintRect.toRect().width() > imageSize.width() )
             dx = imageArea.width() / imageSize.width();
 
-        const QwtScaleMap xxMap = 
+        const QwtScaleMap xxMap =
             imageMap(Qt::Horizontal, xMap, imageArea, imageSize, dx);
-        
+
         double dy = 0.0;
         if ( paintRect.toRect().height() > imageSize.height() )
             dy = imageArea.height() / imageSize.height();
 
-        const QwtScaleMap yyMap = 
+        const QwtScaleMap yyMap =
             imageMap(Qt::Vertical, yMap, imageArea, imageSize, dy);
 
         image = renderImage( xxMap, yyMap, imageArea, imageSize );

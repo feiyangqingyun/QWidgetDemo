@@ -1,4 +1,4 @@
-﻿/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -14,15 +14,34 @@
 #include <qbitmap.h>
 #include <qstyle.h>
 #include <qstyleoption.h>
-#include "qpainterpath.h"
+
+#if QT_VERSION >= 0x050000
+#if QT_VERSION < 0x050100
+#define QWT_USE_WINDOW_HANDLE 1
+#endif
+#endif
+
+#ifdef QWT_USE_WINDOW_HANDLE
+#include <qwindow.h>
+#endif
 
 static QBitmap qwtBorderMask( const QWidget *canvas, const QSize &size )
 {
+#if QT_VERSION >= 0x050000
+    qreal pixelRatio = 1.0;
+
+#ifdef QWT_USE_WINDOW_HANDLE
+    pixelRatio = canvas->windowHandle()->devicePixelRatio();
+#else
+    pixelRatio = canvas->devicePixelRatio();
+#endif
+#endif
+
     const QRect r( 0, 0, size.width(), size.height() );
 
     QPainterPath borderPath;
 
-    ( void )QMetaObject::invokeMethod( 
+    ( void )QMetaObject::invokeMethod(
         const_cast< QWidget *>( canvas ), "borderPath", Qt::DirectConnection,
         Q_RETURN_ARG( QPainterPath, borderPath ), Q_ARG( QRect, r ) );
 
@@ -31,7 +50,12 @@ static QBitmap qwtBorderMask( const QWidget *canvas, const QSize &size )
         if ( canvas->contentsRect() == canvas->rect() )
             return QBitmap();
 
+#if QT_VERSION >= 0x050000
+        QBitmap mask( size * pixelRatio );
+        mask.setDevicePixelRatio( pixelRatio );
+#else
         QBitmap mask( size );
+#endif
         mask.fill( Qt::color0 );
 
         QPainter painter( &mask );
@@ -40,7 +64,12 @@ static QBitmap qwtBorderMask( const QWidget *canvas, const QSize &size )
         return mask;
     }
 
+#if QT_VERSION >= 0x050000
+    QImage image( size * pixelRatio, QImage::Format_ARGB32_Premultiplied );
+    image.setDevicePixelRatio( pixelRatio );
+#else
     QImage image( size, QImage::Format_ARGB32_Premultiplied );
+#endif
     image.fill( Qt::color0 );
 
     QPainter painter( &image );
@@ -63,12 +92,12 @@ static QBitmap qwtBorderMask( const QWidget *canvas, const QSize &size )
         const QVariant borderRadius = canvas->property( "borderRadius" );
         const QVariant frameWidth = canvas->property( "frameWidth" );
 
-        if ( borderRadius.type() == QVariant::Double 
+        if ( borderRadius.type() == QVariant::Double
             && frameWidth.type() == QVariant::Int )
         {
             const double br = borderRadius.toDouble();
             const int fw = frameWidth.toInt();
-        
+
             if ( br > 0.0 && fw > 0 )
             {
                 painter.setPen( QPen( Qt::color1, fw ) );
@@ -114,8 +143,8 @@ QwtPlotPanner::QwtPlotPanner( QWidget *canvas ):
 {
     d_data = new PrivateData();
 
-    connect( this, SIGNAL( panned( int, int ) ),
-        SLOT( moveCanvas( int, int ) ) );
+    connect( this, SIGNAL(panned(int,int)),
+        SLOT(moveCanvas(int,int)) );
 }
 
 //! Destructor
@@ -256,7 +285,7 @@ QBitmap QwtPlotPanner::contentsMask() const
    \return Pixmap with the content of the canvas
  */
 QPixmap QwtPlotPanner::grab() const
-{   
+{
     const QWidget *cv = canvas();
     if ( cv && cv->inherits( "QGLWidget" ) )
     {
@@ -272,5 +301,5 @@ QPixmap QwtPlotPanner::grab() const
     }
 
     return QwtPanner::grab();
-}   
+}
 

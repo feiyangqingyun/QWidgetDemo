@@ -105,7 +105,7 @@ QList<QwtPickerMachine::Command> QwtPickerClickPointMachine::transition(
     {
         case QEvent::MouseButtonPress:
         {
-            if ( eventPattern.mouseMatch( QwtEventPattern::MouseSelect1, 
+            if ( eventPattern.mouseMatch( QwtEventPattern::MouseSelect1,
                 static_cast<const QMouseEvent *>( event ) ) )
             {
                 cmdList += Begin;
@@ -151,7 +151,7 @@ QList<QwtPickerMachine::Command> QwtPickerDragPointMachine::transition(
     {
         case QEvent::MouseButtonPress:
         {
-            if ( eventPattern.mouseMatch( QwtEventPattern::MouseSelect1, 
+            if ( eventPattern.mouseMatch( QwtEventPattern::MouseSelect1,
                 static_cast<const QMouseEvent *>( event ) ) )
             {
                 if ( state() == 0 )
@@ -224,7 +224,7 @@ QList<QwtPickerMachine::Command> QwtPickerClickRectMachine::transition(
     {
         case QEvent::MouseButtonPress:
         {
-            if ( eventPattern.mouseMatch( QwtEventPattern::MouseSelect1, 
+            if ( eventPattern.mouseMatch( QwtEventPattern::MouseSelect1,
                 static_cast<const QMouseEvent *>( event ) ) )
             {
                 switch ( state() )
@@ -259,7 +259,7 @@ QList<QwtPickerMachine::Command> QwtPickerClickRectMachine::transition(
         }
         case QEvent::MouseButtonRelease:
         {
-            if ( eventPattern.mouseMatch( QwtEventPattern::MouseSelect1, 
+            if ( eventPattern.mouseMatch( QwtEventPattern::MouseSelect1,
                 static_cast<const QMouseEvent *>( event ) ) )
             {
                 if ( state() == 1 )
@@ -323,7 +323,7 @@ QList<QwtPickerMachine::Command> QwtPickerDragRectMachine::transition(
     {
         case QEvent::MouseButtonPress:
         {
-            if ( eventPattern.mouseMatch( QwtEventPattern::MouseSelect1, 
+            if ( eventPattern.mouseMatch( QwtEventPattern::MouseSelect1,
                 static_cast<const QMouseEvent *>( event ) ) )
             {
                 if ( state() == 0 )
@@ -354,7 +354,7 @@ QList<QwtPickerMachine::Command> QwtPickerDragRectMachine::transition(
         }
         case QEvent::KeyPress:
         {
-            if ( eventPattern.keyMatch( QwtEventPattern::KeySelect1, 
+            if ( eventPattern.keyMatch( QwtEventPattern::KeySelect1,
                 static_cast<const QKeyEvent *> ( event ) ) )
             {
                 if ( state() == 0 )
@@ -395,7 +395,7 @@ QList<QwtPickerMachine::Command> QwtPickerPolygonMachine::transition(
     {
         case QEvent::MouseButtonPress:
         {
-            if ( eventPattern.mouseMatch( QwtEventPattern::MouseSelect1, 
+            if ( eventPattern.mouseMatch( QwtEventPattern::MouseSelect1,
                 static_cast<const QMouseEvent *>( event ) ) )
             {
                 if ( state() == 0 )
@@ -410,7 +410,7 @@ QList<QwtPickerMachine::Command> QwtPickerPolygonMachine::transition(
                     cmdList += Append;
                 }
             }
-            if ( eventPattern.mouseMatch( QwtEventPattern::MouseSelect2, 
+            if ( eventPattern.mouseMatch( QwtEventPattern::MouseSelect2,
                 static_cast<const QMouseEvent *>( event ) ) )
             {
                 if ( state() == 1 )

@@ -40,42 +40,43 @@ class QwtTextLabel;
   are calculated from the plot items, using algorithms (QwtScaleEngine) which
   can be configured separately for each axis.
 
-  The simpleplot example is a good starting point to see how to set up a 
+  The simpleplot example is a good starting point to see how to set up a
   plot widget.
 
   \image html plot.png
 
   \par Example
-  The following example shows (schematically) the most simple
-  way to use QwtPlot. By default, only the left and bottom axes are
-  visible and their scales are computed automatically.
-  \verbatim
-#include <qwt_plot.h>
-#include <qwt_plot_curve.h>
+    The following example shows (schematically) the most simple
+    way to use QwtPlot. By default, only the left and bottom axes are
+    visible and their scales are computed automatically.
+    \code
+      #include <qwt_plot.h>
+      #include <qwt_plot_curve.h>
 
-QwtPlot *myPlot = new QwtPlot("Two Curves", parent);
+      QwtPlot *myPlot = new QwtPlot( "Two Curves", parent );
 
-// add curves
-QwtPlotCurve *curve1 = new QwtPlotCurve("Curve 1");
-QwtPlotCurve *curve2 = new QwtPlotCurve("Curve 2");
+      // add curves
+      QwtPlotCurve *curve1 = new QwtPlotCurve( "Curve 1" );
+      QwtPlotCurve *curve2 = new QwtPlotCurve( "Curve 2" );
 
-// connect or copy the data to the curves
-curve1->setData(...);
-curve2->setData(...);
+      // connect or copy the data to the curves
+      curve1->setData( ... );
+      curve2->setData( ... );
 
-curve1->attach(myPlot);
-curve2->attach(myPlot);
+      curve1->attach( myPlot );
+      curve2->attach( myPlot );
 
-// finally, refresh the plot
-myPlot->replot();
-\endverbatim
+      // finally, refresh the plot
+      myPlot->replot();
+    \endcode
+  \endpar
 */
 
 class QWT_EXPORT QwtPlot: public QFrame, public QwtPlotDict
 {
     Q_OBJECT
 
-    Q_PROPERTY( QBrush canvasBackground 
+    Q_PROPERTY( QBrush canvasBackground
         READ canvasBackground WRITE setCanvasBackground )
     Q_PROPERTY( bool autoReplot READ autoReplot WRITE setAutoReplot )
 
@@ -121,7 +122,7 @@ public:
         //! The legend will be right from the QwtPlot::yRight axis.
         RightLegend,
 
-        //! The legend will be below the footer 
+        //! The legend will be below the footer
         BottomLegend,
 
         //! The legend will be above the title
@@ -149,7 +150,7 @@ public:
     // Title
 
     void setTitle( const QString & );
-    void setTitle( const QwtText &t );
+    void setTitle( const QwtText & );
     QwtText title() const;
 
     QwtTextLabel *titleLabel();
@@ -158,7 +159,7 @@ public:
     // Footer
 
     void setFooter( const QString & );
-    void setFooter( const QwtText &t );
+    void setFooter( const QwtText & );
     QwtText footer() const;
 
     QwtTextLabel *footerLabel();
@@ -191,10 +192,10 @@ public:
     void enableAxis( int axisId, bool tf = true );
     bool axisEnabled( int axisId ) const;
 
-    void setAxisFont( int axisId, const QFont &f );
+    void setAxisFont( int axisId, const QFont & );
     QFont axisFont( int axisId ) const;
 
-    void setAxisScale( int axisId, double min, double max, double step = 0 );
+    void setAxisScale( int axisId, double min, double max, double stepSize = 0 );
     void setAxisScaleDiv( int axisId, const QwtScaleDiv & );
     void setAxisScaleDraw( int axisId, QwtScaleDraw * );
 
@@ -224,7 +225,7 @@ public:
 
     // Legend
 
-    void insertLegend( QwtAbstractLegend *, 
+    void insertLegend( QwtAbstractLegend *,
         LegendPosition = QwtPlot::RightLegend, double ratio = -1.0 );
 
     QwtAbstractLegend *legend();
@@ -244,7 +245,7 @@ public:
     void updateAxes();
     void updateCanvasMargins();
 
-    virtual void getCanvasMarginsHint( 
+    virtual void getCanvasMarginsHint(
         const QwtScaleMap maps[], const QRectF &canvasRect,
         double &left, double &top, double &right, double &bottom) const;
 
@@ -267,7 +268,7 @@ Q_SIGNALS:
     void itemAttached( QwtPlotItem *plotItem, bool on );
 
     /*!
-      A signal with the attributes how to update 
+      A signal with the attributes how to update
       the legend entries for a plot item.
 
       \param itemInfo Info about a plot item, build from itemToInfo()
@@ -276,7 +277,7 @@ Q_SIGNALS:
 
       \sa itemToInfo(), infoToItem(), QwtAbstractLegend::updateLegend()
      */
-    void legendDataChanged( const QVariant &itemInfo, 
+    void legendDataChanged( const QVariant &itemInfo,
         const QList<QwtLegendData> &data );
 
 public Q_SLOTS:
@@ -290,7 +291,7 @@ protected:
 
 private Q_SLOTS:
     void updateLegendItems( const QVariant &itemInfo,
-        const QList<QwtLegendData> &data );
+        const QList<QwtLegendData> &legendData );
 
 private:
     friend class QwtPlotItem;

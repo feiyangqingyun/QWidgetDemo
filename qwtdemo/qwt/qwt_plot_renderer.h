@@ -60,7 +60,7 @@ public:
         //! Don't render the footer of the plot
         DiscardFooter           = 0x10,
 
-        /*! 
+        /*!
             Don't render the frame of the canvas
 
             \note This flag has no effect when using
@@ -127,27 +127,27 @@ public:
     void renderTo( QwtPlot *, QPrinter & ) const;
 #endif
 
-    void renderTo( QwtPlot *, QPaintDevice &p ) const;
+    void renderTo( QwtPlot *, QPaintDevice & ) const;
 
     virtual void render( QwtPlot *,
-        QPainter *, const QRectF &rect ) const;
+        QPainter *, const QRectF &plotRect ) const;
 
     virtual void renderTitle( const QwtPlot *,
-        QPainter *, const QRectF & ) const;
+        QPainter *, const QRectF &titleRect ) const;
 
     virtual void renderFooter( const QwtPlot *,
-        QPainter *, const QRectF & ) const;
+        QPainter *, const QRectF &footerRect ) const;
 
     virtual void renderScale( const QwtPlot *, QPainter *,
         int axisId, int startDist, int endDist,
-        int baseDist, const QRectF & ) const;
+        int baseDist, const QRectF &scaleRect ) const;
 
     virtual void renderCanvas( const QwtPlot *,
         QPainter *, const QRectF &canvasRect,
         const QwtScaleMap* maps ) const;
 
-    virtual void renderLegend( 
-        const QwtPlot *, QPainter *, const QRectF & ) const;
+    virtual void renderLegend(
+        const QwtPlot *, QPainter *, const QRectF &legendRect ) const;
 
     bool exportTo( QwtPlot *, const QString &documentName,
         const QSizeF &sizeMM = QSizeF( 300, 200 ), int resolution = 85 );

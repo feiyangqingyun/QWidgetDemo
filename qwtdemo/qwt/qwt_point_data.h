@@ -25,7 +25,7 @@ public:
     virtual QRectF boundingRect() const;
 
     virtual size_t size() const;
-    virtual QPointF sample( size_t i ) const;
+    virtual QPointF sample( size_t index ) const;
 
     const QVector<double> &xData() const;
     const QVector<double> &yData() const;
@@ -45,7 +45,7 @@ public:
 
     virtual QRectF boundingRect() const;
     virtual size_t size() const;
-    virtual QPointF sample( size_t i ) const;
+    virtual QPointF sample( size_t index ) const;
 
     const double *xData() const;
     const double *yData() const;
@@ -122,7 +122,7 @@ public:
     QwtInterval interval() const;
 
     virtual QRectF boundingRect() const;
-    virtual QPointF sample( size_t i ) const;
+    virtual QPointF sample( size_t index ) const;
 
     /*!
        Calculate a y value for a x value

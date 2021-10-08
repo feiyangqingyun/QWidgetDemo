@@ -33,7 +33,7 @@ class QwtCurveFitter;
   \par Usage
   <dl><dt>a) Assign curve properties</dt>
   <dd>When a curve is created, it is configured to draw black solid lines
-  with in QwtPlotCurve::Lines style and no symbols. 
+  with in QwtPlotCurve::Lines style and no symbols.
   You can change this by calling
   setPen(), setStyle() and setSymbol().</dd>
   <dt>b) Connect/Assign data.</dt>
@@ -52,7 +52,7 @@ class QwtCurveFitter;
 
   \sa QwtPointSeriesData, QwtSymbol, QwtScaleMap
 */
-class QWT_EXPORT QwtPlotCurve: 
+class QWT_EXPORT QwtPlotCurve:
     public QwtPlotSeriesItem, public QwtSeriesStore<QPointF>
 {
 public:
@@ -75,7 +75,7 @@ public:
         Lines,
 
         /*!
-           Draw vertical or horizontal sticks ( depending on the 
+           Draw vertical or horizontal sticks ( depending on the
            orientation() ) from a baseline which is defined by setBaseline().
         */
         Sticks,
@@ -90,7 +90,7 @@ public:
         /*!
            Draw dots at the locations of the data points. Note:
            This is different from a dotted line (see setPen()), and faster
-           as a curve in QwtPlotCurve::NoStyle style and a symbol 
+           as a curve in QwtPlotCurve::NoStyle style and a symbol
            painting a point.
         */
         Dots,
@@ -110,7 +110,7 @@ public:
     enum CurveAttribute
     {
         /*!
-           For QwtPlotCurve::Steps only. 
+           For QwtPlotCurve::Steps only.
            Draws a step function from the right to the left.
          */
         Inverted = 0x01,
@@ -141,13 +141,13 @@ public:
     enum LegendAttribute
     {
         /*!
-          QwtPlotCurve tries to find a color representing the curve 
+          QwtPlotCurve tries to find a color representing the curve
           and paints a rectangle with it.
          */
         LegendNoAttribute = 0x00,
 
         /*!
-          If the style() is not QwtPlotCurve::NoCurve a line 
+          If the style() is not QwtPlotCurve::NoCurve a line
           is painted with the curve pen().
          */
         LegendShowLine = 0x01,
@@ -191,16 +191,16 @@ public:
         FilterPoints = 0x02,
 
         /*!
-          Minimize memory usage that is temporarily needed for the 
+          Minimize memory usage that is temporarily needed for the
           translated points, before they get painted.
-          This might slow down the performance of painting 
+          This might slow down the performance of painting
          */
         MinimizeMemory = 0x04,
 
         /*!
           Render the points to a temporary image and paint the image.
           This is a very special optimization for Dots style, when
-          having a huge amount of points. 
+          having a huge amount of points.
           With a reasonable number of points QPainter::drawPoints()
           will be faster.
          */
@@ -210,7 +210,7 @@ public:
     //! Paint attributes
     typedef QFlags<PaintAttribute> PaintAttributes;
 
-    explicit QwtPlotCurve( const QString &title = QString::null );
+    explicit QwtPlotCurve( const QString &title = QString() );
     explicit QwtPlotCurve( const QwtText &title );
 
     virtual ~QwtPlotCurve();
@@ -270,32 +270,32 @@ protected:
 
     void init();
 
-    virtual void drawCurve( QPainter *p, int style,
+    virtual void drawCurve( QPainter *, int style,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
         const QRectF &canvasRect, int from, int to ) const;
 
-    virtual void drawSymbols( QPainter *p, const QwtSymbol &,
+    virtual void drawSymbols( QPainter *, const QwtSymbol &,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
         const QRectF &canvasRect, int from, int to ) const;
 
-    virtual void drawLines( QPainter *p,
+    virtual void drawLines( QPainter *,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
         const QRectF &canvasRect, int from, int to ) const;
 
-    virtual void drawSticks( QPainter *p,
+    virtual void drawSticks( QPainter *,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
         const QRectF &canvasRect, int from, int to ) const;
 
-    virtual void drawDots( QPainter *p,
+    virtual void drawDots( QPainter *,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
         const QRectF &canvasRect, int from, int to ) const;
 
-    virtual void drawSteps( QPainter *p,
+    virtual void drawSteps( QPainter *,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
         const QRectF &canvasRect, int from, int to ) const;
 
     virtual void fillCurve( QPainter *,
-        const QwtScaleMap &, const QwtScaleMap &, 
+        const QwtScaleMap &, const QwtScaleMap &,
         const QRectF &canvasRect, QPolygonF & ) const;
 
     void closePolyline( QPainter *,

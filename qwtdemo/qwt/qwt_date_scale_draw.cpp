@@ -36,7 +36,7 @@ public:
 /*!
   \brief Constructor
 
-  The default setting is to display tick labels for the 
+  The default setting is to display tick labels for the
   given time specification. The first week of a year is defined like
   for QwtDate::FirstThursday.
 
@@ -109,7 +109,7 @@ int QwtDateScaleDraw::utcOffset() const
 
   \sa week0Type().
   \note week0Type has no effect beside for intervals classified as
-        QwtDate::Week. 
+        QwtDate::Week.
  */
 void QwtDateScaleDraw::setWeek0Type( QwtDate::Week0Type week0Type )
 {
@@ -117,7 +117,7 @@ void QwtDateScaleDraw::setWeek0Type( QwtDate::Week0Type week0Type )
 }
 
 /*!
-  \return Setting how to identify the first week of a year. 
+  \return Setting how to identify the first week of a year.
   \sa setWeek0Type()
  */
 QwtDate::Week0Type QwtDateScaleDraw::week0Type() const
@@ -133,10 +133,10 @@ QwtDate::Week0Type QwtDateScaleDraw::week0Type() const
 
   \sa dateFormat(), dateFormatOfDate(), QwtDate::toString()
  */
-void QwtDateScaleDraw::setDateFormat( 
+void QwtDateScaleDraw::setDateFormat(
     QwtDate::IntervalType intervalType, const QString &format )
 {
-    if ( intervalType >= QwtDate::Millisecond && 
+    if ( intervalType >= QwtDate::Millisecond &&
         intervalType <= QwtDate::Year )
     {
         d_data->dateFormats[ intervalType ] = format;
@@ -148,16 +148,16 @@ void QwtDateScaleDraw::setDateFormat(
   \return Default format string for an datetime interval type
   \sa setDateFormat(), dateFormatOfDate()
  */
-QString QwtDateScaleDraw::dateFormat( 
+QString QwtDateScaleDraw::dateFormat(
     QwtDate::IntervalType intervalType ) const
 {
-    if ( intervalType >= QwtDate::Millisecond && 
+    if ( intervalType >= QwtDate::Millisecond &&
         intervalType <= QwtDate::Year )
     {
         return d_data->dateFormats[ intervalType ];
     }
 
-    return QString::null;
+    return QString();
 }
 
 /*!
@@ -181,7 +181,7 @@ QString QwtDateScaleDraw::dateFormatOfDate( const QDateTime &dateTime,
 {
     Q_UNUSED( dateTime )
 
-    if ( intervalType >= QwtDate::Millisecond && 
+    if ( intervalType >= QwtDate::Millisecond &&
         intervalType <= QwtDate::Year )
     {
         return d_data->dateFormats[ intervalType ];
@@ -204,7 +204,7 @@ QString QwtDateScaleDraw::dateFormatOfDate( const QDateTime &dateTime,
 QwtText QwtDateScaleDraw::label( double value ) const
 {
     const QDateTime dt = toDateTime( value );
-    const QString fmt = dateFormatOfDate( 
+    const QString fmt = dateFormatOfDate(
         dt, intervalType( scaleDiv() ) );
 
     return QwtDate::toString( dt, fmt, d_data->week0Type );
@@ -219,7 +219,7 @@ QwtText QwtDateScaleDraw::label( double value ) const
 
   \sa dateFormatOfDate()
  */
-QwtDate::IntervalType QwtDateScaleDraw::intervalType( 
+QwtDate::IntervalType QwtDateScaleDraw::intervalType(
     const QwtScaleDiv &scaleDiv ) const
 {
     int intvType = QwtDate::Year;
@@ -232,7 +232,7 @@ QwtDate::IntervalType QwtDateScaleDraw::intervalType(
         const QDateTime dt = toDateTime( ticks[i] );
         for ( int j = QwtDate::Second; j <= intvType; j++ )
         {
-            const QDateTime dt0 = QwtDate::floor( dt, 
+            const QDateTime dt0 = QwtDate::floor( dt,
                 static_cast<QwtDate::IntervalType>( j ) );
 
             if ( dt0 != dt )

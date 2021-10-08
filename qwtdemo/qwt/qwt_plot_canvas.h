@@ -19,7 +19,7 @@ class QPixmap;
 
 /*!
   \brief Canvas of a QwtPlot.
-  
+
    Canvas is the widget where all plot items are displayed
 
   \sa QwtPlot::setCanvas(), QwtPlotGLCanvas
@@ -42,8 +42,8 @@ public:
     enum PaintAttribute
     {
         /*!
-          \brief Paint double buffered reusing the content 
-                 of the pixmap buffer when possible. 
+          \brief Paint double buffered reusing the content
+                 of the pixmap buffer when possible.
 
           Using a backing store might improve the performance
           significantly, when working with widget overlays ( like rubber bands ).
@@ -59,15 +59,15 @@ public:
                  of the plot canvas
 
           When using styled backgrounds Qt assumes, that the
-          canvas doesn't fill its area completely 
+          canvas doesn't fill its area completely
           ( f.e because of rounded borders ) and fills the area
           below the canvas. When this is done with gradients it might
           result in a serious performance bottleneck - depending on the size.
 
           When the Opaque attribute is enabled the canvas tries to
-          identify the gaps with some heuristics and to fill those only. 
+          identify the gaps with some heuristics and to fill those only.
 
-          \warning Will not work for semitransparent backgrounds 
+          \warning Will not work for semitransparent backgrounds
          */
         Opaque       = 2,
 

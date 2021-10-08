@@ -130,9 +130,9 @@ QwtInterval QwtInterval::unite( const QwtInterval &other ) const
     return united;
 }
 
-/*! 
+/*!
   \brief Intersect 2 intervals
-  
+
   \param other Interval to be intersect with
   \return Intersection
  */
@@ -197,7 +197,7 @@ QwtInterval QwtInterval::intersect( const QwtInterval &other ) const
     return intersected;
 }
 
-/*! 
+/*!
   \brief Unite this interval with the given interval.
 
   \param other Interval to be united with
@@ -209,7 +209,7 @@ QwtInterval& QwtInterval::operator|=( const QwtInterval &other )
     return *this;
 }
 
-/*! 
+/*!
   \brief Intersect this interval with the given interval.
 
   \param other Interval to be intersected with

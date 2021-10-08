@@ -134,7 +134,7 @@ void QwtPlotMarker::draw( QPainter *painter,
     const QwtScaleMap &xMap, const QwtScaleMap &yMap,
     const QRectF &canvasRect ) const
 {
-    const QPointF pos( xMap.transform( d_data->xValue ), 
+    const QPointF pos( xMap.transform( d_data->xValue ),
         yMap.transform( d_data->yValue ) );
 
     // draw lines
@@ -147,7 +147,7 @@ void QwtPlotMarker::draw( QPainter *painter,
     {
         const QSizeF sz = d_data->symbol->size();
 
-        const QRectF clipRect = canvasRect.adjusted( 
+        const QRectF clipRect = canvasRect.adjusted(
             -sz.width(), -sz.height(), sz.width(), sz.height() );
 
         if ( clipRect.contains( pos ) )
@@ -337,7 +337,7 @@ void QwtPlotMarker::drawLabel( QPainter *painter,
 
 /*!
   \brief Set the line style
-  \param style Line style. 
+  \param style Line style.
   \sa lineStyle()
 */
 void QwtPlotMarker::setLineStyle( LineStyle style )
@@ -423,7 +423,7 @@ QwtText QwtPlotMarker::label() const
 
   In all other styles the alignment is relative to the marker's position.
 
-  \param align Alignment. 
+  \param align Alignment.
   \sa labelAlignment(), labelOrientation()
 */
 void QwtPlotMarker::setLabelAlignment( Qt::Alignment align )
@@ -502,21 +502,21 @@ int QwtPlotMarker::spacing() const
     return d_data->spacing;
 }
 
-/*! 
+/*!
   Build and assign a line pen
-    
+
   In Qt5 the default pen width is 1.0 ( 0.0 in Qt4 ) what makes it
   non cosmetic ( see QPen::isCosmetic() ). This method has been introduced
   to hide this incompatibility.
-    
+
   \param color Pen color
   \param width Pen width
   \param style Pen style
-    
+
   \sa pen(), brush()
- */ 
+ */
 void QwtPlotMarker::setLinePen( const QColor &color, qreal width, Qt::PenStyle style )
-{   
+{
     setLinePen( QPen( color, width, style ) );
 }
 
@@ -548,13 +548,25 @@ const QPen &QwtPlotMarker::linePen() const
 
 QRectF QwtPlotMarker::boundingRect() const
 {
-    return QRectF( d_data->xValue, d_data->yValue, 0.0, 0.0 );
+    // width/height of -1 does not affect the autoscale calculation
+
+    switch (d_data->style)
+    {
+        case QwtPlotMarker::HLine:
+            return QRectF( d_data->xValue, d_data->yValue, -1.0, 0.0 );
+
+        case QwtPlotMarker::VLine:
+            return QRectF( d_data->xValue, d_data->yValue, 0.0, -1.0 );
+
+        default :
+            return QRectF( d_data->xValue, d_data->yValue, 0.0, 0.0 );
+    }
 }
 
 /*!
    \return Icon representing the marker on the legend
 
-   \param index Index of the legend entry 
+   \param index Index of the legend entry
                 ( usually there is only one )
    \param size Icon size
 
@@ -585,7 +597,7 @@ QwtGraphic QwtPlotMarker::legendIcon( int index,
         {
             const double y = 0.5 * size.height();
 
-            QwtPainter::drawLine( &painter, 
+            QwtPainter::drawLine( &painter,
                 0.0, y, size.width(), y );
         }
 
@@ -594,7 +606,7 @@ QwtGraphic QwtPlotMarker::legendIcon( int index,
         {
             const double x = 0.5 * size.width();
 
-            QwtPainter::drawLine( &painter, 
+            QwtPainter::drawLine( &painter,
                 x, 0.0, x, size.height() );
         }
     }

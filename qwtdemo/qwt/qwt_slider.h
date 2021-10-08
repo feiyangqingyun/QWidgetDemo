@@ -83,7 +83,7 @@ public:
     void setHandleSize( const QSize & );
     QSize handleSize() const;
 
-    void setBorderWidth( int bw );
+    void setBorderWidth( int );
     int borderWidth() const;
 
     void setSpacing( int );

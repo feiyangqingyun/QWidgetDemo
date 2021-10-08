@@ -67,7 +67,7 @@ void QwtPlot::initAxesData()
 
         d.scaleEngine = new QwtLinearScaleEngine;
 
-        d.scaleWidget->setTransformation( 
+        d.scaleWidget->setTransformation(
             d.scaleEngine->transformation() );
 
         d.scaleWidget->setFont( fscl );
@@ -147,7 +147,7 @@ void QwtPlot::setAxisScaleEngine( int axisId, QwtScaleEngine *scaleEngine )
         delete d.scaleEngine;
         d.scaleEngine = scaleEngine;
 
-        d_axisData[axisId]->scaleWidget->setTransformation( 
+        d_axisData[axisId]->scaleWidget->setTransformation(
             scaleEngine->transformation() );
 
         d.isValid = false;
@@ -189,7 +189,6 @@ bool QwtPlot::axisAutoScale( int axisId ) const
         return d_axisData[axisId]->doAutoScale;
     else
         return false;
-
 }
 
 /*!
@@ -288,7 +287,7 @@ QwtScaleDraw *QwtPlot::axisScaleDraw( int axisId )
 }
 
 /*!
-  \brief Return the step size parameter that has been set in setAxisScale. 
+  \brief Return the step size parameter that has been set in setAxisScale.
 
   This doesn't need to be the step size of the current scale.
 
@@ -309,7 +308,7 @@ double QwtPlot::axisStepSize( int axisId ) const
   \brief Return the current interval of the specified axis
 
   This is only a convenience function for axisScaleDiv( axisId )->interval();
-  
+
   \param axisId Axis index
   \return Scale interval
 
@@ -433,8 +432,8 @@ void QwtPlot::setAxisAutoScale( int axisId, bool on )
 /*!
   \brief Disable autoscaling and specify a fixed scale for a selected axis.
 
-  In updateAxes() the scale engine calculates a scale division from the 
-  specified parameters, that will be assigned to the scale widget. So 
+  In updateAxes() the scale engine calculates a scale division from the
+  specified parameters, that will be assigned to the scale widget. So
   updates of the scale widget usually happen delayed with the next replot.
 
   \param axisId Axis index
@@ -466,7 +465,7 @@ void QwtPlot::setAxisScale( int axisId, double min, double max, double stepSize 
   \brief Disable autoscaling and specify a fixed scale for a selected axis.
 
   The scale division will be stored locally only until the next call
-  of updateAxes(). So updates of the scale widget usually happen delayed with 
+  of updateAxes(). So updates of the scale widget usually happen delayed with
   the next replot.
 
   \param axisId Axis index
@@ -614,26 +613,26 @@ void QwtPlot::setAxisTitle( int axisId, const QwtText &title )
         axisWidget( axisId )->setTitle( title );
 }
 
-/*! 
+/*!
   \brief Rebuild the axes scales
 
-  In case of autoscaling the boundaries of a scale are calculated 
-  from the bounding rectangles of all plot items, having the 
-  QwtPlotItem::AutoScale flag enabled ( QwtScaleEngine::autoScale() ). 
-  Then a scale division is calculated ( QwtScaleEngine::didvideScale() ) 
+  In case of autoscaling the boundaries of a scale are calculated
+  from the bounding rectangles of all plot items, having the
+  QwtPlotItem::AutoScale flag enabled ( QwtScaleEngine::autoScale() ).
+  Then a scale division is calculated ( QwtScaleEngine::didvideScale() )
   and assigned to scale widget.
 
-  When the scale boundaries have been assigned with setAxisScale() a 
+  When the scale boundaries have been assigned with setAxisScale() a
   scale division is calculated ( QwtScaleEngine::didvideScale() )
   for this interval and assigned to the scale widget.
 
-  When the scale has been set explicitly by setAxisScaleDiv() the 
+  When the scale has been set explicitly by setAxisScaleDiv() the
   locally stored scale division gets assigned to the scale widget.
 
-  The scale widget indicates modifications by emitting a 
+  The scale widget indicates modifications by emitting a
   QwtScaleWidget::scaleDivChanged() signal.
 
-  updateAxes() is usually called by replot(). 
+  updateAxes() is usually called by replot().
 
   \sa setAxisAutoScale(), setAxisScale(), setAxisScaleDiv(), replot()
       QwtPlotItem::boundingRect()

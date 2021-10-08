@@ -54,7 +54,7 @@ public:
     QwtAbstractScaleDraw();
     virtual ~QwtAbstractScaleDraw();
 
-    void setScaleDiv( const QwtScaleDiv &s );
+    void setScaleDiv( const QwtScaleDiv & );
     const QwtScaleDiv& scaleDiv() const;
 
     void setTransformation( QwtTransform * );
@@ -68,7 +68,7 @@ public:
     double tickLength( QwtScaleDiv::TickType ) const;
     double maxTickLength() const;
 
-    void setSpacing( double margin );
+    void setSpacing( double );
     double spacing() const;
 
     void setPenWidth( int width );

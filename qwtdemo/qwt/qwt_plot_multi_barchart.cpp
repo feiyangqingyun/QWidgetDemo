@@ -108,19 +108,19 @@ void QwtPlotMultiBarChart::setSamples(
 
 /*!
   Assign a series of samples
-    
+
   setSamples() is just a wrapper for setData() without any additional
   value - beside that it is easier to find for the developer.
-    
+
   \param data Data
   \warning The item takes ownership of the data object, deleting
            it when its not used anymore.
-*/  
-void QwtPlotMultiBarChart::setSamples( 
+*/
+void QwtPlotMultiBarChart::setSamples(
     QwtSeriesData<QwtSetSample> *data )
-{       
+{
     setData( data );
-}       
+}
 
 /*!
   \brief Set the titles for the bars
@@ -137,7 +137,7 @@ void QwtPlotMultiBarChart::setBarTitles( const QList<QwtText> &titles )
     itemChanged();
 }
 
-/*! 
+/*!
   \return Bar titles
   \sa setBarTitles(), legendData()
  */
@@ -162,7 +162,7 @@ void QwtPlotMultiBarChart::setSymbol( int valueIndex, QwtColumnSymbol *symbol )
     if ( valueIndex < 0 )
         return;
 
-    QMap<int, QwtColumnSymbol *>::iterator it = 
+    QMap<int, QwtColumnSymbol *>::iterator it =
         d_data->symbolMap.find(valueIndex);
     if ( it == d_data->symbolMap.end() )
     {
@@ -206,9 +206,9 @@ void QwtPlotMultiBarChart::setSymbol( int valueIndex, QwtColumnSymbol *symbol )
 const QwtColumnSymbol *QwtPlotMultiBarChart::symbol( int valueIndex ) const
 {
     QMap<int, QwtColumnSymbol *>::const_iterator it =
-        d_data->symbolMap.find( valueIndex );
+        d_data->symbolMap.constFind( valueIndex );
 
-    return ( it == d_data->symbolMap.end() ) ? NULL : it.value();
+    return ( it == d_data->symbolMap.constEnd() ) ? NULL : it.value();
 }
 
 /*!
@@ -219,12 +219,12 @@ const QwtColumnSymbol *QwtPlotMultiBarChart::symbol( int valueIndex ) const
 
   \sa setSymbol(), specialSymbol(), drawBar()
 */
-QwtColumnSymbol *QwtPlotMultiBarChart::symbol( int valueIndex ) 
+QwtColumnSymbol *QwtPlotMultiBarChart::symbol( int valueIndex )
 {
-    QMap<int, QwtColumnSymbol *>::iterator it =
-        d_data->symbolMap.find( valueIndex );
+    QMap<int, QwtColumnSymbol *>::const_iterator it =
+        d_data->symbolMap.constFind( valueIndex );
 
-    return ( it == d_data->symbolMap.end() ) ? NULL : it.value();
+    return ( it == d_data->symbolMap.constEnd() ) ? NULL : it.value();
 }
 
 /*!
@@ -232,12 +232,7 @@ QwtColumnSymbol *QwtPlotMultiBarChart::symbol( int valueIndex )
  */
 void QwtPlotMultiBarChart::resetSymbolMap()
 {
-    for ( QMap<int, QwtColumnSymbol *>::iterator it 
-        = d_data->symbolMap.begin(); it != d_data->symbolMap.end(); ++it )
-    {
-        delete it.value();
-    }
-
+    qDeleteAll( d_data->symbolMap );
     d_data->symbolMap.clear();
 }
 
@@ -252,16 +247,16 @@ void QwtPlotMultiBarChart::resetSymbolMap()
   called. As soon as the symbol is painted this symbol gets deleted.
 
   When no symbol ( NULL ) is returned, the value will be displayed
-  with the standard symbol that is used for all symbols with the same 
+  with the standard symbol that is used for all symbols with the same
   valueIndex.
 
   \param sampleIndex Index of the sample
   \param valueIndex Index of the value in the set
 
   \return NULL, meaning that the value is not special
-    
+
  */
-QwtColumnSymbol *QwtPlotMultiBarChart::specialSymbol( 
+QwtColumnSymbol *QwtPlotMultiBarChart::specialSymbol(
     int sampleIndex, int valueIndex ) const
 {
     Q_UNUSED( sampleIndex );
@@ -455,7 +450,7 @@ void QwtPlotMultiBarChart::drawSample( QPainter *painter,
   \param canvasRect Contents rectangle of the canvas
   \param index Index of the sample to be painted
   \param sampleWidth Boundng width for all bars of the smaple
-  \param sample Sample 
+  \param sample Sample
 
   \sa drawSeries(), sampleWidth()
 */
@@ -535,13 +530,13 @@ void QwtPlotMultiBarChart::drawGroupedBars( QPainter *painter,
   \param canvasRect Contents rectangle of the canvas
   \param index Index of the sample to be painted
   \param sampleWidth Width of the bars
-  \param sample Sample 
+  \param sample Sample
 
   \sa drawSeries(), sampleWidth()
 */
 void QwtPlotMultiBarChart::drawStackedBars( QPainter *painter,
     const QwtScaleMap &xMap, const QwtScaleMap &yMap,
-    const QRectF &canvasRect, int index, 
+    const QRectF &canvasRect, int index,
     double sampleWidth, const QwtSetSample& sample ) const
 {
     Q_UNUSED( canvasRect ); // clipping the bars ?
@@ -567,7 +562,6 @@ void QwtPlotMultiBarChart::drawStackedBars( QPainter *painter,
 
         double sum = baseline();
 
-        const int numBars = sample.set.size();
         for ( int i = 0; i < numBars; i++ )
         {
             const double si = sample.set[ i ];
@@ -669,10 +663,10 @@ void QwtPlotMultiBarChart::drawBar( QPainter *painter,
     else
     {
         // we build a temporary default symbol
-        QwtColumnSymbol sym( QwtColumnSymbol::Box );
-        sym.setLineWidth( 1 );
-        sym.setFrameStyle( QwtColumnSymbol::Plain );
-        sym.draw( painter, rect );
+        QwtColumnSymbol columnSymbol( QwtColumnSymbol::Box );
+        columnSymbol.setLineWidth( 1 );
+        columnSymbol.setFrameStyle( QwtColumnSymbol::Plain );
+        columnSymbol.draw( painter, rect );
     }
 
     delete specialSym;
@@ -701,7 +695,7 @@ QList<QwtLegendData> QwtPlotMultiBarChart::legendData() const
         if ( !legendIconSize().isEmpty() )
         {
             QVariant iconValue;
-            qVariantSetValue( iconValue, 
+            qVariantSetValue( iconValue,
                 legendIcon( i, legendIconSize() ) );
 
             data.setValue( QwtLegendData::IconRole, iconValue );
@@ -718,7 +712,7 @@ QList<QwtLegendData> QwtPlotMultiBarChart::legendData() const
 
   \param index Index of the bar
   \param size Icon size
-  
+
   \return An icon showing a bar
   \sa drawBar(), legendData()
  */

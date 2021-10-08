@@ -21,7 +21,7 @@ class QVariant;
   \brief Abstract base class for legend widgets
 
   Legends, that need to be under control of the QwtPlot layout system
-  need to be derived from QwtAbstractLegend. 
+  need to be derived from QwtAbstractLegend.
 
   \note Other type of legends can be implemented by connecting to
         the QwtPlot::legendDataChanged() signal. But as these legends
@@ -44,11 +44,11 @@ public:
 
       \param painter Painter
       \param rect Bounding rectangle
-      \param fillBackground When true, fill rect with the widget background 
+      \param fillBackground When true, fill rect with the widget background
 
       \sa renderLegend() is used by QwtPlotRenderer
     */
-    virtual void renderLegend( QPainter *painter, 
+    virtual void renderLegend( QPainter *painter,
         const QRectF &rect, bool fillBackground ) const = 0;
 
     //! \return True, when no plot item is inserted
@@ -64,8 +64,8 @@ public Q_SLOTS:
       \param itemInfo Info about an item
       \param data List of legend entry attributes for the  item
      */
-    virtual void updateLegend( const QVariant &itemInfo, 
+    virtual void updateLegend( const QVariant &itemInfo,
         const QList<QwtLegendData> &data ) = 0;
 };
 
-#endif 
+#endif

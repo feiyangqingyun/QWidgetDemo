@@ -24,7 +24,7 @@ class QwtIntervalSymbol;
   that is displayed for each interval. QwtPlotIntervalCurve might be used
   to display error bars or the area between 2 curves.
 */
-class QWT_EXPORT QwtPlotIntervalCurve: 
+class QWT_EXPORT QwtPlotIntervalCurve:
     public QwtPlotSeriesItem, public QwtSeriesStore<QwtIntervalSample>
 {
 public:
@@ -76,7 +76,7 @@ public:
     //! Paint attributes
     typedef QFlags<PaintAttribute> PaintAttributes;
 
-    explicit QwtPlotIntervalCurve( const QString &title = QString::null );
+    explicit QwtPlotIntervalCurve( const QString &title = QString() );
     explicit QwtPlotIntervalCurve( const QwtText &title );
 
     virtual ~QwtPlotIntervalCurve();
@@ -102,7 +102,7 @@ public:
     void setSymbol( const QwtIntervalSymbol * );
     const QwtIntervalSymbol *symbol() const;
 
-    virtual void drawSeries( QPainter *p,
+    virtual void drawSeries( QPainter *,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
         const QRectF &canvasRect, int from, int to ) const;
 

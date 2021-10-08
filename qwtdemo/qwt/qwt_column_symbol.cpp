@@ -114,9 +114,9 @@ public:
     PrivateData():
         style( QwtColumnSymbol::Box ),
         frameStyle( QwtColumnSymbol::Raised ),
+        palette( Qt::gray ),
         lineWidth( 2 )
     {
-        palette = QPalette( Qt::gray );
     }
 
     QwtColumnSymbol::Style style;
@@ -287,7 +287,7 @@ void QwtColumnSymbol::drawBox( QPainter *painter,
         }
         default:
         {
-            painter->fillRect( r, d_data->palette.window() );
+            painter->fillRect( r.adjusted( 0, 0, 1, 1 ), d_data->palette.window() );
         }
     }
 }

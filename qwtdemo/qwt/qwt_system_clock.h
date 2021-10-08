@@ -22,8 +22,11 @@
 
   Precision and time intervals are multiples of milliseconds (ms).
 
+  ( QwtSystemClock is obsolete since Qt 4.8 as QElapsedTimer offers the same
+    precision )
+
   \note The implementation uses high-resolution performance counter on Windows,
-        mach_absolute_time() on the Mac or POSIX timers on other systems. 
+        mach_absolute_time() on the Mac or POSIX timers on other systems.
         If none is available it falls back on QTimer.
 */
 

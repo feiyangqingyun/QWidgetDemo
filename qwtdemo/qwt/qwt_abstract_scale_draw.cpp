@@ -25,8 +25,8 @@ public:
         penWidth( 0 ),
         minExtent( 0.0 )
     {
-        components = QwtAbstractScaleDraw::Backbone 
-            | QwtAbstractScaleDraw::Ticks 
+        components = QwtAbstractScaleDraw::Backbone
+            | QwtAbstractScaleDraw::Ticks
             | QwtAbstractScaleDraw::Labels;
 
         tickLength[QwtScaleDiv::MinorTick] = 4.0;
@@ -197,7 +197,7 @@ void QwtAbstractScaleDraw::draw( QPainter *painter,
     {
         painter->save();
 
-        QPen pen = painter->pen();
+        pen = painter->pen();
         pen.setColor( palette.color( QPalette::WindowText ) );
         pen.setCapStyle( Qt::FlatCap );
 
@@ -226,7 +226,7 @@ void QwtAbstractScaleDraw::draw( QPainter *painter,
     {
         painter->save();
 
-        QPen pen = painter->pen();
+        pen = painter->pen();
         pen.setColor( palette.color( QPalette::WindowText ) );
         pen.setCapStyle( Qt::FlatCap );
 
@@ -392,19 +392,18 @@ QwtText QwtAbstractScaleDraw::label( double value ) const
 const QwtText &QwtAbstractScaleDraw::tickLabel(
     const QFont &font, double value ) const
 {
-    QMap<double, QwtText>::const_iterator it = d_data->labelCache.find( value );
-    if ( it == d_data->labelCache.end() )
-    {
-        QwtText lbl = label( value );
-        lbl.setRenderFlags( 0 );
-        lbl.setLayoutAttribute( QwtText::MinimumLayout );
+    QMap<double, QwtText>::const_iterator it1 = d_data->labelCache.constFind( value );
+    if ( it1 != d_data->labelCache.constEnd() )
+        return *it1;
 
-        ( void )lbl.textSize( font ); // initialize the internal cache
+    QwtText lbl = label( value );
+    lbl.setRenderFlags( 0 );
+    lbl.setLayoutAttribute( QwtText::MinimumLayout );
 
-        it = d_data->labelCache.insert( value, lbl );
-    }
+    ( void )lbl.textSize( font ); // initialize the internal cache
 
-    return ( *it );
+    QMap<double, QwtText>::iterator it2 = d_data->labelCache.insert( value, lbl );
+    return *it2;
 }
 
 /*!

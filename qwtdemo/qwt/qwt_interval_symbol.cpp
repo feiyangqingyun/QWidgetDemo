@@ -68,7 +68,7 @@ QwtIntervalSymbol::~QwtIntervalSymbol()
 }
 
 //! \brief Assignment operator
-QwtIntervalSymbol &QwtIntervalSymbol::operator=( 
+QwtIntervalSymbol &QwtIntervalSymbol::operator=(
     const QwtIntervalSymbol &other )
 {
     *d_data = *other.d_data;
@@ -76,14 +76,14 @@ QwtIntervalSymbol &QwtIntervalSymbol::operator=(
 }
 
 //! \brief Compare two symbols
-bool QwtIntervalSymbol::operator==( 
+bool QwtIntervalSymbol::operator==(
     const QwtIntervalSymbol &other ) const
 {
     return *d_data == *other.d_data;
 }
 
 //! \brief Compare two symbols
-bool QwtIntervalSymbol::operator!=( 
+bool QwtIntervalSymbol::operator!=(
     const QwtIntervalSymbol &other ) const
 {
     return !( *d_data == *other.d_data );
@@ -152,9 +152,9 @@ const QBrush& QwtIntervalSymbol::brush() const
     return d_data->brush;
 }
 
-/*! 
+/*!
   Build and assign a pen
-    
+
   In Qt5 the default pen width is 1.0 ( 0.0 in Qt4 ) what makes it
   non cosmetic ( see QPen::isCosmetic() ). This method has been introduced
   to hide this incompatibility.
@@ -162,12 +162,12 @@ const QBrush& QwtIntervalSymbol::brush() const
   \param color Pen color
   \param width Pen width
   \param style Pen style
-    
+
   \sa pen(), brush()
- */ 
-void QwtIntervalSymbol::setPen( const QColor &color, 
+ */
+void QwtIntervalSymbol::setPen( const QColor &color,
     qreal width, Qt::PenStyle style )
-{   
+{
     setPen( QPen( color, width, style ) );
 }
 
@@ -221,7 +221,7 @@ void QwtIntervalSymbol::draw( QPainter *painter, Qt::Orientation orientation,
             QwtPainter::drawLine( painter, p1, p2 );
             if ( d_data->width > pw )
             {
-                if ( ( orientation == Qt::Horizontal ) 
+                if ( ( orientation == Qt::Horizontal )
                     && ( p1.y() == p2.y() ) )
                 {
                     const double sw = d_data->width;
@@ -232,7 +232,7 @@ void QwtIntervalSymbol::draw( QPainter *painter, Qt::Orientation orientation,
                     QwtPainter::drawLine( painter,
                         p2.x(), y, p2.x(), y + sw );
                 }
-                else if ( ( orientation == Qt::Vertical ) 
+                else if ( ( orientation == Qt::Vertical )
                     && ( p1.x() == p2.x() ) )
                 {
                     const double sw = d_data->width;
@@ -273,7 +273,7 @@ void QwtIntervalSymbol::draw( QPainter *painter, Qt::Orientation orientation,
             }
             else
             {
-                if ( ( orientation == Qt::Horizontal ) 
+                if ( ( orientation == Qt::Horizontal )
                     && ( p1.y() == p2.y() ) )
                 {
                     const double sw = d_data->width;

@@ -35,19 +35,19 @@ public:
         Alignment of the scale draw
         \sa setAlignment(), alignment()
      */
-    enum Alignment 
-    { 
+    enum Alignment
+    {
         //! The scale is below
-        BottomScale, 
+        BottomScale,
 
         //! The scale is above
-        TopScale, 
+        TopScale,
 
         //! The scale is left
-        LeftScale, 
+        LeftScale,
 
         //! The scale is right
-        RightScale 
+        RightScale
     };
 
     QwtScaleDraw();
@@ -80,19 +80,19 @@ public:
     int maxLabelHeight( const QFont & ) const;
     int maxLabelWidth( const QFont & ) const;
 
-    QPointF labelPosition( double val ) const;
+    QPointF labelPosition( double value ) const;
 
-    QRectF labelRect( const QFont &, double val ) const;
-    QSizeF labelSize( const QFont &, double val ) const;
+    QRectF labelRect( const QFont &, double value ) const;
+    QSizeF labelSize( const QFont &, double value ) const;
 
-    QRect boundingLabelRect( const QFont &, double val ) const;
+    QRect boundingLabelRect( const QFont &, double value ) const;
 
 protected:
     QTransform labelTransformation( const QPointF &, const QSizeF & ) const;
 
-    virtual void drawTick( QPainter *, double val, double len ) const;
+    virtual void drawTick( QPainter *, double value, double len ) const;
     virtual void drawBackbone( QPainter * ) const;
-    virtual void drawLabel( QPainter *, double val ) const;
+    virtual void drawLabel( QPainter *, double value ) const;
 
 private:
     QwtScaleDraw( const QwtScaleDraw & );

@@ -37,11 +37,11 @@ class QwtSymbol;
   are valid. The interpretation of the alignment depends on the marker's
   line style. The alignment refers to the center point of
   the marker, which means, for example, that the label would be printed
-  left above the center point if the alignment was set to 
+  left above the center point if the alignment was set to
   Qt::AlignLeft | Qt::AlignTop.
 
   \note QwtPlotTextLabel is intended to align a text label
-        according to the geometry of canvas 
+        according to the geometry of canvas
         ( unrelated to plot coordinates )
 */
 
@@ -68,7 +68,7 @@ public:
         Cross
     };
 
-    explicit QwtPlotMarker( const QString &title = QString::null );
+    explicit QwtPlotMarker( const QString &title = QString() );
     explicit QwtPlotMarker( const QwtText &title );
 
     virtual ~QwtPlotMarker();
@@ -84,11 +84,11 @@ public:
     void setValue( double, double );
     void setValue( const QPointF & );
 
-    void setLineStyle( LineStyle st );
+    void setLineStyle( LineStyle );
     LineStyle lineStyle() const;
 
     void setLinePen( const QColor &, qreal width = 0.0, Qt::PenStyle = Qt::SolidLine );
-    void setLinePen( const QPen &p );
+    void setLinePen( const QPen & );
     const QPen &linePen() const;
 
     void setSymbol( const QwtSymbol * );
@@ -106,7 +106,7 @@ public:
     void setSpacing( int );
     int spacing() const;
 
-    virtual void draw( QPainter *p,
+    virtual void draw( QPainter *,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
         const QRectF & ) const;
 
@@ -115,10 +115,10 @@ public:
     virtual QwtGraphic legendIcon( int index, const QSizeF & ) const;
 
 protected:
-    virtual void drawLines( QPainter *, 
+    virtual void drawLines( QPainter *,
         const QRectF &, const QPointF & ) const;
 
-    virtual void drawLabel( QPainter *, 
+    virtual void drawLabel( QPainter *,
         const QRectF &, const QPointF & ) const;
 
 private:

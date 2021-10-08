@@ -123,7 +123,7 @@ QwtLegendData::Mode QwtLegendData::mode() const
         const int mode = qvariant_cast<int>( modeValue );
         return static_cast<QwtLegendData::Mode>( mode );
     }
-    
+
     return QwtLegendData::ReadOnly;
 }
 

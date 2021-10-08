@@ -1,4 +1,4 @@
-﻿/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 #include "qwt_painter_command.h"
-#include "qpainterpath.h"
 
 //! Construct an invalid command
 QwtPainterCommand::QwtPainterCommand():
@@ -64,10 +63,10 @@ QwtPainterCommand::QwtPainterCommand( const QRectF &rect,
     d_imageData->flags = flags;
 }
 
-/*! 
+/*!
   Constructor for State paint operation
   \param state Paint engine state
- */  
+ */
 QwtPainterCommand::QwtPainterCommand( const QPaintEngineState &state ):
     d_type( State )
 {
@@ -75,56 +74,56 @@ QwtPainterCommand::QwtPainterCommand( const QPaintEngineState &state ):
 
     d_stateData->flags = state.state();
 
-    if ( d_stateData->flags & QPaintEngine::DirtyPen ) 
+    if ( d_stateData->flags & QPaintEngine::DirtyPen )
         d_stateData->pen = state.pen();
 
-    if ( d_stateData->flags & QPaintEngine::DirtyBrush ) 
+    if ( d_stateData->flags & QPaintEngine::DirtyBrush )
         d_stateData->brush = state.brush();
 
-    if ( d_stateData->flags & QPaintEngine::DirtyBrushOrigin ) 
+    if ( d_stateData->flags & QPaintEngine::DirtyBrushOrigin )
         d_stateData->brushOrigin = state.brushOrigin();
 
-    if ( d_stateData->flags & QPaintEngine::DirtyFont ) 
+    if ( d_stateData->flags & QPaintEngine::DirtyFont )
         d_stateData->font = state.font();
 
-    if ( d_stateData->flags & QPaintEngine::DirtyBackground ) 
+    if ( d_stateData->flags & QPaintEngine::DirtyBackground )
     {
         d_stateData->backgroundMode = state.backgroundMode();
         d_stateData->backgroundBrush = state.backgroundBrush();
     }
 
-    if ( d_stateData->flags & QPaintEngine::DirtyTransform ) 
+    if ( d_stateData->flags & QPaintEngine::DirtyTransform )
         d_stateData->transform = state.transform();
 
-    if ( d_stateData->flags & QPaintEngine::DirtyClipEnabled ) 
+    if ( d_stateData->flags & QPaintEngine::DirtyClipEnabled )
         d_stateData->isClipEnabled = state.isClipEnabled();
 
-    if ( d_stateData->flags & QPaintEngine::DirtyClipRegion ) 
+    if ( d_stateData->flags & QPaintEngine::DirtyClipRegion )
     {
         d_stateData->clipRegion = state.clipRegion();
         d_stateData->clipOperation = state.clipOperation();
     }
 
-    if ( d_stateData->flags & QPaintEngine::DirtyClipPath ) 
+    if ( d_stateData->flags & QPaintEngine::DirtyClipPath )
     {
         d_stateData->clipPath = state.clipPath();
         d_stateData->clipOperation = state.clipOperation();
     }
 
-    if ( d_stateData->flags & QPaintEngine::DirtyHints ) 
+    if ( d_stateData->flags & QPaintEngine::DirtyHints )
         d_stateData->renderHints = state.renderHints();
 
-    if ( d_stateData->flags & QPaintEngine::DirtyCompositionMode ) 
+    if ( d_stateData->flags & QPaintEngine::DirtyCompositionMode )
         d_stateData->compositionMode = state.compositionMode();
 
-    if ( d_stateData->flags & QPaintEngine::DirtyOpacity ) 
+    if ( d_stateData->flags & QPaintEngine::DirtyOpacity )
         d_stateData->opacity = state.opacity();
 }
 
 /*!
   Copy constructor
   \param other Command to be copied
-  
+
  */
 QwtPainterCommand::QwtPainterCommand(const QwtPainterCommand &other)
 {
@@ -214,25 +213,25 @@ void QwtPainterCommand::reset()
 }
 
 //! \return Painter path to be painted
-QPainterPath *QwtPainterCommand::path() 
+QPainterPath *QwtPainterCommand::path()
 {
     return d_path;
 }
 
 //! \return Attributes how to paint a QPixmap
-QwtPainterCommand::PixmapData* QwtPainterCommand::pixmapData() 
+QwtPainterCommand::PixmapData* QwtPainterCommand::pixmapData()
 {
     return d_pixmapData;
 }
 
 //! \return Attributes how to paint a QImage
-QwtPainterCommand::ImageData* QwtPainterCommand::imageData() 
+QwtPainterCommand::ImageData* QwtPainterCommand::imageData()
 {
     return d_imageData;
 }
 
 //! \return Attributes of a state change
-QwtPainterCommand::StateData* QwtPainterCommand::stateData() 
+QwtPainterCommand::StateData* QwtPainterCommand::stateData()
 {
     return d_stateData;
 }

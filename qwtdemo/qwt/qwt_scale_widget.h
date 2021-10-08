@@ -39,7 +39,7 @@ public:
     enum LayoutFlag
     {
         /*!
-          The title of vertical scales is painted from top to bottom. 
+          The title of vertical scales is painted from top to bottom.
           Otherwise it is painted from bottom to top.
          */
         TitleInverted = 1
@@ -64,7 +64,7 @@ public:
     void setLayoutFlag( LayoutFlag, bool on );
     bool testLayoutFlag( LayoutFlag ) const;
 
-    void setBorderDist( int start, int end );
+    void setBorderDist( int dist1, int dist2 );
     int startBorderDist() const;
     int endBorderDist() const;
 
@@ -76,10 +76,10 @@ public:
     void setMargin( int );
     int margin() const;
 
-    void setSpacing( int td );
+    void setSpacing( int );
     int spacing() const;
 
-    void setScaleDiv( const QwtScaleDiv &sd );
+    void setScaleDiv( const QwtScaleDiv & );
     void setTransformation( QwtTransform * );
 
     void setScaleDraw( QwtScaleDraw * );
@@ -119,10 +119,10 @@ protected:
     virtual void paintEvent( QPaintEvent * );
     virtual void resizeEvent( QResizeEvent * );
 
-    void draw( QPainter *p ) const;
+    void draw( QPainter * ) const;
 
     void scaleChange();
-    void layoutScale( bool update = true );
+    void layoutScale( bool update_geometry = true );
 
 private:
     void initScale( QwtScaleDraw::Alignment );

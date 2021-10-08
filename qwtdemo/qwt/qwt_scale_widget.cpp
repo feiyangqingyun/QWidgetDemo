@@ -145,6 +145,8 @@ void QwtScaleWidget::setLayoutFlag( LayoutFlag flag, bool on )
             d_data->layoutFlags |= flag;
         else
             d_data->layoutFlags &= ~flag;
+
+        update();
     }
 }
 
@@ -767,9 +769,9 @@ int QwtScaleWidget::dimForLength( int length, const QFont &scaleFont ) const
   The maximum of this distance an the minimum border distance
   is returned.
 
-  \param start Return parameter for the border width at 
+  \param start Return parameter for the border width at
                the beginning of the scale
-  \param end Return parameter for the border width at the 
+  \param end Return parameter for the border width at the
              end of the scale
 
   \warning
@@ -807,9 +809,9 @@ void QwtScaleWidget::setMinBorderDist( int start, int end )
   Get the minimum value for the distances of the scale's endpoints from
   the widget borders.
 
-  \param start Return parameter for the border width at 
+  \param start Return parameter for the border width at
                the beginning of the scale
-  \param end Return parameter for the border width at the 
+  \param end Return parameter for the border width at the
              end of the scale
 
   \sa setMinBorderDist(), getBorderDistHint()

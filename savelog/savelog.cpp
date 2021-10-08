@@ -1,5 +1,6 @@
 ﻿#include "savelog.h"
 #include "qmutex.h"
+#include "qdir.h"
 #include "qfile.h"
 #include "qtcpsocket.h"
 #include "qtcpserver.h"

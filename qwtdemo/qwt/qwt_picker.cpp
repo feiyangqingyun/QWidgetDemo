@@ -52,12 +52,12 @@ static inline QRegion qwtMaskRegion( const QLine &l, int penWidth )
 
     if ( l.x1() == l.x2() )
     {
-        region += QRect( l.x1() - pw2, l.y1(), 
+        region += QRect( l.x1() - pw2, l.y1(),
             pw, l.y2() ).normalized();
     }
     else if ( l.y1() == l.y2() )
     {
-        region += QRect( l.x1(), l.y1() - pw2, 
+        region += QRect( l.x1(), l.y1() - pw2,
             l.x2(), pw ).normalized();
     }
 
@@ -77,16 +77,16 @@ protected:
 };
 
 class QwtPickerTracker: public QwtWidgetOverlay
-{                                  
+{
 public:
     QwtPickerTracker( QwtPicker *, QWidget * );
-    
+
 protected:
     virtual void drawOverlay( QPainter * ) const;
     virtual QRegion maskHint() const;
-    
+
     QwtPicker *d_picker;
-};  
+};
 
 
 class QwtPicker::PrivateData
@@ -104,7 +104,7 @@ public:
         openGL( false )
     {
     }
-        
+
     bool enabled;
 
     QwtPickerMachine *stateMachine;
@@ -557,21 +557,21 @@ QRegion QwtPicker::rubberBandMask() const
             {
                 case VLineRubberBand:
                 {
-                    mask += qwtMaskRegion( QLine( pos.x(), pRect.top(), 
+                    mask += qwtMaskRegion( QLine( pos.x(), pRect.top(),
                         pos.x(), pRect.bottom() ), pw );
                     break;
                 }
                 case HLineRubberBand:
                 {
-                    mask += qwtMaskRegion( QLine( pRect.left(), pos.y(), 
+                    mask += qwtMaskRegion( QLine( pRect.left(), pos.y(),
                         pRect.right(), pos.y() ), pw );
                     break;
                 }
                 case CrossRubberBand:
                 {
-                    mask += qwtMaskRegion( QLine( pos.x(), pRect.top(), 
+                    mask += qwtMaskRegion( QLine( pos.x(), pRect.top(),
                         pos.x(), pRect.bottom() ), pw );
-                    mask += qwtMaskRegion( QLine( pRect.left(), pos.y(), 
+                    mask += qwtMaskRegion( QLine( pRect.left(), pos.y(),
                         pRect.right(), pos.y() ), pw );
                     break;
                 }
@@ -751,29 +751,33 @@ void QwtPicker::drawTracker( QPainter *painter ) const
    The reason, why a selection() differs from the picked points
    depends on the application requirements. F.e. :
 
-   - A rectangular selection might need to have a specific aspect ratio only.\n
-   - A selection could accept non intersecting polygons only.\n
-   - ...\n
+     - A rectangular selection might need to have a specific aspect ratio only.
+     - A selection could accept non intersecting polygons only.
+     - ...
 
    The example below is for a rectangular selection, where the first
    point is the center of the selected rectangle.
+
   \par Example
-  \verbatim QPolygon MyPicker::adjustedPoints(const QPolygon &points) const
-{
-    QPolygon adjusted;
-    if ( points.size() == 2 )
+  \code
+    QPolygon MyPicker::adjustedPoints( const QPolygon &points ) const
     {
-        const int width = qAbs(points[1].x() - points[0].x());
-        const int height = qAbs(points[1].y() - points[0].y());
+        QPolygon adjusted;
+        if ( points.size() == 2 )
+        {
+            const int width = qAbs( points[1].x() - points[0].x() );
+            const int height = qAbs( points[1].y() - points[0].y() );
 
-        QRect rect(0, 0, 2 * width, 2 * height);
-        rect.moveCenter(points[0]);
+            QRect rect( 0, 0, 2 * width, 2 * height );
+            rect.moveCenter( points[0] );
 
-        adjusted += rect.topLeft();
-        adjusted += rect.bottomRight();
+            adjusted += rect.topLeft();
+            adjusted += rect.bottomRight();
+        }
+        return adjusted;
     }
-    return adjusted;
-}\endverbatim\n
+  \endcode
+  \endpar
 
   \param points Selected points
   \return Selected points unmodified
@@ -832,7 +836,7 @@ QRect QwtPicker::trackerRect( const QFont &font ) const
         && rubberBand() != NoRubberBand )
     {
         const QPoint last =
-            d_data->pickedPoints[int( d_data->pickedPoints.count() ) - 2];
+            d_data->pickedPoints[ d_data->pickedPoints.count() - 2 ];
 
         alignment |= ( pos.x() >= last.x() ) ? Qt::AlignRight : Qt::AlignLeft;
         alignment |= ( pos.y() > last.y() ) ? Qt::AlignBottom : Qt::AlignTop;
@@ -1182,7 +1186,7 @@ void QwtPicker::transition( const QEvent *event )
         case QEvent::MouseButtonRelease:
         case QEvent::MouseMove:
         {
-            const QMouseEvent *me = 
+            const QMouseEvent *me =
                 static_cast< const QMouseEvent * >( event );
             pos = me->pos();
             break;
@@ -1234,7 +1238,7 @@ void QwtPicker::begin()
     if ( d_data->isActive )
         return;
 
-    d_data->pickedPoints.resize( 0 );
+    d_data->pickedPoints.clear();
     d_data->isActive = true;
     Q_EMIT activated( true );
 
@@ -1280,7 +1284,7 @@ bool QwtPicker::end( bool ok )
         if ( ok )
             Q_EMIT selected( d_data->pickedPoints );
         else
-            d_data->pickedPoints.resize( 0 );
+            d_data->pickedPoints.clear();
 
         updateDisplay();
     }
@@ -1314,9 +1318,7 @@ void QwtPicker::append( const QPoint &pos )
 {
     if ( d_data->isActive )
     {
-        const int idx = d_data->pickedPoints.count();
-        d_data->pickedPoints.resize( idx + 1 );
-        d_data->pickedPoints[idx] = pos;
+        d_data->pickedPoints += pos;
 
         updateDisplay();
         Q_EMIT appended( pos );
@@ -1332,18 +1334,15 @@ void QwtPicker::append( const QPoint &pos )
 */
 void QwtPicker::move( const QPoint &pos )
 {
-    if ( d_data->isActive )
+    if ( d_data->isActive && !d_data->pickedPoints.isEmpty() )
     {
-        const int idx = d_data->pickedPoints.count() - 1;
-        if ( idx >= 0 )
+        QPoint &point = d_data->pickedPoints.last();
+        if ( point != pos )
         {
-            if ( d_data->pickedPoints[idx] != pos )
-            {
-                d_data->pickedPoints[idx] = pos;
+            point = pos;
 
-                updateDisplay();
-                Q_EMIT moved( pos );
-            }
+            updateDisplay();
+            Q_EMIT moved( pos );
         }
     }
 }
@@ -1356,19 +1355,17 @@ void QwtPicker::move( const QPoint &pos )
 */
 void QwtPicker::remove()
 {
-    if ( d_data->isActive )
+    if ( d_data->isActive && !d_data->pickedPoints.isEmpty() )
     {
-        const int idx = d_data->pickedPoints.count() - 1;
-        if ( idx > 0 )
-        {
-            const int idx = d_data->pickedPoints.count();
+#if QT_VERSION >= 0x050100
+        const QPoint pos = d_data->pickedPoints.takeLast();
+#else
+        const QPoint pos = d_data->pickedPoints.last();
+        d_data->pickedPoints.resize( d_data->pickedPoints.count() - 1 );
+#endif
 
-            const QPoint pos = d_data->pickedPoints[idx - 1];
-            d_data->pickedPoints.resize( idx - 1 );
-
-            updateDisplay();
-            Q_EMIT removed( pos );
-        }
+        updateDisplay();
+        Q_EMIT removed( pos );
     }
 }
 
@@ -1423,12 +1420,10 @@ void QwtPicker::stretchSelection( const QSize &oldSize, const QSize &newSize )
         return;
     }
 
-    const double xRatio =
-        double( newSize.width() ) / double( oldSize.width() );
-    const double yRatio =
-        double( newSize.height() ) / double( oldSize.height() );
+    const double xRatio = double( newSize.width() ) / double( oldSize.width() );
+    const double yRatio = double( newSize.height() ) / double( oldSize.height() );
 
-    for ( int i = 0; i < int( d_data->pickedPoints.count() ); i++ )
+    for ( int i = 0; i < d_data->pickedPoints.count(); i++ )
     {
         QPoint &p = d_data->pickedPoints[i];
         p.setX( qRound( p.x() * xRatio ) );
@@ -1471,7 +1466,7 @@ void QwtPicker::setMouseTracking( bool enable )
 /*!
   Find the area of the observed widget, where selection might happen.
 
-  \return parentWidget()->contentsRect() 
+  \return parentWidget()->contentsRect()
 */
 QPainterPath QwtPicker::pickArea() const
 {
@@ -1503,7 +1498,7 @@ void QwtPicker::updateDisplay()
         if ( trackerMode() == AlwaysOn ||
             ( trackerMode() == ActiveOnly && isActive() ) )
         {
-            if ( trackerPen() != Qt::NoPen 
+            if ( trackerPen() != Qt::NoPen
                 && !trackerRect( QFont() ).isEmpty() )
             {
                 showTracker = true;

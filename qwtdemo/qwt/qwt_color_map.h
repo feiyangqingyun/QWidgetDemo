@@ -106,7 +106,7 @@ public:
     };
 
     QwtLinearColorMap( QwtColorMap::Format = QwtColorMap::RGB );
-    QwtLinearColorMap( const QColor &from, const QColor &to,
+    QwtLinearColorMap( const QColor &color1, const QColor &color2,
         QwtColorMap::Format = QwtColorMap::RGB );
 
     virtual ~QwtLinearColorMap();
@@ -184,7 +184,9 @@ inline QColor QwtColorMap::color(
     else
     {
         const unsigned int index = colorIndex( interval, value );
-        return colorTable( interval )[index]; // slow
+
+        const QVector<QRgb> rgbTable = colorTable( interval );
+        return rgbTable[index]; // slow
     }
 }
 

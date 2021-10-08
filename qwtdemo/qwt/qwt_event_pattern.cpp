@@ -105,7 +105,7 @@ void QwtEventPattern::initKeyPattern()
 
   \sa QMouseEvent
 */
-void QwtEventPattern::setMousePattern( MousePatternCode pattern, 
+void QwtEventPattern::setMousePattern( MousePatternCode pattern,
     Qt::MouseButton button, Qt::KeyboardModifiers modifiers )
 {
     if ( pattern >= 0 && pattern < MousePatternCount )
@@ -124,7 +124,7 @@ void QwtEventPattern::setMousePattern( MousePatternCode pattern,
 
   \sa QKeyEvent
 */
-void QwtEventPattern::setKeyPattern( KeyPatternCode pattern, 
+void QwtEventPattern::setKeyPattern( KeyPatternCode pattern,
     int key, Qt::KeyboardModifiers modifiers )
 {
     if ( pattern >= 0 && pattern < KeyPatternCount )
@@ -185,7 +185,7 @@ QVector<QwtEventPattern::KeyPattern> &QwtEventPattern::keyPattern()
 
   \sa keyMatch()
 */
-bool QwtEventPattern::mouseMatch( MousePatternCode code, 
+bool QwtEventPattern::mouseMatch( MousePatternCode code,
     const QMouseEvent *event ) const
 {
     if ( code >= 0 && code < MousePatternCount )
@@ -231,7 +231,7 @@ bool QwtEventPattern::mouseMatch( const MousePattern &pattern,
 
   \sa mouseMatch()
 */
-bool QwtEventPattern::keyMatch( KeyPatternCode code, 
+bool QwtEventPattern::keyMatch( KeyPatternCode code,
     const QKeyEvent *event ) const
 {
     if ( code >= 0 && code < KeyPatternCount )

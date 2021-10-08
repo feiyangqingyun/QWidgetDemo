@@ -125,7 +125,7 @@ uint QwtDynGridLayout::maxColumns() const
     return d_data->maxColumns;
 }
 
-/*! 
+/*!
   \brief Add an item to the next free position.
   \param item Layout item
  */
@@ -247,9 +247,9 @@ void QwtDynGridLayout::setGeometry( const QRect &rect )
 }
 
 /*!
-  \brief Calculate the number of columns for a given width. 
+  \brief Calculate the number of columns for a given width.
 
-  The calculation tries to use as many columns as possible 
+  The calculation tries to use as many columns as possible
   ( limited by maxColumns() )
 
   \param width Available width for all columns
@@ -263,7 +263,7 @@ uint QwtDynGridLayout::columnsForWidth( int width ) const
         return 0;
 
     uint maxColumns = itemCount();
-    if ( d_data->maxColumns > 0 ) 
+    if ( d_data->maxColumns > 0 )
         maxColumns = qMin( d_data->maxColumns, maxColumns );
 
     if ( maxRowWidth( maxColumns ) <= width )

@@ -17,7 +17,7 @@
 #include <qpen.h>
 #include <qline.h>
 #include <qpalette.h>
-#include <QPainterPath>
+
 class QPainter;
 class QBrush;
 class QColor;
@@ -50,7 +50,7 @@ public:
     static void drawText( QPainter *, const QPointF &, const QString & );
     static void drawText( QPainter *, double x, double y, double w, double h,
         int flags, const QString & );
-    static void drawText( QPainter *, const QRectF &, 
+    static void drawText( QPainter *, const QRectF &,
         int flags, const QString & );
 
 #ifndef QT_NO_RICHTEXT
@@ -63,7 +63,7 @@ public:
     static void fillRect( QPainter *, const QRectF &, const QBrush & );
 
     static void drawEllipse( QPainter *, const QRectF & );
-    static void drawPie( QPainter *, const QRectF & r, int a, int alen );
+    static void drawPie( QPainter *, const QRectF &, int a, int alen );
 
     static void drawLine( QPainter *, double x1, double y1, double x2, double y2 );
     static void drawLine( QPainter *, const QPointF &p1, const QPointF &p2 );
@@ -93,13 +93,13 @@ public:
     static void drawRoundFrame( QPainter *,
         const QRectF &, const QPalette &, int lineWidth, int frameStyle );
 
-    static void drawRoundedFrame( QPainter *, 
+    static void drawRoundedFrame( QPainter *,
         const QRectF &, double xRadius, double yRadius,
         const QPalette &, int lineWidth, int frameStyle );
 
     static void drawFrame( QPainter *, const QRectF &rect,
         const QPalette &palette, QPalette::ColorRole foregroundRole,
-        int lineWidth, int midLineWidth, int frameStyle ); 
+        int frameWidth, int midLineWidth, int frameStyle );
 
     static void drawFocusRect( QPainter *, const QWidget * );
     static void drawFocusRect( QPainter *, const QWidget *, const QRect & );
@@ -111,7 +111,7 @@ public:
     static bool isAligning( QPainter *painter );
     static bool isX11GraphicsSystem();
 
-    static void fillPixmap( const QWidget *, 
+    static void fillPixmap( const QWidget *,
         QPixmap &, const QPoint &offset = QPoint() );
 
     static void drawBackgound( QPainter *painter,

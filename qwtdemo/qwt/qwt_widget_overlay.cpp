@@ -1,4 +1,4 @@
-﻿/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -13,7 +13,6 @@
 #include <qpaintengine.h>
 #include <qimage.h>
 #include <qevent.h>
-#include "qpainterpath.h"
 
 static QImage::Format qwtMaskImageFormat()
 {
@@ -23,8 +22,8 @@ static QImage::Format qwtMaskImageFormat()
     return QImage::Format_ARGB32_Premultiplied;
 }
 
-static QRegion qwtAlphaMask( 
-    const QImage& image, const QVector<QRect> rects )
+static QRegion qwtAlphaMask(
+    const QImage& image, const QVector<QRect> &rects )
 {
     const int w = image.width();
     const int h = image.height();
@@ -42,33 +41,33 @@ static QRegion qwtAlphaMask(
         y1 = qMax( y1, 0 );
         y2 = qMin( y2, h - 1 );
 
-        for ( int y = y1; y <= y2; ++y ) 
+        for ( int y = y1; y <= y2; ++y )
         {
             bool inRect = false;
             int rx0 = -1;
 
-            const uint *line = 
+            const uint *line =
                 reinterpret_cast<const uint *> ( image.scanLine( y ) ) + x1;
-            for ( int x = x1; x <= x2; x++ ) 
+            for ( int x = x1; x <= x2; x++ )
             {
                 const bool on = ( ( *line++ >> 24 ) != 0 );
-                if ( on != inRect ) 
+                if ( on != inRect )
                 {
-                    if ( inRect  ) 
+                    if ( inRect  )
                     {
                         rect.setCoords( rx0, y, x - 1, y );
                         region += rect;
-                    } 
-                    else 
+                    }
+                    else
                     {
                         rx0 = x;
                     }
 
                     inRect = on;
-                } 
+                }
             }
 
-            if ( inRect ) 
+            if ( inRect )
             {
                 rect.setCoords( rx0, y, x2, y );
                 region = region.united( rect );
@@ -212,7 +211,7 @@ void QwtWidgetOverlay::updateMask()
 
         d_data->rgbaBuffer = ( uchar* )::calloc( width() * height(), 4 );
 
-        QImage image( d_data->rgbaBuffer, 
+        QImage image( d_data->rgbaBuffer,
             width(), height(), qwtMaskImageFormat() );
 
         QPainter painter( &image );
@@ -249,7 +248,7 @@ void QwtWidgetOverlay::updateMask()
 */
 void QwtWidgetOverlay::paintEvent( QPaintEvent* event )
 {
-    const QRegion clipRegion = event->region();
+    const QRegion &clipRegion = event->region();
 
     QPainter painter( this );
 
@@ -266,7 +265,7 @@ void QwtWidgetOverlay::paintEvent( QPaintEvent* event )
 
     if ( d_data->rgbaBuffer && useRgbaBuffer )
     {
-        const QImage image( d_data->rgbaBuffer, 
+        const QImage image( d_data->rgbaBuffer,
             width(), height(), qwtMaskImageFormat() );
 
         QVector<QRect> rects;

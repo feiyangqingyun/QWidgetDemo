@@ -25,23 +25,23 @@
    needs to be displayed, without having to copy it, it is recommended
    to implement an individual data access.
 
-   A subclass of QwtSeriesData<QPointF> must implement: 
+   A subclass of QwtSeriesData<QPointF> must implement:
 
-   - size()\n 
+   - size()\n
      Should return number of data points.
 
    - sample()\n
      Should return values x and y values of the sample at specific position
      as QPointF object.
 
-   - boundingRect()\n 
+   - boundingRect()\n
      Should return the bounding rectangle of the data series.
      It is used for autoscaling and might help certain algorithms for displaying
      the data. You can use qwtBoundingRect() for an implementation
-     but often it is possible to implement a more efficient algorithm 
+     but often it is possible to implement a more efficient algorithm
      depending on the characteristics of the series.
      The member d_boundingRect is intended for caching the calculated rectangle.
-    
+
 */
 template <typename T>
 class QwtSeriesData
@@ -52,6 +52,8 @@ public:
 
     //! Destructor
     virtual ~QwtSeriesData();
+
+#ifndef QWT_PYTHON_WRAPPER
 
     //! \return Number of samples
     virtual size_t size() const = 0;
@@ -77,6 +79,13 @@ public:
      */
     virtual QRectF boundingRect() const = 0;
 
+#else
+    // Needed for generating the python bindings, but not for using them !
+    virtual size_t size() const { return 0; }
+    virtual T sample( size_t i ) const { return T(); }
+    virtual QRectF boundingRect() const { return d_boundingRect; }
+#endif
+
     /*!
        Set a the "rect of interest"
 
@@ -85,7 +94,7 @@ public:
        It can be used to implement different levels of details.
 
        The default implementation does nothing.
-   
+
        \param rect Rectangle of interest
     */
     virtual void setRectOfInterest( const QRectF &rect );
@@ -274,56 +283,53 @@ QWT_EXPORT QRectF qwtBoundingRect(
   \par Example
     The following example shows finds a point of curve from an x
     coordinate
+    \code
+      #include <qwt_series_data.h>
+      #include <qwt_plot_curve.h>
 
-  \verbatim
-#include <qwt_series_data.h>
-#include <qwt_plot_curve.h>
+      struct compareX
+      {
+          inline bool operator()( const double x, const QPointF &pos ) const
+          {
+              return ( x < pos.x() );
+          }
+      };
 
-struct compareX
-{
-    inline bool operator()( const double x, const QPointF &pos ) const
-    {
-        return ( x < pos.x() );
-    }
-};
+      QLineF curveLineAt( const QwtPlotCurve *curve, double x )
+      {
+          int index = qwtUpperSampleIndex<QPointF>(
+              *curve->data(), x, compareX() );
 
-QLineF curveLineAt( const QwtPlotCurve *curve, double x )
-{
-    int index = qwtUpperSampleIndex<QPointF>( 
-        *curve->data(), x, compareX() );
-            
-    if ( index == -1 && 
-        x == curve->sample( curve->dataSize() - 1 ).x() )
-    {   
-        // the last sample is excluded from qwtUpperSampleIndex
-        index = curve->dataSize() - 1;
-    }
+          if ( index == -1 &&
+              x == curve->sample( curve->dataSize() - 1 ).x() )
+          {
+              // the last sample is excluded from qwtUpperSampleIndex
+              index = curve->dataSize() - 1;
+          }
 
-    QLineF line; // invalid
-    if ( index > 0 )
-    {
-        line.setP1( curve->sample( index - 1 ) );
-        line.setP2( curve->sample( index ) );
-    }
+          QLineF line; // invalid
+          if ( index > 0 )
+          {
+              line.setP1( curve->sample( index - 1 ) );
+              line.setP2( curve->sample( index ) );
+          }
 
-    return line;
-}
+          return line;
+      }
 
-\endverbatim
+    \endcode
+  \endpar
 
+  \param series Series of samples
+  \param value Value
+  \param lessThan Compare operation
 
-    \param series Series of samples
-    \param value Value
-    \param lessThan Compare operation
-
-    \note The samples must be sorted according to the order specified 
-          by the lessThan object
-
-of the range [begin, end) and returns the position of the one-past-the-last occurrence of value. If no such item is found, returns the position where the item should be inserted.
+  \note The samples must be sorted according to the order specified
+        by the lessThan object
  */
 template <typename T, typename LessThan>
 inline int qwtUpperSampleIndex( const QwtSeriesData<T> &series,
-    double value, LessThan lessThan  ) 
+    double value, LessThan lessThan  )
 {
     const int indexMax = series.size() - 1;
 

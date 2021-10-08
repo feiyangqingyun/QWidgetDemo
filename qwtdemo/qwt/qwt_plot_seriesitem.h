@@ -23,7 +23,7 @@ class QWT_EXPORT QwtPlotSeriesItem: public QwtPlotItem,
     public virtual QwtAbstractSeriesStore
 {
 public:
-    explicit QwtPlotSeriesItem( const QString &title = QString::null );
+    explicit QwtPlotSeriesItem( const QString &title = QString() );
     explicit QwtPlotSeriesItem( const QwtText &title );
 
     virtual ~QwtPlotSeriesItem();
@@ -31,7 +31,7 @@ public:
     void setOrientation( Qt::Orientation );
     Qt::Orientation orientation() const;
 
-    virtual void draw( QPainter *p,
+    virtual void draw( QPainter *,
         const QwtScaleMap &xMap, const QwtScaleMap &yMap,
         const QRectF & ) const;
 
@@ -52,7 +52,7 @@ public:
 
     virtual QRectF boundingRect() const;
 
-    virtual void updateScaleDiv( 
+    virtual void updateScaleDiv(
         const QwtScaleDiv &, const QwtScaleDiv & );
 
 protected:

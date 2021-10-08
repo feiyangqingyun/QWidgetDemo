@@ -153,15 +153,15 @@ void QwtPlotIntervalCurve::setSamples(
 
 /*!
   Assign a series of samples
-    
+
   setSamples() is just a wrapper for setData() without any additional
   value - beside that it is easier to find for the developer.
-    
+
   \param data Data
   \warning The item takes ownership of the data object, deleting
            it when its not used anymore.
 */
-void QwtPlotIntervalCurve::setSamples( 
+void QwtPlotIntervalCurve::setSamples(
     QwtSeriesData<QwtIntervalSample> *data )
 {
     setData( data );
@@ -222,21 +222,21 @@ const QwtIntervalSymbol *QwtPlotIntervalCurve::symbol() const
 
 /*!
   Build and assign a pen
-    
+
   In Qt5 the default pen width is 1.0 ( 0.0 in Qt4 ) what makes it
   non cosmetic ( see QPen::isCosmetic() ). This method has been introduced
   to hide this incompatibility.
-    
+
   \param color Pen color
   \param width Pen width
   \param style Pen style
-    
+
   \sa pen(), brush()
  */
 void QwtPlotIntervalCurve::setPen( const QColor &color, qreal width, Qt::PenStyle style )
-{   
+{
     setPen( QPen( color, width, style ) );
-}   
+}
 
 /*!
   \brief Assign a pen
@@ -298,7 +298,7 @@ const QBrush& QwtPlotIntervalCurve::brush() const
 QRectF QwtPlotIntervalCurve::boundingRect() const
 {
     QRectF rect = QwtPlotSeriesItem::boundingRect();
-    if ( rect.isValid() && orientation() == Qt::Vertical )
+    if ( orientation() == Qt::Vertical )
         rect.setRect( rect.y(), rect.x(), rect.height(), rect.width() );
 
     return rect;
@@ -545,13 +545,13 @@ void QwtPlotIntervalCurve::drawSymbols(
   In case of Tube style() the icon is a plain rectangle filled with the brush().
   If a symbol is assigned it is scaled to size.
 
-  \param index Index of the legend entry 
+  \param index Index of the legend entry
                ( ignored as there is only one )
   \param size Icon size
-    
+
   \sa QwtPlotItem::setLegendIconSize(), QwtPlotItem::legendData()
 */
-QwtGraphic QwtPlotIntervalCurve::legendIcon( 
+QwtGraphic QwtPlotIntervalCurve::legendIcon(
     int index, const QSizeF &size ) const
 {
     Q_UNUSED( index );

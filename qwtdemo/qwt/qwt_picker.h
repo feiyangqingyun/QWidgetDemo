@@ -58,13 +58,16 @@ class QwtWidgetOverlay;
   position.
 
   \par Example
-  \verbatim #include <qwt_picker.h>
-#include <qwt_picker_machine.h>
+  \code
+    #include <qwt_picker.h>
+    #include <qwt_picker_machine.h>
 
-QwtPicker *picker = new QwtPicker(widget);
-picker->setStateMachine(new QwtPickerDragRectMachine);
-picker->setTrackerMode(QwtPicker::ActiveOnly);
-picker->setRubberBand(QwtPicker::RectRubberBand); \endverbatim\n
+    QwtPicker *picker = new QwtPicker(widget);
+    picker->setStateMachine(new QwtPickerDragRectMachine);
+    picker->setTrackerMode(QwtPicker::ActiveOnly);
+    picker->setRubberBand(QwtPicker::RectRubberBand);
+  \endcode
+  \endpar
 
   The state machine triggers the following commands:
 
@@ -307,8 +310,8 @@ protected:
     virtual void widgetEnterEvent( QEvent * );
     virtual void widgetLeaveEvent( QEvent * );
 
-    virtual void stretchSelection( const QSize &oldSize,
-                                   const QSize &newSize );
+    virtual void stretchSelection(
+        const QSize &oldSize, const QSize &newSize );
 
     virtual void updateDisplay();
 

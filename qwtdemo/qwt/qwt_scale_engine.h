@@ -25,9 +25,9 @@ public:
     static double ceilEps( double value, double intervalSize );
     static double floorEps( double value, double intervalSize );
 
-    static double divideEps( double interval, double steps );
+    static double divideEps( double intervalSize, double numSteps );
 
-    static double divideInterval( double interval, 
+    static double divideInterval( double intervalSize,
         int numSteps, uint base );
 };
 
@@ -39,13 +39,13 @@ public:
 
   The layout of the scale can be varied with setAttribute().
 
-  Qwt offers implementations for logarithmic and linear scales. 
+  Qwt offers implementations for logarithmic and linear scales.
 */
 
 class QWT_EXPORT QwtScaleEngine
 {
 public:
-    /*! 
+    /*!
        Layout attributes
        \sa setAttribute(), testAttribute(), reference(),
            lowerMargin(), upperMargin()
@@ -64,7 +64,7 @@ public:
 
         /*!
            The endpoints of the scale are supposed to be equal the
-           outmost included values plus the specified margins 
+           outmost included values plus the specified margins
            (see setMargins()).
            If this attribute is *not* set, the endpoints of the scale will
            be integer multiples of the step size.
@@ -90,7 +90,7 @@ public:
     void setAttributes( Attributes );
     Attributes attributes() const;
 
-    void setReference( double reference );
+    void setReference( double );
     double reference() const;
 
     void setMargins( double lower, double upper );
@@ -128,12 +128,12 @@ public:
     QwtTransform *transformation() const;
 
 protected:
-    bool contains( const QwtInterval &, double val ) const;
+    bool contains( const QwtInterval &, double value ) const;
     QList<double> strip( const QList<double>&, const QwtInterval & ) const;
 
-    double divideInterval( double interval, int numSteps ) const;
+    double divideInterval( double intervalSize, int numSteps ) const;
 
-    QwtInterval buildInterval( double v ) const;
+    QwtInterval buildInterval( double value ) const;
 
 private:
     class PrivateData;
@@ -153,19 +153,19 @@ public:
     QwtLinearScaleEngine( uint base = 10 );
     virtual ~QwtLinearScaleEngine();
 
-    virtual void autoScale( int maxSteps,
+    virtual void autoScale( int maxNumSteps,
         double &x1, double &x2, double &stepSize ) const;
 
     virtual QwtScaleDiv divideScale( double x1, double x2,
-        int numMajorSteps, int numMinorSteps,
-                                     double stepSize = 0.0 ) const;
+        int maxMajorSteps, int maxMinorSteps,
+        double stepSize = 0.0 ) const;
 
 
 protected:
     QwtInterval align( const QwtInterval&, double stepSize ) const;
 
     void buildTicks(
-        const QwtInterval &, double stepSize, int maxMinSteps,
+        const QwtInterval &, double stepSize, int maxMinorSteps,
         QList<double> ticks[QwtScaleDiv::NTickTypes] ) const;
 
     QList<double> buildMajorTicks(
@@ -193,18 +193,18 @@ public:
     QwtLogScaleEngine( uint base = 10 );
     virtual ~QwtLogScaleEngine();
 
-    virtual void autoScale( int maxSteps,
+    virtual void autoScale( int maxNumSteps,
         double &x1, double &x2, double &stepSize ) const;
 
     virtual QwtScaleDiv divideScale( double x1, double x2,
-        int numMajorSteps, int numMinorSteps,
+        int maxMajorSteps, int maxMinorSteps,
         double stepSize = 0.0 ) const;
 
 protected:
     QwtInterval align( const QwtInterval&, double stepSize ) const;
 
     void buildTicks(
-        const QwtInterval &, double stepSize, int maxMinSteps,
+        const QwtInterval &, double stepSize, int maxMinorSteps,
         QList<double> ticks[QwtScaleDiv::NTickTypes] ) const;
 
     QList<double> buildMajorTicks(
