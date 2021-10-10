@@ -1,4 +1,4 @@
-/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+﻿/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -11,8 +11,9 @@
 #include "qwt_global.h"
 #include "qwt_math.h"
 #include "qwt_painter.h"
-#include <qapplication.h>
-#include <qpainter.h>
+#include "qapplication.h"
+#include "qpainterpath.h"
+#include "qpainter.h"
 
 #if QT_VERSION < 0x040601
 #define qFastSin(x) qSin(x)

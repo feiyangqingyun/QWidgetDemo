@@ -1,4 +1,4 @@
-/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+﻿/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -70,6 +70,8 @@
 #if QWT_PDF_WRITER
 #include <qpdfwriter.h>
 #endif
+
+#include <qpainterpath.h>
 
 static QPainterPath qwtCanvasClip(
     const QWidget* canvas, const QRectF &canvasRect )

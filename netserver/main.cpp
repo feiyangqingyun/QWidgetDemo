@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     AppConfig::readConfig();
 
     frmMain w;
-    w.setWindowTitle(QString("网络中转服务器V2018  本机IP: %1  QQ: 517216493").arg(QUIHelper::getLocalIP()));
+    w.setWindowTitle(QString("网络中转服务器V2021 本机IP: %1 QQ: 517216493").arg(QUIHelper::getLocalIP()));
     w.show();
 
     return a.exec();

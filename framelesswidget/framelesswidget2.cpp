@@ -204,6 +204,11 @@ void FramelessWidget2::setResizeEnable(bool resizeEnable)
     this->resizeEnable = resizeEnable;
 }
 
+void FramelessWidget2::setMousePressed(bool mousePressed)
+{
+    this->mousePressed = mousePressed;
+}
+
 void FramelessWidget2::setWidget(QWidget *widget)
 {
     if (this->widget == 0) {

@@ -56,6 +56,8 @@ public Q_SLOTS:
     //设置是否可拖动+拉伸
     void setMoveEnable(bool moveEnable);
     void setResizeEnable(bool resizeEnable);
+    //修复部分控件不能自动识别 MouseButtonRelease 的BUG
+    void setMousePressed(bool mousePressed);
 
     //设置要无边框的窗体
     void setWidget(QWidget *widget);

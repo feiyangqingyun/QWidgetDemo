@@ -4,12 +4,10 @@
 #include "qlabel.h"
 #include "qlineedit.h"
 #include "qboxlayout.h"
+#include "qregexp.h"
 #include "qvalidator.h"
 #include "qevent.h"
 #include "qdebug.h"
-#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
-#include "qregexp.h"
-#endif
 
 IPAddress::IPAddress(QWidget *parent) : QWidget(parent)
 {
@@ -55,15 +53,21 @@ IPAddress::IPAddress(QWidget *parent) : QWidget(parent)
     txtIP4->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     connect(txtIP4, SIGNAL(textChanged(QString)), this, SLOT(textChanged(QString)));
 
-#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     //设置IP地址校验过滤
-    QRegExp regExp("(2[0-5]{2}|2[0-4][0-9]|1?[0-9]{1,2})");
+    QString pattern = "(2[0-5]{2}|2[0-4][0-9]|1?[0-9]{1,2})";
+    //确切的说 QRegularExpression QRegularExpressionValidator 从5.0 5.1开始就有
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    QRegularExpression regExp(pattern);
+    QRegularExpressionValidator *validator = new QRegularExpressionValidator(regExp, this);
+#else
+    QRegExp regExp(pattern);
     QRegExpValidator *validator = new QRegExpValidator(regExp, this);
+#endif
+
     txtIP1->setValidator(validator);
     txtIP2->setValidator(validator);
     txtIP3->setValidator(validator);
     txtIP4->setValidator(validator);
-#endif
 
     //绑定事件过滤器,识别键盘按下
     txtIP1->installEventFilter(this);
@@ -157,13 +161,11 @@ QSize IPAddress::minimumSizeHint() const
 
 void IPAddress::setIP(const QString &ip)
 {
-#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     //先检测IP地址是否合法
     QRegExp regExp("((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)");
     if (!regExp.exactMatch(ip)) {
         return;
     }
-#endif
 
     if (this->ip != ip) {
         this->ip = ip;

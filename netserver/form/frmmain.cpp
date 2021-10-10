@@ -37,7 +37,7 @@ void frmMain::initConfig()
 {
     ui->txtListenPort1->setText(QString::number(AppConfig::ListenPort1));
     connect(ui->txtListenPort1, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
-
+qDebug()<<AppConfig::ListenPort1;
     ui->txtListenPort2->setText(QString::number(AppConfig::ListenPort2));
     connect(ui->txtListenPort2, SIGNAL(textChanged(QString)), this, SLOT(saveConfig()));
 }

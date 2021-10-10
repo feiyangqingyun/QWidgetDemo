@@ -1,4 +1,4 @@
-/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
+﻿/* -*- mode: C++ ; c-file-style: "stroustrup" -*- *****************************
  * Qwt Widget Library
  * Copyright (C) 1997   Josef Wilgen
  * Copyright (C) 2002   Uwe Rathmann
@@ -10,6 +10,8 @@
 #include "qwt_null_paintdevice.h"
 #include <qpaintengine.h>
 #include <qpixmap.h>
+#include "qpainterpath.h"
+#include "qpainter.h"
 
 class QwtNullPaintDevice::PrivateData
 {
