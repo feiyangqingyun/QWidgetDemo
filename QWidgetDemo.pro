@@ -37,7 +37,8 @@ SUBDIRS += imageswitch      #图片开关控件
 SUBDIRS += netserver        #网络中转服务器
 SUBDIRS += base64helper     #图片文字base64互换
 SUBDIRS += smoothcurve      #平滑曲线
-SUBDIRS += moneytool      	#存款计算器
+SUBDIRS += moneytool        #存款计算器
+SUBDIRS += hotkey           #全局热键示例 目前只支持Qt5
 
 #限定windows系统加载下面的项目
 win32 {
@@ -64,4 +65,5 @@ SUBDIRS += qwtdemo          #qwt的源码版本，无需插件，直接源码集
 #6.0到6.2之间的版本还有点问题等待正式发布的时候再试试
 greaterThan(QT_MAJOR_VERSION, 5) {
 SUBDIRS -= emailtool
+SUBDIRS -= hotkey
 }

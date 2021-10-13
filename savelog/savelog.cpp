@@ -12,10 +12,10 @@
 #define QDATE qPrintable(QDate::currentDate().toString("yyyy-MM-dd"))
 
 //日志重定向
-#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
-void Log(QtMsgType type, const char *msg)
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+void Log(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 #else
-void Log(QtMsgType type, const QMessageLogContext &, const QString &msg)
+void Log(QtMsgType type, const char *msg)
 #endif
 {
     //加锁,防止多线程中qdebug太频繁导致崩溃
@@ -42,6 +42,19 @@ void Log(QtMsgType type, const QMessageLogContext &, const QString &msg)
             break;
     }
 
+    //加上打印代码所在代码文件、行号、函数名
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+    if (SaveLog::Instance()->getUseContext()) {
+        int line = context.line;
+        QString file = context.file;
+        QString function = context.function;
+        if (line > 0) {
+            content = QString("行号: %1  文件: %2  函数: %3\n%4").arg(line).arg(file).arg(function).arg(content);
+        }
+    }
+#endif
+
+    //将内容传给函数进行处理
     SaveLog::Instance()->save(content);
 }
 
@@ -67,6 +80,8 @@ SaveLog::SaveLog(QObject *parent) : QObject(parent)
 
     file = new QFile(this);
     toNet = false;
+    useContext = true;
+
     //默认取应用程序根目录
     path = qApp->applicationDirPath();
     //默认取应用程序可执行文件名称
@@ -81,23 +96,28 @@ SaveLog::~SaveLog()
     file->close();
 }
 
+bool SaveLog::getUseContext()
+{
+    return this->useContext;
+}
+
 //安装日志钩子,输出调试信息到文件,便于调试
 void SaveLog::start()
 {
-#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
-    qInstallMsgHandler(Log);
-#else
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
     qInstallMessageHandler(Log);
+#else
+    qInstallMsgHandler(Log);
 #endif
 }
 
 //卸载日志钩子
 void SaveLog::stop()
 {
-#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
-    qInstallMsgHandler(0);
-#else
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
     qInstallMessageHandler(0);
+#else
+    qInstallMsgHandler(0);
 #endif
 }
 
@@ -133,6 +153,11 @@ void SaveLog::save(const QString &content)
 void SaveLog::setToNet(bool toNet)
 {
     this->toNet = toNet;
+}
+
+void SaveLog::setUseContext(bool useContext)
+{
+    this->useContext = useContext;
 }
 
 void SaveLog::setPath(const QString &path)

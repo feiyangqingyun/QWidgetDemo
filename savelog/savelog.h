@@ -6,9 +6,10 @@
  * 1. 支持动态启动和停止。
  * 2. 支持日志存储的目录。
  * 3. 支持网络发出打印日志。
- * 4. 支持Qt4+Qt5+Qt6，开箱即用。
- * 5. 支持多线程。
- * 6. 使用做到最简单，start即可。
+ * 4. 支持输出日志上下文信息比如所在代码文件、行号、函数名等。
+ * 5. 支持Qt4+Qt5+Qt6，开箱即用。
+ * 6. 自动加锁支持多线程。
+ * 7. 使用做到最简单，start即可。
  */
 
 #include <QObject>
@@ -37,12 +38,17 @@ private:
     QFile *file;
     //是否重定向到网络
     bool toNet;
+    //是否输出日志上下文
+    bool useContext;
     //日志文件路径
     QString path;
     //日志文件名称
     QString name;
     //日志文件完整名称
     QString fileName;
+
+public:
+    bool getUseContext();
 
 Q_SIGNALS:
     //发送内容信号
@@ -58,6 +64,8 @@ public Q_SLOTS:
 
     //设置是否重定向到网络
     void setToNet(bool toNet);
+    //设置是否输出日志上下文
+    void setUseContext(bool useContext);
     //设置日志文件存放路径
     void setPath(const QString &path);
     //设置日志文件名称
