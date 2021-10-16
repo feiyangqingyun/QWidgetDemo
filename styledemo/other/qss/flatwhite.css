@@ -262,8 +262,19 @@ padding:3px 20px;
 }
 
 QMenu::indicator{
+width:20px;
+height:13px;
+}
+
+QMenu::indicator::checked{
+image:url(:/qss/flatwhite/menu_checked.png);
+}
+
+QMenu::right-arrow{
+image:url(:/qss/flatwhite/arrow_right.png);
 width:13px;
 height:13px;
+padding:0px 3px 0px 0px;
 }
 
 QMenu::item:selected,QMenuBar::item:selected{

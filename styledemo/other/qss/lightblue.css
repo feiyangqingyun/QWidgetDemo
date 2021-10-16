@@ -262,8 +262,19 @@ padding:3px 20px;
 }
 
 QMenu::indicator{
+width:20px;
+height:13px;
+}
+
+QMenu::indicator::checked{
+image:url(:/qss/lightblue/menu_checked.png);
+}
+
+QMenu::right-arrow{
+image:url(:/qss/lightblue/arrow_right.png);
 width:13px;
 height:13px;
+padding:0px 3px 0px 0px;
 }
 
 QMenu::item:selected,QMenuBar::item:selected{
@@ -604,7 +615,7 @@ background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #DEF0FE,stop:1 
 }
 
 QComboBox QAbstractItemView::item{
-min-height:20px;
+min-height:120px;
 min-width:10px;
 }
 

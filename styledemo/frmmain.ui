@@ -1244,7 +1244,15 @@
     <property name="title">
      <string>构建(&amp;B)</string>
     </property>
+    <widget class="QMenu" name="menu_C">
+     <property name="title">
+      <string>编译项目(&amp;C)</string>
+     </property>
+     <addaction name="action_1"/>
+     <addaction name="action_2"/>
+    </widget>
     <addaction name="actionGouj"/>
+    <addaction name="menu_C"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
@@ -1306,6 +1314,25 @@
   <action name="action_A">
    <property name="text">
     <string>关于(&amp;A)</string>
+   </property>
+  </action>
+  <action name="action_1">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>编译项目1</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>编译项目2</string>
    </property>
   </action>
  </widget>
