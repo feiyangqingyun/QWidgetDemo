@@ -3,7 +3,7 @@
 QUIWidget::QUIWidget(QWidget *parent) : QDialog(parent)
 {
     this->initControl();
-    this->initForm();    
+    this->initForm();
 }
 
 QUIWidget::~QUIWidget()
@@ -234,7 +234,7 @@ void QUIWidget::initForm()
     setIcon(QUIWidget::BtnMenu_Close, QUIConfig::IconClose);
 
     this->widgetTitle->setProperty("form", "title");
-    QUIHelper::setFramelessForm(this);
+    QUIHelper::setFramelessForm(this, false, false, false);
 
     //设置标题及对齐方式
     title = "QUI Demo";
@@ -249,24 +249,41 @@ void QUIWidget::initForm()
     this->installEventFilter(this);
     this->widgetTitle->installEventFilter(this);
 
+    //默认切换换肤立即换肤
+    changedStyle = true;
+
     //添加换肤菜单
     QStringList styleNames, styleFiles;
     QUIStyle::getStyle(styleNames, styleFiles);
+
+    //添加到动作分组中形成互斥效果
+    actionGroup = new QActionGroup(this);
     int count = styleNames.count();
     for (int i = 0; i < count; i++) {
         QAction *action = new QAction(this);
+        //设置可选中前面有个勾勾
+        action->setCheckable(true);
         action->setText(styleNames.at(i));
         action->setData(styleFiles.at(i));
         connect(action, SIGNAL(triggered(bool)), this, SLOT(changeStyle()));
         this->btnMenu->addAction(action);
+        actionGroup->addAction(action);
     }
+
+    //默认选择一种样式
+    setQssChecked(":/qss/lightblue.css");
 }
 
 void QUIWidget::changeStyle()
 {
     QAction *action = (QAction *)sender();
     QString qssFile = action->data().toString();
-    QUIStyle::setStyle(qssFile);
+
+    //有些应用可能只需要发送个换肤的信号给他就行
+    if (changedStyle) {
+        QUIStyle::setStyleFile(qssFile);
+    }
+
     emit changeStyle(qssFile);
 }
 
@@ -397,6 +414,22 @@ void QUIWidget::setMainWidget(QWidget *mainWidget)
         this->mainWidget = mainWidget;
         QUIHelper::setFormInCenter(this);
     }
+}
+
+void QUIWidget::setQssChecked(const QString &qssFile)
+{
+    QList<QAction *> actions = actionGroup->actions();
+    foreach (QAction *action, actions) {
+        if (action->data().toString() == qssFile) {
+            action->setChecked(true);
+            break;
+        }
+    }
+}
+
+void QUIWidget::setChangedStyle(bool changedStyle)
+{
+    this->changedStyle = changedStyle;
 }
 
 void QUIWidget::on_btnMenu_Min_clicked()

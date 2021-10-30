@@ -50,7 +50,9 @@ public:
     QSize minimumSizeHint()         const;
 
 public Q_SLOTS:
+    //设置是否选中
     void setChecked(bool isChecked);
+    //设置按钮样式
     void setButtonStyle(const ImageSwitch::ButtonStyle &buttonStyle);
 };
 

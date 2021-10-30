@@ -42,11 +42,14 @@ private:
     QVBoxLayout *verticalLayout3;
 
 private:
-    QString title;          //标题
-    Qt::Alignment alignment;//标题文本对齐
-    bool minHide;           //最小化隐藏
-    bool exitAll;           //退出整个程序
-    QWidget *mainWidget;    //主窗体对象
+    QString title;                  //标题
+    Qt::Alignment alignment;        //标题文本对齐
+    bool minHide;                   //最小化隐藏
+    bool exitAll;                   //退出整个程序
+    QWidget *mainWidget;            //主窗体对象
+
+    bool changedStyle;              //切换换肤是否立即换肤
+    QActionGroup *actionGroup;      //换肤菜单动作组
 
 public:
     QLabel *getLabIco()             const;
@@ -55,7 +58,7 @@ public:
     QToolButton *getBtnMenu()       const;
     QPushButton *getBtnMenuMin()    const;
     QPushButton *getBtnMenuMax()    const;
-    QPushButton *getBtnMenuClose() const;
+    QPushButton *getBtnMenuClose()  const;
 
     QString getTitle()              const;
     Qt::Alignment getAlignment()    const;
@@ -66,9 +69,9 @@ public:
     QSize minimumSizeHint()         const;
 
 private slots:
-    void initControl(); //初始化控件
-    void initForm();    //初始化窗体
-    void changeStyle(); //更换样式
+    void initControl();             //初始化控件
+    void initForm();                //初始化窗体
+    void changeStyle();             //更换样式
 
 private slots:
     void on_btnMenu_Min_clicked();
@@ -103,6 +106,11 @@ public Q_SLOTS:
 
     //设置主窗体
     void setMainWidget(QWidget *mainWidget);
+
+    //设置默认选中的换肤菜单
+    void setQssChecked(const QString &qssFile);
+    //设置切换换肤是否立即换肤
+    void setChangedStyle(bool changedStyle);
 
 Q_SIGNALS:
     void changeStyle(const QString &qssFile);

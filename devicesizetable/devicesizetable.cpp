@@ -7,7 +7,6 @@
 #include "qfileinfo.h"
 #include "qdir.h"
 #include "qprogressbar.h"
-#include "qtimer.h"
 #include "qdebug.h"
 
 #ifdef Q_OS_WIN
@@ -53,8 +52,7 @@ DeviceSizeTable::DeviceSizeTable(QWidget *parent) : QTableWidget(parent)
     this->setSelectionMode(QAbstractItemView::SingleSelection);
     this->verticalHeader()->setVisible(true);
     this->horizontalHeader()->setStretchLastSection(true);
-
-    QTimer::singleShot(0, this, SLOT(load()));
+    QMetaObject::invokeMethod(this, "load");
 }
 
 QColor DeviceSizeTable::getBgColor() const

@@ -4,10 +4,13 @@
 #include "ui_frmsaveruntime.h"
 #include "qfile.h"
 #include "saveruntime.h"
+#include "qdebug.h"
 
 frmSaveRunTime::frmSaveRunTime(QWidget *parent) : QWidget(parent), ui(new Ui::frmSaveRunTime)
 {
-    ui->setupUi(this);    
+    ui->setupUi(this);
+    //设置文件存储目录
+    SaveRunTime::Instance()->setPath(qApp->applicationDirPath() + "/log");
 }
 
 frmSaveRunTime::~frmSaveRunTime()
@@ -40,7 +43,12 @@ void frmSaveRunTime::on_btnUpdate_clicked()
 
 void frmSaveRunTime::on_btnOpen_clicked()
 {
-    QString fileName = QString("%1/examples_runtime_%2.txt").arg(qApp->applicationDirPath()).arg(QDate::currentDate().year());
+    QString path = qApp->applicationDirPath();
+    QString name = qApp->applicationFilePath();
+    QStringList list = name.split("/");
+    name = list.at(list.count() - 1).split(".").at(0);
+
+    QString fileName = QString("%1/log/%2_runtime_%3.txt").arg(path).arg(name).arg(QDate::currentDate().year());
     QFile file(fileName);
     if (file.open(QFile::ReadOnly | QFile::Text)) {
         ui->txtMain->setText(file.readAll());

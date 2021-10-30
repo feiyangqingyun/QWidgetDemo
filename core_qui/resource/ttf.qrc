@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>image/fontawesome-webfont.ttf</file>
         <file>image/iconfont.ttf</file>
+        <file>image/pe-icon-set-weather.ttf</file>
     </qresource>
 </RCC>

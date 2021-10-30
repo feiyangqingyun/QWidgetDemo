@@ -1372,3 +1372,87 @@ bool QUIHelper::checkRowCount(int rowCount, int maxCount, int warnCount)
 
     return true;
 }
+
+QPixmap QUIHelper::getPixmap(QWidget *widget, const QPixmap &pixmap, bool scale)
+{
+    if (pixmap.isNull()) {
+        return pixmap;
+    }
+
+    //scale=false 超过尺寸才需要等比例缩放
+    QPixmap pix = pixmap;
+    if (scale) {
+        pix = pix.scaled(widget->size() - QSize(2, 2), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    } else if (pix.width() > widget->width() || pix.height() > widget->height()) {
+        pix = pix.scaled(widget->size() - QSize(2, 2), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    }
+
+    return pix;
+}
+
+void QUIHelper::setPixmap(QLabel *label, const QString &file, bool scale)
+{
+    //文件不存在则不用处理
+    if (!QFile(file).exists()) {
+        label->clear();
+        return;
+    }
+
+    QPixmap pixmap(file);
+    pixmap = getPixmap(label, pixmap);
+    label->setPixmap(pixmap);
+}
+
+void QUIHelper::setLogo(QLabel *label, const QString &file,
+                        int width, int height, int offset,
+                        const QString &oldColor, const QString &newColor)
+{
+    //如果是icon开头则表示图形字体否则取logo图片
+    if (file.startsWith("icon")) {
+        //设置图形字体作为logo
+        height = 55, width = 80;
+        QString text = file.split("_").last();
+        int icon = text.toInt(NULL, 16);
+        IconHelper::setIcon(label, icon, height);
+    } else {
+        //区分资源文件和本地文件
+        QString fileName = file;
+        if (!file.startsWith(":/")) {
+            height = 50;
+            fileName = QString("%1/logo/%2.png").arg(QUIHelper::appPath()).arg(file);
+        }
+
+        //svg图片自动换颜色
+        if (file.endsWith(".svg")) {
+            //打开文件对指定颜色进行替换
+            QFile f(file);
+            if (f.open(QFile::ReadOnly)) {
+                QString text = f.readAll();
+                text.replace(oldColor, newColor);
+                f.close();
+
+                //打开新的文件输出
+                fileName = QString("%1/logo/temp.svg").arg(QUIHelper::appPath());
+                QFile f2(fileName);
+                if (f2.open(QFile::WriteOnly)) {
+                    f2.write(text.toUtf8());
+                    f2.close();
+                }
+            }
+        }
+
+        //自动计算宽度比例
+        QPixmap pixmap(fileName);
+        width = pixmap.width() / (pixmap.height() / height);
+        pixmap = pixmap.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        label->setPixmap(pixmap);
+    }
+
+    //设置logo标签最小宽度
+    if (width - height < offset) {
+        width += offset;
+    }
+
+    label->setFixedWidth(width);
+    label->setAlignment(Qt::AlignCenter);
+}

@@ -25,11 +25,25 @@ void QUIStyle::getStyle(QStringList &styleNames, QStringList &styleFiles)
     styleFiles = files;
 }
 
-void QUIStyle::setStyle(const QString &qss, const QString &paletteColor)
+void QUIStyle::setStyle(const QString &qss)
 {
+    QStringList list;
+    list << qss;
+
+    //5.12开始tabbar左右反过来的
+#if (QT_VERSION >= QT_VERSION_CHECK(5,12,0))
+    //左右两侧的边框偏移一个像素
+    list << "QTabWidget::pane:left{left:-1px;right:0px;}";
+    list << "QTabWidget::pane:right{right:-1px;left:0px;}";
+    //选中和悬停的时候边缘加深2个像素
+    list << "QTabBar::tab:left:selected,QTabBar::tab:left:hover{border-width:0px 0px 0px 2px;}";
+    list << "QTabBar::tab:right:selected,QTabBar::tab:right:hover{border-width:0px 2px 0px 0px;}";
+#endif
+
     QUIHelper::isCustomUI = true;
+    QString paletteColor = qss.mid(20, 7);
     qApp->setPalette(QPalette(paletteColor));
-    qApp->setStyleSheet(qss);
+    qApp->setStyleSheet(list.join(""));
 }
 
 void QUIStyle::setStyle(const QUIStyle::Style &style)
@@ -48,18 +62,18 @@ void QUIStyle::setStyle(const QUIStyle::Style &style)
         QString paletteColor = qss.mid(20, 7);
         getQssColor(qss, QUIConfig::TextColor, QUIConfig::PanelColor, QUIConfig::BorderColor, QUIConfig::NormalColorStart,
                     QUIConfig::NormalColorEnd, QUIConfig::DarkColorStart, QUIConfig::DarkColorEnd, QUIConfig::HighColor);
-        setStyle(qss, paletteColor);
+        setStyle(qss);
         file.close();
     }
 }
 
-void QUIStyle::setStyle(const QString &qssFile)
+void QUIStyle::setStyleFile(const QString &qssFile)
 {
     QString paletteColor, textColor;
-    setStyle(qssFile, paletteColor, textColor);
+    setStyleFile(qssFile, paletteColor, textColor);
 }
 
-void QUIStyle::setStyle(const QString &qssFile, QString &paletteColor, QString &textColor)
+void QUIStyle::setStyleFile(const QString &qssFile, QString &paletteColor, QString &textColor)
 {
     QFile file(qssFile);
     if (file.open(QFile::ReadOnly)) {
@@ -68,78 +82,49 @@ void QUIStyle::setStyle(const QString &qssFile, QString &paletteColor, QString &
         textColor = qss.mid(49, 7);
         getQssColor(qss, QUIConfig::TextColor, QUIConfig::PanelColor, QUIConfig::BorderColor, QUIConfig::NormalColorStart,
                     QUIConfig::NormalColorEnd, QUIConfig::DarkColorStart, QUIConfig::DarkColorEnd, QUIConfig::HighColor);
-        setStyle(qss, paletteColor);
+        setStyle(qss);
         file.close();
     }
 }
 
-void QUIStyle::setStyle(const QString &qssFile, QString &textColor, QString &panelColor, QString &borderColor,
-                        QString &normalColorStart, QString &normalColorEnd,
-                        QString &darkColorStart, QString &darkColorEnd, QString &highColor)
+void QUIStyle::setStyleFile(const QString &qssFile, QString &textColor, QString &panelColor, QString &borderColor,
+                            QString &normalColorStart, QString &normalColorEnd,
+                            QString &darkColorStart, QString &darkColorEnd, QString &highColor)
 {
     QFile file(qssFile);
     if (file.open(QFile::ReadOnly)) {
         QString qss = QLatin1String(file.readAll());
         getQssColor(qss, textColor, panelColor, borderColor, normalColorStart, normalColorEnd, darkColorStart, darkColorEnd, highColor);
-        setStyle(qss, panelColor);
+        setStyle(qss);
         file.close();
     }
 }
 
-void QUIStyle::getQssColor(const QString &qss, QString &textColor, QString &panelColor, QString &borderColor,
+void QUIStyle::getQssColor(const QString &qss, const QString &flag, QString &color)
+{
+    int index = qss.indexOf(flag);
+    if (index >= 0) {
+        color = qss.mid(index + flag.length(), 7);
+    }
+    //qDebug() << TIMEMS << flag << color;
+}
+
+void QUIStyle::getQssColor(const QString &qss, QString &textColor,
+                           QString &panelColor, QString &borderColor,
                            QString &normalColorStart, QString &normalColorEnd,
                            QString &darkColorStart, QString &darkColorEnd, QString &highColor)
 {
+    getQssColor(qss, "TextColor:", textColor);
+    getQssColor(qss, "PanelColor:", panelColor);
+    getQssColor(qss, "BorderColor:", borderColor);
+    getQssColor(qss, "NormalColorStart:", normalColorStart);
+    getQssColor(qss, "NormalColorEnd:", normalColorEnd);
+    getQssColor(qss, "DarkColorStart:", darkColorStart);
+    getQssColor(qss, "DarkColorEnd:", darkColorEnd);
+    getQssColor(qss, "HighColor:", highColor);
+
     QUIHelper::isCustomUI = true;
-
-    QString str = qss;
-    QString flagTextColor = "TextColor:";
-    int indexTextColor = str.indexOf(flagTextColor);
-    if (indexTextColor >= 0) {
-        textColor = str.mid(indexTextColor + flagTextColor.length(), 7);
-    }
-
-    QString flagPanelColor = "PanelColor:";
-    int indexPanelColor = str.indexOf(flagPanelColor);
-    if (indexPanelColor >= 0) {
-        panelColor = str.mid(indexPanelColor + flagPanelColor.length(), 7);
-    }
-
-    QString flagBorderColor = "BorderColor:";
-    int indexBorderColor = str.indexOf(flagBorderColor);
-    if (indexBorderColor >= 0) {
-        borderColor = str.mid(indexBorderColor + flagBorderColor.length(), 7);
-    }
-
-    QString flagNormalColorStart = "NormalColorStart:";
-    int indexNormalColorStart = str.indexOf(flagNormalColorStart);
-    if (indexNormalColorStart >= 0) {
-        normalColorStart = str.mid(indexNormalColorStart + flagNormalColorStart.length(), 7);
-    }
-
-    QString flagNormalColorEnd = "NormalColorEnd:";
-    int indexNormalColorEnd = str.indexOf(flagNormalColorEnd);
-    if (indexNormalColorEnd >= 0) {
-        normalColorEnd = str.mid(indexNormalColorEnd + flagNormalColorEnd.length(), 7);
-    }
-
-    QString flagDarkColorStart = "DarkColorStart:";
-    int indexDarkColorStart = str.indexOf(flagDarkColorStart);
-    if (indexDarkColorStart >= 0) {
-        darkColorStart = str.mid(indexDarkColorStart + flagDarkColorStart.length(), 7);
-    }
-
-    QString flagDarkColorEnd = "DarkColorEnd:";
-    int indexDarkColorEnd = str.indexOf(flagDarkColorEnd);
-    if (indexDarkColorEnd >= 0) {
-        darkColorEnd = str.mid(indexDarkColorEnd + flagDarkColorEnd.length(), 7);
-    }
-
-    QString flagHighColor = "HighColor:";
-    int indexHighColor = str.indexOf(flagHighColor);
-    if (indexHighColor >= 0) {
-        highColor = str.mid(indexHighColor + flagHighColor.length(), 7);
-    }
+    QUIConfig::TextColor = textColor;
 }
 
 void QUIStyle::setLabStyle(QLabel *lab, quint8 type, const QString &bgColor, const QString &textColor)

@@ -643,13 +643,21 @@ QTabWidget::pane:bottom{bottom:-1px;}
 QTabWidget::pane:left{right:-1px;}
 QTabWidget::pane:right{left:-1px;}
 
-QDialog {
+QDialog,QDial{
 background-color:#444444;
 color:#DCDCDC;
 }
 
-QDialogButtonBox > QPushButton {
+QDialogButtonBox>QPushButton{
 min-width:50px;
+}
+
+QListView[noboder="true"],QTreeView[noboder="true"],QTabWidget[noboder="true"]::pane{
+border-width:0px;
+}
+
+QToolBar>*,QStatusBar>*{
+margin:2px;
 }
 
 *:disabled,QMenu::item:disabled{

@@ -30,17 +30,18 @@ public:
     //获取皮肤样式中文名称和对应的样式表文件
     static void getStyle(QStringList &styleNames, QStringList &styleFiles);
     //设置全局样式
-    static void setStyle(const QString &qss, const QString &paletteColor);
+    static void setStyle(const QString &qss);
     static void setStyle(const QUIStyle::Style &style);
-    static void setStyle(const QString &qssFile);
-    static void setStyle(const QString &qssFile, QString &paletteColor, QString &textColor);
-    static void setStyle(const QString &qssFile, QString &textColor,
-                         QString &panelColor, QString &borderColor,
-                         QString &normalColorStart, QString &normalColorEnd,
-                         QString &darkColorStart, QString &darkColorEnd,
-                         QString &highColor);
+    static void setStyleFile(const QString &qssFile);
+    static void setStyleFile(const QString &qssFile, QString &paletteColor, QString &textColor);
+    static void setStyleFile(const QString &qssFile, QString &textColor,
+                             QString &panelColor, QString &borderColor,
+                             QString &normalColorStart, QString &normalColorEnd,
+                             QString &darkColorStart, QString &darkColorEnd,
+                             QString &highColor);
 
     //根据QSS样式获取对应颜色值
+    static void getQssColor(const QString &qss, const QString &flag, QString &color);
     static void getQssColor(const QString &qss, QString &textColor,
                             QString &panelColor, QString &borderColor,
                             QString &normalColorStart, QString &normalColorEnd,

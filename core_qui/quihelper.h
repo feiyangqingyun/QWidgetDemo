@@ -223,6 +223,14 @@ public:
     static void openFile(const QString &fileName, const QString &msg);
     //导出和打印数据提示框
     static bool checkRowCount(int rowCount, int maxCount, int warnCount);
+
+    //获取等比例缩放过的图片
+    static QPixmap getPixmap(QWidget *widget, const QPixmap &pixmap, bool scale = false);
+    static void setPixmap(QLabel *label, const QString &file, bool scale = false);
+    //设置logo图片支持 资源文件+本地图片+图形字体+svg自动变色 等多种形式
+    static void setLogo(QLabel *label, const QString &file,
+                        int width, int height, int offset = 20,
+                        const QString &oldColor = QString(), const QString &newColor = QString());
 };
 
 #endif // QUIHELPER_H

@@ -59,5 +59,6 @@
 #include "quitipbox.h"
 #include "quidateselect.h"
 #include "quiinputbox.h"
+#include "quiwidget.h"
 
 #endif // QUIHEAD_H

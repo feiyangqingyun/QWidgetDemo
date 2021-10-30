@@ -396,6 +396,9 @@
               </item>
               <item row="2" column="2">
                <widget class="QLCDNumber" name="lcdNumber">
+                <property name="frameShape">
+                 <enum>QFrame::NoFrame</enum>
+                </property>
                 <property name="digitCount">
                  <number>5</number>
                 </property>

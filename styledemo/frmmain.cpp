@@ -152,9 +152,9 @@ void frmMain::initStyle()
 {
     //加载样式表
     QString qss;
-    QFile file(":/qss/psblack.css");
+    //QFile file(":/qss/psblack.css");
     //QFile file(":/qss/flatwhite.css");
-    //QFile file(":/qss/lightblue.css");
+    QFile file(":/qss/lightblue.css");
     if (file.open(QFile::ReadOnly)) {
 #if 1
         //用QTextStream读取样式文件不用区分文件编码 带bom也行

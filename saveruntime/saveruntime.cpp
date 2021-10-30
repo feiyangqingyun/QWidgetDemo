@@ -1,4 +1,6 @@
-﻿#include "saveruntime.h"
+﻿#pragma execution_character_set("utf-8")
+
+#include "saveruntime.h"
 #include "qmutex.h"
 #include "qdir.h"
 #include "qfile.h"
@@ -6,12 +8,6 @@
 #include "qtimer.h"
 #include "qtextstream.h"
 #include "qstringlist.h"
-
-#ifdef Q_OS_WIN
-#define NEWLINE "\r\n"
-#else
-#define NEWLINE "\n"
-#endif
 
 QScopedPointer<SaveRunTime> SaveRunTime::self;
 SaveRunTime *SaveRunTime::Instance()
@@ -72,6 +68,10 @@ void SaveRunTime::getDiffValue(const QDateTime &startTime, const QDateTime &endT
 
 void SaveRunTime::start()
 {
+    if (timerSave->isActive()) {
+        return;
+    }
+
     //开始时间变量必须在这,在部分嵌入式系统上开机后的时间不准确比如是1970,而后会变成1999或者其他时间
     //会在getDiffValue函数执行很久很久
     startTime = QDateTime::currentDateTime();
@@ -84,6 +84,10 @@ void SaveRunTime::start()
 
 void SaveRunTime::stop()
 {
+    if (!timerSave->isActive()) {
+        return;
+    }
+
     timerSave->stop();
 }
 
@@ -116,7 +120,7 @@ void SaveRunTime::initLog()
             QString line = strID + strStartTime + strEndTime + strRunTime;
 
             QTextStream stream(&file);
-            stream << line << NEWLINE;
+            stream << line << "\n";
             file.close();
             lastID = 0;
         }
@@ -154,7 +158,7 @@ void SaveRunTime::appendLog()
         QString line = strID + strStartTime + strEndTime + strRunTime;
 
         QTextStream stream(&file);
-        stream << line << NEWLINE;
+        stream << line << "\n";
         file.close();
     }
 }
@@ -205,7 +209,7 @@ void SaveRunTime::saveLog()
         content[content.count() - 1] = lastLine;
 
         QTextStream stream(&file);
-        stream << content.join("") << NEWLINE;
+        stream << content.join("") << "\n";
         file.close();
     }
 }

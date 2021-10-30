@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmSaveLog w;
-    w.setWindowTitle("输出日志文件");
+    w.setWindowTitle("日志重定向示例 V2022 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

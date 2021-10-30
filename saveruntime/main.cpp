@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmSaveRunTime w;
-    w.setWindowTitle("保存运行时间");
+    w.setWindowTitle("运行时间记录示例 V2022 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

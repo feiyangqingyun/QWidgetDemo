@@ -2,6 +2,7 @@
 #define FRMSAVELOG_H
 
 #include <QWidget>
+#include <QListWidgetItem>
 
 namespace Ui {
 class frmSaveLog;
@@ -17,15 +18,22 @@ public:
 
 private:
     Ui::frmSaveLog *ui;
+    int count;
     QTimer *timer;
 
 private slots:
     void initForm();
-    void append();
-    void on_btnDebug_clicked();
+    void append(const QString &flag = QString());
+
+private slots:
+    void on_btnLog_clicked();
     void on_ckTimer_stateChanged(int arg1);
     void on_ckNet_stateChanged(int arg1);
-    void on_ckSave_stateChanged(int arg1);    
+    void on_ckSave_stateChanged(int arg1);
+
+    void on_cboxSize_currentIndexChanged(int index);
+    void on_cboxRow_currentIndexChanged(int index);
+    void on_listType_itemPressed(QListWidgetItem *item);
 };
 
 #endif // FRMSAVELOG_H
