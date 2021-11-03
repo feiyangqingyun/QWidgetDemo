@@ -107,7 +107,7 @@ void VideoWidget::initFlowPanel()
     QFont iconFont;
     QFontDatabase fontDb;
     if (!fontDb.families().contains("iconfont")) {
-        int fontId = fontDb.addApplicationFont(":/image/iconfont.ttf");
+        int fontId = fontDb.addApplicationFont(":/font/iconfont.ttf");
         QStringList fontName = fontDb.applicationFontFamilies(fontId);
         if (fontName.count() == 0) {
             qDebug() << "load iconfont.ttf error";

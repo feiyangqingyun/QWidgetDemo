@@ -74,7 +74,7 @@ void QUIMessageBox::initControl()
     verticalLayout1->setContentsMargins(1, 1, 1, 1);
 
     widgetTitle = new QWidget(this);
-    widgetTitle->setObjectName(QString::fromUtf8("widgetTitle"));
+    widgetTitle->setObjectName(QString::fromUtf8("QUIWidgetTitle"));
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
@@ -87,7 +87,7 @@ void QUIMessageBox::initControl()
     horizontalLayout3->setContentsMargins(0, 0, 0, 0);
 
     labIco = new QLabel(widgetTitle);
-    labIco->setObjectName(QString::fromUtf8("labIco"));
+    labIco->setObjectName(QString::fromUtf8("QUILabIco"));
     QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
     sizePolicy1.setHorizontalStretch(0);
     sizePolicy1.setVerticalStretch(0);
@@ -97,12 +97,12 @@ void QUIMessageBox::initControl()
     horizontalLayout3->addWidget(labIco);
 
     labTitle = new QLabel(widgetTitle);
-    labTitle->setObjectName(QString::fromUtf8("labTitle"));
+    labTitle->setObjectName(QString::fromUtf8("QUILabTitle"));
     labTitle->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
     horizontalLayout3->addWidget(labTitle);
 
     labCountDown = new QLabel(widgetTitle);
-    labCountDown->setObjectName(QString::fromUtf8("labCountDown"));
+    labCountDown->setObjectName(QString::fromUtf8("QUILabCountDown"));
     QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(0);
     sizePolicy2.setVerticalStretch(0);
@@ -112,7 +112,7 @@ void QUIMessageBox::initControl()
     horizontalLayout3->addWidget(labCountDown);
 
     widgetMenu = new QWidget(widgetTitle);
-    widgetMenu->setObjectName(QString::fromUtf8("widgetMenu"));
+    widgetMenu->setObjectName(QString::fromUtf8("QUIWidgetMenu"));
     sizePolicy1.setHeightForWidth(widgetMenu->sizePolicy().hasHeightForWidth());
     widgetMenu->setSizePolicy(sizePolicy1);
 
@@ -137,7 +137,7 @@ void QUIMessageBox::initControl()
     verticalLayout1->addWidget(widgetTitle);
 
     widgetMain = new QWidget(this);
-    widgetMain->setObjectName(QString::fromUtf8("widgetMainQUI"));
+    widgetMain->setObjectName(QString::fromUtf8("QUIWidgetMain"));
 
     verticalLayout2 = new QVBoxLayout(widgetMain);
     verticalLayout2->setSpacing(5);
@@ -145,12 +145,12 @@ void QUIMessageBox::initControl()
     verticalLayout2->setContentsMargins(5, 5, 5, 5);
 
     frame = new QFrame(widgetMain);
-    frame->setObjectName(QString::fromUtf8("frame"));
+    frame->setObjectName(QString::fromUtf8("QUIFrame"));
     frame->setFrameShape(QFrame::Box);
     frame->setFrameShadow(QFrame::Sunken);
 
     labIcoMain = new QLabel(frame);
-    labIcoMain->setObjectName(QString::fromUtf8("labIcoMain"));
+    labIcoMain->setObjectName(QString::fromUtf8("QUILabIcoMain"));
     labIcoMain->setAlignment(Qt::AlignCenter);
 
     verticalLayout4 = new QVBoxLayout(frame);
@@ -164,7 +164,7 @@ void QUIMessageBox::initControl()
     horizontalLayout1->addItem(horizontalSpacer1);
 
     labInfo = new QLabel(frame);
-    labInfo->setObjectName(QString::fromUtf8("labInfo"));
+    labInfo->setObjectName(QString::fromUtf8("QUILabInfo"));
     QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Expanding);
     sizePolicy4.setHorizontalStretch(0);
     sizePolicy4.setVerticalStretch(0);
@@ -182,14 +182,14 @@ void QUIMessageBox::initControl()
     horizontalLayout2->addItem(horizontalSpacer2);
 
     btnOk = new QPushButton(frame);
-    btnOk->setObjectName(QString::fromUtf8("btnOk"));
+    btnOk->setObjectName(QString::fromUtf8("QUIBtnOk"));
     btnOk->setMinimumSize(QSize(85, 0));
     btnOk->setFocusPolicy(Qt::StrongFocus);
     horizontalLayout2->addWidget(btnOk);
     btnOk->setDefault(true);
 
     btnCancel = new QPushButton(frame);
-    btnCancel->setObjectName(QString::fromUtf8("btnCancel"));
+    btnCancel->setObjectName(QString::fromUtf8("QUIBtnCancel"));
     btnCancel->setMinimumSize(QSize(85, 0));
     btnCancel->setFocusPolicy(Qt::StrongFocus);
     horizontalLayout2->addWidget(btnCancel);
@@ -212,11 +212,15 @@ void QUIMessageBox::initControl()
 
 void QUIMessageBox::initForm()
 {
+    //设置阴影
+    QUIHelper::setFormShadow(this, verticalLayout1);
+    //设置无边框
     QUIHelper::setFramelessForm(this, widgetTitle, labIco, btnMenu_Close);
     this->setWindowTitle(this->labTitle->text());
     this->setFixedSize(QUIDialogMinWidth, QUIDialogMinHeight);
     labIcoMain->setFixedSize(QUITitleMinSize, QUITitleMinSize);
 
+    //按钮设置最小尺寸和图标大小
     QList<QPushButton *> btns = this->frame->findChildren<QPushButton *>();
     foreach (QPushButton *btn, btns) {
         btn->setMinimumWidth(QUIBtnMinWidth);
@@ -226,6 +230,7 @@ void QUIMessageBox::initForm()
     closeSec = 0;
     currentSec = 0;
 
+    //倒计时定时器关闭窗体
     QTimer *timer = new QTimer(this);
     timer->setInterval(1000);
     connect(timer, SIGNAL(timeout()), this, SLOT(checkSec()));
@@ -300,11 +305,27 @@ void QUIMessageBox::setMessage(const QString &msg, int type, int closeSec)
 
     this->labInfo->setText(msg);
     this->setWindowTitle(this->labTitle->text());
+
+    //长度符合要求比如就两行只需要默认尺寸
+    bool normal = (msg.length() < 30);
+    //计算有多少个换行符
+    int count = 0;
+    foreach (QString s, msg) {
+        if (s == "\n") {
+            count++;
+        }
+    }
+    //如果包含换行超过1个则表示超过2行需要特殊布局尺寸
+    if (count > 1) {
+        normal = false;
+    }
+
     //设置对话框的大小总以最合适的大小显示
-    if (msg.length() < 70) {
+    if (normal) {
         this->layout()->setSizeConstraint(QLayout::SetMinimumSize);
         this->setFixedSize(QUIDialogMinWidth, QUIDialogMinHeight);
     } else {
         this->layout()->setSizeConstraint(QLayout::SetFixedSize);
+        //this->setFixedSize(labInfo->sizeHint() + QSize(100, 120));
     }
 }

@@ -110,14 +110,14 @@ void QUIWidget::initControl()
     verticalLayout1->setObjectName(QString::fromUtf8("verticalLayout1"));
     verticalLayout1->setContentsMargins(1, 1, 1, 1);
     widgetMain = new QWidget(this);
-    widgetMain->setObjectName(QString::fromUtf8("widgetMainQUI"));
+    widgetMain->setObjectName(QString::fromUtf8("QUIWidgetMain"));
     verticalLayout2 = new QVBoxLayout(widgetMain);
     verticalLayout2->setSpacing(0);
     verticalLayout2->setContentsMargins(11, 11, 11, 11);
     verticalLayout2->setObjectName(QString::fromUtf8("verticalLayout2"));
     verticalLayout2->setContentsMargins(0, 0, 0, 0);
     widgetTitle = new QWidget(widgetMain);
-    widgetTitle->setObjectName(QString::fromUtf8("widgetTitle"));
+    widgetTitle->setObjectName(QString::fromUtf8("QUIWidgetTitle"));
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
@@ -131,7 +131,7 @@ void QUIWidget::initControl()
     horizontalLayout4->setContentsMargins(0, 0, 0, 0);
 
     labIco = new QLabel(widgetTitle);
-    labIco->setObjectName(QString::fromUtf8("labIco"));
+    labIco->setObjectName(QString::fromUtf8("QUILabIco"));
     QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
     sizePolicy1.setHorizontalStretch(0);
     sizePolicy1.setVerticalStretch(0);
@@ -142,7 +142,7 @@ void QUIWidget::initControl()
     horizontalLayout4->addWidget(labIco);
 
     labTitle = new QLabel(widgetTitle);
-    labTitle->setObjectName(QString::fromUtf8("labTitle"));
+    labTitle->setObjectName(QString::fromUtf8("QUILabTitle"));
     QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(0);
     sizePolicy2.setVerticalStretch(0);
@@ -152,7 +152,7 @@ void QUIWidget::initControl()
     horizontalLayout4->addWidget(labTitle);
 
     widgetMenu = new QWidget(widgetTitle);
-    widgetMenu->setObjectName(QString::fromUtf8("widgetMenu"));
+    widgetMenu->setObjectName(QString::fromUtf8("QUIWidgetMenu"));
     sizePolicy1.setHeightForWidth(widgetMenu->sizePolicy().hasHeightForWidth());
     widgetMenu->setSizePolicy(sizePolicy1);
     horizontalLayout = new QHBoxLayout(widgetMenu);
@@ -233,8 +233,11 @@ void QUIWidget::initForm()
     setIcon(QUIWidget::BtnMenu_Normal, QUIConfig::IconNormal);
     setIcon(QUIWidget::BtnMenu_Close, QUIConfig::IconClose);
 
+    //设置阴影
+    //QUIHelper::setFormShadow(this, verticalLayout1);
+    //设置无边框
+    QUIHelper::setFramelessForm(this);
     this->widgetTitle->setProperty("form", "title");
-    QUIHelper::setFramelessForm(this, false, false, false);
 
     //设置标题及对齐方式
     title = "QUI Demo";

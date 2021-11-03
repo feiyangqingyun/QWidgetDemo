@@ -27,6 +27,10 @@ public:
         Style_BlackVideo = 16   //视频监控黑色样式
     };
 
+    //获取是否是加深样式
+    static bool isDark1(const QString &styleName);
+    static bool isDark2(const QString &styleName);
+
     //获取皮肤样式中文名称和对应的样式表文件
     static void getStyle(QStringList &styleNames, QStringList &styleFiles);
     //设置全局样式

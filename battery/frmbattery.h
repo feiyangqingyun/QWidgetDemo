@@ -3,21 +3,20 @@
 
 #include <QWidget>
 
-namespace Ui
-{
+namespace Ui {
 class frmBattery;
 }
 
 class frmBattery : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit frmBattery(QWidget *parent = 0);
-	~frmBattery();
+    explicit frmBattery(QWidget *parent = 0);
+    ~frmBattery();
 
 private:
-	Ui::frmBattery *ui;
+    Ui::frmBattery *ui;
 
 private slots:
     void initForm();

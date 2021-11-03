@@ -32,10 +32,10 @@ public:
     //设置编码
     static void setCode(bool utf8 = true);
     //设置字体
-    static void setFont(const QString &ttfFile = ":/image/DroidSansFallback.ttf",
+    static void setFont(const QString &ttfFile = ":/font/DroidSansFallback.ttf",
                         const QString &fontName = "Microsoft Yahei", int fontSize = 12);
     //设置翻译文件
-    static void setTranslator(const QString &qmFile = ":/image/qt_zh_CN.qm");
+    static void setTranslator(const QString &qmFile = ":/qm/qt_zh_CN.qm");
 
     //初始化数据库
     static void initDb(const QString &dbName);
@@ -51,6 +51,17 @@ public:
     //写入消息到额外的的消息日志文件
     static void writeInfo(const QString &info, bool needWrite = false, const QString &filePath = "log");
     static void writeError(const QString &info, bool needWrite = false, const QString &filePath = "log");
+
+    //设置边框阴影
+    static int shadowMargin;
+    static int shadowRadius;
+    static QString shadowColor;
+    static void setFormShadow(QWidget *widget, QLayout *layout,                              
+                              const QString &color = shadowColor,
+                              int margin = shadowMargin,
+                              int radius = shadowRadius);
+    //立即更新所有阴影边框颜色比如换肤的时候需要用到
+    static void setFormShadow(const QString &color);
 
     //设置无边框窗体
     static void setFramelessForm(QWidget *widgetMain,

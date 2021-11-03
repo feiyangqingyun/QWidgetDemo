@@ -71,7 +71,7 @@ void QUITipBox::initControl()
     verticalLayout->setContentsMargins(1, 1, 1, 1);
 
     widgetTitle = new QWidget(this);
-    widgetTitle->setObjectName(QString::fromUtf8("widgetTitle"));
+    widgetTitle->setObjectName(QString::fromUtf8("QUIWidgetTitle"));
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
@@ -84,17 +84,17 @@ void QUITipBox::initControl()
     horizontalLayout2->setContentsMargins(0, 0, 0, 0);
 
     labIco = new QLabel(widgetTitle);
-    labIco->setObjectName(QString::fromUtf8("labIco"));
+    labIco->setObjectName(QString::fromUtf8("QUILabIco"));
     labIco->setAlignment(Qt::AlignCenter);
     horizontalLayout2->addWidget(labIco);
 
     labTitle = new QLabel(widgetTitle);
-    labTitle->setObjectName(QString::fromUtf8("labTitle"));
+    labTitle->setObjectName(QString::fromUtf8("QUILabTitle"));
     labTitle->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
     horizontalLayout2->addWidget(labTitle);
 
     labCountDown = new QLabel(widgetTitle);
-    labCountDown->setObjectName(QString::fromUtf8("labCountDown"));
+    labCountDown->setObjectName(QString::fromUtf8("QUILabCountDown"));
     QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Preferred);
     sizePolicy1.setHorizontalStretch(0);
     sizePolicy1.setVerticalStretch(0);
@@ -104,7 +104,7 @@ void QUITipBox::initControl()
     horizontalLayout2->addWidget(labCountDown);
 
     widgetMenu = new QWidget(widgetTitle);
-    widgetMenu->setObjectName(QString::fromUtf8("widgetMenu"));
+    widgetMenu->setObjectName(QString::fromUtf8("QUIWidgetMenu"));
     QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(0);
     sizePolicy2.setVerticalStretch(0);
@@ -132,11 +132,11 @@ void QUITipBox::initControl()
     verticalLayout->addWidget(widgetTitle);
 
     widgetMain = new QWidget(this);
-    widgetMain->setObjectName(QString::fromUtf8("widgetMainQUI"));
+    widgetMain->setObjectName(QString::fromUtf8("QUIWidgetMain"));
     widgetMain->setAutoFillBackground(true);
 
     labInfo = new QLabel(widgetMain);
-    labInfo->setObjectName(QString::fromUtf8("labInfo"));
+    labInfo->setObjectName(QString::fromUtf8("QUILabInfo"));
     labInfo->setScaledContents(true);
     labInfo->setWordWrap(true);
 
@@ -150,6 +150,9 @@ void QUITipBox::initControl()
 
 void QUITipBox::initForm()
 {
+    //设置阴影
+    QUIHelper::setFormShadow(this, verticalLayout);
+    //设置无边框
     QUIHelper::setFramelessForm(this, widgetTitle, labIco, btnMenu_Close);
     this->setWindowTitle(this->labTitle->text());
     this->setFixedSize(QUIDialogMinWidth, QUIDialogMinHeight);
@@ -157,6 +160,7 @@ void QUITipBox::initForm()
     closeSec = 0;
     currentSec = 0;
 
+    //关闭倒计时定时器
     QTimer *timer = new QTimer(this);
     timer->setInterval(1000);
     connect(timer, SIGNAL(timeout()), this, SLOT(checkSec()));
@@ -216,6 +220,7 @@ void QUITipBox::setTip(const QString &title, const QString &tip, bool fullScreen
     this->labInfo->setAlignment(center ? Qt::AlignCenter : Qt::AlignLeft);
     this->setWindowTitle(this->labTitle->text());
 
+    //计算屏幕尺寸
     QRect rect = QUIHelper::getScreenRect(!fullScreen);
     int width = rect.width();
     int height = rect.height();

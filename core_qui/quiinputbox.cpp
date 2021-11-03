@@ -44,7 +44,7 @@ void QUIInputBox::initControl()
     verticalLayout1->setContentsMargins(1, 1, 1, 1);
 
     widgetTitle = new QWidget(this);
-    widgetTitle->setObjectName(QString::fromUtf8("widgetTitle"));
+    widgetTitle->setObjectName(QString::fromUtf8("QUIWidgetTitle"));
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
@@ -57,7 +57,7 @@ void QUIInputBox::initControl()
     horizontalLayout1->setContentsMargins(0, 0, 0, 0);
 
     labIco = new QLabel(widgetTitle);
-    labIco->setObjectName(QString::fromUtf8("labIco"));
+    labIco->setObjectName(QString::fromUtf8("QUILabIco"));
     QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
     sizePolicy1.setHorizontalStretch(0);
     sizePolicy1.setVerticalStretch(0);
@@ -67,12 +67,12 @@ void QUIInputBox::initControl()
     horizontalLayout1->addWidget(labIco);
 
     labTitle = new QLabel(widgetTitle);
-    labTitle->setObjectName(QString::fromUtf8("labTitle"));
+    labTitle->setObjectName(QString::fromUtf8("QUILabTitle"));
     labTitle->setAlignment(Qt::AlignLeading | Qt::AlignLeft | Qt::AlignVCenter);
     horizontalLayout1->addWidget(labTitle);
 
     labCountDown = new QLabel(widgetTitle);
-    labCountDown->setObjectName(QString::fromUtf8("labCountDown"));
+    labCountDown->setObjectName(QString::fromUtf8("QUILabCountDown"));
     QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(0);
     sizePolicy2.setVerticalStretch(0);
@@ -82,7 +82,7 @@ void QUIInputBox::initControl()
     horizontalLayout1->addWidget(labCountDown);
 
     widgetMenu = new QWidget(widgetTitle);
-    widgetMenu->setObjectName(QString::fromUtf8("widgetMenu"));
+    widgetMenu->setObjectName(QString::fromUtf8("QUIWidgetMenu"));
     sizePolicy1.setHeightForWidth(widgetMenu->sizePolicy().hasHeightForWidth());
     widgetMenu->setSizePolicy(sizePolicy1);
 
@@ -107,7 +107,7 @@ void QUIInputBox::initControl()
     verticalLayout1->addWidget(widgetTitle);
 
     widgetMain = new QWidget(this);
-    widgetMain->setObjectName(QString::fromUtf8("widgetMainQUI"));
+    widgetMain->setObjectName(QString::fromUtf8("QUIWidgetMain"));
 
     verticalLayout2 = new QVBoxLayout(widgetMain);
     verticalLayout2->setSpacing(5);
@@ -115,12 +115,12 @@ void QUIInputBox::initControl()
     verticalLayout2->setContentsMargins(5, 5, 5, 5);
 
     frame = new QFrame(widgetMain);
-    frame->setObjectName(QString::fromUtf8("frame"));
+    frame->setObjectName(QString::fromUtf8("QUIFrame"));
     frame->setFrameShape(QFrame::Box);
     frame->setFrameShadow(QFrame::Sunken);
 
     labInfo = new QLabel(frame);
-    labInfo->setObjectName(QString::fromUtf8("labInfo"));
+    labInfo->setObjectName(QString::fromUtf8("QUILabInfo"));
     labInfo->setScaledContents(false);
     labInfo->setWordWrap(true);
 
@@ -129,11 +129,11 @@ void QUIInputBox::initControl()
     verticalLayout3->addWidget(labInfo);
 
     txtValue = new QLineEdit(frame);
-    txtValue->setObjectName(QString::fromUtf8("txtValue"));
+    txtValue->setObjectName(QString::fromUtf8("QUITxtValue"));
     verticalLayout3->addWidget(txtValue);
 
     cboxValue = new QComboBox(frame);
-    cboxValue->setObjectName(QString::fromUtf8("cboxValue"));
+    cboxValue->setObjectName(QString::fromUtf8("QUICboxValue"));
     verticalLayout3->addWidget(cboxValue);
 
     lay = new QHBoxLayout();
@@ -142,13 +142,13 @@ void QUIInputBox::initControl()
     lay->addItem(horizontalSpacer);
 
     btnOk = new QPushButton(frame);
-    btnOk->setObjectName(QString::fromUtf8("btnOk"));
+    btnOk->setObjectName(QString::fromUtf8("QUIBtnOk"));
     btnOk->setMinimumSize(QSize(85, 0));
     lay->addWidget(btnOk);
     btnOk->setDefault(true);
 
     btnCancel = new QPushButton(frame);
-    btnCancel->setObjectName(QString::fromUtf8("btnCancel"));
+    btnCancel->setObjectName(QString::fromUtf8("QUIBtnCancel"));
     btnCancel->setMinimumSize(QSize(85, 0));
     lay->addWidget(btnCancel);
 
@@ -170,10 +170,14 @@ void QUIInputBox::initControl()
 
 void QUIInputBox::initForm()
 {
+    //设置阴影
+    QUIHelper::setFormShadow(this, verticalLayout1);
+    //设置无边框
     QUIHelper::setFramelessForm(this, widgetTitle, labIco, btnMenu_Close);
     this->setWindowTitle(this->labTitle->text());
     this->setFixedSize(QUIDialogMinWidth, QUIDialogMinHeight + 10);
 
+    //按钮设置最小尺寸和图标大小
     QList<QPushButton *> btns  = this->frame->findChildren<QPushButton *>();
     foreach (QPushButton *btn, btns) {
         btn->setMinimumWidth(QUIBtnMinWidth);

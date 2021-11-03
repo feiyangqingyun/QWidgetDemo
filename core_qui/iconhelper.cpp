@@ -11,13 +11,13 @@ void IconHelper::initFont()
     if (!isInit) {
         isInit = true;
         if (iconFontAliBaBa == 0) {
-            iconFontAliBaBa = new IconHelper(":/image/iconfont.ttf", "iconfont");
+            iconFontAliBaBa = new IconHelper(":/font/iconfont.ttf", "iconfont");
         }
         if (iconFontAwesome == 0) {
-            iconFontAwesome = new IconHelper(":/image/fontawesome-webfont.ttf", "FontAwesome");
+            iconFontAwesome = new IconHelper(":/font/fontawesome-webfont.ttf", "FontAwesome");
         }
         if (iconFontWeather == 0) {
-            iconFontWeather = new IconHelper(":/image/pe-icon-set-weather.ttf", "pe-icon-set-weather");
+            iconFontWeather = new IconHelper(":/font/pe-icon-set-weather.ttf", "pe-icon-set-weather");
         }
     }
 }

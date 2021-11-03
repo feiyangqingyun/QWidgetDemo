@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     a.setFont(QFont("Microsoft Yahei", 9));
 
-#if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
 #if _MSC_VER
     QTextCodec *codec = QTextCodec::codecForName("gbk");
 #else
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmDeviceSizeTable w;
-    w.setWindowTitle("本地存储空间大小控件");
+    w.setWindowTitle("磁盘容量");
     w.show();
 
     return a.exec();

@@ -183,11 +183,11 @@ void frmMain::initTranslator()
 {
     //加载鼠标右键菜单翻译文件
     QTranslator *translator1 = new QTranslator(qApp);
-    translator1->load(":/image/qt_zh_CN.qm");
+    translator1->load(":/qm/qt_zh_CN.qm");
     qApp->installTranslator(translator1);
 
     //加载富文本框鼠标右键菜单翻译文件
     QTranslator *translator2 = new QTranslator(qApp);
-    translator2->load(":/image/widgets.qm");
+    translator2->load(":/qm/widgets.qm");
     qApp->installTranslator(translator2);
 }

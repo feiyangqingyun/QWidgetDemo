@@ -29,7 +29,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab1">
       <attribute name="title">
@@ -63,7 +63,7 @@
            <height>16777215</height>
           </size>
          </property>
-         <layout class="QGridLayout" name="gridLayout_2">
+         <layout class="QGridLayout" name="gridLayout">
           <property name="leftMargin">
            <number>0</number>
           </property>
@@ -76,27 +76,35 @@
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item row="2" column="0" colspan="3">
-           <widget class="QListWidget" name="listWidget1"/>
+          <item row="0" column="0" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="labListenPort1">
+              <property name="text">
+               <string>监听端口</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="txtListenPort1"/>
+            </item>
+           </layout>
           </item>
-          <item row="0" column="0">
-           <widget class="QLineEdit" name="txtListenPort1"/>
-          </item>
-          <item row="0" column="2">
-           <widget class="QPushButton" name="btnClear1">
-            <property name="text">
-             <string>清空</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
+          <item row="1" column="0">
            <widget class="QPushButton" name="btnListen1">
             <property name="text">
              <string>监听</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0" colspan="3">
+          <item row="1" column="1">
+           <widget class="QPushButton" name="btnClear1">
+            <property name="text">
+             <string>清空</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="2">
            <widget class="QLabel" name="labCount1">
             <property name="minimumSize">
              <size>
@@ -117,6 +125,9 @@
              <set>Qt::AlignCenter</set>
             </property>
            </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <widget class="QListWidget" name="listWidget1"/>
           </item>
          </layout>
         </widget>
@@ -155,7 +166,7 @@
            <height>16777215</height>
           </size>
          </property>
-         <layout class="QGridLayout" name="gridLayout_3">
+         <layout class="QGridLayout" name="gridLayout_2">
           <property name="leftMargin">
            <number>0</number>
           </property>
@@ -168,27 +179,35 @@
           <property name="bottomMargin">
            <number>0</number>
           </property>
-          <item row="0" column="1">
+          <item row="0" column="0" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLabel" name="labListenPort2">
+              <property name="text">
+               <string>监听端口</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="txtListenPort2"/>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
            <widget class="QPushButton" name="btnListen2">
             <property name="text">
              <string>监听</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QLineEdit" name="txtListenPort2"/>
-          </item>
-          <item row="0" column="2">
+          <item row="1" column="1">
            <widget class="QPushButton" name="btnClear2">
             <property name="text">
              <string>清空</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0" colspan="3">
-           <widget class="QListWidget" name="listWidget2"/>
-          </item>
-          <item row="1" column="0" colspan="3">
+          <item row="2" column="0" colspan="2">
            <widget class="QLabel" name="labCount2">
             <property name="minimumSize">
              <size>
@@ -209,6 +228,9 @@
              <set>Qt::AlignCenter</set>
             </property>
            </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
+           <widget class="QListWidget" name="listWidget2"/>
           </item>
          </layout>
         </widget>

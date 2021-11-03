@@ -11,7 +11,10 @@ HEADERS     += head.h
 HEADERS     += frmmain.h
 SOURCES     += frmmain.cpp
 FORMS       += frmmain.ui
-RESOURCES   += other/qss.qrc
-RESOURCES   += other/main.qrc
+
+RESOURCES   += qrc/qss.qrc
+RESOURCES   += qrc/qm.qrc
+RESOURCES   += qrc/font.qrc
+RESOURCES   += qrc/main.qrc
 
 INCLUDEPATH += $$PWD

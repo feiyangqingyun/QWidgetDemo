@@ -3,21 +3,20 @@
 
 #include <QWidget>
 
-namespace Ui
-{
+namespace Ui {
 class frmDeviceSizeTable;
 }
 
 class frmDeviceSizeTable : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit frmDeviceSizeTable(QWidget *parent = 0);
-	~frmDeviceSizeTable();
+    explicit frmDeviceSizeTable(QWidget *parent = 0);
+    ~frmDeviceSizeTable();
 
 private:
-	Ui::frmDeviceSizeTable *ui;
+    Ui::frmDeviceSizeTable *ui;
 };
 
 #endif // FRMDEVICESIZETABLE_H

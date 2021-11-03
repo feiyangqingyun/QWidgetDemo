@@ -17,8 +17,10 @@ frmHotKey::~frmHotKey()
 
 void frmHotKey::initForm()
 {
-    //实例化热键类
-    QHotkey *hotkey = new QHotkey(QKeySequence("ctrl+x"), true, this);
+    //this->setWindowFlags(Qt::FramelessWindowHint);
+
+    //实例化热键类 支持各种组合形式比如 ctrl+a alt+a f2
+    QHotkey *hotkey = new QHotkey(QKeySequence("ctrl+a"), true, this);
     connect(hotkey, SIGNAL(activated()), this, SLOT(shortcut()));
 }
 

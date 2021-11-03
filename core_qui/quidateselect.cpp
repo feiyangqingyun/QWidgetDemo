@@ -68,7 +68,7 @@ void QUIDateSelect::initControl()
     verticalLayout->setContentsMargins(1, 1, 1, 1);
 
     widgetTitle = new QWidget(this);
-    widgetTitle->setObjectName(QString::fromUtf8("widgetTitle"));
+    widgetTitle->setObjectName(QString::fromUtf8("QUIWidgetTitle"));
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
@@ -81,7 +81,7 @@ void QUIDateSelect::initControl()
     horizontalLayout1->setContentsMargins(0, 0, 0, 0);
 
     labIco = new QLabel(widgetTitle);
-    labIco->setObjectName(QString::fromUtf8("labIco"));
+    labIco->setObjectName(QString::fromUtf8("QUILabIco"));
     QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
     sizePolicy1.setHorizontalStretch(0);
     sizePolicy1.setVerticalStretch(0);
@@ -91,7 +91,7 @@ void QUIDateSelect::initControl()
     horizontalLayout1->addWidget(labIco);
 
     labTitle = new QLabel(widgetTitle);
-    labTitle->setObjectName(QString::fromUtf8("labTitle"));
+    labTitle->setObjectName(QString::fromUtf8("QUILabTitle"));
     QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(0);
     sizePolicy2.setVerticalStretch(0);
@@ -101,7 +101,7 @@ void QUIDateSelect::initControl()
     horizontalLayout1->addWidget(labTitle);
 
     widgetMenu = new QWidget(widgetTitle);
-    widgetMenu->setObjectName(QString::fromUtf8("widgetMenu"));
+    widgetMenu->setObjectName(QString::fromUtf8("QUIWidgetMenu"));
     sizePolicy1.setHeightForWidth(widgetMenu->sizePolicy().hasHeightForWidth());
     widgetMenu->setSizePolicy(sizePolicy1);
 
@@ -126,7 +126,7 @@ void QUIDateSelect::initControl()
     verticalLayout->addWidget(widgetTitle);
 
     widgetMain = new QWidget(this);
-    widgetMain->setObjectName(QString::fromUtf8("widgetMainQUI"));
+    widgetMain->setObjectName(QString::fromUtf8("QUIWidgetMain"));
 
     verticalLayout1 = new QVBoxLayout(widgetMain);
     verticalLayout1->setSpacing(6);
@@ -134,19 +134,19 @@ void QUIDateSelect::initControl()
     verticalLayout1->setContentsMargins(6, 6, 6, 6);
 
     frame = new QFrame(widgetMain);
-    frame->setObjectName(QString::fromUtf8("frame"));
+    frame->setObjectName(QString::fromUtf8("QUIFrame"));
     frame->setFrameShape(QFrame::Box);
     frame->setFrameShadow(QFrame::Sunken);
 
     gridLayout = new QGridLayout(frame);
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
     labStart = new QLabel(frame);
-    labStart->setObjectName(QString::fromUtf8("labStart"));
+    labStart->setObjectName(QString::fromUtf8("QUILabStart"));
     labStart->setFocusPolicy(Qt::TabFocus);
     gridLayout->addWidget(labStart, 0, 0, 1, 1);
 
     btnOk = new QPushButton(frame);
-    btnOk->setObjectName(QString::fromUtf8("btnOk"));
+    btnOk->setObjectName(QString::fromUtf8("QUIBtnOk"));
     btnOk->setMinimumSize(QSize(85, 0));
     btnOk->setCursor(QCursor(Qt::PointingHandCursor));
     btnOk->setFocusPolicy(Qt::StrongFocus);
@@ -154,19 +154,19 @@ void QUIDateSelect::initControl()
     btnOk->setDefault(true);
 
     labEnd = new QLabel(frame);
-    labEnd->setObjectName(QString::fromUtf8("labEnd"));
+    labEnd->setObjectName(QString::fromUtf8("QUILabEnd"));
     labEnd->setFocusPolicy(Qt::TabFocus);
     gridLayout->addWidget(labEnd, 1, 0, 1, 1);
 
     btnClose = new QPushButton(frame);
-    btnClose->setObjectName(QString::fromUtf8("btnClose"));
+    btnClose->setObjectName(QString::fromUtf8("QUIBtnClose"));
     btnClose->setMinimumSize(QSize(85, 0));
     btnClose->setCursor(QCursor(Qt::PointingHandCursor));
     btnClose->setFocusPolicy(Qt::StrongFocus);
     gridLayout->addWidget(btnClose, 1, 2, 1, 1);
 
     dateStart = new QDateTimeEdit(frame);
-    dateStart->setObjectName(QString::fromUtf8("dateStart"));
+    dateStart->setObjectName(QString::fromUtf8("QUIDateStart"));
     QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Fixed);
     sizePolicy4.setHorizontalStretch(0);
     sizePolicy4.setVerticalStretch(0);
@@ -176,7 +176,7 @@ void QUIDateSelect::initControl()
     gridLayout->addWidget(dateStart, 0, 1, 1, 1);
 
     dateEnd = new QDateTimeEdit(frame);
-    dateEnd->setObjectName(QString::fromUtf8("dateEnd"));
+    dateEnd->setObjectName(QString::fromUtf8("QUIDateEnd"));
     sizePolicy4.setHeightForWidth(dateEnd->sizePolicy().hasHeightForWidth());
     dateEnd->setSizePolicy(sizePolicy4);
     dateEnd->setCalendarPopup(true);
@@ -213,10 +213,14 @@ void QUIDateSelect::initControl()
 
 void QUIDateSelect::initForm()
 {
+    //设置阴影
+    QUIHelper::setFormShadow(this, verticalLayout);
+    //设置无边框
     QUIHelper::setFramelessForm(this, widgetTitle, labIco, btnMenu_Close);
     this->setWindowTitle(this->labTitle->text());
     this->setFixedSize(QUIDialogMinWidth + 50, QUIDialogMinHeight);
 
+    //按钮设置最小尺寸和图标大小
     QList<QPushButton *> btns  = this->frame->findChildren<QPushButton *>();
     foreach (QPushButton *btn, btns) {
         btn->setMinimumWidth(QUIBtnMinWidth);

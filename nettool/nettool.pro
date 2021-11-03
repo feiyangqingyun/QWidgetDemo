@@ -11,17 +11,17 @@ greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 TARGET      = nettool
 TEMPLATE    = app
-RC_FILE     = other/main.rc
+RC_FILE     = qrc/main.rc
 wasm {
 DEFINES     += emsdk
-RESOURCES   += other/font.qrc
+RESOURCES   += qrc/font.qrc
 } else {
 DESTDIR     = $$PWD/../bin
 }
 
 SOURCES     += main.cpp
 HEADERS     += head.h
-RESOURCES   += other/main.qrc
+RESOURCES   += qrc/main.qrc
 
 INCLUDEPATH += $$PWD
 INCLUDEPATH += $$PWD/api

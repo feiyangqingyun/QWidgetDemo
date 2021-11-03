@@ -1,5 +1,33 @@
 ﻿#include "quistyle.h"
 
+bool QUIStyle::isDark1(const QString &styleName)
+{
+    QStringList listDark;
+    listDark << "blackvideo" << "blackblue" << "darkblack" << "darkblue" << "flatblack" << "flatblue" << "purple";
+    bool dark = false;
+    foreach (QString list, listDark) {
+        if (styleName.contains(list)) {
+            dark = true;
+            break;
+        }
+    }
+    return dark;
+}
+
+bool QUIStyle::isDark2(const QString &styleName)
+{
+    QStringList listDark;
+    listDark << "blackvideo" << "blackblue" << "darkblack" << "darkblue" << "purple";
+    bool dark = false;
+    foreach (QString list, listDark) {
+        if (styleName.contains(list)) {
+            dark = true;
+            break;
+        }
+    }
+    return dark;
+}
+
 void QUIStyle::getStyle(QStringList &styleNames, QStringList &styleFiles)
 {
     static QStringList names;
@@ -40,7 +68,13 @@ void QUIStyle::setStyle(const QString &qss)
     list << "QTabBar::tab:right:selected,QTabBar::tab:right:hover{border-width:0px 2px 0px 0px;}";
 #endif
 
+    //增加文本框只读背景颜色
+    list << QString("QLineEdit:read-only{background-color:#88%1;}").arg(QUIConfig::NormalColorStart.right(6));
+
     QUIHelper::isCustomUI = true;
+    //阴影边框和配色方案自动变化
+    QUIHelper::setFormShadow(QUIConfig::HighColor);
+
     QString paletteColor = qss.mid(20, 7);
     qApp->setPalette(QPalette(paletteColor));
     qApp->setStyleSheet(list.join(""));
@@ -125,6 +159,13 @@ void QUIStyle::getQssColor(const QString &qss, QString &textColor,
 
     QUIHelper::isCustomUI = true;
     QUIConfig::TextColor = textColor;
+    QUIConfig::PanelColor = panelColor;
+    QUIConfig::BorderColor = borderColor;
+    QUIConfig::NormalColorStart = normalColorStart;
+    QUIConfig::NormalColorEnd = normalColorEnd;
+    QUIConfig::DarkColorStart = darkColorStart;
+    QUIConfig::DarkColorEnd = darkColorEnd;
+    QUIConfig::HighColor = highColor;
 }
 
 void QUIStyle::setLabStyle(QLabel *lab, quint8 type, const QString &bgColor, const QString &textColor)

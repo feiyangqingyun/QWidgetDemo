@@ -5,11 +5,11 @@ greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 TARGET      = netserver
 TEMPLATE    = app
 DESTDIR     = $$PWD/../bin
-RC_FILE     = other/main.rc
+RC_FILE     = qrc/main.rc
 
 SOURCES     += main.cpp
 HEADERS     += head.h
-RESOURCES   += other/main.qrc
+RESOURCES   += qrc/main.qrc
 
 INCLUDEPATH += $$PWD
 INCLUDEPATH += $$PWD/api

@@ -296,6 +296,64 @@ void QUIHelper::writeError(const QString &info, bool needWrite, const QString &f
     file.close();
 }
 
+//在部分linux系统设置了背景透明是黑色的所以限定只在win
+#ifdef Q_OS_WIN
+int QUIHelper::shadowMargin = 5;
+#else
+int QUIHelper::shadowMargin = 0;
+#endif
+int QUIHelper::shadowRadius = 15;
+QString QUIHelper::shadowColor = "#333333";
+void QUIHelper::setFormShadow(QWidget *widget, QLayout *layout, const QString &color, int margin, int radius)
+{
+    if (margin <= 0 || radius <= 0) {
+        return;
+    }
+
+    //采用系统自带的函数设置阴影
+    QGraphicsDropShadowEffect *shadowEffect = new QGraphicsDropShadowEffect(widget);
+    shadowEffect->setOffset(0, 0);
+    shadowEffect->setColor(color);
+    shadowEffect->setBlurRadius(radius);
+    widget->setGraphicsEffect(shadowEffect);
+
+    //必须设置背景透明
+    widget->setAttribute(Qt::WA_TranslucentBackground, true);
+    //设置布局边距留出空间给边框阴影
+    layout->setContentsMargins(margin, margin, margin, margin);
+}
+
+void QUIHelper::setFormShadow(const QString &color)
+{
+    //重新应用边框阴影颜色等
+    QUIHelper::shadowColor = color;
+    QGraphicsDropShadowEffect *shadowEffect = 0;
+
+    //消息框
+    shadowEffect = (QGraphicsDropShadowEffect *) QUIMessageBox::Instance()->graphicsEffect();
+    if (shadowEffect != 0) {
+        shadowEffect->setColor(color);
+    }
+
+    //输入框
+    shadowEffect = (QGraphicsDropShadowEffect *) QUIInputBox::Instance()->graphicsEffect();
+    if (shadowEffect != 0) {
+        shadowEffect->setColor(color);
+    }
+
+    //右下角提示框
+    shadowEffect = (QGraphicsDropShadowEffect *) QUITipBox::Instance()->graphicsEffect();
+    if (shadowEffect != 0) {
+        shadowEffect->setColor(color);
+    }
+
+    //日期选择框
+    shadowEffect = (QGraphicsDropShadowEffect *) QUIDateSelect::Instance()->graphicsEffect();
+    if (shadowEffect != 0) {
+        shadowEffect->setColor(color);
+    }
+}
+
 void QUIHelper::setFramelessForm(QWidget *widgetMain, bool tool, bool top, bool menu)
 {
     widgetMain->setProperty("form", true);
@@ -314,7 +372,10 @@ void QUIHelper::setFramelessForm(QWidget *widgetMain, bool tool, bool top, bool 
         widgetMain->setWindowFlags(widgetMain->windowFlags() | Qt::WindowStaysOnTopHint);
     }
     if (menu) {
+        //如果是其他系统比如neokylin会产生系统边框
+#ifdef Q_OS_WIN
         widgetMain->setWindowFlags(widgetMain->windowFlags() | Qt::WindowSystemMenuHint | Qt::WindowMinMaxButtonsHint);
+#endif
     }
 }
 
@@ -1255,7 +1316,7 @@ int QUIHelper::showMessageBoxQuestion(const QString &info)
 {
     if (isCustomUI) {
         QUIMessageBox msg;
-        msg.setMessage(info, 1);
+        msg.setMessage(info, 1);msg.update();
         return msg.exec();
     } else {
         QMessageBox box(QMessageBox::Question, "询问", info);

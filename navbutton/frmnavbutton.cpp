@@ -181,14 +181,14 @@ void frmNavButton::initBtn4()
         NavButton *btn = btns4.at(i);
         btn->setLineSpace(10);
         btn->setLineWidth(10);
-        btn->setPaddingRight(25);
+        btn->setPaddingRight(35);
         btn->setShowTriangle(true);
         btn->setTextAlign(NavButton::TextAlign_Right);
         btn->setTrianglePosition(NavButton::TrianglePosition_Left);
         btn->setLinePosition(NavButton::LinePosition_Right);
 
         btn->setShowIcon(true);
-        btn->setIconSpace(10);
+        btn->setIconSpace(20);
         btn->setIconSize(QSize(15, 15));
         btn->setIconNormal(iconNormal);
         btn->setIconHover(iconHover);
