@@ -46,6 +46,7 @@ SUBDIRS += ffmpegdemo       #视频流播放ffmpeg内核
 SUBDIRS += vlcdemo          #视频流播放vlc内核
 SUBDIRS += mpvdemo          #视频流播放mpv内核
 SUBDIRS += miniblink        #miniblink示例
+SUBDIRS += Video            #摄像机
 }
 
 #如果你电脑对应的Qt版本有webkit或者webengine组件可以自行打开
