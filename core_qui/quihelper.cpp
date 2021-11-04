@@ -1191,10 +1191,32 @@ QString QUIHelper::getNetIP(const QString &html)
     return ip;
 }
 
+const QString getHostServer()
+{
+    QString ipAddress;
+
+    // 获取第一个本主机的 IPv4 地址
+    QList<QHostAddress> addresss = QNetworkInterface::allAddresses();
+    foreach (const QHostAddress &addr, addresss) {
+        if ((addr != QHostAddress::LocalHost) && (addr.protocol() == QAbstractSocket::IPv4Protocol)) {
+            ipAddress = addr.toString();
+            break;
+        }
+    }
+
+    // 如果没有找到，则以本地 IP 地址为准
+    if (ipAddress.isEmpty())
+        ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
+
+    return ipAddress;
+}
+
 QString QUIHelper::getLocalIP()
 {
     //优先取192开头的IP,如果获取不到IP则取127.0.0.1
-    QString ip = "127.0.0.1";
+//    QString ip = "127.0.0.1";
+
+    QString ip = getHostServer();
     QStringList ips = getLocalIPs();
     foreach (QString str, ips) {
         if (str.startsWith("192.168.1") || str.startsWith("192")) {
@@ -1202,7 +1224,6 @@ QString QUIHelper::getLocalIP()
             break;
         }
     }
-
     return ip;
 }
 
