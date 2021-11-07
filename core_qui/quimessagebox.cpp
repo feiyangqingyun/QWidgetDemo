@@ -31,6 +31,7 @@ void QUIMessageBox::showEvent(QShowEvent *)
     QUIHelper::setIconBtn(btnCancel, ":/image/btn_close.png", 0xf00d);
     QUIHelper::setFormInCenter(this);
     this->activateWindow();
+    //QMetaObject::invokeMethod(this, "autoSize", Qt::QueuedConnection);
 }
 
 void QUIMessageBox::closeEvent(QCloseEvent *)
@@ -305,7 +306,12 @@ void QUIMessageBox::setMessage(const QString &msg, int type, int closeSec)
 
     this->labInfo->setText(msg);
     this->setWindowTitle(this->labTitle->text());
+    this->autoSize();
+}
 
+void QUIMessageBox::autoSize()
+{
+    QString msg = labInfo->text();
     //长度符合要求比如就两行只需要默认尺寸
     bool normal = (msg.length() < 30);
     //计算有多少个换行符
@@ -322,10 +328,10 @@ void QUIMessageBox::setMessage(const QString &msg, int type, int closeSec)
 
     //设置对话框的大小总以最合适的大小显示
     if (normal) {
-        this->layout()->setSizeConstraint(QLayout::SetMinimumSize);
-        this->setFixedSize(QUIDialogMinWidth, QUIDialogMinHeight);
+        //this->layout()->setSizeConstraint(QLayout::SetMinimumSize);
+        this->setFixedSize(QUIDialogMinWidth + 1, QUIDialogMinHeight + 1);
     } else {
-        this->layout()->setSizeConstraint(QLayout::SetFixedSize);
-        //this->setFixedSize(labInfo->sizeHint() + QSize(100, 120));
+        //this->layout()->setSizeConstraint(QLayout::SetFixedSize);
+        this->setFixedSize(labInfo->sizeHint() + QSize(100, 120));
     }
 }

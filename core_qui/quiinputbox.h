@@ -59,7 +59,9 @@ public:
     QString getValue()const;
 
 public Q_SLOTS:
+    //设置左上角图标
     void setIconMain(int icon, quint32 size = 12);
+    //设置输入对话框的各种参数
     void setParameter(const QString &title, int type = 0, int closeSec = 0,
                       QString placeholderText = QString(), bool pwd = false,
                       const QString &defaultValue = QString());

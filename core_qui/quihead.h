@@ -1,6 +1,7 @@
 ﻿#ifndef QUIHEAD_H
 #define QUIHEAD_H
 
+//日期时间字符串宏定义
 #ifndef TIMEMS
 #define TIMEMS qPrintable(QTime::currentTime().toString("HH:mm:ss zzz"))
 #endif

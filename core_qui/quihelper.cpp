@@ -190,8 +190,21 @@ void QUIHelper::setFont(const QString &ttfFile, const QString &fontName, int fon
     qApp->setFont(font);
 }
 
+void QUIHelper::setTranslator()
+{
+    //以后还有其他的自行加上去就行
+    QUIHelper::setTranslator(":/qm/widgets.qm");
+    QUIHelper::setTranslator(":/qm/qt_zh_CN.qm");
+    QUIHelper::setTranslator(":/qm/designer_zh_CN.qm");
+}
+
 void QUIHelper::setTranslator(const QString &qmFile)
 {
+    //过滤下不存在的就不用设置了
+    if (!QFile(qmFile).exists()) {
+        return;
+    }
+
     QTranslator *translator = new QTranslator(qApp);
     translator->load(qmFile);
     qApp->installTranslator(translator);
@@ -310,8 +323,13 @@ void QUIHelper::setFormShadow(QWidget *widget, QLayout *layout, const QString &c
         return;
     }
 
+    //先判断是否已经存在阴影效果
+    QGraphicsDropShadowEffect *shadowEffect = (QGraphicsDropShadowEffect *)widget->graphicsEffect();
+    if (shadowEffect == 0) {
+        shadowEffect = new QGraphicsDropShadowEffect(widget);
+    }
+
     //采用系统自带的函数设置阴影
-    QGraphicsDropShadowEffect *shadowEffect = new QGraphicsDropShadowEffect(widget);
     shadowEffect->setOffset(0, 0);
     shadowEffect->setColor(color);
     shadowEffect->setBlurRadius(radius);
@@ -1316,7 +1334,8 @@ int QUIHelper::showMessageBoxQuestion(const QString &info)
 {
     if (isCustomUI) {
         QUIMessageBox msg;
-        msg.setMessage(info, 1);msg.update();
+        msg.setMessage(info, 1);
+        msg.update();
         return msg.exec();
     } else {
         QMessageBox box(QMessageBox::Question, "询问", info);
@@ -1492,6 +1511,8 @@ void QUIHelper::setLogo(QLabel *label, const QString &file,
                 text.replace(oldColor, newColor);
                 f.close();
 
+                //目录不存在则新建
+                QUIHelper::newDir("logo");
                 //打开新的文件输出
                 fileName = QString("%1/logo/temp.svg").arg(QUIHelper::appPath());
                 QFile f2(fileName);

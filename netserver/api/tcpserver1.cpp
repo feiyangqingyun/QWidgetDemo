@@ -7,7 +7,11 @@ TcpClient1::TcpClient1(QObject *parent) :  QTcpSocket(parent)
     port = 6907;
     deviceID = "SSJC00000001";
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    connect(this, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(deleteLater()));
+#else
     connect(this, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(deleteLater()));
+#endif
     connect(this, SIGNAL(disconnected()), this, SLOT(deleteLater()));
     connect(this, SIGNAL(readyRead()), this, SLOT(readData()));
 }
@@ -142,10 +146,10 @@ bool TcpServer1::writeData(const QString &deviceID, const QString &data)
     bool ok = false;
     foreach (TcpClient1 *client, clients) {
         if (client->getDeviceID() == deviceID) {
-            client->sendData(data);            
-            ok = true;            
+            client->sendData(data);
+            ok = true;
         }
-    }   
+    }
 
     return ok;
 }

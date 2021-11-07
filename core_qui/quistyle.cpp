@@ -68,8 +68,14 @@ void QUIStyle::setStyle(const QString &qss)
     list << "QTabBar::tab:right:selected,QTabBar::tab:right:hover{border-width:0px 2px 0px 0px;}";
 #endif
 
+    //5.2开始颜色支持透明度
+    QString txtReadOnlyColor = QUIConfig::NormalColorStart.right(6);
+#if (QT_VERSION >= QT_VERSION_CHECK(5,2,0))
+    txtReadOnlyColor = "88" + txtReadOnlyColor;
+#endif
+
     //增加文本框只读背景颜色
-    list << QString("QLineEdit:read-only{background-color:#88%1;}").arg(QUIConfig::NormalColorStart.right(6));
+    list << QString("QLineEdit:read-only{background-color:#%1;}").arg(txtReadOnlyColor);
 
     QUIHelper::isCustomUI = true;
     //阴影边框和配色方案自动变化

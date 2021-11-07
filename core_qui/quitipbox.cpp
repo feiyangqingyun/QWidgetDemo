@@ -175,7 +175,7 @@ void QUITipBox::initForm()
     this->labInfo->setFont(font);
 
     //显示和隐藏窗体动画效果
-    animation = new QPropertyAnimation(this, "pos");
+    animation = new QPropertyAnimation(this, "pos", this);
     animation->setDuration(500);
     animation->setEasingCurve(QEasingCurve::InOutQuad);
 }

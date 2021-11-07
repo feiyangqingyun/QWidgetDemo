@@ -35,7 +35,8 @@ public:
     static void setFont(const QString &ttfFile = ":/font/DroidSansFallback.ttf",
                         const QString &fontName = "Microsoft Yahei", int fontSize = 12);
     //设置翻译文件
-    static void setTranslator(const QString &qmFile = ":/qm/qt_zh_CN.qm");
+    static void setTranslator();
+    static void setTranslator(const QString &qmFile);
 
     //初始化数据库
     static void initDb(const QString &dbName);

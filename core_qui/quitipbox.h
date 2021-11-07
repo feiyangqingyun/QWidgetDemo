@@ -49,8 +49,11 @@ private slots:
     void on_btnMenu_Close_clicked();
 
 public Q_SLOTS:
+    //设置左上角图标
     void setIconMain(int icon, quint32 size = 12);
+    //设置提示信息
     void setTip(const QString &title, const QString &tip, bool fullScreen = false, bool center = true, int closeSec = 0);
+    //隐藏界面
     void hide();
 };
 

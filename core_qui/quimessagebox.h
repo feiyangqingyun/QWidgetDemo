@@ -56,9 +56,14 @@ private slots:
     void on_btnMenu_Close_clicked();
 
 public Q_SLOTS:
+    //设置左上角图标
     void setIconMain(int icon, quint32 size = 12);
+    //设置消息图标 图形字体+图片两种方式
     void setIconMsg(const QString &png, int icon);
+    //设置提示信息带类型和关闭倒计时
     void setMessage(const QString &msg, int type, int closeSec = 0);
+    //自适应尺寸
+    void autoSize();
 };
 
 #endif // QUIMESSAGEBOX_H

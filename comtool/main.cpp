@@ -12,10 +12,9 @@ int main(int argc, char *argv[])
     a.setFont(font);
 
     //设置编码以及加载中文翻译文件
-    QUIHelper::setCode();
-    QUIHelper::setTranslator(":/qt_zh_CN.qm");
-    QUIHelper::setTranslator(":/widgets.qm");
     QUIHelper::initRand();
+    QUIHelper::setCode();
+    QUIHelper::setTranslator();
 
     AppConfig::ConfigFile = QString("%1/%2.ini").arg(QUIHelper::appPath()).arg(QUIHelper::appName());
     AppConfig::readConfig();

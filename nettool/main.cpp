@@ -7,11 +7,10 @@ int main(int argc, char *argv[])
     a.setWindowIcon(QIcon(":/main.ico"));
 
     //设置编码+字体+中文翻译文件
+    QUIHelper::initRand();
     QUIHelper::setCode();
     QUIHelper::setFont(":/DroidSansFallback.ttf");
-    QUIHelper::setTranslator(":/qt_zh_CN.qm");
-    QUIHelper::setTranslator(":/widgets.qm");
-    QUIHelper::initRand();
+    QUIHelper::setTranslator();
 
     AppConfig::ConfigFile = QString("%1/%2.ini").arg(QUIHelper::appPath()).arg(QUIHelper::appName());
     AppConfig::readConfig();
