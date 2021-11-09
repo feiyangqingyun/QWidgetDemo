@@ -26,7 +26,9 @@ MimeMultiPart::MimeMultiPart(MultiPartType type)
 
 MimeMultiPart::~MimeMultiPart()
 {
-
+    //释放内存
+    qDeleteAll(parts);
+    parts.clear();
 }
 
 void MimeMultiPart::addPart(MimePart *part)
