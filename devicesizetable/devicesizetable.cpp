@@ -53,8 +53,8 @@ DeviceSizeTable::DeviceSizeTable(QWidget *parent) : QTableWidget(parent)
     this->setSelectionMode(QAbstractItemView::SingleSelection);
     this->verticalHeader()->setVisible(true);
     this->horizontalHeader()->setStretchLastSection(true);
-    //QMetaObject::invokeMethod(this, "load");
-    QTimer::singleShot(10, this, SLOT(load()));
+    QMetaObject::invokeMethod(this, "load", Qt::QueuedConnection);
+    //QTimer::singleShot(10, this, SLOT(load()));
 }
 
 QColor DeviceSizeTable::getBgColor() const

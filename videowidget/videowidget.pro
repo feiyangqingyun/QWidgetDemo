@@ -15,3 +15,5 @@ HEADERS     += frmvideowidget.h
 HEADERS     += videowidget.h
 
 FORMS       += frmvideowidget.ui
+
+RESOURCES += main.qrc

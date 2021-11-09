@@ -24,9 +24,9 @@ class QTimer;
 
 #ifdef quc
 class Q_DECL_EXPORT VideoWidget : public QWidget
-#else
+        #else
 class VideoWidget : public QWidget
-#endif
+        #endif
 
 {
     Q_OBJECT
@@ -89,7 +89,11 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent *);
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+    void enterEvent(QEnterEvent *);
+#else
     void enterEvent(QEvent *);
+#endif
     void leaveEvent(QEvent *);
     void dropEvent(QDropEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);

@@ -237,7 +237,6 @@ void SaveLog::save(const QString &content)
 
         //用文本流的输出速度更快
         QTextStream stream(file);
-        stream.setCodec("utf-8");
         stream << content << "\n";
     }
 }

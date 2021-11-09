@@ -1,6 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 
-#include "frmvideopanel.h"
+#include "frmvideobox.h"
 #include <QApplication>
 #include <QTextCodec>
 
@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(codec);
 #endif
 
-    frmVideoPanel w;
-    w.setWindowTitle("视频监控画面");
+    frmVideoBox w;
+    w.setWindowTitle("视频监控布局");
     w.resize(800, 600);
     w.show();
 
