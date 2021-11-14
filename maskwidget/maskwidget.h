@@ -30,13 +30,21 @@ protected:
 
 private:
     static QScopedPointer<MaskWidget> self;
-    QWidget *mainWidget;        //需要遮罩的主窗体
-    QStringList dialogNames;    //可能弹窗的窗体对象名称集合链表
+
+    //需要遮罩的主窗体
+    QWidget *mainWidget;
+    //需要弹窗的窗体对象名称集合链表
+    QStringList dialogNames;
 
 public Q_SLOTS:
+    //设置需要遮罩的主窗体
     void setMainWidget(QWidget *mainWidget);
+    //设置需要弹窗的窗体对象名称集合链表
     void setDialogNames(const QStringList &dialogNames);
+
+    //设置遮罩颜色
     void setBgColor(const QColor &bgColor);
+    //设置颜色透明度
     void setOpacity(double opacity);
 };
 

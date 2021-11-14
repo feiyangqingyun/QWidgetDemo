@@ -4,7 +4,9 @@
 /**
  * Ntp校时类 作者:feiyangqingyun(QQ:517216493) 2017-02-16
  * 1. 可设置Ntp服务器IP地址。
- * 2. 收到时间信号发出。
+ * 2. 推荐用默认的阿里云时间服务器 ntp1.aliyun.com
+ * 3. 收到时间信号发出。
+ * 4. 时间精确到秒。
  */
 
 #include <QObject>
@@ -33,15 +35,15 @@ private slots:
     void sendData();
     void setTime_t(uint secsSince1Jan1970UTC);
 
-signals:
-    //收到时间返回
-    void receiveTime(const QDateTime &dateTime);
-
-public slots:
-    //设置NTP服务器IP
+public Q_SLOTS:
+    //设置Ntp服务器IP
     void setNtpIP(const QString &ntpIP);
     //获取日期时间
     void getDateTime();
+
+Q_SIGNALS:
+    //收到时间返回
+    void receiveTime(const QDateTime &dateTime);
 };
 
 #endif // NTPCLIENT_H

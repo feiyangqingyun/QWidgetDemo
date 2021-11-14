@@ -144,22 +144,22 @@ void ColorWidget::showColorValue()
 
     int red, green, blue;
     QString strDecimalValue, strHex;
-    if (!pixmap.isNull()) {
-        QImage image = pixmap.toImage();
-        if (!image.isNull()) {
-            if (image.valid(0, 0)) {
-                QColor color = image.pixel(0, 0);
-                red = color.red();
-                green = color.green();
-                blue = color.blue();
-                QString strRed = tr("%1").arg(red & 0xFF, 2, 16, QChar('0'));
-                QString strGreen = tr("%1").arg(green & 0xFF, 2, 16, QChar('0'));
-                QString strBlue = tr("%1").arg(blue & 0xFF, 2, 16, QChar('0'));
+    if (pixmap.isNull()) {
+        return;
+    }
 
-                strDecimalValue = tr("%1, %2, %3").arg(red).arg(green).arg(blue);
-                strHex = tr("#%1%2%3").arg(strRed.toUpper()).arg(strGreen.toUpper()).arg(strBlue.toUpper());
-            }
-        }
+    QImage image = pixmap.toImage();
+    if (image.valid(0, 0)) {
+        QColor color = image.pixel(0, 0);
+        red = color.red();
+        green = color.green();
+        blue = color.blue();
+        QString strRed = tr("%1").arg(red & 0xFF, 2, 16, QChar('0'));
+        QString strGreen = tr("%1").arg(green & 0xFF, 2, 16, QChar('0'));
+        QString strBlue = tr("%1").arg(blue & 0xFF, 2, 16, QChar('0'));
+
+        strDecimalValue = tr("%1, %2, %3").arg(red).arg(green).arg(blue);
+        strHex = tr("#%1%2%3").arg(strRed.toUpper()).arg(strGreen.toUpper()).arg(strBlue.toUpper());
     }
 
     //根据背景色自动计算合适的前景色

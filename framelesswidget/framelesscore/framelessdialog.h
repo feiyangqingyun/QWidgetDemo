@@ -1,6 +1,24 @@
 ﻿#ifndef FRAMELESSDIALOG_H
 #define FRAMELESSDIALOG_H
 
+/**
+ * 无边框窗体类 作者:feiyangqingyun(QQ:517216493) 2021-07-27
+ * 1. 同时支持Qt4-Qt6，亲测Qt4.7到Qt6.2。
+ * 2. 同时支持mingw、msvc、gcc等。
+ * 3. 同时支持windows、linux、mac。
+ * 4. 同时支持QMainWindow、QWidget、QDialog。
+ * 5. 使用方法极其简单，只需要将继承类修改即可。
+ * 6. 自动识别双击标题栏响应。
+ * 7. 无边框拉伸在windows下不抖动。
+ * 8. 在windows下具有移动到边缘半屏、移动到顶部全屏特性。
+ * 9. 解决mac系统上无边框最小化最大化失效的BUG。
+ * 10. 解决系统休眠后再次启动程序懵逼的BUG。
+ * 11. 解决有时候窗体重新显示的时候假死不刷新的BUG。
+ * 12. 轻量级，1个代码文件，核心代码行数不到300行。
+ * 13. 注释详细，示例完美，非常适合阅读和学习。
+ * 14. 开源开箱即用，保证任意Qt版本可正常编译运行，无需任何调整。
+ */
+
 #include <QDialog>
 
 #ifdef quc
