@@ -1,0 +1,12 @@
+TEMPLATE = subdirs
+SUBDIRS += battery
+SUBDIRS += devicebutton
+SUBDIRS += devicesizetable
+SUBDIRS += imageswitch
+SUBDIRS += ipaddress
+SUBDIRS += lightbutton
+SUBDIRS += navbutton
+SUBDIRS += savelog
+SUBDIRS += saveruntime
+SUBDIRS += smoothcurve
+SUBDIRS += zhtopy

@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/main1.jpg</file>
+        <file>image/main2.jpg</file>
+        <file>image/main3.jpg</file>
+        <file>image/main4.jpg</file>
+        <file>image/main5.jpg</file>
+        <file>image/PNG99.png</file>
+        <file>image/PNG100.png</file>
+        <file>image/PNG101.png</file>
+        <file>image/PNG102.png</file>
+        <file>image/PNG103.png</file>
+        <file>image/PNG104.png</file>
+        <file>image/PNG105.png</file>
+        <file>image/PNG106.png</file>
+        <file>image/PNG107.png</file>
+        <file>image/PNG108.png</file>
+        <file>image/PNG109.png</file>
+        <file>image/PNG110.png</file>
+        <file>image/PNG111.png</file>
+        <file>image/PNG112.png</file>
+        <file>image/PNG114.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/bg_novideo.png</file>
+    </qresource>
+</RCC>
