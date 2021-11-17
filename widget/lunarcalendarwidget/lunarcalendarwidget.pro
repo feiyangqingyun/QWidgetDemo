@@ -4,10 +4,6 @@ greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
 TARGET          = lunarcalendarwidget
 TEMPLATE        = app
-MOC_DIR         = temp/moc
-RCC_DIR         = temp/rcc
-UI_DIR          = temp/ui
-OBJECTS_DIR     = temp/obj
 DESTDIR         = $$PWD/../bin
 CONFIG          += qt warn_off
 RESOURCES       += main.qrc
