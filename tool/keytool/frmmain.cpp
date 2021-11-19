@@ -1,4 +1,5 @@
-﻿#include "frmmain.h"
+﻿#pragma execution_character_set("utf-8")
+#include "frmmain.h"
 #include "ui_frmmain.h"
 #include "qmessagebox.h"
 #include "qfile.h"

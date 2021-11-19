@@ -1,4 +1,6 @@
-﻿#include "frmdbpage.h"
+﻿#pragma execution_character_set("utf-8")
+
+#include "frmdbpage.h"
 #include "ui_frmdbpage.h"
 #include "dbpage.h"
 

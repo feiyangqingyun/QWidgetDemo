@@ -6,6 +6,7 @@ SOURCES += $$PWD/vlc.cpp
 DEFINES += vlc2
 
 #vlc3则使用vlc3的目录
+
 contains(DEFINES, vlc3) {
 strPath = vlc3
 } else {

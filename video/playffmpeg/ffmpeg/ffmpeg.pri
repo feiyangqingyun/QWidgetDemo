@@ -6,6 +6,7 @@ SOURCES += $$PWD/ffmpeg.cpp
 DEFINES += ffmpeg4
 
 #ffmpeg4则使用ffmpeg4的目录
+
 contains(DEFINES, ffmpeg4) {
 strPath = ffmpeg4
 } else {
@@ -19,11 +20,13 @@ strInclude = include64
 } else {
 #由于Qt4不支持QT_ARCH所以会执行下面的
 #如果用的64位的Qt4则需要自行修改
+
 strLib = winlib
 strInclude = include
 }
 
 #表示arm平台构建套件
+
 contains(QT_ARCH, arm) {
 strInclude = include
 }
@@ -37,6 +40,7 @@ LIBS += -L$$PWD/$$strPath/$$strLib/ -lavcodec -lavfilter -lavformat -lswscale -l
 }
 
 #请自行替换
+
 !android {
 unix:!macx {
 LIBS += -L$$PWD/linuxlib/ -lavfilter -lavformat -lavdevice -lavcodec -lswscale -lavutil -lswresample -lavdevice -lpthread -lm -lz -lrt -ldl

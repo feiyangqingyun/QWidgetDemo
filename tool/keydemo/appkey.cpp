@@ -1,4 +1,5 @@
-﻿#include "appkey.h"
+﻿#pragma execution_character_set("utf-8")
+#include "appkey.h"
 #include "qmutex.h"
 #include "qfile.h"
 #include "qtimer.h"
