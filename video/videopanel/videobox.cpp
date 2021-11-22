@@ -133,7 +133,9 @@ void VideoBox::initMenu(QMenu *menu, const QList<bool> &enable)
 void VideoBox::show_video(int type, int index)
 {
     //根据不同的父菜单类型执行对应的函数
-    if (type == 4) {
+    if (type == 1) {
+        change_video_1(index);
+    } else if (type == 4) {
         change_video_4(index);
     } else if (type == 6) {
         change_video_6(index);

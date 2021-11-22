@@ -6,6 +6,10 @@
 
 int main(int argc, char *argv[])
 {
+#if (QT_VERSION >= QT_VERSION_CHECK(5,14,0))
+    //设置高分屏缩放舍入策略
+    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
+#endif
     QApplication a(argc, argv);
     a.setFont(QFont("Microsoft Yahei", 9));
 

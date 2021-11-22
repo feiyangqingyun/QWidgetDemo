@@ -8,6 +8,7 @@
 #include "qevent.h"
 #include "qdatetime.h"
 #include "qstringlist.h"
+#include "qdebug.h"
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
 #include "qscreen.h"
@@ -135,7 +136,6 @@ void Screen::cmpPoint(QPoint &leftTop, QPoint &rightDown)
 
     if (l.x() <= r.x()) {
         if (l.y() <= r.y()) {
-            ;
         } else {
             leftTop.setY(r.y());
             rightDown.setY(l.y());
