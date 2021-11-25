@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     }
 
     frmDbPage w;
-    w.setWindowTitle("数据库分页示例(作者:517216493)");
+    w.setWindowTitle("数据库分页示例 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

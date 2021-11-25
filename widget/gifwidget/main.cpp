@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmGifWidget w;
-    w.setWindowTitle("GIF录屏");
+    w.setWindowTitle("GIF录屏 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

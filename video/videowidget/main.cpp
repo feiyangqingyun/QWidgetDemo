@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmVideoWidget w;
-    w.setWindowTitle("视频监控控件");
+    w.setWindowTitle("视频监控控件 (QQ: 517216493 WX: feiyangqingyun)");
     w.resize(800, 600);
     w.show();
 

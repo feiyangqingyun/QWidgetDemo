@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmMain w;
-    w.setWindowTitle("程序启动器");
+    w.setWindowTitle("程序启动器 (QQ: 517216493 WX: feiyangqingyun)");
     w.setFixedSize(w.sizeHint());
 
     //启动托盘类

@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
     QUIHelper::setCode();
 
     frmMain w;
+    w.setWindowTitle("metro风格主界面 (QQ: 517216493 WX: feiyangqingyun)");
     QUIHelper::setFormInCenter(&w);
     w.show();
 

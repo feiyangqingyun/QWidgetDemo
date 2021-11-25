@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmIPAddress w;
+    w.setWindowTitle("IP地址控件 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

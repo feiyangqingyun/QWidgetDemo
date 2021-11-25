@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmLunarCalendarWidget w;
-    w.setWindowTitle("农历控件");
+    w.setWindowTitle("农历控件 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

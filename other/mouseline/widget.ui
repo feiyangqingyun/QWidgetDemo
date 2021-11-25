@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>鼠标十字线</string>
+   <string/>
   </property>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

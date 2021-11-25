@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmFramelessWidget w;    
-    w.setWindowTitle("无边框窗体");
+    w.setWindowTitle("无边框窗体 (QQ: 517216493 WX: feiyangqingyun)");
     w.resize(800, 600);
     w.show();
 

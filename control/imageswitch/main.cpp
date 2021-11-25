@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmImageSwitch w;
-    w.setWindowTitle("图片背景开关");
+    w.setWindowTitle("图片背景开关 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

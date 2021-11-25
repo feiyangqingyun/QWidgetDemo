@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmTrayIcon w;
-    w.setWindowTitle("托盘图标");
+    w.setWindowTitle("托盘图标 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

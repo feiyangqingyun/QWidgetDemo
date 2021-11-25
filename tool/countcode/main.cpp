@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmCountCode w;
-    w.setWindowTitle("代码行数统计");
+    w.setWindowTitle("代码行数统计 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

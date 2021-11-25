@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmDeviceSizeTable w;
-    w.setWindowTitle("磁盘容量");
+    w.setWindowTitle("磁盘容量 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

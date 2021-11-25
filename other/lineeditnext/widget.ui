@@ -10,9 +10,6 @@
     <height>300</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>回车自动跳转</string>
-  </property>
   <widget class="QLineEdit" name="lineEdit1">
    <property name="geometry">
     <rect>

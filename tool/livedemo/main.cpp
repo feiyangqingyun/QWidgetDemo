@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     AppLive::Instance()->start(6666);
 
     frmMain w;
-    w.setWindowTitle("守护程序使用示例");
+    w.setWindowTitle("守护程序使用示例 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

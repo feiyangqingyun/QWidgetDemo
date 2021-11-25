@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmLightButton w;
-    w.setWindowTitle("高亮发光按钮");
+    w.setWindowTitle("高亮发光按钮 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

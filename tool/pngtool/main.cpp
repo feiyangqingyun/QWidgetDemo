@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmPngTool w;
-    w.setWindowTitle("PNG图片警告去除工具");
+    w.setWindowTitle("PNG图片警告去除工具 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

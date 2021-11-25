@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     AppKey::Instance()->start();
 
     frmMain w;
-    w.setWindowTitle("密钥使用示例");
+    w.setWindowTitle("密钥使用示例 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

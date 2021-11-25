@@ -17,8 +17,6 @@ frmMain::~frmMain()
 
 void frmMain::initForm()
 {
-    this->setWindowTitle("metro风格主界面");
-
     int iconSize = 50;
     int iconWidth = 100;
     int iconHeight = 80;

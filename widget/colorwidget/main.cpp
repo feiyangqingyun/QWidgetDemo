@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmColorWidget w;
-    w.setWindowTitle("屏幕拾色器");
+    w.setWindowTitle("屏幕拾色器 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

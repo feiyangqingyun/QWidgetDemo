@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmBattery w;
-    w.setWindowTitle("电池电量控件");
+    w.setWindowTitle("电池电量控件 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

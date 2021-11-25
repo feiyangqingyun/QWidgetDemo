@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmMaskWidget w;
-    w.setWindowTitle("遮罩层窗体");
+    w.setWindowTitle("遮罩层窗体 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmScreenWidget w;
-    w.setWindowTitle("屏幕截图");
+    w.setWindowTitle("屏幕截图 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

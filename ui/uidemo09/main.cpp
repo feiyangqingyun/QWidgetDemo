@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
     }
 
     frmMain w;
+    w.setWindowTitle("九宫格主界面 (QQ: 517216493 WX: feiyangqingyun)");
     QUIHelper::setFormInCenter(&w);
     w.show();
 

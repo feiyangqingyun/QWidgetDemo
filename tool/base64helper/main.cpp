@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmBase64Helper w;
-    w.setWindowTitle("图片文字base64编码互换");
+    w.setWindowTitle("图片文字base64编码互换 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();
