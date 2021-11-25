@@ -6,11 +6,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
-    QFont font;
-    font.setFamily("MicroSoft Yahei");
-    font.setPixelSize(12);
-    a.setFont(font);
+    a.setFont(QFont("Microsoft Yahei", 9));
 
 #if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
 #if _MSC_VER
@@ -28,7 +24,7 @@ int main(int argc, char *argv[])
 
     Widget w;
     w.setWindowTitle("视频流播放mpv内核 (QQ: 517216493 WX: feiyangqingyun)");
-    w.show();   
+    w.show();
 
     return a.exec();
 }

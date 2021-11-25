@@ -6,6 +6,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setFont(QFont("Microsoft Yahei", 9));
 
     Widget w;
     w.setWindowTitle("回车自动跳转 (QQ: 517216493 WX: feiyangqingyun)");

@@ -6,6 +6,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setFont(QFont("Microsoft Yahei", 9));
 
     frmShortCut w;
     w.setWindowTitle("全局热键示例 (QQ: 517216493 WX: feiyangqingyun)");

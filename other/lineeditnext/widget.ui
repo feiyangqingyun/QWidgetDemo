@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <widget class="QLineEdit" name="lineEdit1">
@@ -15,9 +15,12 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>113</width>
+     <width>181</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="text">
+    <string>Qt自定义控件大全</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit2">
@@ -25,9 +28,12 @@
     <rect>
      <x>10</x>
      <y>40</y>
-     <width>113</width>
+     <width>181</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="text">
+    <string>QQ：517216493</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="lineEdit3">
@@ -35,9 +41,12 @@
     <rect>
      <x>10</x>
      <y>70</y>
-     <width>113</width>
+     <width>181</width>
      <height>20</height>
     </rect>
+   </property>
+   <property name="text">
+    <string>WX：feiyangqingyun</string>
    </property>
   </widget>
  </widget>

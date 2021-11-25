@@ -6,6 +6,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setFont(QFont("Microsoft Yahei", 9));
 
     Widget w;
     w.setWindowTitle("Echart图表JS交互示例 (QQ: 517216493 WX: feiyangqingyun)");

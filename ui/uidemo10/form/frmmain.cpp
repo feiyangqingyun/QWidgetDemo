@@ -17,9 +17,9 @@ frmMain::~frmMain()
 
 void frmMain::initForm()
 {
-    int iconSize = 50;
-    int iconWidth = 100;
-    int iconHeight = 80;
+    int iconSize = 100;
+    int iconWidth = 150;
+    int iconHeight = 130;
 
     QList<QString> listColorBg;
     listColorBg << "#FF3739" << "#1A9FE0" << "#41BB1A" << "#1570A5" << "#FE781F" << "#9B59BB";
@@ -40,7 +40,7 @@ void frmMain::initForm()
         QPixmap pix = IconHelper::getPixmap(listColorText.at(i), icons.at(i), iconSize, iconWidth, iconHeight);
         btn->setIcon(QIcon(pix));
         btn->setText(names.at(i));
-        btn->setStyleSheet(QString("QToolButton{font:%1pt;color:%2;background-color:%3;border:none;border-radius:0px;}")
+        btn->setStyleSheet(QString("QToolButton{font:%1px;color:%2;background-color:%3;border:none;border-radius:0px;}")
                            .arg(iconSize / 2).arg(listColorText.at(i)).arg(listColorBg.at(i)));
 
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(buttonClicked()));

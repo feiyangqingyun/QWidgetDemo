@@ -9,11 +9,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QApplication a(argc, argv);
-
-    QFont font;
-    font.setFamily("MicroSoft Yahei");
-    font.setPixelSize(12);
-    a.setFont(font);
+    a.setFont(QFont("Microsoft Yahei", 9));
 
 #if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
 #if _MSC_VER
@@ -31,6 +27,7 @@ int main(int argc, char *argv[])
 
     Widget w;
     w.setWindowTitle("视频流播放ffmpeg内核 (QQ: 517216493 WX: feiyangqingyun)");
+    w.resize(800, 600);
     w.show();
 
     return a.exec();

@@ -9,12 +9,8 @@ Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
     QStringList urls;
     urls << "https://hls01open.ys7.com/openlive/6e0b2be040a943489ef0b9bb344b96b8.hd.m3u8";
     urls << "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov";
-    urls << "rtsp://admin:Admin123456@192.168.1.64:554/Streaming/Channels/102?transportmode=unicast&profile=Profile_2";
-    urls << "rtsp://192.168.1.108:554/cam/realmonitor?channel=1&subtype=0&unicast=true&proto=Onvif";
-    urls << "rtsp://192.168.1.15:554/media/video1";
-    urls << "rtsp://192.168.1.15:554/media/video2";
-    urls << "rtsp://192.168.1.247:554/av0_0";
-    urls << "rtsp://192.168.1.247:554/av0_1";
+    urls << "http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4";
+    urls << "rtsp://admin:Admin123456@192.168.0.15:554/media/video1";
     ui->cboxUrl->addItems(urls);
     ui->cboxUrl->setCurrentIndex(0);
 }
