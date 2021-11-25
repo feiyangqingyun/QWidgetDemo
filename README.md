@@ -1,11 +1,10 @@
-﻿#### 一、特别说明
+﻿﻿﻿#### 一、特别说明
 1. 可以选择打开QWidgetDemo.pro一次性编译所有的，也可以到目录下打开pro编译。
 2. 如果发现有些子项目没有加载请打开对应目录下的.pro仔细看里面的注释。
 3. 编译好的可执行文件在源码同级目录下的bin目录。
 4. 亲测Qt4.6到Qt6.2所有版本，亲测win、linux、mac、uos等系统。
 5. 有少部分项目不支持部分Qt版本比如Qt6，会自动跳过。
-6. **本项目开源的是下面表格中描述的内容，并未开源左侧的树状导航菜单控件，只是方便演示效果图直接用的自定义控件大全的效果图，懒得重新截图。**
-7. **建议用git命令行下载，压缩包下载后重新解压文件可能会有问题，不知为何。**
+6. **建议用git命令行下载，压缩包下载后重新解压文件可能会有问题，不知为何。**
 8. **强烈推荐各位搭配Qt开发经验一起学习 [https://gitee.com/feiyangqingyun/qtkaifajingyan](https://gitee.com/feiyangqingyun/qtkaifajingyan)**
 
 #### 二、目录说明
@@ -126,9 +125,7 @@
 
 ##### 4.5、界面美化
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/flatui.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/styledemo1.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/styledemo2.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/styledemo3.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/styledemo.jpg)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/uidemo01.jpg)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/uidemo08.jpg)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/uidemo09.jpg)
