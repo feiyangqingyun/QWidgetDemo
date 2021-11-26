@@ -54,7 +54,7 @@ void frmBase64Helper::on_btnImageToBase64_clicked()
     double elapsed = (double)time.elapsed();
 #endif
     QString strTime = QString::number(elapsed, 'f', 3);
-    qDebug() << QString("用时 %1 毫秒").arg(strTime);
+    ui->labInfo->setText(QString("图片转base64 用时 %1 毫秒").arg(strTime));
 }
 
 void frmBase64Helper::on_btnBase64ToImage_clicked()
@@ -77,7 +77,7 @@ void frmBase64Helper::on_btnBase64ToImage_clicked()
     double elapsed = (double)time.elapsed();
 #endif
     QString strTime = QString::number(elapsed, 'f', 3);
-    qDebug() << QString("用时 %1 毫秒").arg(strTime);
+    ui->labInfo->setText(QString("base64转图片 用时 %1 毫秒").arg(strTime));
 }
 
 void frmBase64Helper::on_btnTextToBase64_clicked()

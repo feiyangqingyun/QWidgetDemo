@@ -459,12 +459,12 @@ background:#FFFFFF;
 
 QTableView::item:selected,QListView::item:selected,QTreeView::item:selected{
 color:#57595B;
-background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #E4E4E4,stop:1 #E4E4E4);
+background:#E4E4E4;
 }
 
-QTableView::item:hover,QListView::item:hover,QTreeView::item:hover,QHeaderView{
+QTableView::item:hover,QListView::item:hover,QTreeView::item:hover,QHeaderView,QHeaderView::section,QTableCornerButton:section{
 color:#57595B;
-background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #F6F6F6,stop:1 #F6F6F6);
+background:#F6F6F6;
 }
 
 QTableView::item,QListView::item,QTreeView::item{
@@ -476,13 +476,11 @@ border:0px;
 QHeaderView::section,QTableCornerButton:section{
 padding:3px;
 margin:0px;
-color:#57595B;
 border:1px solid #B6B6B6;
 border-left-width:0px;
 border-right-width:1px;
 border-top-width:0px;
 border-bottom-width:1px;
-background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #F6F6F6,stop:1 #F6F6F6);
 }
 
 QTabBar::tab{
