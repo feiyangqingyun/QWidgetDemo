@@ -1,8 +1,13 @@
-﻿#include "miniblink.h"
+﻿#pragma execution_character_set("utf-8")
+#include "miniblink.h"
 #include "qapplication.h"
+#include "qmessagebox.h"
+#include "qdatetime.h"
+#include "qfile.h"
 #include "qvariant.h"
 #include "qdebug.h"
 
+#define TIMEMS QTime::currentTime().toString("hh:mm:ss zzz")
 void onLoadingFinish(wkeWebView, void *param, const wkeString, wkeLoadingResult result, const wkeString)
 {
     //qDebug() << "onLoadingFinish" << result;
@@ -56,14 +61,22 @@ void miniblink::init()
         isInit = true;
         //不同的构建套件位数加载不同的动态库
 #ifdef Q_OS_WIN64
+        QString flag = "64";
         QString file = qApp->applicationDirPath() + "/miniblink_64.dll";
 #else
+        QString flag = "32";
         QString file = qApp->applicationDirPath() + "/miniblink.dll";
 #endif
+        //如果文件不存在则提示
+        if (!QFile(file).exists()) {
+            QMessageBox::critical(0, "错误", file + "\n文件不存在请先拷贝!");
+            return;
+        }
+
         const wchar_t *path = reinterpret_cast<const wchar_t *>(file.utf16());
         wkeSetWkeDllPath(path);
         bool ok = wkeInitialize();
-        qDebug() << QString("init miniblink %1").arg(ok ? "ok" : "error");
+        qDebug() << TIMEMS << QString("init miniblink_%1 %2").arg(flag).arg(ok ? "ok" : "error");
     }
 }
 

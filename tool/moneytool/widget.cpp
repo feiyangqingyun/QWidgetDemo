@@ -1,4 +1,5 @@
 ﻿#pragma execution_character_set("utf-8")
+
 #include "widget.h"
 #include "ui_widget.h"
 #include "qmessagebox.h"
