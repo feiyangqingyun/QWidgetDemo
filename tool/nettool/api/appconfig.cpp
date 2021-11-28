@@ -44,7 +44,7 @@ bool AppConfig::AutoSendUdpServer = false;
 int AppConfig::IntervalUdpServer = 1000;
 QString AppConfig::UdpListenIP = "127.0.0.1";
 int AppConfig::UdpListenPort = 6000;
-bool AppConfig::SelectAllUdpServer = false;
+bool AppConfig::SelectAllUdpServer = true;
 
 bool AppConfig::HexSendWebClient = false;
 bool AppConfig::HexReceiveWebClient = false;
@@ -53,7 +53,7 @@ bool AppConfig::DebugWebClient = false;
 bool AppConfig::AutoSendWebClient = false;
 int AppConfig::IntervalWebClient = 1000;
 QString AppConfig::WebServerIP = "ws://127.0.0.1";
-int AppConfig::WebServerPort = 6000;
+int AppConfig::WebServerPort = 6001;
 
 bool AppConfig::HexSendWebServer = false;
 bool AppConfig::HexReceiveWebServer = false;
@@ -62,7 +62,7 @@ bool AppConfig::DebugWebServer = false;
 bool AppConfig::AutoSendWebServer = false;
 int AppConfig::IntervalWebServer = 1000;
 QString AppConfig::WebListenIP = "127.0.0.1";
-int AppConfig::WebListenPort = 6000;
+int AppConfig::WebListenPort = 6001;
 bool AppConfig::SelectAllWebServer = true;
 
 void AppConfig::readConfig()
