@@ -5,11 +5,10 @@
 4. 亲测Qt4.6到Qt6.2所有版本，亲测win、linux、mac、uos等系统。
 5. 有少部分项目不支持部分Qt版本比如Qt6，会自动跳过。
 6. **建议用git命令行下载，压缩包下载后重新解压文件可能会有问题，不知为何。**
-8. **强烈推荐各位搭配Qt开发经验一起学习 [https://gitee.com/feiyangqingyun/qtkaifajingyan](https://gitee.com/feiyangqingyun/qtkaifajingyan)**
+8. **强烈推荐各位搭配Qt开发经验一起学习 [https://github.com/feiyangqingyun/qtkaifajingyan](https://github.com/feiyangqingyun/qtkaifajingyan)**
 
 #### 二、目录说明
 **高质量项目加粗显示**
-
 | 目录 | 类别 | 名称 | 描述 |
 | :------ | :------ | :------ | :------ |
 | control | 控件类别 | battery | **电池电量** |
@@ -26,7 +25,7 @@
 | tool | 工具类别 | comtool | **串口调试助手** |
 | tool | 工具类别 | nettool | **网络调试助手** |
 | tool | 工具类别 | netserver | **网络中转服务器** |
-| tool | 工具类别 | base64helper | 图片文字转base |
+| tool | 工具类别 | base64helper | **图片文字转base** |
 | tool | 工具类别 | countcode | **代码行数统计工具** |
 | tool | 工具类别 | emailtool | 邮件发送工具 |
 | tool | 工具类别 | moneytool | 存款利息计算器 |
@@ -54,6 +53,7 @@
 | ui | 界面美化 | uidemo08 | **界面美化入门示例** |
 | ui | 界面美化 | uidemo09 | 九宫格主界面 |
 | ui | 界面美化 | uidemo10 | **扁平化主界面** |
+| ui | 界面美化 | iconhelper | **超级图形字体** |
 | other | 其他类别 | bgdemo | 异形窗体 |
 | other | 其他类别 | dbpage | **通用数据库翻页** |
 | other | 其他类别 | echartgauge | **echart图表js交互** |
@@ -130,6 +130,8 @@
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/uidemo08.jpg)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/uidemo09.jpg)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/uidemo10.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/iconhelper1.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/iconhelper2.jpg)
 
 ##### 4.6、其他类别
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/other/0snap/bgdemo.jpg)
