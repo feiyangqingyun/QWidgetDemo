@@ -148,7 +148,14 @@
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/shortcut.jpg)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/miniblink.jpg)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qwtdemo.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo1.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo2.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo3.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo4.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo5.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo6.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo7.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo8.jpg)
 
 ##### 4.8、网友提供
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/netfriend/0snap/astackwidget.jpg)
