@@ -74,10 +74,10 @@ void frmMain::on_btnStyle1_clicked()
 
 void frmMain::on_btnStyle2_clicked()
 {
-    loadStyle(":/qss/flatwhite.css");
+    loadStyle(":/qss/flatgray.css");
 }
 
 void frmMain::on_btnStyle3_clicked()
 {
-    loadStyle(":/qss/psblack.css");
+    loadStyle(":/qss/blacksoft.css");
 }

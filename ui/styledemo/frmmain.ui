@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>817</width>
+    <height>616</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -129,7 +129,7 @@
          <item row="2" column="2">
           <widget class="QPushButton" name="btnStyle3">
            <property name="text">
-            <string>PS黑色</string>
+            <string>软件黑</string>
            </property>
           </widget>
          </item>
@@ -254,7 +254,7 @@
             </size>
            </property>
            <property name="text">
-            <string>淡蓝色</string>
+            <string>浅蓝色</string>
            </property>
           </widget>
          </item>
@@ -324,7 +324,7 @@
          <item row="1" column="2">
           <widget class="QPushButton" name="btnStyle2">
            <property name="text">
-            <string>扁平白色</string>
+            <string>扁平灰</string>
            </property>
           </widget>
          </item>
@@ -765,7 +765,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>817</width>
      <height>26</height>
     </rect>
    </property>

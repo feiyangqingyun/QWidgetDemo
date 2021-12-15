@@ -16,6 +16,8 @@ frmMain::~frmMain()
 
 void frmMain::initForm()
 {
+    this->setWindowTitle("九宫格主界面");
+
     bg = "main2.jpg";
     QList<QToolButton *> btns = this->findChildren<QToolButton *>();
 

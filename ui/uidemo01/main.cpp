@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     QUIHelper::setCode();
 
     //加载样式表
-    QFile file(":/qss/psblack.css");
+    QFile file(":/qss/blacksoft.css");
     if (file.open(QFile::ReadOnly)) {
         QString qss = QLatin1String(file.readAll());
         QString paletteColor = qss.mid(20, 7);
