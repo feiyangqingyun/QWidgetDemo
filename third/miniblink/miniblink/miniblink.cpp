@@ -102,7 +102,8 @@ void miniblink::receiveData(const QString &type, const QVariant &data)
 
 void miniblink::load(const QString &url, bool file)
 {
-    const char *temp = url.toLocal8Bit().data();
+    QByteArray data = url.toUtf8();
+    const char *temp = data.data();
     if (file) {
         wkeLoadFile(webView, temp);
     } else {
@@ -112,10 +113,13 @@ void miniblink::load(const QString &url, bool file)
 
 void miniblink::setHtml(const QString &html, const QString &baseUrl)
 {
-    wkeLoadHtmlWithBaseUrl(webView, html.toLocal8Bit().data(), baseUrl.toLocal8Bit().data());
+    QByteArray dataHtml = html.toUtf8();
+    QByteArray dataUrl = baseUrl.toUtf8();
+    wkeLoadHtmlWithBaseUrl(webView, dataHtml.data(), dataUrl.data());
 }
 
 void miniblink::runJs(const QString &js)
 {
-    wkeRunJS(webView, js.toLocal8Bit().data());
+    QByteArray data = js.toUtf8();
+    wkeRunJS(webView, data.data());
 }
