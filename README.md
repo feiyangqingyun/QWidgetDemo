@@ -6,6 +6,7 @@
 5. 有少部分项目不支持部分Qt版本比如Qt6，会自动跳过。
 6. **建议用git命令行下载，压缩包下载后重新解压文件可能会有问题，不知为何。**
 8. **强烈推荐各位搭配Qt开发经验一起学习 [https://github.com/feiyangqingyun/qtkaifajingyan](https://github.com/feiyangqingyun/qtkaifajingyan)**
+9. **各位有需要购买Qt商业版可以联系Qt中国商务人员微信 zzwdkxx ，支持Qt。**
 
 #### 二、目录说明
 **高质量项目加粗显示**
