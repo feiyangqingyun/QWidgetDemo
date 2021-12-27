@@ -17,7 +17,6 @@ greaterThan(QT_MAJOR_VERSION, 5) {
 SUBDIRS -= hotkey
 SUBDIRS -= shortcut
 SUBDIRS -= qwtdemo
-SUBDIRS -= qcustomplotdemo
 }
 
 win32 {

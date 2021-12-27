@@ -24,9 +24,7 @@ void frmMain::initForm()
 
     int rowHeight = 23;
     ui->tableWidget->horizontalHeader()->setFixedHeight(rowHeight);
-    for (int i = 0; i < 5; ++i) {
-        ui->tableWidget->setRowHeight(i, rowHeight);
-    }
+    ui->tableWidget->verticalHeader()->setDefaultSectionSize(rowHeight);
 
     //加载鼠标右键菜单翻译文件
     QTranslator *translator1 = new QTranslator(qApp);

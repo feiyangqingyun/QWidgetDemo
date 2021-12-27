@@ -1,6 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 
-#include "frmcountcode.h"
+#include "widget.h"
 #include <QApplication>
 #include <QTextCodec>
 
@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     a.setFont(QFont("Microsoft Yahei", 9));
 
-#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
+#if (QT_VERSION <= QT_VERSION_CHECK(5,0,0))
 #if _MSC_VER
     QTextCodec *codec = QTextCodec::codecForName("gbk");
 #else
@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(codec);
 #endif
 
-    frmCountCode w;
-    w.setWindowTitle("代码行数统计 (QQ: 517216493 WX: feiyangqingyun)");
+    Widget w;
+    w.setWindowTitle("多对象共用槽 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

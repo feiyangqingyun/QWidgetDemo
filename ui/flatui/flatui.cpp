@@ -53,7 +53,7 @@ QString FlatUI::setProgressQss(QProgressBar *bar, int barHeight,
 {
 
     QStringList list;
-    list.append(QString("QProgressBar{font:%1pt;background:%2;max-height:%3px;border-radius:%4px;text-align:center;border:1px solid %2;}")
+    list.append(QString("QProgressBar{font:%1px;background:%2;max-height:%3px;border-radius:%4px;text-align:center;border:1px solid %2;}")
                 .arg(fontSize).arg(normalColor).arg(barHeight).arg(barRadius));
     list.append(QString("QProgressBar:chunk{border-radius:%2px;background-color:%1;}")
                 .arg(chunkColor).arg(barRadius));

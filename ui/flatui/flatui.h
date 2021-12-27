@@ -53,7 +53,7 @@ public:
     static QString setProgressQss(QProgressBar *bar,
                                   int barHeight = 8,                                //进度条高度
                                   int barRadius = 5,                                //进度条半径
-                                  int fontSize = 9,                                 //文字字号
+                                  int fontSize = 12,                                //文字字号
                                   const QString &normalColor = "#E8EDF2",           //正常颜色
                                   const QString &chunkColor = "#E74C3C");           //进度颜色
 

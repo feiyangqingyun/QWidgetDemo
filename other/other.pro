@@ -6,3 +6,4 @@ SUBDIRS += mouseline
 SUBDIRS += ntpclient
 SUBDIRS += trayicon
 SUBDIRS += echartgauge
+SUBDIRS += multobj2slot
