@@ -66,13 +66,15 @@ void frmMain::initForm()
     ui->widgetTitle->setProperty("form", "title");
     //关联事件过滤器用于双击放大
     ui->widgetTitle->installEventFilter(this);
-
     ui->widgetTop->setProperty("nav", "top");
+
+    QFont font;
+    font.setPixelSize(25);
+    ui->labTitle->setFont(font);
     ui->labTitle->setText("智能访客管理平台");
-    ui->labTitle->setFont(QFont("Microsoft Yahei", 20));
     this->setWindowTitle(ui->labTitle->text());
 
-    ui->stackedWidget->setStyleSheet("QLabel{font:60pt;}");
+    ui->stackedWidget->setStyleSheet("QLabel{font:60px;}");
 
     QSize icoSize(32, 32);
     int icoWidth = 85;

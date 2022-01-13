@@ -33,7 +33,7 @@ void frmMain::initForm()
     ui->tabWidget->addTab(new frmWebClient, "WEB客户端");
     ui->tabWidget->addTab(new frmWebServer, "WEB服务端");
 #endif
-#ifdef emsdk
+#ifdef Q_OS_WASM
     AppConfig::CurrentIndex = 4;
 #endif
 }

@@ -81,6 +81,7 @@ void VideoPanel::initForm()
         widget->installEventFilter(this);
         widget->setFocusPolicy(Qt::StrongFocus);
         widget->setAlignment(Qt::AlignCenter);
+        widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
         //二选一可以选择显示文字,也可以选择显示背景图片
         widget->setText(QString("通道 %1").arg(i + 1));

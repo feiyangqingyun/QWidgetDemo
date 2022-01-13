@@ -13,29 +13,52 @@ public:
     //获取桌面宽度高度+居中显示
     static int deskWidth();
     static int deskHeight();
+    static QSize deskSize();
 
     //居中显示窗体
     //定义标志位指定是以桌面为参照还是主程序界面为参照
     static QWidget *centerBaseForm;
     static void setFormInCenter(QWidget *form);
+    static void showForm(QWidget *form);
 
     //程序文件名称+当前所在路径
     static QString appName();
     static QString appPath();
 
-    //获取uuid+初始化随机数种子+新建目录+延时
-    static QString getUuid();
+    //获取内置颜色集合
+    static QList<QColor> colors;
+    static QList<QColor> getColorList();
+    static QStringList getColorNames();
+    //随机获取颜色集合中的颜色
+    static QColor getRandColor();
+
+    //初始化随机数种子
     static void initRand();
+    //获取随机小数
+    static float getRandFloat(float min, float max);
+    //获取随机数,指定最小值和最大值
+    static double getRandValue(int min, int max, bool contansMin = false, bool contansMax = false);
+    //获取范围值随机经纬度集合
+    static QStringList getRandPoint(int count, float mainLng, float mainLat, float dotLng, float dotLat);
+
+    //获取uuid
+    static QString getUuid();
+    //可执行文件目录下新建目录
     static void newDir(const QString &dirName);
+    //延时
     static void sleep(int msec);
 
-    //设置样式+字体+编码+居中+翻译
+    //设置Qt自带样式
     static void setStyle();
-    static void setFont(int fontSize = 12);    
+    //设置字体
+    static QFont addFont(const QString &fontFile, const QString &fontName);
+    static void setFont(int fontSize = 12);
+    //设置编码
     static void setCode(bool utf8 = true);
+    //设置翻译文件
     static void setTranslator(const QString &qmFile);
     //一次性设置所有
-    static void initAll();
+    static void initAll(bool utf8 = true, bool style = true, int fontSize = 13);
 
     //设置无边框
     static void setFramelessForm(QWidget *widgetMain, bool tool = false, bool top = false, bool menu = true);

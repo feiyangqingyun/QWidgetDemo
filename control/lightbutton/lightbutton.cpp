@@ -33,8 +33,6 @@ LightButton::LightButton(QWidget *parent) : QWidget(parent)
     timerAlarm = new QTimer(this);
     connect(timerAlarm, SIGNAL(timeout()), this, SLOT(alarm()));
     timerAlarm->setInterval(500);
-
-    //setFont(QFont("Arial", 8));
 }
 
 bool LightButton::eventFilter(QObject *watched, QEvent *event)

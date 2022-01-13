@@ -210,6 +210,8 @@ void frmWebServer::on_btnListen_clicked()
         if (isOk) {
             append(0, "监听成功");
             ui->btnListen->setText("关闭");
+        } else {
+            append(2, QString("监听失败: %1").arg(server->errorString()));
         }
     } else {
         isOk = false;

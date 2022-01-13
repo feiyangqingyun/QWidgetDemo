@@ -242,8 +242,10 @@ void frmUdpServer::on_btnListen_clicked()
     if (ui->btnListen->text() == "监听") {
         bool ok = socket->bind(QHostAddress(AppConfig::UdpListenIP), AppConfig::UdpListenPort);
         if (ok) {
-            ui->btnListen->setText("关闭");
             append(0, "监听成功");
+            ui->btnListen->setText("关闭");
+        } else {
+            append(2, QString("监听失败: %1").arg(socket->errorString()));
         }
     } else {
         socket->abort();

@@ -85,7 +85,7 @@ void AppData::loadIP(QComboBox *cbox)
     //获取本机所有IP
     static QStringList ips;
     if (ips.count() == 0) {
-#ifdef emsdk
+#ifdef Q_OS_WASM
         ips << "127.0.0.1";
 #else
         QList<QNetworkInterface> netInterfaces = QNetworkInterface::allInterfaces();

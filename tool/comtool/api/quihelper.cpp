@@ -1,5 +1,6 @@
 ﻿#include "quihelper.h"
 
+#define TIMEMS qPrintable(QTime::currentTime().toString("HH:mm:ss zzz"))
 int QUIHelper::getScreenIndex()
 {
     //需要对多个屏幕进行处理
@@ -57,6 +58,11 @@ int QUIHelper::deskHeight()
     return getScreenRect().height();
 }
 
+QSize QUIHelper::deskSize()
+{
+    return getScreenRect().size();
+}
+
 QWidget *QUIHelper::centerBaseForm = 0;
 void QUIHelper::setFormInCenter(QWidget *form)
 {
@@ -75,6 +81,19 @@ void QUIHelper::setFormInCenter(QWidget *form)
     int deskHeight = rect.height();
     QPoint movePoint(deskWidth / 2 - formWidth / 2 + rect.x(), deskHeight / 2 - formHeight / 2 + rect.y());
     form->move(movePoint);
+}
+
+void QUIHelper::showForm(QWidget *form)
+{
+    setFormInCenter(form);
+
+    //判断宽高是否超过了屏幕分辨率,超过了则最大化显示
+    //qDebug() << TIMEMS << form->size() << deskSize();
+    if (form->width() + 20 > deskWidth() || form->height() + 50 > deskHeight()) {
+        form->showMaximized();
+    } else {
+        form->show();
+    }
 }
 
 QString QUIHelper::appName()
@@ -101,12 +120,36 @@ QString QUIHelper::appPath()
 #endif
 }
 
-QString QUIHelper::getUuid()
+QList<QColor> QUIHelper::colors = QList<QColor>();
+QList<QColor> QUIHelper::getColorList()
 {
-    QString uuid = QUuid::createUuid().toString();
-    uuid.replace("{", "");
-    uuid.replace("}", "");
-    return uuid;
+    //备用颜色集合 可以自行添加
+    if (colors.count() == 0) {
+        colors << QColor(0, 176, 180) << QColor(0, 113, 193) << QColor(255, 192, 0);
+        colors << QColor(72, 103, 149) << QColor(185, 87, 86) << QColor(0, 177, 125);
+        colors << QColor(214, 77, 84) << QColor(71, 164, 233) << QColor(34, 163, 169);
+        colors << QColor(59, 123, 156) << QColor(162, 121, 197) << QColor(72, 202, 245);
+        colors << QColor(0, 150, 121) << QColor(111, 9, 176) << QColor(250, 170, 20);
+    }
+
+    return colors;
+}
+
+QStringList QUIHelper::getColorNames()
+{
+    QList<QColor> colors = getColorList();
+    QStringList colorNames;
+    foreach (QColor color, colors) {
+        colorNames << color.name();
+    }
+    return colorNames;
+}
+
+QColor QUIHelper::getRandColor()
+{
+    QList<QColor> colors = getColorList();
+    int index = getRandValue(0, colors.count(), true);
+    return colors.at(index);
 }
 
 void QUIHelper::initRand()
@@ -114,6 +157,82 @@ void QUIHelper::initRand()
     //初始化随机数种子
     QTime t = QTime::currentTime();
     srand(t.msec() + t.second() * 1000);
+}
+
+float QUIHelper::getRandFloat(float min, float max)
+{
+    double diff = fabs(max - min);
+    double value = (double)(rand() % 100) / 100;
+    value = min + value * diff;
+    return value;
+}
+
+double QUIHelper::getRandValue(int min, int max, bool contansMin, bool contansMax)
+{
+    int value;
+#if (QT_VERSION <= QT_VERSION_CHECK(5,10,0))
+    //通用公式 a是起始值,n是整数的范围
+    //int value = a + rand() % n;
+    if (contansMin) {
+        if (contansMax) {
+            value = min + 0 + (rand() % (max - min + 1));
+        } else {
+            value = min + 0 + (rand() % (max - min + 0));
+        }
+    } else {
+        if (contansMax) {
+            value = min + 1 + (rand() % (max - min + 0));
+        } else {
+            value = min + 1 + (rand() % (max - min - 1));
+        }
+    }
+#else
+    if (contansMin) {
+        if (contansMax) {
+            value = QRandomGenerator::global()->bounded(min + 0, max + 1);
+        } else {
+            value = QRandomGenerator::global()->bounded(min + 0, max + 0);
+        }
+    } else {
+        if (contansMax) {
+            value = QRandomGenerator::global()->bounded(min + 1, max + 1);
+        } else {
+            value = QRandomGenerator::global()->bounded(min + 1, max + 0);
+        }
+    }
+#endif
+    return value;
+}
+
+QStringList QUIHelper::getRandPoint(int count, float mainLng, float mainLat, float dotLng, float dotLat)
+{
+    //随机生成点坐标
+    QStringList points;
+    for (int i = 0; i < count; ++i) {
+        //0.00881415 0.000442928
+#if (QT_VERSION >= QT_VERSION_CHECK(5,10,0))
+        float lngx = QRandomGenerator::global()->bounded(dotLng);
+        float latx = QRandomGenerator::global()->bounded(dotLat);
+#else
+        float lngx = getRandFloat(dotLng / 10, dotLng);
+        float latx = getRandFloat(dotLat / 10, dotLat);
+#endif
+        //需要先用精度转换成字符串
+        QString lng2 = QString::number(mainLng + lngx, 'f', 8);
+        QString lat2 = QString::number(mainLat + latx, 'f', 8);
+        QString point = QString("%1,%2").arg(lng2).arg(lat2);
+        points << point;
+    }
+
+    return points;
+}
+
+QString QUIHelper::getUuid()
+{
+    QString uuid = QUuid::createUuid().toString();
+    uuid.replace("{", "");
+    uuid.replace("}", "");
+    return uuid;
 }
 
 void QUIHelper::newDir(const QString &dirName)
@@ -151,30 +270,68 @@ void QUIHelper::sleep(int msec)
 void QUIHelper::setStyle()
 {
     //打印下所有内置风格的名字
-    qDebug() << "Qt内置的样式" << QStyleFactory::keys();
+    qDebug() << TIMEMS << "QStyleFactory::keys" << QStyleFactory::keys();
+    //设置内置风格
 #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
     qApp->setStyle(QStyleFactory::create("Fusion"));
 #else
     qApp->setStyle(QStyleFactory::create("Cleanlooks"));
 #endif
-    //qApp->setPalette(QPalette("#FFFFFF"));
+
+    //设置指定颜色
+    QPalette palette;
+    palette.setBrush(QPalette::Window, QColor("#F0F0F0"));
+    qApp->setPalette(palette);
+}
+
+QFont QUIHelper::addFont(const QString &fontFile, const QString &fontName)
+{
+    //判断图形字体是否存在,不存在则加入
+    QFontDatabase fontDb;
+    if (!fontDb.families().contains(fontName)) {
+        int fontId = fontDb.addApplicationFont(fontFile);
+        QStringList listName = fontDb.applicationFontFamilies(fontId);
+        if (listName.count() == 0) {
+            qDebug() << QString("load %1 error").arg(fontName);
+        }
+    }
+
+    //再次判断是否包含字体名称防止加载失败
+    QFont font;
+    if (fontDb.families().contains(fontName)) {
+        font = QFont(fontName);
+#if (QT_VERSION >= QT_VERSION_CHECK(4,8,0))
+        font.setHintingPreference(QFont::PreferNoHinting);
+#endif
+    }
+
+    return font;
 }
 
 void QUIHelper::setFont(int fontSize)
 {
-    QFont font;
-    font.setFamily("MicroSoft Yahei");
-#ifdef Q_OS_ANDROID
-    font.setPixelSize(15);
-#elif __arm__
-    font.setPixelSize(25);
-#else
-    font.setPixelSize(fontSize);
+#ifdef rk3399
+    return;
+#endif
+    //网页套件需要主动加载中文字体才能正常显示中文
+#ifdef Q_OS_WASM
+    QString fontFile = ":/font/DroidSansFallback.ttf";
+    QString fontName = "Droid Sans Fallback";
+    qApp->setFont(addFont(fontFile, fontName));
+    return;
 #endif
 
-#ifndef rk3399
-    qApp->setFont(font);
+#ifdef __arm__
+    fontSize = 25;
 #endif
+#ifdef Q_OS_ANDROID
+    fontSize = 15;
+#endif
+
+    QFont font;
+    font.setFamily("MicroSoft Yahei");
+    font.setPixelSize(fontSize);
+    qApp->setFont(font);
 }
 
 void QUIHelper::setCode(bool utf8)
@@ -205,20 +362,23 @@ void QUIHelper::setTranslator(const QString &qmFile)
     }
 
     QTranslator *translator = new QTranslator(qApp);
-    translator->load(qmFile);
-    qApp->installTranslator(translator);
+    if (translator->load(qmFile)) {
+        qApp->installTranslator(translator);
+    }
 }
 
-void QUIHelper::initAll()
+void QUIHelper::initAll(bool utf8, bool style, int fontSize)
 {
     //初始化随机数种子
     QUIHelper::initRand();
-    //设置样式风格
-    QUIHelper::setStyle();
-    //设置字体
-    QUIHelper::setFont(13);
     //设置编码
-    QUIHelper::setCode();
+    QUIHelper::setCode(utf8);
+    //设置样式风格
+    if (style) {
+        QUIHelper::setStyle();
+    }
+    //设置字体
+    QUIHelper::setFont(fontSize);
     //设置翻译文件支持多个
     QUIHelper::setTranslator(":/qm/widgets.qm");
     QUIHelper::setTranslator(":/qm/qt_zh_CN.qm");
@@ -299,7 +459,12 @@ QString QUIHelper::getXorEncryptDecrypt(const QString &value, char key)
         key = 127;
     }
 
+    //大概从5.9版本输出的加密密码字符串前面会加上 @String 字符
     QString result = value;
+    if (result.startsWith("@String")) {
+        result = result.mid(8, result.length() - 9);
+    }
+
     int count = result.count();
     for (int i = 0; i < count; i++) {
         result[i] = QChar(result.at(i).toLatin1() ^ key);
@@ -331,6 +496,8 @@ uchar QUIHelper::getCheckCode(const QByteArray &data)
 
 void QUIHelper::initTableView(QTableView *tableView, int rowHeight, bool headVisible, bool edit, bool stretchLast)
 {
+    //设置弱属性用于应用qss特殊样式
+    tableView->setProperty("model", true);
     //取消自动换行
     tableView->setWordWrap(false);
     //超出文本不显示省略号
@@ -374,7 +541,8 @@ void QUIHelper::openFile(const QString &fileName, const QString &msg)
 #ifdef __arm__
     return;
 #endif
-    if (fileName.isEmpty()) {
+    //文件不存在则不用处理
+    if (!QFile(fileName).exists()) {
         return;
     }
     if (QUIHelper::showMessageBoxQuestion(msg + "成功!确定现在就打开吗?") == QMessageBox::Yes) {
@@ -401,8 +569,10 @@ bool QUIHelper::checkIniFile(const QString &iniFile)
             QStringList list = line.split("=");
 
             if (list.count() == 2) {
-                if (list.at(1) == "") {
-                    qDebug() << "ini node no value" << list.at(0);
+                QString key = list.at(0);
+                QString value = list.at(1);
+                if (value.isEmpty()) {
+                    qDebug() << TIMEMS << "ini node no value" << key;
                     ok = false;
                     break;
                 }

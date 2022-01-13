@@ -13,7 +13,6 @@ TARGET      = nettool
 TEMPLATE    = app
 RC_FILE     = qrc/main.rc
 wasm {
-DEFINES     += emsdk
 RESOURCES   += qrc/font.qrc
 } else {
 DESTDIR     = $$PWD/../bin

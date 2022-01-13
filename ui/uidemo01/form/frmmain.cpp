@@ -40,11 +40,14 @@ void frmMain::initForm()
     ui->widgetTitle->installEventFilter(this);
     ui->widgetTitle->setProperty("form", "title");
     ui->widgetTop->setProperty("nav", "top");
+
+    QFont font;
+    font.setPixelSize(25);
+    ui->labTitle->setFont(font);
     ui->labTitle->setText("智能访客管理平台");
-    ui->labTitle->setFont(QFont("Microsoft Yahei", 20));
     this->setWindowTitle(ui->labTitle->text());
 
-    ui->stackedWidget->setStyleSheet("QLabel{font:60pt;}");
+    ui->stackedWidget->setStyleSheet("QLabel{font:60px;}");
 
     //单独设置指示器大小
     int addWidth = 20;
@@ -55,21 +58,20 @@ void frmMain::initForm()
     int borderWidth = 3;
 
     QStringList qss;
-    qss.append(QString("QComboBox::drop-down,QDateEdit::drop-down,QTimeEdit::drop-down,QDateTimeEdit::drop-down{width:%1px;}").arg(addWidth));
-    qss.append(QString("QComboBox::down-arrow,QDateEdit[calendarPopup=\"true\"]::down-arrow,QTimeEdit[calendarPopup=\"true\"]::down-arrow,"
-                       "QDateTimeEdit[calendarPopup=\"true\"]::down-arrow{width:%1px;height:%1px;right:2px;}").arg(addHeight));
-    qss.append(QString("QRadioButton::indicator{width:%1px;height:%1px;}").arg(rbtnWidth));
-    qss.append(QString("QCheckBox::indicator,QGroupBox::indicator,QTreeWidget::indicator,QListWidget::indicator{width:%1px;height:%1px;}").arg(ckWidth));
-    qss.append(QString("QScrollBar:horizontal{min-height:%1px;border-radius:%2px;}QScrollBar::handle:horizontal{border-radius:%2px;}"
-                       "QScrollBar:vertical{min-width:%1px;border-radius:%2px;}QScrollBar::handle:vertical{border-radius:%2px;}").arg(scrWidth).arg(scrWidth / 2));
-    qss.append(QString("QWidget#widget_top>QToolButton:pressed,QWidget#widget_top>QToolButton:hover,"
-                       "QWidget#widget_top>QToolButton:checked,QWidget#widget_top>QLabel:hover{"
-                       "border-width:0px 0px %1px 0px;}").arg(borderWidth));
-    qss.append(QString("QWidget#widgetleft>QPushButton:checked,QWidget#widgetleft>QToolButton:checked,"
-                       "QWidget#widgetleft>QPushButton:pressed,QWidget#widgetleft>QToolButton:pressed{"
-                       "border-width:0px 0px 0px %1px;}").arg(borderWidth));
+    qss << QString("QComboBox::drop-down,QDateEdit::drop-down,QTimeEdit::drop-down,QDateTimeEdit::drop-down{width:%1px;}").arg(addWidth);
+    qss << QString("QComboBox::down-arrow,QDateEdit[calendarPopup=\"true\"]::down-arrow,QTimeEdit[calendarPopup=\"true\"]::down-arrow,"
+                   "QDateTimeEdit[calendarPopup=\"true\"]::down-arrow{width:%1px;height:%1px;right:2px;}").arg(addHeight);
+    qss << QString("QRadioButton::indicator{width:%1px;height:%1px;}").arg(rbtnWidth);
+    qss << QString("QCheckBox::indicator,QGroupBox::indicator,QTreeWidget::indicator,QListWidget::indicator{width:%1px;height:%1px;}").arg(ckWidth);
+    qss << QString("QScrollBar:horizontal{min-height:%1px;border-radius:%2px;}QScrollBar::handle:horizontal{border-radius:%2px;}"
+                   "QScrollBar:vertical{min-width:%1px;border-radius:%2px;}QScrollBar::handle:vertical{border-radius:%2px;}").arg(scrWidth).arg(scrWidth / 2);
+    qss << QString("QWidget#widget_top>QToolButton:pressed,QWidget#widget_top>QToolButton:hover,"
+                   "QWidget#widget_top>QToolButton:checked,QWidget#widget_top>QLabel:hover{"
+                   "border-width:0px 0px %1px 0px;}").arg(borderWidth);
+    qss << QString("QWidget#widgetleft>QPushButton:checked,QWidget#widgetleft>QToolButton:checked,"
+                   "QWidget#widgetleft>QPushButton:pressed,QWidget#widgetleft>QToolButton:pressed{"
+                   "border-width:0px 0px 0px %1px;}").arg(borderWidth);
     this->setStyleSheet(qss.join(""));
-
 
     QSize icoSize(32, 32);
     int icoWidth = 85;

@@ -62,6 +62,7 @@
 | other | 其他类别 | mouseline | 鼠标十字线 |
 | other | 其他类别 | ntpclient | NTP校时 |
 | other | 其他类别 | trayicon | 通用托盘效果 |
+| other | 其他类别 | multobj2slot | 多对象共用槽 |
 | third | 第三方类 | designer | QtDesigner设计师(Qt4) |
 | third | 第三方类 | hotkey | 全局热键1 |
 | third | 第三方类 | shortcut | 全局热键2 |
@@ -142,6 +143,7 @@
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/other/0snap/mouseline.jpg)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/other/0snap/ntpclient.jpg)
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/other/0snap/trayicon.jpg)
+![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/other/0snap/multobj2slot.jpg)
 
 ##### 4.7、第三方类
 ![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/designer.jpg)

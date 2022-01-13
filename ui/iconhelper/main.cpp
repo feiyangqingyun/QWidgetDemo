@@ -11,7 +11,10 @@ int main(int argc, char *argv[])
     //设置高分屏缩放舍入策略
     QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
 #endif
-    a.setFont(QFont("Microsoft Yahei", 9));
+    QFont font;
+    font.setFamily("Microsoft Yahei");
+    font.setPixelSize(13);
+    a.setFont(font);
 
 #if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
 #if _MSC_VER

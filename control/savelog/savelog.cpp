@@ -9,6 +9,7 @@
 #include "qdatetime.h"
 #include "qapplication.h"
 #include "qtimer.h"
+#include "qtextstream.h"
 #include "qstringlist.h"
 
 #define QDATE qPrintable(QDate::currentDate().toString("yyyy-MM-dd"))
