@@ -2,7 +2,7 @@
 
 #include "frmiconhelper.h"
 #include "ui_frmiconhelper.h"
-#include "iconhelper.cpp"
+#include "iconhelper.h"
 
 frmIconHelper::frmIconHelper(QWidget *parent) : QWidget(parent), ui(new Ui::frmIconHelper)
 {
