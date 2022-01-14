@@ -7,8 +7,11 @@ TEMPLATE    = app
 DESTDIR     = $$PWD/../bin
 
 CONFIG      += warn_off
-RESOURCES   += main.qrc
 SOURCES     += main.cpp
+RESOURCES   += qrc/main.qrc
+wasm {
+RESOURCES   += qrc/font.qrc
+}
 
 INCLUDEPATH += $$PWD
 INCLUDEPATH += $$PWD/frmcustom
