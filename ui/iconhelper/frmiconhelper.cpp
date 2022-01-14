@@ -28,8 +28,10 @@ bool frmIconHelper::eventFilter(QObject *watched, QEvent *event)
         QLabel *lab = (QLabel *)watched;
         if (lab != 0) {
             //由于有图形字体的范围值冲突需要手动切换索引
-            if (ui->rbtnFontWeather->isChecked()) {
+            if (ui->rbtnFontAwesome6->isChecked()) {
                 IconHelper::iconFontIndex = 2;
+            } else if (ui->rbtnFontWeather->isChecked()) {
+                IconHelper::iconFontIndex = 3;
             } else {
                 IconHelper::iconFontIndex = -1;
             }
@@ -54,6 +56,8 @@ bool frmIconHelper::eventFilter(QObject *watched, QEvent *event)
             QFont font = IconHelper::getIconFontAwesome();
             if (ui->rbtnFontAliBaBa->isChecked()) {
                 font = IconHelper::getIconFontAliBaBa();
+            } else if (ui->rbtnFontAwesome6->isChecked()) {
+                font = IconHelper::getIconFontAwesome6();
             } else if (ui->rbtnFontWeather->isChecked()) {
                 font = IconHelper::getIconFontWeather();
             }
@@ -99,9 +103,10 @@ void frmIconHelper::initForm()
     ui->btnImage->setIcon(QIcon(pix));
 
     //关联单选框切换
-    connect(ui->rbtnFontAliBaBa, SIGNAL(toggled(bool)), this, SLOT(toggled(bool)));
-    connect(ui->rbtnFontAwesome, SIGNAL(toggled(bool)), this, SLOT(toggled(bool)));
-    connect(ui->rbtnFontWeather, SIGNAL(toggled(bool)), this, SLOT(toggled(bool)));
+    QList<QRadioButton *> rbtns = ui->widgetRight->findChildren<QRadioButton *>();
+    foreach (QRadioButton *rbtn, rbtns) {
+        connect(rbtn, SIGNAL(toggled(bool)), this, SLOT(toggled(bool)));
+    }
 
     ui->tabWidget->setCurrentIndex(0);
 }
@@ -121,11 +126,16 @@ void frmIconHelper::initPanel()
         start = 0xe500;
         end = 0xea5d;
         iconFont = IconHelper::getIconFontAliBaBa();
+    } else if (ui->rbtnFontAwesome6->isChecked()) {
+        start = 0xe000;
+        end = 0xf8ff;
+        iconFont = IconHelper::getIconFontAwesome6();
+        IconHelper::iconFontIndex = 2;
     } else if (ui->rbtnFontWeather->isChecked()) {
         start = 0xe900;
         end = 0xe9cf;
         iconFont = IconHelper::getIconFontWeather();
-        IconHelper::iconFontIndex = 2;
+        IconHelper::iconFontIndex = 3;
     }
 
     //设置字体大小
@@ -134,9 +144,13 @@ void frmIconHelper::initPanel()
     //加载图形字体面板
     QStringList list;
     for (int icon = start; icon <= end; icon++) {
-        //阿里巴巴图形字体中间有一段是空的,可以自行屏蔽下面这段代码查看这段空的值对应的文字
+        //中间有一段是空的,可以自行屏蔽下面这段代码查看这段空的值对应的文字
         if (ui->rbtnFontAliBaBa->isChecked()) {
             if (icon >= 0xe76c && icon <= 0xe8f8) {
+                continue;
+            }
+        } else if (ui->rbtnFontAwesome6->isChecked()) {
+            if (icon >= 0xe33d && icon <= 0xefff) {
                 continue;
             }
         }

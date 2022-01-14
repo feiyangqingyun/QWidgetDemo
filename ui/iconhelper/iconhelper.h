@@ -94,6 +94,8 @@ public:
     static IconHelper *iconFontAliBaBa;
     //FontAwesome图形字体类
     static IconHelper *iconFontAwesome;
+    //FontAwesome6图形字体类
+    static IconHelper *iconFontAwesome6;
     //天气图形字体类
     static IconHelper *iconFontWeather;
     //图形字体索引
@@ -105,6 +107,7 @@ public:
     //获取图形字体
     static QFont getIconFontAliBaBa();
     static QFont getIconFontAwesome();
+    static QFont getIconFontAwesome6();
     static QFont getIconFontWeather();
 
     //根据值获取图形字体类

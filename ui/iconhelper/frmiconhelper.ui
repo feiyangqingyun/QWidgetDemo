@@ -743,7 +743,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QWidget" name="widget_2" native="true">
+        <widget class="QWidget" name="widgetRight" native="true">
          <property name="minimumSize">
           <size>
            <width>130</width>
@@ -770,6 +770,13 @@
             </property>
             <property name="checked">
              <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="rbtnFontAwesome6">
+            <property name="text">
+             <string>FontAwesome6</string>
             </property>
            </widget>
           </item>
