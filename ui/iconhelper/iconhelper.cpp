@@ -26,6 +26,11 @@ void IconHelper::initFont()
     }
 }
 
+void IconHelper::setIconFontIndex(int index)
+{
+    iconFontIndex = index;
+}
+
 QFont IconHelper::getIconFontAliBaBa()
 {
     initFont();
@@ -128,7 +133,7 @@ IconHelper::IconHelper(const QString &fontFile, const QString &fontName, QObject
 {
     //判断图形字体是否存在,不存在则加入
     QFontDatabase fontDb;
-    if (!fontDb.families().contains(fontName)) {
+    if (!fontDb.families().contains(fontName) && QFile(fontFile).exists()) {
         int fontId = fontDb.addApplicationFont(fontFile);
         QStringList listName = fontDb.applicationFontFamilies(fontId);
         if (listName.count() == 0) {

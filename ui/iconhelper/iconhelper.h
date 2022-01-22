@@ -31,6 +31,18 @@ class IconHelper : public QObject
 {
     Q_OBJECT
 
+private:
+    //阿里巴巴图形字体类
+    static IconHelper *iconFontAliBaBa;
+    //FontAwesome图形字体类
+    static IconHelper *iconFontAwesome;
+    //FontAwesome6图形字体类
+    static IconHelper *iconFontAwesome6;
+    //天气图形字体类
+    static IconHelper *iconFontWeather;
+    //图形字体索引
+    static int iconFontIndex;
+
 public:
     //样式颜色结构体
     struct StyleColor {
@@ -90,19 +102,11 @@ public:
         }
     };
 
-    //阿里巴巴图形字体类
-    static IconHelper *iconFontAliBaBa;
-    //FontAwesome图形字体类
-    static IconHelper *iconFontAwesome;
-    //FontAwesome6图形字体类
-    static IconHelper *iconFontAwesome6;
-    //天气图形字体类
-    static IconHelper *iconFontWeather;
-    //图形字体索引
-    static int iconFontIndex;
 
     //初始化图形字体
     static void initFont();
+    //设置引用图形字体文件索引
+    static void setIconFontIndex(int index);
 
     //获取图形字体
     static QFont getIconFontAliBaBa();

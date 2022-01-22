@@ -47,5 +47,21 @@ void Widget::on_btnOk_clicked()
     }
 
     //计算下来3年期定期存款30年总金额翻2番到最初本金3倍 100W本金3年期自动续期30年=321W
-    ui->txtMoneyAll->setText(QString::number(moneyAll));
+    QString value = QString::number(moneyAll);
+    ui->txtMoneyAll->setText(value);
+
+    //拷贝到其他地方
+    if (ui->rbtn1->isChecked()) {
+        ui->txtValue1->setText(value);
+    } else {
+        ui->txtValue2->setText(value);
+    }
+
+    //计算两种存款方式的差额 比如1年期存3年和3年期存3年
+    QString value1 = ui->txtValue1->text().trimmed();
+    QString value2 = ui->txtValue2->text().trimmed();
+    if (!value1.isEmpty() && !value2.isEmpty()) {
+        int value = qAbs(value1.toInt() - value2.toInt());
+        ui->txtValue->setText(QString::number(value));
+    }
 }

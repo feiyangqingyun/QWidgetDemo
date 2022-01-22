@@ -29,11 +29,11 @@ bool frmIconHelper::eventFilter(QObject *watched, QEvent *event)
         if (lab != 0) {
             //由于有图形字体的范围值冲突需要手动切换索引
             if (ui->rbtnFontAwesome6->isChecked()) {
-                IconHelper::iconFontIndex = 2;
+                IconHelper::setIconFontIndex(2);
             } else if (ui->rbtnFontWeather->isChecked()) {
-                IconHelper::iconFontIndex = 3;
+                IconHelper::setIconFontIndex(3);
             } else {
-                IconHelper::iconFontIndex = -1;
+                IconHelper::setIconFontIndex(-1);
             }
 
             //对应图形字体的16进制值已经赋值给了 toolTip
@@ -121,7 +121,8 @@ void frmIconHelper::initPanel()
     int start = 0xf000;
     int end = 0xf2e0;
     QFont iconFont = IconHelper::getIconFontAwesome();
-    IconHelper::iconFontIndex = -1;
+    IconHelper::setIconFontIndex(-1);
+
     if (ui->rbtnFontAliBaBa->isChecked()) {
         start = 0xe500;
         end = 0xea5d;
@@ -130,12 +131,12 @@ void frmIconHelper::initPanel()
         start = 0xe000;
         end = 0xf8ff;
         iconFont = IconHelper::getIconFontAwesome6();
-        IconHelper::iconFontIndex = 2;
+        IconHelper::setIconFontIndex(2);
     } else if (ui->rbtnFontWeather->isChecked()) {
         start = 0xe900;
         end = 0xe9cf;
         iconFont = IconHelper::getIconFontWeather();
-        IconHelper::iconFontIndex = 3;
+        IconHelper::setIconFontIndex(3);
     }
 
     //设置字体大小
