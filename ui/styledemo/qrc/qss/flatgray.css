@@ -1,5 +1,10 @@
 QPalette{background:#FFFFFF;}*{outline:0px;color:#57595B;}
 
+QGraphicsView{
+border:1px solid #B6B6B6;
+qproperty-backgroundBrush:#FFFFFF;
+}
+
 QWidget[form="true"],QLabel[frameShape="1"]{
 border:1px solid #B6B6B6;
 border-radius:0px;
@@ -650,7 +655,7 @@ QDialogButtonBox>QPushButton{
 min-width:50px;
 }
 
-QListView[noboder="true"],QTreeView[noboder="true"],QTabWidget[noboder="true"]::pane{
+QListView[noborder="true"],QTreeView[noborder="true"],QTabWidget[noborder="true"]::pane{
 border-width:0px;
 }
 
