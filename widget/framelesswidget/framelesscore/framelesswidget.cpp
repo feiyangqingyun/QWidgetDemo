@@ -273,6 +273,10 @@ bool FramelessWidget::nativeEvent(const QByteArray &eventType, void *message, lo
         if (msg->message == WM_NCCALCSIZE) {
             *result = 0;
             return true;
+        } else if (msg->message == WM_SYSKEYDOWN) {
+            //屏蔽alt键按下
+        } else if (msg->message == WM_SYSKEYUP) {
+            //屏蔽alt键松开
         } else if (msg->message == WM_NCHITTEST) {
             //计算鼠标对应的屏幕坐标
             //这里最开始用的 LOWORD HIWORD 在多屏幕的时候会有问题
