@@ -1,3 +1,4 @@
+QT += network
 #指定编译产生的文件分门别类放到对应目录
 MOC_DIR     = temp/moc
 RCC_DIR     = temp/rcc
@@ -34,6 +35,15 @@ SOURCES += \
     $$PWD/iconhelper.cpp \
     $$PWD/quihelper.cpp
 
-RESOURCES += $$PWD/qrc/qm.qrc
-RESOURCES += $$PWD/qrc/font.qrc
+#可以指定不加载对应的资源文件
+!contains(DEFINES, no_qrc_image) {
 RESOURCES += $$PWD/qrc/image.qrc
+}
+
+!contains(DEFINES, no_qrc_qm) {
+RESOURCES += $$PWD/qrc/qm.qrc
+}
+
+!contains(DEFINES, no_qrc_font) {
+RESOURCES += $$PWD/qrc/font.qrc
+}

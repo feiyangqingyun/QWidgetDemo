@@ -44,7 +44,11 @@ LunarCalendarItem::LunarCalendarItem(QWidget *parent) : QWidget(parent)
     hoverBgColor = QColor(204, 183, 180);
 }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+void LunarCalendarItem::enterEvent(QEnterEvent *)
+#else
 void LunarCalendarItem::enterEvent(QEvent *)
+#endif
 {
     hover = true;
     this->update();

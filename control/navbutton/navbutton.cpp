@@ -46,7 +46,11 @@ NavButton::NavButton(QWidget *parent) : QPushButton(parent)
     setText("导航按钮");
 }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+void NavButton::enterEvent(QEnterEvent *)
+#else
 void NavButton::enterEvent(QEvent *)
+#endif
 {
     hover = true;
     this->update();
