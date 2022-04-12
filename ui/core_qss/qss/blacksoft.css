@@ -311,21 +311,21 @@ background-color:#242424;
 }
 
 QSlider::groove:horizontal{
-background:#484848;
 height:8px;
 border-radius:4px;
+background:#484848;
 }
 
 QSlider::add-page:horizontal{
-background:#484848;
 height:8px;
 border-radius:4px;
+background:#484848;
 }
 
 QSlider::sub-page:horizontal{
-background:#242424;
 height:8px;
 border-radius:4px;
+background:#242424;
 }
 
 QSlider::handle:horizontal{
@@ -345,13 +345,13 @@ background:#484848;
 QSlider::add-page:vertical{
 width:8px;
 border-radius:4px;
-background:#484848;
+background:#242424;
 }
 
 QSlider::sub-page:vertical{
 width:8px;
 border-radius:4px;
-background:#242424;
+background:#484848;
 }
 
 QSlider::handle:vertical{
