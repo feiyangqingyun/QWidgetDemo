@@ -328,7 +328,7 @@ void IconHelper::setStyle1(QWidget *widget, QList<QAbstractButton *> btns, QList
     widget->setStyleSheet(qss.join(""));
 
     //可能会重复调用设置所以先要移除上一次的
-    for (int i = 0; i < btnCount; i++) {
+    for (int i = 0; i < btnCount; ++i) {
         for (int j = 0; j < this->btns.count(); j++) {
             if (this->btns.at(j) == btns.at(i)) {
                 disconnect(btns.at(i), SIGNAL(toggled(bool)), this, SLOT(toggled(bool)));
@@ -345,7 +345,7 @@ void IconHelper::setStyle1(QWidget *widget, QList<QAbstractButton *> btns, QList
 
     //存储对应按钮对象,方便鼠标移上去的时候切换图片
     int checkedIndex = -1;
-    for (int i = 0; i < btnCount; i++) {
+    for (int i = 0; i < btnCount; ++i) {
         int icon = icons.at(i);
         QPixmap pixNormal = getPixmap1(styleColor.normalTextColor, icon, iconSize, iconWidth, iconHeight);
         QPixmap pixHover = getPixmap1(styleColor.hoverTextColor, icon, iconSize, iconWidth, iconHeight);

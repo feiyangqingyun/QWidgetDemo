@@ -75,7 +75,7 @@ void VideoPanel::initForm()
     videoCount = 64;
     videoType = "1_16";
 
-    for (int i = 0; i < videoCount; i++) {
+    for (int i = 0; i < videoCount; ++i) {
         QLabel *widget = new QLabel;
         widget->setObjectName(QString("video%1").arg(i + 1));
         widget->installEventFilter(this);

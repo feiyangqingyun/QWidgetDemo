@@ -7,10 +7,7 @@ class EmailAddress : public QObject
 {
 	Q_OBJECT
 public:
-
-	EmailAddress();
 	EmailAddress(const QString &address, const QString &name = "");
-
 	~EmailAddress();
 
 	void setName(const QString &name);

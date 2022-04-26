@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
 **                                                                        **
 **  QCustomPlot, an easy to use, modern plotting widget for Qt            **
 **  Copyright (C) 2011-2018 Emanuel Eichhammer                            **
@@ -4002,7 +4002,7 @@ QSize QCPLayout::getFinalMinimumOuterSize(const QCPLayoutElement *el)
     minOuter.rheight() += el->margins().top() + el->margins().bottom();
   
   return QSize(minOuter.width() > 0 ? minOuter.width() : minOuterHint.width(),
-               minOuter.height() > 0 ? minOuter.height() : minOuterHint.height());;
+               minOuter.height() > 0 ? minOuter.height() : minOuterHint.height());
 }
 
 /*! \internal
@@ -29480,7 +29480,7 @@ QPointF QCPItemPixmap::anchorPixelPosition(int anchorId) const
     case aiRight:       return (rect.topRight()+rect.bottomRight())*0.5;
     case aiBottom:      return (rect.bottomLeft()+rect.bottomRight())*0.5;
     case aiBottomLeft:  return rect.bottomLeft();
-    case aiLeft:        return (rect.topLeft()+rect.bottomLeft())*0.5;;
+    case aiLeft:        return (rect.topLeft()+rect.bottomLeft())*0.5;
   }
   
   qDebug() << Q_FUNC_INFO << "invalid anchorId" << anchorId;

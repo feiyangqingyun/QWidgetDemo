@@ -277,7 +277,7 @@ QString ZhToPY::zhToJP(const QString &chinese)
 
     QString str;
     int index = 0;
-    for (int i = 0; i < chinese.length(); i++) {
+    for (int i = 0; i < chinese.length(); ++i) {
         //若是字母或数字则直接输出
         ushort vChar = chinese.at(i).unicode() ;
         if ((vChar >= 'a' && vChar <= 'z') || (vChar >= 'A' && vChar <= 'Z')) {

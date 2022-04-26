@@ -26,6 +26,7 @@ private slots:
     void on_btnStyle1_clicked();
     void on_btnStyle2_clicked();
     void on_btnStyle3_clicked();
+    void on_btnInfo_clicked();
 };
 
 #endif // FRMMAIN_H

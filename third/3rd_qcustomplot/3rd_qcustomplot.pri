@@ -5,11 +5,15 @@ greaterThan(QT_MAJOR_VERSION, 4): CONFIG += c++11
 !contains(DEFINES, qcustomplot_v1_3) {
 !contains(DEFINES, qcustomplot_v2_0) {
 !contains(DEFINES, qcustomplot_v2_1) {
-greaterThan(QT_MAJOR_VERSION, 4) {
-DEFINES += qcustomplot_v2_1
-} else {
 DEFINES += qcustomplot_v2_0
-}}}}
+}}}
+
+!contains(DEFINES, qcustomplot_v2_1) {
+greaterThan(QT_MAJOR_VERSION, 4) {
+DEFINES -= qcustomplot_v1_3
+DEFINES -= qcustomplot_v2_0
+DEFINES += qcustomplot_v2_1
+}}
 
 contains(DEFINES, qcustomplot_v1_3) {
 INCLUDEPATH += $$PWD/v1_3

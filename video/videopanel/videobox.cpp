@@ -215,7 +215,7 @@ void VideoBox::change_video_normal(int index, int flag)
 
     //行列数一致的比如 2*2 3*4 4*4 5*5 等可以直接套用通用的公式
     //按照这个函数还可以非常容易的拓展出 10*10 16*16=256 通道界面
-    for (int i = 0; i < videoCount; i++) {
+    for (int i = 0; i < videoCount; ++i) {
         if (i >= index) {
             //添加到对应布局并设置可见
             gridLayout->addWidget(widgets.at(i), row, column);
@@ -269,7 +269,7 @@ void VideoBox::change_video_6(const QList<int> &indexs)
     gridLayout->addWidget(widgets.at(indexs.at(4)), 2, 1, 1, 1);
     gridLayout->addWidget(widgets.at(indexs.at(5)), 2, 0, 1, 1);
     //设置通道控件可见
-    for (int i = indexs.first(); i <= indexs.last(); i++) {
+    for (int i = indexs.first(); i <= indexs.last(); ++i) {
         widgets.at(i)->setVisible(true);
     }
 }
@@ -293,7 +293,7 @@ void VideoBox::change_video_8(const QList<int> &indexs)
     gridLayout->addWidget(widgets.at(indexs.at(6)), 3, 1, 1, 1);
     gridLayout->addWidget(widgets.at(indexs.at(7)), 3, 0, 1, 1);
     //设置通道控件可见
-    for (int i = indexs.first(); i <= indexs.last(); i++) {
+    for (int i = indexs.first(); i <= indexs.last(); ++i) {
         widgets.at(i)->setVisible(true);
     }
 }
@@ -322,7 +322,7 @@ void VideoBox::change_video_13(const QList<int> &indexs)
     gridLayout->addWidget(widgets.at(indexs.at(11)), 3, 2, 1, 1);
     gridLayout->addWidget(widgets.at(indexs.at(12)), 3, 3, 1, 1);
     //设置通道控件可见
-    for (int i = indexs.first(); i <= indexs.last(); i++) {
+    for (int i = indexs.first(); i <= indexs.last(); ++i) {
         widgets.at(i)->setVisible(true);
     }
 }

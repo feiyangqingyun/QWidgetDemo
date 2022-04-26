@@ -124,7 +124,7 @@ void VideoWidget::initFlowPanel()
 #endif
 
     //循环添加顶部按钮
-    for (int i = 0; i < btns.count(); i++) {
+    for (int i = 0; i < btns.count(); ++i) {
         QPushButton *btn = new QPushButton;
         //绑定按钮单击事件,用来发出信号通知
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(btnClicked()));
@@ -260,25 +260,25 @@ void VideoWidget::paintEvent(QPaintEvent *)
 
 void VideoWidget::drawBorder(QPainter *painter)
 {
-    if (borderWidth == 0) {
-        return;
-    }
-
     painter->save();
+
     QPen pen;
     pen.setWidth(borderWidth);
     pen.setColor(hasFocus() ? focusColor : borderColor);
-    painter->setPen(pen);
+    //边框宽度=0则不绘制边框
+    painter->setPen(borderWidth == 0 ? Qt::NoPen : pen);
+    //顺带把背景颜色这里也一并处理
+    if (bgColor != Qt::transparent) {
+        painter->setBrush(bgColor);
+    }
     painter->drawRect(rect());
+
     painter->restore();
 }
 
 void VideoWidget::drawBg(QPainter *painter)
 {
     painter->save();
-    if (bgColor != Qt::transparent) {
-        painter->fillRect(rect(), bgColor);
-    }
 
     //背景图片为空则绘制文字,否则绘制背景图片
     if (bgImage.isNull()) {

@@ -77,7 +77,7 @@ void NtpClient::readData()
     quint32 seconds = transmitTimeStamp.at(0);
     quint8 temp = 0;
 
-    for (int i = 1; i <= 3; i++) {
+    for (int i = 1; i <= 3; ++i) {
         seconds = (seconds << 8);
         temp = transmitTimeStamp.at(i);
         seconds = seconds + temp;

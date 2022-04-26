@@ -51,13 +51,13 @@ void SmoothCurve::calculateFirstControlPoints(double *&result, const double *rhs
     double b = 2.0;
     result[0] = rhs[0] / b;
 
-    for (int i = 1; i < n; i++) {
+    for (int i = 1; i < n; ++i) {
         tmp[i] = 1 / b;
         b = (i < n - 1 ? 4.0 : 3.5) - tmp[i];
         result[i] = (rhs[i] - result[i - 1]) / b;
     }
 
-    for (int i = 1; i < n; i++) {
+    for (int i = 1; i < n; ++i) {
         result[n - i - 1] -= tmp[n - i] * result[n - i];
     }
 

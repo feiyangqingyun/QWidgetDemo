@@ -121,14 +121,14 @@ void LunarCalendarWidget::initWidget()
     //年份下拉框
     cboxYear = new QComboBox;
     cboxYear->setObjectName("cboxYear");
-    for (int i = 1901; i <= 2099; i++) {
+    for (int i = 1901; i <= 2099; ++i) {
         cboxYear->addItem(QString("%1年").arg(i));
     }
 
     //月份下拉框
     cboxMonth = new QComboBox;
     cboxMonth->setObjectName("cboxMonth");
-    for (int i = 1; i <= 12; i++) {
+    for (int i = 1; i <= 12; ++i) {
         cboxMonth->addItem(QString("%1月").arg(i));
     }
 
@@ -162,7 +162,7 @@ void LunarCalendarWidget::initWidget()
     layoutWeek->setContentsMargins(0, 0, 0, 0);
     layoutWeek->setSpacing(0);
 
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 7; ++i) {
         QLabel *lab = new QLabel;
         lab->setAlignment(Qt::AlignCenter);
         layoutWeek->addWidget(lab);
@@ -182,7 +182,7 @@ void LunarCalendarWidget::initWidget()
     layoutBody->setVerticalSpacing(0);
 
     //逐个添加日标签
-    for (int i = 0; i < 42; i++) {
+    for (int i = 0; i < 42; ++i) {
         LunarCalendarItem *lab = new LunarCalendarItem;
         connect(lab, SIGNAL(clicked(QDate, LunarCalendarItem::DayType)), this, SLOT(clicked(QDate, LunarCalendarItem::DayType)));
         layoutBody->addWidget(lab, i / 7, i % 7);
@@ -303,7 +303,7 @@ void LunarCalendarWidget::initDate()
     }
 
     //显示上月天数
-    for (int i = startPre; i < endPre; i++) {
+    for (int i = startPre; i < endPre; ++i) {
         index = i;
         tempDay = countDayPre - endPre + i + 1;
 
@@ -321,7 +321,7 @@ void LunarCalendarWidget::initDate()
     }
 
     //显示下月天数
-    for (int i = startNext; i < endNext; i++) {
+    for (int i = startNext; i < endNext; ++i) {
         index = 42 - endNext + i;
         tempDay = i - startNext + 1;
 
@@ -335,7 +335,7 @@ void LunarCalendarWidget::initDate()
     tempMonth = month;
 
     //显示当前月
-    for (int i = week; i < (countDay + week); i++) {
+    for (int i = week; i < (countDay + week); ++i) {
         index = (0 == week ? (i + 7) : i);
         tempDay = i - week + 1;
 
@@ -401,7 +401,7 @@ void LunarCalendarWidget::dayChanged(const QDate &date)
     //qDebug() << QString("%1-%2-%3").arg(year).arg(month).arg(day);
 
     //选中当前日期,其他日期恢复,这里还有优化空间,比方说类似单选框机制
-    for (int i = 0; i < 42; i++) {
+    for (int i = 0; i < 42; ++i) {
         //当月第一天是星期天要另外计算
         int index = day + week - 1;
         if (week == 0) {
@@ -652,7 +652,7 @@ void LunarCalendarWidget::setWeekNameFormat(const LunarCalendarWidget::WeekNameF
         }
 
         //逐个添加日期文字
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 7; ++i) {
             labWeeks.at(i)->setText(listWeek.at(i));
         }
     }

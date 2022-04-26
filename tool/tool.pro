@@ -13,8 +13,3 @@ SUBDIRS += keytool
 SUBDIRS += keydemo
 SUBDIRS += livetool
 SUBDIRS += livedemo
-
-#Qt6有些代码没适配
-greaterThan(QT_MAJOR_VERSION, 5) {
-SUBDIRS -= emailtool
-}

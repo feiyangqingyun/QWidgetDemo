@@ -495,7 +495,7 @@ margin:0px;
 background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #F6F6F6,stop:1 #F6F6F6);
 }
 
-QTabBar::tab:selected,QTabBar::tab:hover{
+QTabBar::tab:selected{
 border-style:solid;
 border-color:#575959;
 background:#FFFFFF;
@@ -509,38 +509,38 @@ QTabBar::tab:left,QTabBar::tab:right{
 padding:8px 3px 8px 3px;
 }
 
-QTabBar::tab:top:selected,QTabBar::tab:top:hover{
+QTabBar::tab:top:selected{
 border-width:2px 0px 0px 0px;
 }
 
-QTabBar::tab:right:selected,QTabBar::tab:right:hover{
+QTabBar::tab:right:selected{
 border-width:0px 0px 0px 2px;
 }
 
-QTabBar::tab:bottom:selected,QTabBar::tab:bottom:hover{
+QTabBar::tab:bottom:selected{
 border-width:0px 0px 2px 0px;
 }
 
-QTabBar::tab:left:selected,QTabBar::tab:left:hover{
+QTabBar::tab:left:selected{
 border-width:0px 2px 0px 0px;
 }
 
-QTabBar::tab:first:top:selected,QTabBar::tab:first:top:hover,QTabBar::tab:first:bottom:selected,QTabBar::tab:first:bottom:hover{
+QTabBar::tab:first:top:selected,QTabBar::tab:first:bottom:selected{
 border-left-width:1px;
 border-left-color:#B6B6B6;
 }
 
-QTabBar::tab:first:left:selected,QTabBar::tab:first:left:hover,QTabBar::tab:first:right:selected,QTabBar::tab:first:right:hover{
+QTabBar::tab:first:left:selected,QTabBar::tab:first:right:selected{
 border-top-width:1px;
 border-top-color:#B6B6B6;
 }
 
-QTabBar::tab:last:top:selected,QTabBar::tab:last:top:hover,QTabBar::tab:last:bottom:selected,QTabBar::tab:last:bottom:hover{
+QTabBar::tab:last:top:selected,QTabBar::tab:last:bottom:selected{
 border-right-width:1px;
 border-right-color:#B6B6B6;
 }
 
-QTabBar::tab:last:left:selected,QTabBar::tab:last:left:hover,QTabBar::tab:last:right:selected,QTabBar::tab:last:right:hover{
+QTabBar::tab:last:left:selected,QTabBar::tab:last:right:selected{
 border-bottom-width:1px;
 border-bottom-color:#B6B6B6;
 }

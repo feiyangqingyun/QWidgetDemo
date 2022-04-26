@@ -28,7 +28,7 @@ void frmMain::initForm()
 
     //加载鼠标右键菜单翻译文件
     QTranslator *translator1 = new QTranslator(qApp);
-    if (translator1->load(":/qm/qt_zh_CN.qm")){
+    if (translator1->load(":/qm/qt_zh_CN.qm")) {
         qApp->installTranslator(translator1);
     }
 
@@ -44,7 +44,7 @@ void frmMain::initForm()
 void frmMain::loadStyle(const QString &qssFile)
 {
     //加载样式表
-    QString qss;    
+    QString qss;
     QFile file(qssFile);
     if (file.open(QFile::ReadOnly)) {
         //用QTextStream读取样式文件不用区分文件编码 带bom也行
@@ -79,3 +79,10 @@ void frmMain::on_btnStyle3_clicked()
 {
     loadStyle(":/qss/blacksoft.css");
 }
+
+void frmMain::on_btnInfo_clicked()
+{
+    //QFileDialog::getOpenFileName(this, "", "", "", 0, QFileDialog::DontUseNativeDialog);
+    //QFileDialog::getExistingDirectory(0, "", "", QFileDialog::DontUseNativeDialog);
+}
+
