@@ -26,7 +26,7 @@ QString QUIHelperData::strHexToStrBin(const QString &strHex)
     uchar len = bin.length();
 
     if (len < 8) {
-        for (int i = 0; i < 8 - len; i++) {
+        for (int i = 0; i < 8 - len; ++i) {
             bin = "0" + bin;
         }
     }
@@ -39,7 +39,7 @@ QString QUIHelperData::decimalToStrBin1(int decimal)
     QString bin = QString::number(decimal, 2);
     uchar len = bin.length();
     if (len <= 8) {
-        for (int i = 0; i < 8 - len; i++) {
+        for (int i = 0; i < 8 - len; ++i) {
             bin = "0" + bin;
         }
     }
@@ -52,7 +52,7 @@ QString QUIHelperData::decimalToStrBin2(int decimal)
     QString bin = QString::number(decimal, 2);
     uchar len = bin.length();
     if (len <= 16) {
-        for (int i = 0; i < 16 - len; i++) {
+        for (int i = 0; i < 16 - len; ++i) {
             bin = "0" + bin;
         }
     }
@@ -184,9 +184,14 @@ QString QUIHelperData::getXorEncryptDecrypt(const QString &value, char key)
         key = 127;
     }
 
+    //大概从5.9版本输出的加密密码字符串前面会加上 @String 字符
     QString result = value;
+    if (result.startsWith("@String")) {
+        result = result.mid(8, result.length() - 9);
+    }
+
     int count = result.count();
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; ++i) {
         result[i] = QChar(result.at(i).toLatin1() ^ key);
     }
     return result;
@@ -196,7 +201,7 @@ uchar QUIHelperData::getOrCode(const QByteArray &data)
 {
     int len = data.length();
     uchar result = 0;
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < len; ++i) {
         result ^= data.at(i);
     }
 
@@ -207,7 +212,7 @@ uchar QUIHelperData::getCheckCode(const QByteArray &data)
 {
     int len = data.length();
     uchar temp = 0;
-    for (uchar i = 0; i < len; i++) {
+    for (uchar i = 0; i < len; ++i) {
         temp += data.at(i);
     }
 
@@ -344,7 +349,7 @@ QString QUIHelperData::byteArrayToAsciiStr(const QByteArray &data)
 
     QString temp;
     int len = data.size();
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < len; ++i) {
         char byte = data.at(i);
         QString value = listChar.value(byte);
         if (!value.isEmpty()) {
@@ -370,7 +375,7 @@ QByteArray QUIHelperData::asciiStrToByteArray(const QString &data)
     QStringList list = data.split("\\");
 
     int count = list.count();
-    for (int i = 1; i < count; i++) {
+    for (int i = 1; i < count; ++i) {
         QString str = list.at(i);
         int key = 0;
         if (str.contains("x")) {
@@ -380,6 +385,11 @@ QByteArray QUIHelperData::asciiStrToByteArray(const QString &data)
         }
 
         buffer.append(key);
+    }
+
+    //可能是纯字符串不带控制字符
+    if (buffer.size() == 0) {
+        buffer = data.toUtf8();
     }
 
     return buffer;

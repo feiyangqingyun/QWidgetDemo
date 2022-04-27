@@ -386,8 +386,7 @@ void frmComTool::sendData(QString data)
 void frmComTool::saveData()
 {
     QString tempData = ui->txtMain->toPlainText();
-
-    if (tempData == "") {
+    if (tempData.isEmpty()) {
         return;
     }
 
