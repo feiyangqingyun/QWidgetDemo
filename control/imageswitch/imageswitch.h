@@ -46,6 +46,7 @@ private:
 public:
     bool getChecked()               const;
     ButtonStyle getButtonStyle()    const;
+
     QSize sizeHint()                const;
     QSize minimumSizeHint()         const;
 
@@ -54,6 +55,9 @@ public Q_SLOTS:
     void setChecked(bool isChecked);
     //设置按钮样式
     void setButtonStyle(const ImageSwitch::ButtonStyle &buttonStyle);
+
+Q_SIGNALS:
+    void checkedChanged(bool checked);
 };
 
 #endif // IMAGESWITCH_H

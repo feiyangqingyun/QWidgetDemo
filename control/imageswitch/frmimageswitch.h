@@ -20,6 +20,7 @@ private:
 
 private slots:
     void initForm();
+    void checkedChanged(bool checked);
 };
 
 #endif // FRMIMAGESWITCH_H
