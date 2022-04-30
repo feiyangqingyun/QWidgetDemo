@@ -175,7 +175,7 @@ void frmWebClient::disconnected()
 {
     isOk = false;
     ui->btnConnect->setText("连接");
-    append(1, "服务器断开");    
+    append(1, "服务器断开");
 }
 
 void frmWebClient::error()

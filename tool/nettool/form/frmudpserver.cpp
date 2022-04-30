@@ -37,12 +37,12 @@ void frmUdpServer::initForm()
 
     //实例化对象并绑定信号槽
     socket = new QUdpSocket(this);
+    connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
 #if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
     connect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(error()));
 #else
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error()));
-#endif
-    connect(socket, SIGNAL(readyRead()), this, SLOT(readData()));
+#endif    
 
     //定时器发送数据
     timer = new QTimer(this);

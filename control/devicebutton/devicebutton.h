@@ -65,6 +65,9 @@ private:
     ButtonStyle buttonStyle;        //按钮样式
     ButtonColor buttonColor;        //按钮颜色
 
+    bool isPressed;                 //鼠标是否按下
+    QPoint lastPoint;               //鼠标按下最后坐标
+
     QString type;                   //图片末尾类型
     QString imgName;                //背景图片名称
     bool isDark;                    //是否加深报警
@@ -94,6 +97,7 @@ public Q_SLOTS:
     void setButtonColor(const ButtonColor &buttonColor);
 
 Q_SIGNALS:
+    //鼠标单击双击事件
     void clicked();
     void doubleClicked();
 };

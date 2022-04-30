@@ -8,13 +8,13 @@ TcpClient2::TcpClient2(QObject *parent) :  QTcpSocket(parent)
     port = 6908;
     deviceID = "SSJC00000001";
 
+    connect(this, SIGNAL(disconnected()), this, SLOT(deleteLater()));
+    connect(this, SIGNAL(readyRead()), this, SLOT(readData()));
 #if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
     connect(this, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(deleteLater()));
 #else
     connect(this, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(deleteLater()));
 #endif
-    connect(this, SIGNAL(disconnected()), this, SLOT(deleteLater()));
-    connect(this, SIGNAL(readyRead()), this, SLOT(readData()));
 }
 
 void TcpClient2::setIP(const QString &ip)

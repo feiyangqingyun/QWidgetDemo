@@ -10,12 +10,12 @@ TcpClient::TcpClient(QTcpSocket *socket, QObject *parent) : QObject(parent)
     port = socket->peerPort();
 
     connect(socket, SIGNAL(disconnected()), this, SLOT(slot_disconnected()));
+    connect(socket, SIGNAL(readyRead()), this, SLOT(slot_readData()));
 #if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
     connect(socket, SIGNAL(errorOccurred(QAbstractSocket::SocketError)), this, SLOT(slot_error()));
 #else
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(slot_error()));
 #endif
-    connect(socket, SIGNAL(readyRead()), this, SLOT(slot_readData()));
 }
 
 QString TcpClient::getIP() const

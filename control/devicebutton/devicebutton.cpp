@@ -13,6 +13,9 @@ DeviceButton::DeviceButton(QWidget *parent) : QWidget(parent)
     buttonStyle = ButtonStyle_Police;
     buttonColor = ButtonColor_Green;
 
+    isPressed = false;
+    lastPoint = QPoint();
+
     type = "police";
     imgName = QString(":/image/devicebutton/devicebutton_green_%1.png").arg(type);
     isDark = false;
@@ -79,29 +82,26 @@ void DeviceButton::paintEvent(QPaintEvent *)
 
 bool DeviceButton::eventFilter(QObject *watched, QEvent *event)
 {
-    if (canMove) {
-        static QPoint lastPoint;
-        static bool isPressed = false;
-
-        if (event->type() == QEvent::MouseButtonPress) {
-            QMouseEvent *e = static_cast<QMouseEvent *>(event);
-            if (this->rect().contains(e->pos()) && (e->button() == Qt::LeftButton)) {
-                lastPoint = e->pos();
-                isPressed = true;
-            }
-        } else if (event->type() == QEvent::MouseMove && isPressed) {
-            QMouseEvent *e = static_cast<QMouseEvent *>(event);
-            int dx = e->pos().x() - lastPoint.x();
-            int dy = e->pos().y() - lastPoint.y();
+    //识别鼠标 按下+移动+松开+双击 等事件
+    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+    if (event->type() == QEvent::MouseButtonPress) {
+        //限定鼠标左键
+        if (mouseEvent->button() == Qt::LeftButton) {
+            lastPoint = mouseEvent->pos();
+            isPressed = true;
+            emit clicked();
+            return true;
+        }
+    } else if (event->type() == QEvent::MouseMove) {
+        //允许拖动并且鼠标按下准备拖动
+        if (canMove && isPressed) {
+            int dx = mouseEvent->pos().x() - lastPoint.x();
+            int dy = mouseEvent->pos().y() - lastPoint.y();
             this->move(this->x() + dx, this->y() + dy);
             return true;
-        } else if (event->type() == QEvent::MouseButtonRelease && isPressed) {
-            isPressed = false;
         }
-    }
-
-    if (event->type() == QEvent::MouseButtonPress) {
-        emit clicked();
+    } else if (event->type() == QEvent::MouseButtonRelease) {
+        isPressed = false;
     } else if (event->type() == QEvent::MouseButtonDblClick) {
         emit doubleClicked();
     }
