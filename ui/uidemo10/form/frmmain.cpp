@@ -32,7 +32,7 @@ void frmMain::initForm()
     names << "访客登记" << "记录查询" << "证件扫描" << "信息打印" << "系统设置" << "系统重启";
 
     QList<QToolButton *> btns = this->findChildren<QToolButton *>();
-    for (int i = 0; i < btns.count(); i++) {
+    for (int i = 0; i < btns.count(); ++i) {
         QToolButton *btn = btns.at(i);
         btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         btn->setIconSize(QSize(iconWidth, iconHeight));

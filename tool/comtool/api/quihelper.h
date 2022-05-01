@@ -25,6 +25,9 @@ public:
     static QString appName();
     static QString appPath();
 
+    //获取本地网卡IP集合
+    static QStringList getLocalIPs();
+
     //获取内置颜色集合
     static QList<QColor> colors;
     static QList<QColor> getColorList();
@@ -57,8 +60,19 @@ public:
     static void setCode(bool utf8 = true);
     //设置翻译文件
     static void setTranslator(const QString &qmFile);
-    //一次性设置所有
+
+    //一次性设置所有包括编码样式字体等
     static void initAll(bool utf8 = true, bool style = true, int fontSize = 13);
+    //初始化main函数最前面执行的一段代码
+    static void initMain(bool on = true);
+
+    //插入消息
+    static QVector<int> msgTypes;
+    static QVector<QString> msgKeys;
+    static QVector<QColor> msgColors;
+    static QString appendMsg(QTextEdit *textEdit, int type, const QString &data,
+                             int maxCount, int &currentCount,
+                             bool clear = false, bool pause = false);
 
     //设置无边框
     static void setFramelessForm(QWidget *widgetMain, bool tool = false, bool top = false, bool menu = true);
@@ -71,6 +85,26 @@ public:
     static void showMessageBoxError(const QString &info, int closeSec = 0, bool exec = false);
     //弹出询问框
     static int showMessageBoxQuestion(const QString &info);
+
+    //为什么还要自定义对话框因为可控宽高和汉化对应文本等
+    //初始化对话框文本
+    static void initDialog(QFileDialog *dialog, const QString &title, const QString &acceptName,
+                           const QString &dirName, bool native, int width, int height);
+    //拿到对话框结果
+    static QString getDialogResult(QFileDialog *dialog);
+    //选择文件对话框
+    static QString getOpenFileName(const QString &filter = QString(),
+                                   const QString &dirName = QString(),
+                                   const QString &fileName = QString(),
+                                   bool native = false, int width = 900, int height = 600);
+    //保存文件对话框
+    static QString getSaveFileName(const QString &filter = QString(),
+                                   const QString &dirName = QString(),
+                                   const QString &fileName = QString(),
+                                   bool native = false, int width = 900, int height = 600);
+    //选择目录对话框
+    static QString getExistingDirectory(const QString &dirName = QString(),
+                                        bool native = false, int width = 900, int height = 600);
 
     //异或加密-只支持字符,如果是中文需要将其转换base64编码
     static QString getXorEncryptDecrypt(const QString &value, char key);
@@ -88,6 +122,9 @@ public:
 
     //检查ini配置文件
     static bool checkIniFile(const QString &iniFile);
+
+    //首尾截断字符串显示
+    static QString cutString(const QString &text, int len, int left, int right, const QString &mid = "...");
 };
 
 #endif // QUIHELPER2_H

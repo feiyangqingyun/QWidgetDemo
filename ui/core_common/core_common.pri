@@ -17,6 +17,8 @@ CONFIG += warn_off
 CONFIG += resources_big
 #开启后会将打印信息用控制台输出
 #CONFIG += console
+#开启后不会生成空的 debug release 目录
+#CONFIG -= debug_and_release
 
 #引入全志H3芯片依赖
 include ($$PWD/h3.pri)

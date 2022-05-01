@@ -1,5 +1,6 @@
 ﻿#include "quihelper.h"
 #include "qnetworkinterface.h"
+#include "qnetworkproxy.h"
 
 #define TIMEMS qPrintable(QTime::currentTime().toString("HH:mm:ss zzz"))
 int QUIHelper::getScreenIndex()
@@ -116,11 +117,13 @@ QString QUIHelper::appPath()
     static QString path;
     if (path.isEmpty()) {
 #ifdef Q_OS_ANDROID
-        //path = QString("/sdcard/Android/%1").arg(appName());
-        path = QString("/storage/emulated/0/%1").arg(appName());
+        //默认安卓根目录
+        path = "/storage/emulated/0";
+        //带上程序名称作为目录 前面加个0方便排序
+        path = path + "/0" + appName();
 #else
         path = qApp->applicationDirPath();
-#endif
+#endif        
     }
 
     return path;
@@ -430,6 +433,8 @@ void QUIHelper::initAll(bool utf8, bool style, int fontSize)
     QUIHelper::setTranslator(":/qm/widgets.qm");
     QUIHelper::setTranslator(":/qm/qt_zh_CN.qm");
     QUIHelper::setTranslator(":/qm/designer_zh_CN.qm");
+    //设置不使用本地系统环境代理配置
+    QNetworkProxyFactory::setUseSystemConfiguration(false);
 }
 
 void QUIHelper::initMain(bool on)
@@ -679,7 +684,7 @@ QString QUIHelper::getXorEncryptDecrypt(const QString &value, char key)
     }
 
     int count = result.count();
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; ++i) {
         result[i] = QChar(result.at(i).toLatin1() ^ key);
     }
     return result;
@@ -689,7 +694,7 @@ uchar QUIHelper::getOrCode(const QByteArray &data)
 {
     int len = data.length();
     uchar result = 0;
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < len; ++i) {
         result ^= data.at(i);
     }
 
@@ -700,7 +705,7 @@ uchar QUIHelper::getCheckCode(const QByteArray &data)
 {
     int len = data.length();
     uchar temp = 0;
-    for (uchar i = 0; i < len; i++) {
+    for (uchar i = 0; i < len; ++i) {
         temp += data.at(i);
     }
 
@@ -758,7 +763,7 @@ void QUIHelper::openFile(const QString &fileName, const QString &msg)
     if (!QFile(fileName).exists()) {
         return;
     }
-    if (QUIHelper::showMessageBoxQuestion(msg + "成功!确定现在就打开吗?") == QMessageBox::Yes) {
+    if (QUIHelper::showMessageBoxQuestion(msg + "成功, 确定现在就打开吗?") == QMessageBox::Yes) {
         QString url = QString("file:///%1").arg(fileName);
         QDesktopServices::openUrl(QUrl(url, QUrl::TolerantMode));
     }
@@ -800,4 +805,14 @@ bool QUIHelper::checkIniFile(const QString &iniFile)
     }
 
     return true;
+}
+
+QString QUIHelper::cutString(const QString &text, int len, int left, int right, const QString &mid)
+{
+    //如果是文件名则取文件名的前字符+末尾字符+去掉拓展名
+    QString result = text.split(".").first();
+    if (result.length() > len) {
+        result = QString("%1%2%3").arg(result.left(left)).arg(mid).arg(result.right(right));
+    }
+    return result;
 }

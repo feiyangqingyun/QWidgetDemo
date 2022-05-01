@@ -6,9 +6,7 @@
 class AppData
 {
 public:
-    static QString Version;         //版本号
     static QString TitleFlag;       //标题标识
-
     static int RowHeight;           //行高
     static int RightWidth;          //右侧宽度
     static int FormWidth;           //窗体宽度

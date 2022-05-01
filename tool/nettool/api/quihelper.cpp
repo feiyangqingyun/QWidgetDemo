@@ -1,4 +1,6 @@
 ﻿#include "quihelper.h"
+#include "qnetworkinterface.h"
+#include "qnetworkproxy.h"
 
 #define TIMEMS qPrintable(QTime::currentTime().toString("HH:mm:ss zzz"))
 int QUIHelper::getScreenIndex()
@@ -86,13 +88,12 @@ void QUIHelper::setFormInCenter(QWidget *form)
 void QUIHelper::showForm(QWidget *form)
 {
     setFormInCenter(form);
+    form->show();
 
     //判断宽高是否超过了屏幕分辨率,超过了则最大化显示
     //qDebug() << TIMEMS << form->size() << deskSize();
     if (form->width() + 20 > deskWidth() || form->height() + 50 > deskHeight()) {
-        form->showMaximized();
-    } else {
-        form->show();
+        QMetaObject::invokeMethod(form, "showMaximized", Qt::QueuedConnection);
     }
 }
 
@@ -105,6 +106,7 @@ QString QUIHelper::appName()
         //下面的方法主要为了过滤安卓的路径 lib程序名_armeabi-v7a
         QStringList list = name.split("/");
         name = list.at(list.count() - 1).split(".").at(0);
+        name.replace("_armeabi-v7a", "");
     }
 
     return name;
@@ -112,12 +114,59 @@ QString QUIHelper::appName()
 
 QString QUIHelper::appPath()
 {
+    static QString path;
+    if (path.isEmpty()) {
 #ifdef Q_OS_ANDROID
-    //return QString("/sdcard/Android/%1").arg(appName());
-    return QString("/storage/emulated/0/%1").arg(appName());
+        //默认安卓根目录
+        path = "/storage/emulated/0";
+        //带上程序名称作为目录 前面加个0方便排序
+        path = path + "/0" + appName();
 #else
-    return qApp->applicationDirPath();
+        path = qApp->applicationDirPath();
+#endif        
+    }
+
+    return path;
+}
+
+QStringList QUIHelper::getLocalIPs()
+{
+    static QStringList ips;
+    if (ips.count() == 0) {
+#ifdef Q_OS_WASM
+        ips << "127.0.0.1";
+#else
+        QList<QNetworkInterface> netInterfaces = QNetworkInterface::allInterfaces();
+        foreach (const QNetworkInterface  &netInterface, netInterfaces) {
+            //移除虚拟机和抓包工具的虚拟网卡
+            QString humanReadableName = netInterface.humanReadableName().toLower();
+            if (humanReadableName.startsWith("vmware network adapter") || humanReadableName.startsWith("npcap loopback adapter")) {
+                continue;
+            }
+
+            //过滤当前网络接口
+            bool flag = (netInterface.flags() == (QNetworkInterface::IsUp | QNetworkInterface::IsRunning | QNetworkInterface::CanBroadcast | QNetworkInterface::CanMulticast));
+            if (!flag) {
+                continue;
+            }
+
+            QList<QNetworkAddressEntry> addrs = netInterface.addressEntries();
+            foreach (QNetworkAddressEntry addr, addrs) {
+                //只取出IPV4的地址
+                if (addr.ip().protocol() != QAbstractSocket::IPv4Protocol) {
+                    continue;
+                }
+
+                QString ip4 = addr.ip().toString();
+                if (ip4 != "127.0.0.1") {
+                    ips << ip4;
+                }
+            }
+        }
 #endif
+    }
+
+    return ips;
 }
 
 QList<QColor> QUIHelper::colors = QList<QColor>();
@@ -313,8 +362,9 @@ void QUIHelper::setFont(int fontSize)
 #ifdef rk3399
     return;
 #endif
+    //安卓套件在有些手机上默认字体不好看需要主动设置字体
     //网页套件需要主动加载中文字体才能正常显示中文
-#ifdef Q_OS_WASM
+#if (defined Q_OS_ANDROID) || (defined Q_OS_WASM)
     QString fontFile = ":/font/DroidSansFallback.ttf";
     QString fontName = "Droid Sans Fallback";
     qApp->setFont(addFont(fontFile, fontName));
@@ -383,6 +433,78 @@ void QUIHelper::initAll(bool utf8, bool style, int fontSize)
     QUIHelper::setTranslator(":/qm/widgets.qm");
     QUIHelper::setTranslator(":/qm/qt_zh_CN.qm");
     QUIHelper::setTranslator(":/qm/designer_zh_CN.qm");
+    //设置不使用本地系统环境代理配置
+    QNetworkProxyFactory::setUseSystemConfiguration(false);
+}
+
+void QUIHelper::initMain(bool on)
+{
+    //设置是否应用操作系统设置比如字体
+    QApplication::setDesktopSettingsAware(on);
+
+#ifdef Q_OS_ANDROID
+#if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
+    //开启高分屏缩放支持
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
+#else
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+    //不应用任何缩放
+    QApplication::setAttribute(Qt::AA_Use96Dpi);
+#endif
+#endif
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5,14,0))
+    //高分屏缩放策略
+    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
+#endif
+
+#if (QT_VERSION >= QT_VERSION_CHECK(5,4,0))
+    //设置opengl模式 AA_UseDesktopOpenGL(默认) AA_UseOpenGLES AA_UseSoftwareOpenGL
+    //在一些很旧的设备上或者对opengl支持很低的设备上需要使用AA_UseOpenGLES表示禁用硬件加速
+    //如果开启的是AA_UseOpenGLES则无法使用硬件加速比如ffmpeg的dxva2
+    //QApplication::setAttribute(Qt::AA_UseOpenGLES);
+    //设置opengl共享上下文
+    QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+#endif
+}
+
+QVector<int> QUIHelper::msgTypes = QVector<int>() << 0 << 1 << 2 << 3 << 4;
+QVector<QString> QUIHelper::msgKeys = QVector<QString>() << "发送" << "接收" << "解析" << "错误" << "提示";
+QVector<QColor> QUIHelper::msgColors = QVector<QColor>() << QColor("#3BA372") << QColor("#EE6668") << QColor("#9861B4") << QColor("#FA8359") << QColor("#22A3A9");
+QString QUIHelper::appendMsg(QTextEdit *textEdit, int type, const QString &data, int maxCount, int &currentCount, bool clear, bool pause)
+{
+    if (clear) {
+        textEdit->clear();
+        currentCount = 0;
+        return QString();
+    }
+
+    if (pause) {
+        return QString();
+    }
+
+    if (currentCount >= maxCount) {
+        textEdit->clear();
+        currentCount = 0;
+    }
+
+    //不同类型不同颜色显示
+    QString strType;
+    int index = msgTypes.indexOf(type);
+    if (index >= 0) {
+        strType = msgKeys.at(index);
+        textEdit->setTextColor(msgColors.at(index));
+    }
+
+    //过滤回车换行符
+    QString strData = data;
+    strData.replace("\r", "");
+    strData.replace("\n", "");
+    strData = QString("时间[%1] %2: %3").arg(TIMEMS).arg(strType).arg(strData);
+    textEdit->append(strData);
+    currentCount++;
+    return strData;
 }
 
 void QUIHelper::setFramelessForm(QWidget *widgetMain, bool tool, bool top, bool menu)
@@ -452,6 +574,102 @@ int QUIHelper::showMessageBoxQuestion(const QString &info)
     //return QMessageBox::question(0, "询问", info, QMessageBox::Yes | QMessageBox::No);
 }
 
+void QUIHelper::initDialog(QFileDialog *dialog, const QString &title, const QString &acceptName,
+                           const QString &dirName, bool native, int width, int height)
+{
+    //设置标题
+    dialog->setWindowTitle(title);
+    //设置标签文本
+    dialog->setLabelText(QFileDialog::Accept, acceptName);
+    dialog->setLabelText(QFileDialog::Reject, "取消(&C)");
+    dialog->setLabelText(QFileDialog::LookIn, "查看");
+    dialog->setLabelText(QFileDialog::FileName, "名称");
+    dialog->setLabelText(QFileDialog::FileType, "类型");
+
+    //设置默认显示目录
+    if (!dirName.isEmpty()) {
+        dialog->setDirectory(dirName);
+    }
+
+    //设置对话框宽高
+    if (width > 0 && height > 0) {
+#ifdef Q_OS_ANDROID
+        bool horizontal = (QUIHelper::deskWidth() > QUIHelper::deskHeight());
+        if (horizontal) {
+            width = QUIHelper::deskWidth() / 2;
+            height = QUIHelper::deskHeight() - 50;
+        } else {
+            width = QUIHelper::deskWidth() - 10;
+            height = QUIHelper::deskHeight() / 2;
+        }
+#endif
+        dialog->setFixedSize(width, height);
+    }
+
+    //设置是否采用本地对话框
+    dialog->setOption(QFileDialog::DontUseNativeDialog, !native);
+    //设置只读可以取消右上角的新建按钮
+    //dialog->setReadOnly(true);
+}
+
+QString QUIHelper::getDialogResult(QFileDialog *dialog)
+{
+    QString result;
+    if (dialog->exec() == QFileDialog::Accepted) {
+        result = dialog->selectedFiles().first();
+    }
+    return result;
+}
+
+QString QUIHelper::getOpenFileName(const QString &filter, const QString &dirName, const QString &fileName,
+                                   bool native, int width, int height)
+{
+    QFileDialog dialog;
+    initDialog(&dialog, "打开文件", "选择(&S)", dirName, native, width, height);
+
+    //设置文件类型
+    if (!filter.isEmpty()) {
+        dialog.setNameFilter(filter);
+    }
+
+    //设置默认文件名称
+    dialog.selectFile(fileName);
+    return getDialogResult(&dialog);
+}
+
+QString QUIHelper::getSaveFileName(const QString &filter, const QString &dirName, const QString &fileName,
+                                   bool native, int width, int height)
+{
+    QFileDialog dialog;
+    initDialog(&dialog, "保存文件", "保存(&S)", dirName, native, width, height);
+
+    //设置文件类型
+    if (!filter.isEmpty()) {
+        dialog.setNameFilter(filter);
+    }
+
+    //设置默认文件名称
+    dialog.selectFile(fileName);
+    //设置模态类型允许输入
+    dialog.setWindowModality(Qt::WindowModal);
+    //设置置顶显示
+    dialog.setWindowFlags(dialog.windowFlags() | Qt::WindowStaysOnTopHint);
+    return getDialogResult(&dialog);
+}
+
+QString QUIHelper::getExistingDirectory(const QString &dirName, bool native, int width, int height)
+{
+    QFileDialog dialog;
+    initDialog(&dialog, "选择目录", "选择(&S)", dirName, native, width, height);
+    dialog.setOption(QFileDialog::ReadOnly);
+    //设置只显示目录
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
+    dialog.setFileMode(QFileDialog::DirectoryOnly);
+#endif
+    dialog.setOption(QFileDialog::ShowDirsOnly);
+    return getDialogResult(&dialog);
+}
+
 QString QUIHelper::getXorEncryptDecrypt(const QString &value, char key)
 {
     //矫正范围外的数据
@@ -466,7 +684,7 @@ QString QUIHelper::getXorEncryptDecrypt(const QString &value, char key)
     }
 
     int count = result.count();
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; ++i) {
         result[i] = QChar(result.at(i).toLatin1() ^ key);
     }
     return result;
@@ -476,7 +694,7 @@ uchar QUIHelper::getOrCode(const QByteArray &data)
 {
     int len = data.length();
     uchar result = 0;
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < len; ++i) {
         result ^= data.at(i);
     }
 
@@ -487,7 +705,7 @@ uchar QUIHelper::getCheckCode(const QByteArray &data)
 {
     int len = data.length();
     uchar temp = 0;
-    for (uchar i = 0; i < len; i++) {
+    for (uchar i = 0; i < len; ++i) {
         temp += data.at(i);
     }
 
@@ -545,7 +763,7 @@ void QUIHelper::openFile(const QString &fileName, const QString &msg)
     if (!QFile(fileName).exists()) {
         return;
     }
-    if (QUIHelper::showMessageBoxQuestion(msg + "成功!确定现在就打开吗?") == QMessageBox::Yes) {
+    if (QUIHelper::showMessageBoxQuestion(msg + "成功, 确定现在就打开吗?") == QMessageBox::Yes) {
         QString url = QString("file:///%1").arg(fileName);
         QDesktopServices::openUrl(QUrl(url, QUrl::TolerantMode));
     }
@@ -587,4 +805,14 @@ bool QUIHelper::checkIniFile(const QString &iniFile)
     }
 
     return true;
+}
+
+QString QUIHelper::cutString(const QString &text, int len, int left, int right, const QString &mid)
+{
+    //如果是文件名则取文件名的前字符+末尾字符+去掉拓展名
+    QString result = text.split(".").first();
+    if (result.length() > len) {
+        result = QString("%1%2%3").arg(result.left(left)).arg(mid).arg(result.right(right));
+    }
+    return result;
 }

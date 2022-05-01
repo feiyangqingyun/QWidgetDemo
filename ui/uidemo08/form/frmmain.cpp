@@ -150,7 +150,7 @@ void frmMain::initLeftMain()
     btnsMain << ui->tbtnMain1 << ui->tbtnMain2 << ui->tbtnMain3;
 
     int count = btnsMain.count();
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; ++i) {
         QToolButton *btn = (QToolButton *)btnsMain.at(i);
         btn->setCheckable(true);
         btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -175,7 +175,7 @@ void frmMain::initLeftConfig()
     btnsConfig << ui->tbtnConfig1 << ui->tbtnConfig2 << ui->tbtnConfig3 << ui->tbtnConfig4 << ui->tbtnConfig5 << ui->tbtnConfig6;
 
     int count = btnsConfig.count();
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; ++i) {
         QToolButton *btn = (QToolButton *)btnsConfig.at(i);
         btn->setCheckable(true);
         btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
@@ -200,7 +200,7 @@ void frmMain::leftMainClick()
     QString name = b->text();
 
     int count = btnsMain.count();
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; ++i) {
         QAbstractButton *btn = btnsMain.at(i);
         btn->setChecked(btn == b);
     }
@@ -214,7 +214,7 @@ void frmMain::leftConfigClick()
     QString name = b->text();
 
     int count = btnsConfig.count();
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; ++i) {
         QAbstractButton *btn = btnsConfig.at(i);
         btn->setChecked(btn == b);
     }

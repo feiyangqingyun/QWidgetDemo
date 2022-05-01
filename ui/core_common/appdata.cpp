@@ -1,9 +1,7 @@
 ﻿#include "appdata.h"
 #include "quihelper.h"
 
-QString AppData::Version = "V20220316";
 QString AppData::TitleFlag = "(QQ: 517216493 WX: feiyangqingyun)";
-
 int AppData::RowHeight = 25;
 int AppData::RightWidth = 180;
 int AppData::FormWidth = 1200;

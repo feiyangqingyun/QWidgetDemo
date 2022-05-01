@@ -60,9 +60,9 @@ public:
     static void setCode(bool utf8 = true);
     //设置翻译文件
     static void setTranslator(const QString &qmFile);
-    //一次性设置所有
-    static void initAll(bool utf8 = true, bool style = true, int fontSize = 13);
 
+    //一次性设置所有包括编码样式字体等
+    static void initAll(bool utf8 = true, bool style = true, int fontSize = 13);
     //初始化main函数最前面执行的一段代码
     static void initMain(bool on = true);
 
@@ -122,6 +122,9 @@ public:
 
     //检查ini配置文件
     static bool checkIniFile(const QString &iniFile);
+
+    //首尾截断字符串显示
+    static QString cutString(const QString &text, int len, int left, int right, const QString &mid = "...");
 };
 
 #endif // QUIHELPER2_H
