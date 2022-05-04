@@ -6,13 +6,13 @@
 4. 亲测Qt4.6到Qt6.2所有版本，亲测win、linux、mac、uos等系统。
 5. 有少部分项目不支持部分Qt版本比如Qt6，会自动跳过。
 6. **建议用git命令行下载，压缩包下载后重新解压文件可能会有问题，不知为何。**
-8. **强烈推荐各位搭配Qt开发经验一起学习 [https://github.com/feiyangqingyun/qtkaifajingyan](https://github.com/feiyangqingyun/qtkaifajingyan)**
+8. **强烈推荐各位搭配Qt开发经验一起学习 [https://gitee.com/feiyangqingyun/qtkaifajingyan](https://gitee.com/feiyangqingyun/qtkaifajingyan)**
 9. **各位有需要购买Qt商业版可以联系Qt中国商务人员微信 zzwdkxx ，支持Qt。**
 
 #### 二、目录说明
 **高质量项目加粗显示**
 | 目录 | 类别 | 名称 | 描述 |
-| :------ | :------ | :------ | :------ |
+| :------: | :------: | :------: | :------ |
 | control | 控件类别 | battery | **电池电量** |
 | control | 控件类别 | devicebutton | **设备按钮** |
 | control | 控件类别 | devicesizetable | 磁盘容量 |
@@ -83,87 +83,87 @@
 
 #### 四、效果图
 ##### 4.1、控件类别
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/control/0snap/battery.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/control/0snap/devicebutton.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/control/0snap/devicesizetable.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/control/0snap/imageswitch.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/control/0snap/ipaddress.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/control/0snap/lightbutton.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/control/0snap/navbutton.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/control/0snap/savelog.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/control/0snap/saveruntime.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/control/0snap/smoothcurve.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/control/0snap/zhtopy.jpg)
+![](control/0snap/battery.jpg)
+![](control/0snap/devicebutton.jpg)
+![](control/0snap/devicesizetable.jpg)
+![](control/0snap/imageswitch.jpg)
+![](control/0snap/ipaddress.jpg)
+![](control/0snap/lightbutton.jpg)
+![](control/0snap/navbutton.jpg)
+![](control/0snap/savelog.jpg)
+![](control/0snap/saveruntime.jpg)
+![](control/0snap/smoothcurve.jpg)
+![](control/0snap/zhtopy.jpg)
 
 ##### 4.2、工具类别
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/tool/0snap/comtool.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/tool/0snap/nettool.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/tool/0snap/netserver.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/tool/0snap/netserver2.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/tool/0snap/base64helper.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/tool/0snap/countcode.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/tool/0snap/emailtool.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/tool/0snap/moneytool.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/tool/0snap/pngtool.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/tool/0snap/keytool.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/tool/0snap/keydemo.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/tool/0snap/livetool.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/tool/0snap/livedemo.jpg)
+![](tool/0snap/comtool.jpg)
+![](tool/0snap/nettool.jpg)
+![](tool/0snap/netserver.jpg)
+![](tool/0snap/netserver2.jpg)
+![](tool/0snap/base64helper.jpg)
+![](tool/0snap/countcode.jpg)
+![](tool/0snap/emailtool.jpg)
+![](tool/0snap/moneytool.jpg)
+![](tool/0snap/pngtool.jpg)
+![](tool/0snap/keytool.jpg)
+![](tool/0snap/keydemo.jpg)
+![](tool/0snap/livetool.jpg)
+![](tool/0snap/livedemo.jpg)
 
 ##### 4.3、视频播放
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/video/0snap/videobox.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/video/0snap/videopanel.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/video/0snap/videowidget.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/video/0snap/playffmpeg.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/video/0snap/playvlc.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/video/0snap/plaympv.jpg)
+![](video/0snap/videobox.jpg)
+![](video/0snap/videopanel.jpg)
+![](video/0snap/videowidget.jpg)
+![](video/0snap/playffmpeg.jpg)
+![](video/0snap/playvlc.jpg)
+![](video/0snap/plaympv.jpg)
 
 ##### 4.4、窗体类别
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/widget/0snap/colorwidget.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/widget/0snap/framelesswidget.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/widget/0snap/gifwidget.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/widget/0snap/lunarcalendarwidget.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/widget/0snap/maskwidget.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/widget/0snap/movewidget.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/widget/0snap/screenwidget.jpg)
+![](widget/0snap/colorwidget.jpg)
+![](widget/0snap/framelesswidget.jpg)
+![](widget/0snap/gifwidget.jpg)
+![](widget/0snap/lunarcalendarwidget.jpg)
+![](widget/0snap/maskwidget.jpg)
+![](widget/0snap/movewidget.jpg)
+![](widget/0snap/screenwidget.jpg)
 
 ##### 4.5、界面美化
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/flatui.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/styledemo.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/uidemo01.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/uidemo08.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/uidemo09.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/uidemo10.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/iconhelper1.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/ui/0snap/iconhelper2.jpg)
+![](ui/0snap/flatui.jpg)
+![](ui/0snap/styledemo.jpg)
+![](ui/0snap/uidemo01.jpg)
+![](ui/0snap/uidemo08.jpg)
+![](ui/0snap/uidemo09.jpg)
+![](ui/0snap/uidemo10.jpg)
+![](ui/0snap/iconhelper1.jpg)
+![](ui/0snap/iconhelper2.jpg)
 
 ##### 4.6、其他类别
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/other/0snap/bgdemo.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/other/0snap/dbpage.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/other/0snap/echartgauge.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/other/0snap/lineeditnext.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/other/0snap/mouseline.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/other/0snap/ntpclient.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/other/0snap/trayicon.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/other/0snap/multobj2slot.jpg)
+![](other/0snap/bgdemo.jpg)
+![](other/0snap/dbpage.jpg)
+![](other/0snap/echartgauge.jpg)
+![](other/0snap/lineeditnext.jpg)
+![](other/0snap/mouseline.jpg)
+![](other/0snap/ntpclient.jpg)
+![](other/0snap/trayicon.jpg)
+![](other/0snap/multobj2slot.jpg)
 
 ##### 4.7、第三方类
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/designer.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/hotkey.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/shortcut.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/miniblink.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qwtdemo.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo1.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo2.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo3.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo4.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo5.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo6.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo7.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/third/0snap/qcustomplotdemo8.jpg)
+![](third/0snap/designer.jpg)
+![](third/0snap/hotkey.jpg)
+![](third/0snap/shortcut.jpg)
+![](third/0snap/miniblink.jpg)
+![](third/0snap/qwtdemo.jpg)
+![](third/0snap/qcustomplotdemo1.jpg)
+![](third/0snap/qcustomplotdemo2.jpg)
+![](third/0snap/qcustomplotdemo3.jpg)
+![](third/0snap/qcustomplotdemo4.jpg)
+![](third/0snap/qcustomplotdemo5.jpg)
+![](third/0snap/qcustomplotdemo6.jpg)
+![](third/0snap/qcustomplotdemo7.jpg)
+![](third/0snap/qcustomplotdemo8.jpg)
 
 ##### 4.8、网友提供
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/netfriend/0snap/astackwidget.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/netfriend/0snap/imagecropper.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/netfriend/0snap/imageviewwindow.jpg)
-![avatar](https://github.com/feiyangqingyun/QWidgetDemo/raw/master/netfriend/0snap/sliderpuzzlewidget.jpg)
+![](netfriend/0snap/astackwidget.jpg)
+![](netfriend/0snap/imagecropper.jpg)
+![](netfriend/0snap/imageviewwindow.jpg)
+![](netfriend/0snap/sliderpuzzlewidget.jpg)
