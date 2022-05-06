@@ -10,6 +10,10 @@ DeviceButton::DeviceButton(QWidget *parent) : QWidget(parent)
 {
     canMove = false;
     text = "1";
+
+    colorNormal = "black";
+    colorAlarm = "red";
+
     buttonStyle = ButtonStyle_Police;
     buttonColor = ButtonColor_Green;
 
@@ -17,9 +21,10 @@ DeviceButton::DeviceButton(QWidget *parent) : QWidget(parent)
     lastPoint = QPoint();
 
     type = "police";
-    imgName = QString(":/image/devicebutton/devicebutton_green_%1.png").arg(type);
-    isDark = false;
+    imgPath = ":/image/devicebutton/devicebutton";
+    imgName = QString("%1_green_%2.png").arg(imgPath).arg(type);
 
+    isDark = false;
     timer = new QTimer(this);
     timer->setInterval(500);
     connect(timer, SIGNAL(timeout()), this, SLOT(checkAlarm()));
@@ -119,6 +124,16 @@ QString DeviceButton::getText() const
     return this->text;
 }
 
+QString DeviceButton::getColorNormal() const
+{
+    return this->colorNormal;
+}
+
+QString DeviceButton::getColorAlarm() const
+{
+    return this->colorAlarm;
+}
+
 DeviceButton::ButtonStyle DeviceButton::getButtonStyle() const
 {
     return this->buttonStyle;
@@ -142,9 +157,9 @@ QSize DeviceButton::minimumSizeHint() const
 void DeviceButton::checkAlarm()
 {
     if (isDark) {
-        imgName = QString(":/image/devicebutton/devicebutton_black_%1.png").arg(type);
+        imgName = QString("%1_%2_%3.png").arg(imgPath).arg(colorNormal).arg(type);
     } else {
-        imgName = QString(":/image/devicebutton/devicebutton_red_%1.png").arg(type);
+        imgName = QString("%1_%2_%3.png").arg(imgPath).arg(colorAlarm).arg(type);
     }
 
     isDark = !isDark;
@@ -160,6 +175,22 @@ void DeviceButton::setText(const QString &text)
 {
     if (this->text != text) {
         this->text = text;
+        this->update();
+    }
+}
+
+void DeviceButton::setColorNormal(const QString &colorNormal)
+{
+    if (this->colorNormal != colorNormal) {
+        this->colorNormal = colorNormal;
+        this->update();
+    }
+}
+
+void DeviceButton::setColorAlarm(const QString &colorAlarm)
+{
+    if (this->colorAlarm != colorAlarm) {
+        this->colorAlarm = colorAlarm;
         this->update();
     }
 }
@@ -188,25 +219,35 @@ void DeviceButton::setButtonStyle(const DeviceButton::ButtonStyle &buttonStyle)
 
 void DeviceButton::setButtonColor(const DeviceButton::ButtonColor &buttonColor)
 {
+    //先停止定时器
     this->buttonColor = buttonColor;
     isDark = false;
     if (timer->isActive()) {
         timer->stop();
     }
 
+    QString color;
     if (buttonColor == ButtonColor_Green) {
-        imgName = QString(":/image/devicebutton/devicebutton_green_%1.png").arg(type);
+        color = "green";
     } else if (buttonColor == ButtonColor_Blue) {
-        imgName = QString(":/image/devicebutton/devicebutton_blue_%1.png").arg(type);
+        color = "blue";
     } else if (buttonColor == ButtonColor_Gray) {
-        imgName = QString(":/image/devicebutton/devicebutton_gray_%1.png").arg(type);
+        color = "gray";
     } else if (buttonColor == ButtonColor_Black) {
-        imgName = QString(":/image/devicebutton/devicebutton_black_%1.png").arg(type);
+        color = "black";
     } else if (buttonColor == ButtonColor_Purple) {
-        imgName = QString(":/image/devicebutton/devicebutton_purple_%1.png").arg(type);
+        color = "purple";
     } else if (buttonColor == ButtonColor_Yellow) {
-        imgName = QString(":/image/devicebutton/devicebutton_yellow_%1.png").arg(type);
+        color = "yellow";
     } else if (buttonColor == ButtonColor_Red) {
+        color = "red";
+    } else {
+        color = "green";
+    }
+
+    //如果和报警颜色一致则主动启动定时器切换报警颜色
+    imgName = QString("%1_%2_%3.png").arg(imgPath).arg(color).arg(type);
+    if (color == colorAlarm) {
         checkAlarm();
         if (!timer->isActive()) {
             timer->start();

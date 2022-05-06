@@ -5,7 +5,7 @@
  * 设备按钮控件 作者:feiyangqingyun(QQ:517216493) 2018-07-02
  * 1. 可设置按钮样式 圆形、警察、气泡、气泡2、消息、消息2。
  * 2. 可设置按钮颜色 布防、撤防、报警、旁路、故障。
- * 3. 可设置报警切换。
+ * 3. 可设置报警切换及对应报警切换的颜色。
  * 4. 可设置显示的防区号。
  * 5. 可设置是否可鼠标拖动。
  * 6. 发出单击和双击信号。
@@ -26,6 +26,9 @@ class DeviceButton : public QWidget
 
     Q_PROPERTY(bool canMove READ getCanMove WRITE setCanMove)
     Q_PROPERTY(QString text READ getText WRITE setText)
+
+    Q_PROPERTY(QString colorNormal READ getColorNormal WRITE setColorNormal)
+    Q_PROPERTY(QString colorAlarm READ getColorAlarm WRITE setColorAlarm)
 
     Q_PROPERTY(ButtonStyle buttonStyle READ getButtonStyle WRITE setButtonStyle)
     Q_PROPERTY(ButtonColor buttonColor READ getButtonColor WRITE setButtonColor)
@@ -62,6 +65,10 @@ protected:
 private:
     bool canMove;                   //是否可移动
     QString text;                   //显示文字
+
+    QString colorNormal;            //正常颜色
+    QString colorAlarm;             //报警颜色
+
     ButtonStyle buttonStyle;        //按钮样式
     ButtonColor buttonColor;        //按钮颜色
 
@@ -69,7 +76,9 @@ private:
     QPoint lastPoint;               //鼠标按下最后坐标
 
     QString type;                   //图片末尾类型
+    QString imgPath;                //背景图片路径
     QString imgName;                //背景图片名称
+
     bool isDark;                    //是否加深报警
     QTimer *timer;                  //报警闪烁定时器
 
@@ -79,6 +88,9 @@ private slots:
 public:
     bool getCanMove()               const;
     QString getText()               const;
+
+    QString getColorNormal()        const;
+    QString getColorAlarm()         const;
 
     ButtonStyle getButtonStyle()    const;
     ButtonColor getButtonColor()    const;
@@ -91,6 +103,11 @@ public Q_SLOTS:
     void setCanMove(bool canMove);
     //设置显示文字
     void setText(const QString &text);
+
+    //设置正常颜色和报警颜色
+    void setColorNormal(const QString &colorNormal);
+    void setColorAlarm(const QString &colorAlarm);
+
     //设置样式
     void setButtonStyle(const ButtonStyle &buttonStyle);
     //设置颜色
