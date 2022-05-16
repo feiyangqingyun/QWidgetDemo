@@ -550,11 +550,22 @@ border:0px solid #E4E4E4;
 border-radius:3px;
 }
 
-QToolBox::tab,QGroupBox#gboxDevicePanel,QGroupBox#gboxDeviceTitle,QFrame#gboxDevicePanel,QFrame#gboxDeviceTitle{
+QToolBox::tab,QWidget[form="panel"]{
 padding:3px;
 border-radius:5px;
 color:#57595B;
 background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 #E4E4E4,stop:1 #E4E4E4);
+}
+
+QWidget[flag="paneltitle"]{
+border-bottom-left-radius:0px;
+border-bottom-right-radius:0px;
+}
+
+QWidget[flag="panelcontrol"]{
+border-top-width:0px;
+border-top-left-radius:0px;
+border-top-right-radius:0px;
 }
 
 QToolTip{
