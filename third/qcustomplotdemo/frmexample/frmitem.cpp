@@ -15,7 +15,7 @@ frmItem::~frmItem()
 
 void frmItem::showEvent(QShowEvent *)
 {
-    dataTimer.start(0); // Interval 0 means to refresh as fast as possible
+    dataTimer.start(0);
 }
 
 void frmItem::hideEvent(QHideEvent *)
@@ -35,6 +35,7 @@ void frmItem::initForm()
         x[i] = i / (double)(n - 1) * 34 - 17;
         y[i] = qExp(-x[i] * x[i] / 20.0) * qSin(k * x[i] + phase);
     }
+
     graph->setData(x, y);
     graph->setPen(QPen(Qt::blue));
     graph->rescaleKeyAxis();
@@ -150,10 +151,9 @@ void frmItem::bracketDataSlot()
         x[i] = i / (double)(n - 1) * 34 - 17;
         y[i] = qExp(-x[i] * x[i] / 20.0) * qSin(k * x[i] + phase);
     }
+
     ui->customPlot->graph()->setData(x, y);
-
     phaseTracer->setGraphKey((8 * M_PI + fmod(M_PI * 1.5 - phase, 6 * M_PI)) / k);
-
     ui->customPlot->replot();
 
     // calculate frames per second:

@@ -60,10 +60,12 @@ void frmFinancial::initForm()
     volumeAxisRect->setMaximumSize(QSize(QWIDGETSIZE_MAX, 100));
     volumeAxisRect->axis(QCPAxis::atBottom)->setLayer("axes");
     volumeAxisRect->axis(QCPAxis::atBottom)->grid()->setLayer("grid");
+
     // bring bottom and main axis rect closer together:
     ui->customPlot->plotLayout()->setRowSpacing(0);
     volumeAxisRect->setAutoMargins(QCP::msLeft | QCP::msRight | QCP::msBottom);
     volumeAxisRect->setMargins(QMargins(0, 0, 0, 0));
+
     // create two bar plottables, for positive (green) and negative (red) volume bars:
     ui->customPlot->setAutoAddPlottableToLegend(false);
     QCPBars *volumePos = new QCPBars(volumeAxisRect->axis(QCPAxis::atBottom), volumeAxisRect->axis(QCPAxis::atLeft));
@@ -72,6 +74,7 @@ void frmFinancial::initForm()
         int v = std::rand() % 20000 + std::rand() % 20000 + std::rand() % 20000 - 10000 * 3;
         (v < 0 ? volumeNeg : volumePos)->addData(startTime + 3600 * 5.0 * i, qAbs(v)); // add data to either volumeNeg or volumePos, depending on sign of v
     }
+
     volumePos->setWidth(3600 * 4);
     volumePos->setPen(Qt::NoPen);
     volumePos->setBrush(QColor(100, 180, 110));
@@ -82,6 +85,7 @@ void frmFinancial::initForm()
     // interconnect x axis ranges of main and bottom axis rects:
     connect(ui->customPlot->xAxis, SIGNAL(rangeChanged(QCPRange)), volumeAxisRect->axis(QCPAxis::atBottom), SLOT(setRange(QCPRange)));
     connect(volumeAxisRect->axis(QCPAxis::atBottom), SIGNAL(rangeChanged(QCPRange)), ui->customPlot->xAxis, SLOT(setRange(QCPRange)));
+
     // configure axes of both main and bottom axis rect:
     QSharedPointer<QCPAxisTickerDateTime> dateTimeTicker(new QCPAxisTickerDateTime);
     dateTimeTicker->setDateTimeSpec(Qt::UTC);
@@ -100,6 +104,5 @@ void frmFinancial::initForm()
     QCPMarginGroup *group = new QCPMarginGroup(ui->customPlot);
     ui->customPlot->axisRect()->setMarginGroup(QCP::msLeft | QCP::msRight, group);
     volumeAxisRect->setMarginGroup(QCP::msLeft | QCP::msRight, group);
-
     ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
 }

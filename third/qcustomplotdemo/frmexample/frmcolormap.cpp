@@ -27,6 +27,7 @@ void frmColorMap::initForm()
     int ny = 200;
     colorMap->data()->setSize(nx, ny); // we want the color map to have nx * ny data points
     colorMap->data()->setRange(QCPRange(-4, 4), QCPRange(-4, 4)); // and span the coordinate range -4..4 in both key (x) and value (y) dimensions
+
     // now we assign some data, by accessing the QCPColorMapData instance of the color map:
     double x, y, z;
     for (int xIndex = 0; xIndex < nx; ++xIndex) {

@@ -30,7 +30,6 @@
 #include "frmaxistag.h"
 #include "frminteraction.h"
 #include "frmscrollbar.h"
-#include "frmmultiaxes.h"
 
 frmMain::frmMain(QWidget *parent) : QWidget(parent), ui(new Ui::frmMain)
 {
@@ -53,8 +52,17 @@ void frmMain::showEvent(QShowEvent *)
     bar->setValue(bar->maximum());
 }
 
+QList<QColor> frmMain::colors = QList<QColor>();
 void frmMain::initForm()
 {
+    //颜色集合供其他界面使用
+    colors << QColor(211, 78, 78) << QColor(29, 185, 242) << QColor(170, 162, 119) << QColor(255, 192, 1);
+    colors << QColor(0, 176, 180) << QColor(0, 113, 193) << QColor(255, 192, 0);
+    colors << QColor(72, 103, 149) << QColor(185, 87, 86) << QColor(0, 177, 125);
+    colors << QColor(214, 77, 84) << QColor(71, 164, 233) << QColor(34, 163, 169);
+    colors << QColor(59, 123, 156) << QColor(162, 121, 197) << QColor(72, 202, 245);
+    colors << QColor(0, 150, 121) << QColor(111, 9, 176) << QColor(250, 170, 20);
+
     ui->scrollArea->setFixedWidth(170);
     ui->widgetLeft->setProperty("flag", "left");
 }
@@ -67,26 +75,29 @@ void frmMain::initWidget()
     ui->stackedWidget->addWidget(new frmSincScatter);
     ui->stackedWidget->addWidget(new frmScatterStyle);
     ui->stackedWidget->addWidget(new frmScatterPixmap);
+
     ui->stackedWidget->addWidget(new frmLineStyle);
     ui->stackedWidget->addWidget(new frmDate);
     ui->stackedWidget->addWidget(new frmTextureBrush);
     ui->stackedWidget->addWidget(new frmMultiAxis);
     ui->stackedWidget->addWidget(new frmLogarithmic);
+
     ui->stackedWidget->addWidget(new frmRealtimeData);
     ui->stackedWidget->addWidget(new frmParametricCurve);
     ui->stackedWidget->addWidget(new frmBarChart);
     ui->stackedWidget->addWidget(new frmStatistical);
     ui->stackedWidget->addWidget(new frmSimpleItem);
+
     ui->stackedWidget->addWidget(new frmItem);
     ui->stackedWidget->addWidget(new frmStyled);
     ui->stackedWidget->addWidget(new frmAdvancedAxes);
     ui->stackedWidget->addWidget(new frmColorMap);
     ui->stackedWidget->addWidget(new frmFinancial);
     ui->stackedWidget->addWidget(new frmPolarPlot);
+
     ui->stackedWidget->addWidget(new frmAxisTag);
     ui->stackedWidget->addWidget(new frmInterAction);
     ui->stackedWidget->addWidget(new frmScrollBar);
-    ui->stackedWidget->addWidget(new frmMultiAxes);
 }
 
 void frmMain::initNav()
@@ -97,7 +108,7 @@ void frmMain::initNav()
           << "曲线条样式" << "日期数据图" << "纹理画刷图" << "双坐标曲线" << "对数曲线图"
           << "动态正弦图" << "环形曲线图" << "垂直柱状图" << "箱形盒须图" << "静态指示线"
           << "动态指示线" << "曲线样式图" << "高级坐标轴" << "颜色热力图" << "金融曲线图"
-          << "南丁格尔图" << "坐标轴指示" << "相互作用图" << "滚动条曲线" << "多坐标轴图";
+          << "南丁格尔图" << "坐标轴指示" << "相互作用图" << "滚动条曲线";
 
     //自动生成按钮
     for (int i = 0; i < names.count(); i++) {

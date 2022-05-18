@@ -20,18 +20,22 @@ void frmStyled::initForm()
     QVector<double> x2(100), y2(100);
     QVector<double> x3(20), y3(20);
     QVector<double> x4(20), y4(20);
+
     for (int i = 0; i < x1.size(); ++i) {
         x1[i] = i / (double)(x1.size() - 1) * 10;
         y1[i] = qCos(x1[i] * 0.8 + qSin(x1[i] * 0.16 + 1.0)) * qSin(x1[i] * 0.54) + 1.4;
     }
+
     for (int i = 0; i < x2.size(); ++i) {
         x2[i] = i / (double)(x2.size() - 1) * 10;
         y2[i] = qCos(x2[i] * 0.85 + qSin(x2[i] * 0.165 + 1.1)) * qSin(x2[i] * 0.50) + 1.7;
     }
+
     for (int i = 0; i < x3.size(); ++i) {
         x3[i] = i / (double)(x3.size() - 1) * 10;
         y3[i] = 0.05 + 3 * (0.5 + qCos(x3[i] * x3[i] * 0.2 + 2) * 0.5) / (double)(x3[i] + 0.7) + std::rand() / (double)RAND_MAX * 0.01;
     }
+
     for (int i = 0; i < x4.size(); ++i) {
         x4[i] = x3[i];
         y4[i] = (0.5 - y3[i]) + ((x4[i] - 2) * (x4[i] - 2) * 0.02);

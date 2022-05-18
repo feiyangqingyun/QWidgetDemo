@@ -84,6 +84,3 @@
 
 ### 2.24 滚动条曲线
 ![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/third/qcustomplotdemo/snap/24.jpg)
-
-### 2.25 多坐标轴图
-![avatar](https://gitee.com/feiyangqingyun/QWidgetDemo/raw/master/third/qcustomplotdemo/snap/25.jpg)

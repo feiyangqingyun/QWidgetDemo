@@ -18,6 +18,7 @@ void frmScatterPixmap::initForm()
     ui->customPlot->axisRect()->setBackground(QPixmap(":/image/bg1.jpg"));
     ui->customPlot->addGraph();
     ui->customPlot->graph()->setLineStyle(QCPGraph::lsLine);
+
     QPen pen;
     pen.setColor(QColor(255, 200, 20, 200));
     pen.setStyle(Qt::DashLine);
@@ -27,6 +28,7 @@ void frmScatterPixmap::initForm()
     ui->customPlot->graph()->setScatterStyle(QCPScatterStyle(QPixmap(":/image/data.png")));
     // set graph name, will show up in legend next to icon:
     ui->customPlot->graph()->setName("Data from Photovoltaic\nenergy barometer 2011");
+
     // set data:
     QVector<double> year, value;
     year  << 2005 << 2006 << 2007 << 2008  << 2009  << 2010 << 2011;
@@ -49,6 +51,7 @@ void frmScatterPixmap::initForm()
     ui->customPlot->yAxis2->setSubTicks(false);
     ui->customPlot->xAxis->setRange(2004.5, 2011.5);
     ui->customPlot->yAxis->setRange(0, 52);
+
     // setup legend:
     ui->customPlot->legend->setFont(QFont(font().family(), 7));
     ui->customPlot->legend->setIconSize(50, 20);

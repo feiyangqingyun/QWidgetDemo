@@ -41,6 +41,7 @@ void frmMultiAxis::initForm()
     ui->customPlot->graph(1)->setLineStyle(QCPGraph::lsStepCenter);
     ui->customPlot->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, Qt::red, Qt::white, 7));
     ui->customPlot->graph(1)->setName("Bottom maxwell function");
+
     QCPErrorBars *errorBars = new QCPErrorBars(ui->customPlot->xAxis, ui->customPlot->yAxis);
     errorBars->removeFromLegend();
     errorBars->setDataPlottable(ui->customPlot->graph(1));
@@ -75,15 +76,18 @@ void frmMultiAxis::initForm()
     QVector<double> x2(250), y2(250);
     QVector<double> x3(250), y3(250);
     QVector<double> x4(250), y4(250);
+
     for (int i = 0; i < 25; ++i) { // data for graph 0
         x0[i] = 3 * i / 25.0;
         y0[i] = qExp(-x0[i] * x0[i] * 0.8) * (x0[i] * x0[i] + x0[i]);
     }
+
     for (int i = 0; i < 15; ++i) { // data for graph 1
         x1[i] = 3 * i / 15.0;;
         y1[i] = qExp(-x1[i] * x1[i]) * (x1[i] * x1[i]) * 2.6;
         y1err[i] = y1[i] * 0.25;
     }
+
     for (int i = 0; i < 250; ++i) { // data for graphs 2, 3 and 4
         x2[i] = i / 250.0 * 3 * M_PI;
         x3[i] = x2[i];
@@ -100,19 +104,23 @@ void frmMultiAxis::initForm()
     ui->customPlot->graph(2)->setData(x2, y2);
     ui->customPlot->graph(3)->setData(x3, y3);
     ui->customPlot->graph(4)->setData(x4, y4);
+
     // activate top and right axes, which are invisible by default:
     ui->customPlot->xAxis2->setVisible(true);
     ui->customPlot->yAxis2->setVisible(true);
+
     // set ranges appropriate to show data:
     ui->customPlot->xAxis->setRange(0, 2.7);
     ui->customPlot->yAxis->setRange(0, 2.6);
     ui->customPlot->xAxis2->setRange(0, 3.0 * M_PI);
     ui->customPlot->yAxis2->setRange(-70, 35);
+
     // set pi ticks on top axis:
     ui->customPlot->xAxis2->setTicker(QSharedPointer<QCPAxisTickerPi>(new QCPAxisTickerPi));
     // add title layout element:
     ui->customPlot->plotLayout()->insertRow(0);
     ui->customPlot->plotLayout()->addElement(0, 0, new QCPTextElement(ui->customPlot, "Way too many graphs in one plot", QFont("sans", 12, QFont::Bold)));
+
     // set labels:
     ui->customPlot->xAxis->setLabel("Bottom axis with outward ticks");
     ui->customPlot->yAxis->setLabel("Left axis label");

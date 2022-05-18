@@ -16,7 +16,7 @@ frmRealtimeData::~frmRealtimeData()
 void frmRealtimeData::showEvent(QShowEvent *)
 {
     timeStart = QTime::currentTime();
-    dataTimer.start(0); // Interval 0 means to refresh as fast as possible
+    dataTimer.start(0);
 }
 
 void frmRealtimeData::hideEvent(QHideEvent *)
@@ -35,6 +35,7 @@ void frmRealtimeData::initForm()
     ui->customPlot->yAxis->setTickLabelFont(font);
     ui->customPlot->legend->setFont(font);
     */
+
     ui->customPlot->addGraph(); // blue line
     ui->customPlot->graph(0)->setPen(QPen(QColor(40, 110, 255)));
     ui->customPlot->addGraph(); // red line
@@ -51,7 +52,7 @@ void frmRealtimeData::initForm()
     connect(ui->customPlot->yAxis, SIGNAL(rangeChanged(QCPRange)), ui->customPlot->yAxis2, SLOT(setRange(QCPRange)));
 
     // setup a timer that repeatedly calls MainWindow::realtimeDataSlot:
-    connect(&dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));    
+    connect(&dataTimer, SIGNAL(timeout()), this, SLOT(realtimeDataSlot()));
 }
 
 void frmRealtimeData::realtimeDataSlot()
@@ -68,6 +69,7 @@ void frmRealtimeData::realtimeDataSlot()
         //ui->customPlot->graph(1)->rescaleValueAxis(true);
         lastPointKey = key;
     }
+
     // make key axis range scroll with the data (at a constant range size of 8):
     ui->customPlot->xAxis->setRange(key, 8, Qt::AlignRight);
     ui->customPlot->replot();

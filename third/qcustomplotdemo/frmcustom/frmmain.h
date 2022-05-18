@@ -13,6 +13,7 @@ class frmMain : public QWidget
     Q_OBJECT
 
 public:
+    static QList<QColor> colors;
     explicit frmMain(QWidget *parent = 0);
     ~frmMain();
 

@@ -15,17 +15,19 @@ frmAdvancedAxes::~frmAdvancedAxes()
 
 void frmAdvancedAxes::initForm()
 {
-#ifndef qcustomplot_v1_3
     // configure axis rect:
     ui->customPlot->plotLayout()->clear(); // clear default axis rect so we can start from scratch
+
     QCPAxisRect *wideAxisRect = new QCPAxisRect(ui->customPlot);
     wideAxisRect->setupFullAxesBox(true);
     wideAxisRect->axis(QCPAxis::atRight, 0)->setTickLabels(true);
     wideAxisRect->addAxis(QCPAxis::atLeft)->setTickLabelColor(QColor("#6050F8")); // add an extra axis on the left and color its numbers
+
     QCPLayoutGrid *subLayout = new QCPLayoutGrid;
     ui->customPlot->plotLayout()->addElement(0, 0, wideAxisRect); // insert axis rect in first row
     ui->customPlot->plotLayout()->addElement(1, 0, subLayout); // sub layout in second row (grid layout will grow accordingly)
     //ui->customPlot->plotLayout()->setRowStretchFactor(1, 2);
+
     // prepare axis rects that will be placed in the sublayout:
     QCPAxisRect *subRectLeft = new QCPAxisRect(ui->customPlot, false); // false means to not setup default axes
     QCPAxisRect *subRectRight = new QCPAxisRect(ui->customPlot, false);
@@ -33,6 +35,7 @@ void frmAdvancedAxes::initForm()
     subLayout->addElement(0, 1, subRectRight);
     subRectRight->setMaximumSize(100, 100); // make bottom right axis rect size fixed 100x100
     subRectRight->setMinimumSize(100, 100); // make bottom right axis rect size fixed 100x100
+
     // setup axes in sub layout axis rects:
     subRectLeft->addAxes(QCPAxis::atBottom | QCPAxis::atLeft);
     subRectRight->addAxes(QCPAxis::atBottom | QCPAxis::atRight);
@@ -40,11 +43,13 @@ void frmAdvancedAxes::initForm()
     subRectRight->axis(QCPAxis::atRight)->ticker()->setTickCount(2);
     subRectRight->axis(QCPAxis::atBottom)->ticker()->setTickCount(2);
     subRectLeft->axis(QCPAxis::atBottom)->grid()->setVisible(true);
+
     // synchronize the left and right margins of the top and bottom axis rects:
     QCPMarginGroup *marginGroup = new QCPMarginGroup(ui->customPlot);
     subRectLeft->setMarginGroup(QCP::msLeft, marginGroup);
     subRectRight->setMarginGroup(QCP::msRight, marginGroup);
     wideAxisRect->setMarginGroup(QCP::msLeft | QCP::msRight, marginGroup);
+
     // move newly created axes on "axes" layer and grids on "grid" layer:
     foreach (QCPAxisRect *rect, ui->customPlot->axisRects()) {
         foreach (QCPAxis *axis, rect->axes()) {
@@ -79,6 +84,7 @@ void frmAdvancedAxes::initForm()
     mainGraphCos->rescaleKeyAxis();
     mainGraphCos->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, QPen(Qt::black), QBrush(Qt::white), 6));
     mainGraphCos->setPen(QPen(QColor(120, 120, 120), 2));
+
     QCPGraph *mainGraphGauss = ui->customPlot->addGraph(wideAxisRect->axis(QCPAxis::atBottom), wideAxisRect->axis(QCPAxis::atLeft, 1));
     mainGraphGauss->data()->set(dataGauss);
     mainGraphGauss->setPen(QPen(QColor("#8070B8"), 2));
@@ -103,12 +109,11 @@ void frmAdvancedAxes::initForm()
     subBars->setBrush(QColor("#705BE8"));
     subBars->keyAxis()->setSubTicks(false);
     subBars->rescaleAxes();
+
     // setup a ticker for subBars key axis that only gives integer ticks:
     QSharedPointer<QCPAxisTickerFixed> intTicker(new QCPAxisTickerFixed);
     intTicker->setTickStep(1.0);
     intTicker->setScaleStrategy(QCPAxisTickerFixed::ssMultiples);
     subBars->keyAxis()->setTicker(intTicker);
-
     ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-#endif
 }

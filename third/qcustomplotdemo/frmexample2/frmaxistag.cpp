@@ -13,21 +13,29 @@ frmAxisTag::~frmAxisTag()
     delete ui;
 }
 
+void frmAxisTag::showEvent(QShowEvent *)
+{
+    dataTimer.start(50);
+}
+
+void frmAxisTag::hideEvent(QHideEvent *)
+{
+    dataTimer.stop();
+}
+
 void frmAxisTag::initForm()
 {
-    mPlot = ui->customPlot;
-
     // configure plot to have two right axes:
-    mPlot->yAxis->setTickLabels(false);
-    connect(mPlot->yAxis2, SIGNAL(rangeChanged(QCPRange)), mPlot->yAxis, SLOT(setRange(QCPRange))); // left axis only mirrors inner right axis
-    mPlot->yAxis2->setVisible(true);
-    mPlot->axisRect()->addAxis(QCPAxis::atRight);
-    mPlot->axisRect()->axis(QCPAxis::atRight, 0)->setPadding(30); // add some padding to have space for tags
-    mPlot->axisRect()->axis(QCPAxis::atRight, 1)->setPadding(30); // add some padding to have space for tags
+    ui->customPlot->yAxis->setTickLabels(false);
+    connect(ui->customPlot->yAxis2, SIGNAL(rangeChanged(QCPRange)), ui->customPlot->yAxis, SLOT(setRange(QCPRange))); // left axis only mirrors inner right axis
+    ui->customPlot->yAxis2->setVisible(true);
+    ui->customPlot->axisRect()->addAxis(QCPAxis::atRight);
+    ui->customPlot->axisRect()->axis(QCPAxis::atRight, 0)->setPadding(30); // add some padding to have space for tags
+    ui->customPlot->axisRect()->axis(QCPAxis::atRight, 1)->setPadding(30); // add some padding to have space for tags
 
     // create graphs:
-    mGraph1 = mPlot->addGraph(mPlot->xAxis, mPlot->axisRect()->axis(QCPAxis::atRight, 0));
-    mGraph2 = mPlot->addGraph(mPlot->xAxis, mPlot->axisRect()->axis(QCPAxis::atRight, 1));
+    mGraph1 = ui->customPlot->addGraph(ui->customPlot->xAxis, ui->customPlot->axisRect()->axis(QCPAxis::atRight, 0));
+    mGraph2 = ui->customPlot->addGraph(ui->customPlot->xAxis, ui->customPlot->axisRect()->axis(QCPAxis::atRight, 1));
     mGraph1->setPen(QPen(QColor(250, 120, 0)));
     mGraph2->setPen(QPen(QColor(0, 180, 60)));
 
@@ -37,8 +45,7 @@ void frmAxisTag::initForm()
     mTag2 = new AxisTag(mGraph2->valueAxis());
     mTag2->setPen(mGraph2->pen());
 
-    connect(&mDataTimer, SIGNAL(timeout()), this, SLOT(timerSlot()));
-    mDataTimer.start(40);
+    connect(&dataTimer, SIGNAL(timeout()), this, SLOT(timerSlot()));
 }
 
 void frmAxisTag::timerSlot()
@@ -50,10 +57,10 @@ void frmAxisTag::timerSlot()
     mGraph2->addData(count2, qCos(count2 / 50.0) + qSin(count2 / 50.0 / 0.4364) * 0.15);
 
     // make key axis range scroll with the data:
-    mPlot->xAxis->rescale();
+    ui->customPlot->xAxis->rescale();
     mGraph1->rescaleValueAxis(false, true);
     mGraph2->rescaleValueAxis(false, true);
-    mPlot->xAxis->setRange(mPlot->xAxis->range().upper, 100, Qt::AlignRight);
+    ui->customPlot->xAxis->setRange(ui->customPlot->xAxis->range().upper, 100, Qt::AlignRight);
 
     // update the vertical axis tag positions and texts to match the rightmost data point of the graphs:
     double graph1Value = mGraph1->dataMainValue(mGraph1->dataCount() - 1);
@@ -63,5 +70,5 @@ void frmAxisTag::timerSlot()
     mTag1->setText(QString::number(graph1Value, 'f', 2));
     mTag2->setText(QString::number(graph2Value, 'f', 2));
 
-    mPlot->replot();
+    ui->customPlot->replot();
 }

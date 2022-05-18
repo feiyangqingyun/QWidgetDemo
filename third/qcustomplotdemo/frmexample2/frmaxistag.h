@@ -17,14 +17,17 @@ public:
     explicit frmAxisTag(QWidget *parent = 0);
     ~frmAxisTag();
 
+protected:
+    void showEvent(QShowEvent *);
+    void hideEvent(QHideEvent *);
+
 private:
     Ui::frmAxisTag *ui;
-    QCustomPlot *mPlot;
     QPointer<QCPGraph> mGraph1;
     QPointer<QCPGraph> mGraph2;
     AxisTag *mTag1;
     AxisTag *mTag2;
-    QTimer mDataTimer;
+    QTimer dataTimer;
 
 private slots:
     void initForm();

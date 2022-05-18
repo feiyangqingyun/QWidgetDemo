@@ -21,6 +21,7 @@ void frmSincScatter::initForm()
     ui->customPlot->setLocale(QLocale(QLocale::English, QLocale::UnitedKingdom));
     // add confidence band graphs:
     ui->customPlot->addGraph();
+
     QPen pen;
     pen.setStyle(Qt::DotLine);
     pen.setWidth(1);
@@ -32,6 +33,7 @@ void frmSincScatter::initForm()
     ui->customPlot->legend->removeItem(ui->customPlot->legend->itemCount() - 1); // don't show two confidence band graphs in legend
     ui->customPlot->graph(1)->setPen(pen);
     ui->customPlot->graph(0)->setChannelFillGraph(ui->customPlot->graph(1));
+
     // add theory curve graph:
     ui->customPlot->addGraph();
     pen.setStyle(Qt::DashLine);
@@ -39,12 +41,14 @@ void frmSincScatter::initForm()
     pen.setColor(Qt::red);
     ui->customPlot->graph(2)->setPen(pen);
     ui->customPlot->graph(2)->setName("Theory Curve");
+
     // add data point graph:
     ui->customPlot->addGraph();
     ui->customPlot->graph(3)->setPen(QPen(Qt::blue));
     ui->customPlot->graph(3)->setName("Measurement");
     ui->customPlot->graph(3)->setLineStyle(QCPGraph::lsNone);
     ui->customPlot->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 4));
+
     // add error bars:
     QCPErrorBars *errorBars = new QCPErrorBars(ui->customPlot->xAxis, ui->customPlot->yAxis);
     errorBars->removeFromLegend();
@@ -62,6 +66,7 @@ void frmSincScatter::initForm()
         yConfLower[i] = y0[i] - 0.15;
         x0[i] *= 1000;
     }
+
     QVector<double> x1(50), y1(50), y1err(50);
     for (int i = 0; i < 50; ++i) {
         // generate a gaussian distributed random number:
@@ -74,6 +79,7 @@ void frmSincScatter::initForm()
         x1[i] *= 1000;
         y1err[i] = 0.15;
     }
+
     // pass data to graphs and let Qui->customPlot determine the axes ranges so the whole thing is visible:
     ui->customPlot->graph(0)->setData(x0, yConfUpper);
     ui->customPlot->graph(1)->setData(x0, yConfLower);
@@ -82,12 +88,14 @@ void frmSincScatter::initForm()
     errorBars->setData(y1err);
     ui->customPlot->graph(2)->rescaleAxes();
     ui->customPlot->graph(3)->rescaleAxes(true);
+
     // setup look of bottom tick labels:
     ui->customPlot->xAxis->setTickLabelRotation(30);
     ui->customPlot->xAxis->ticker()->setTickCount(9);
     ui->customPlot->xAxis->setNumberFormat("ebc");
     ui->customPlot->xAxis->setNumberPrecision(1);
     ui->customPlot->xAxis->moveRange(-10);
+
     // make top right axes clones of bottom left axes. Looks prettier:
     ui->customPlot->axisRect()->setupFullAxesBox();
     ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);

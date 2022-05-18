@@ -214,7 +214,6 @@
 ![](third/0snap/qcustomplotdemo5.jpg)
 ![](third/0snap/qcustomplotdemo6.jpg)
 ![](third/0snap/qcustomplotdemo7.jpg)
-![](third/0snap/qcustomplotdemo8.jpg)
 
 ### 3.8 网友提供-netfriend
 - 动态StackWidget-astackwidget

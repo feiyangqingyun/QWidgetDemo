@@ -70,6 +70,7 @@ void frmScatterStyle::initForm()
             ui->customPlot->graph()->setScatterStyle(QCPScatterStyle(customScatterPath, QPen(Qt::black, 0), QColor(40, 70, 255, 50), 10));
         }
     }
+
     // set blank axis lines:
     ui->customPlot->rescaleAxes();
     ui->customPlot->xAxis->setTicks(false);

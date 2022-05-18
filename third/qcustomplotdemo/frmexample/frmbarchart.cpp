@@ -15,7 +15,6 @@ frmBarChart::~frmBarChart()
 
 void frmBarChart::initForm()
 {
-#ifndef qcustomplot_v1_3
     // set dark background gradient:
     QLinearGradient gradient(0, 0, 0, 400);
     gradient.setColorAt(0, QColor(90, 90, 90));
@@ -27,12 +26,14 @@ void frmBarChart::initForm()
     QCPBars *regen = new QCPBars(ui->customPlot->xAxis, ui->customPlot->yAxis);
     QCPBars *nuclear = new QCPBars(ui->customPlot->xAxis, ui->customPlot->yAxis);
     QCPBars *fossil = new QCPBars(ui->customPlot->xAxis, ui->customPlot->yAxis);
+
     regen->setAntialiased(false); // gives more crisp, pixel aligned bar borders
     nuclear->setAntialiased(false);
     fossil->setAntialiased(false);
     regen->setStackingGap(1);
     nuclear->setStackingGap(1);
     fossil->setStackingGap(1);
+
     // set names and colors:
     fossil->setName("Fossil fuels");
     fossil->setPen(QPen(QColor(111, 9, 176).lighter(170)));
@@ -43,6 +44,7 @@ void frmBarChart::initForm()
     regen->setName("Regenerative");
     regen->setPen(QPen(QColor(0, 168, 140).lighter(130)));
     regen->setBrush(QColor(0, 168, 140));
+
     // stack bars on top of each other:
     nuclear->moveAbove(fossil);
     regen->moveAbove(nuclear);
@@ -52,6 +54,7 @@ void frmBarChart::initForm()
     QVector<QString> labels;
     ticks << 1 << 2 << 3 << 4 << 5 << 6 << 7;
     labels << "USA" << "Japan" << "Germany" << "France" << "UK" << "Italy" << "Canada";
+
     QSharedPointer<QCPAxisTickerText> textTicker(new QCPAxisTickerText);
     textTicker->addTicks(ticks, labels);
     ui->customPlot->xAxis->setTicker(textTicker);
@@ -97,5 +100,4 @@ void frmBarChart::initForm()
     legendFont.setPointSize(10);
     ui->customPlot->legend->setFont(legendFont);
     ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
-#endif
 }

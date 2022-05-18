@@ -28,6 +28,7 @@ void frmPolarPlot::initForm()
     ticker->setTickCount(8);
     polarAxis->setTicker(ticker);
     */
+
     ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
     angularAxis->setRangeDrag(false);
     angularAxis->setTickLabelMode(QCPPolarAxisAngular::lmUpright);

@@ -17,6 +17,7 @@ void frmLogarithmic::initForm()
 {
     ui->customPlot->setNoAntialiasingOnDrag(true); // more performance/responsiveness during dragging
     ui->customPlot->addGraph();
+
     QPen pen;
     pen.setColor(QColor(255, 170, 100));
     pen.setWidth(2);
@@ -54,6 +55,7 @@ void frmLogarithmic::initForm()
         dataPlusSinExp[i].key = i / 10.0;
         dataPlusSinExp[i].value = qSin(dataPlusSinExp[i].key) * qExp(dataPlusSinExp[i].key);
     }
+
     for (int i = 0; i < dataFactorialCount; ++i) {
         dataFactorial[i].key = i;
         dataFactorial[i].value = 1.0;
@@ -61,6 +63,7 @@ void frmLogarithmic::initForm()
             dataFactorial[i].value *= k;    // factorial
         }
     }
+
     ui->customPlot->graph(0)->data()->set(dataLinear);
     ui->customPlot->graph(1)->data()->set(dataMinusSinExp);
     ui->customPlot->graph(2)->data()->set(dataPlusSinExp);
@@ -70,6 +73,7 @@ void frmLogarithmic::initForm()
     ui->customPlot->xAxis->grid()->setSubGridVisible(true);
     ui->customPlot->yAxis->setScaleType(QCPAxis::stLogarithmic);
     ui->customPlot->yAxis2->setScaleType(QCPAxis::stLogarithmic);
+
     QSharedPointer<QCPAxisTickerLog> logTicker(new QCPAxisTickerLog);
     ui->customPlot->yAxis->setTicker(logTicker);
     ui->customPlot->yAxis2->setTicker(logTicker);
@@ -87,7 +91,5 @@ void frmLogarithmic::initForm()
     ui->customPlot->legend->setVisible(true);
     ui->customPlot->legend->setBrush(QBrush(QColor(255, 255, 255, 150)));
     ui->customPlot->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignLeft | Qt::AlignTop); // make legend align in top left corner or axis rect
-
-    // make range draggable and zoomable:
     ui->customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
 }
