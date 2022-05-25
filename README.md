@@ -1,5 +1,16 @@
 ﻿
-## 一、特别说明
+## 0 前言说明﻿﻿
+1. **下载说明：由于可执行文件比较大，如有需要请到网盘下载。**
+2. **网店地址：https://shop244026315.taobao.com/**
+3. **联系方式：QQ（517216493）微信（feiyangqingyun）推荐加微信。**
+4. **以下项目已经全部支持Qt4/5/6所有版本以及后续版本**
+5. 监控作品体验：[https://pan.baidu.com/s/1d7TH_GEYl5nOecuNlWJJ7g](https://pan.baidu.com/s/1d7TH_GEYl5nOecuNlWJJ7g) 提取码：01jf
+6. 其他作品体验：[https://pan.baidu.com/s/1ZxG-oyUKe286LPMPxOrO2A](https://pan.baidu.com/s/1ZxG-oyUKe286LPMPxOrO2A) 提取码：o05q
+7. 监控系统在线文档：[https://feiyangqingyun.gitee.io/QWidgetDemo/video_system/](https://feiyangqingyun.gitee.io/QWidgetDemo/video_system/)
+8. 大屏系统在线文档：[https://feiyangqingyun.gitee.io/QWidgetDemo/bigscreen/](https://feiyangqingyun.gitee.io/QWidgetDemo/bigscreen/)
+9. 物联网系统在线文档：[https://feiyangqingyun.gitee.io/QWidgetDemo/iotsystem/](https://feiyangqingyun.gitee.io/QWidgetDemo/iotsystem/)
+
+## 1 特别说明
 1. 可以选择打开QWidgetDemo.pro一次性编译所有的，也可以到目录下打开pro编译。
 2. 如果发现有些子项目没有加载请打开对应目录下的.pro仔细看里面的注释。
 3. 编译好的可执行文件在源码同级目录下的bin目录。
@@ -9,7 +20,7 @@
 8. **强烈推荐各位搭配Qt开发经验一起学习 [https://gitee.com/feiyangqingyun/qtkaifajingyan](https://gitee.com/feiyangqingyun/qtkaifajingyan)**
 9. **各位有需要购买Qt商业版可以联系Qt中国商务人员微信 zzwdkxx ，支持Qt。**
 
-## 二、目录说明
+## 2 目录说明
 **高质量项目加粗显示**
 | 目录      | 相关     | 名称                | 描述                        |
 | :-------: | :------: | :-----------------: | :-------------------------- |
@@ -76,7 +87,7 @@
 | netfriend | 网友提供 | imageviewwindow     | 图片3D效果切换              |
 | netfriend | 网友提供 | slidepuzzlewidget   | 滑块图片验证码              |
 
-## 三、效果图
+## 3 效果图
 ### 3.1 控件相关-control
 - 电池电量-battery
 ![](control/0snap/battery.jpg)
@@ -225,7 +236,7 @@
 - 滑块图片验证码-slidepuzzlewidget
 ![](netfriend/0snap/sliderpuzzlewidget.jpg)
 
-## 四、学习群
+## 4 学习群
 1. **Qt技术交流群1 46679801(已满员)**
 2. **Qt技术交流群2 573199610(未满员)**
 3. **Qt高级学习群 951393302(未满员，推荐此群)**
