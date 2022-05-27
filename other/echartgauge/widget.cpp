@@ -24,6 +24,7 @@ Widget::~Widget()
 
 void Widget::initForm()
 {
+    //初始化浏览器控件属性,一个项目中只需要设置一次就行
 #ifdef webkit
     QWebSettings *webSetting = QWebSettings::globalSettings();
     webSetting->setAttribute(QWebSettings::JavascriptEnabled, true);
@@ -36,44 +37,53 @@ void Widget::initForm()
     webSetting->setAttribute(QWebEngineSettings::JavascriptCanOpenWindows, true);
 #endif
 
+    //实例化多个浏览器控件,设置背景透明
 #ifdef webkit
-    webView = new QWebView;
-    webView1 = new QWebView;
-    webView2 = new QWebView;
-    webView3 = new QWebView;
+    for (int i = 0; i < 4; ++i) {
+        QWebView *webView = new QWebView;
+        webView->setStyleSheet(QString("background:%1;").arg("rgba(255,0,0,0)"));
+        webViews << webView;
+    }
 #elif webengine
-    webView = new QWebEngineView;
-    webView1 = new QWebEngineView;
-    webView2 = new QWebEngineView;
-    webView3 = new QWebEngineView;
+    for (int i = 0; i < 4; ++i) {
+        QWebEngineView *webView = new QWebEngineView;
+        webView->page()->setBackgroundColor(Qt::transparent);
+        webViews << webView;
+    }
 #endif
 
-    QUrl url("file:///" + qApp->applicationDirPath() + "/gauge.html");
+    //添加到布局
 #if (defined webkit) || (defined webengine)
-    ui->gridLayout->addWidget(webView, 0, 0);
-    ui->gridLayout->addWidget(webView1, 0, 1);
-    ui->gridLayout->addWidget(webView2, 1, 0);
-    ui->gridLayout->addWidget(webView3, 1, 1);
+    ui->gridLayout->addWidget(webViews.at(0), 0, 0);
+    ui->gridLayout->addWidget(webViews.at(1), 0, 1);
+    ui->gridLayout->addWidget(webViews.at(2), 1, 0);
+    ui->gridLayout->addWidget(webViews.at(3), 1, 1);
+#endif
 
-    webView->load(url);
-    webView1->load(url);
-    webView2->load(url);
-    webView3->load(url);
+    //加载html文件
+    QUrl url("file:///" + qApp->applicationDirPath() + "/gauge.html");
+#ifdef webkit
+    foreach (QWebView *webView, webViews) {
+        webView->load(url);
+    }
+#elif webengine
+    foreach (QWebEngineView *webView, webViews) {
+        webView->load(url);
+    }
 #endif
 }
 
 void Widget::on_horizontalSlider_valueChanged(int value)
 {
+    //执行js函数
     QString js = QString("setGaugeValue(%1)").arg(value);
 #ifdef webkit
-    webView->page()->mainFrame()->evaluateJavaScript(js);
-    webView1->page()->mainFrame()->evaluateJavaScript(js);
-    webView2->page()->mainFrame()->evaluateJavaScript(js);
-    webView3->page()->mainFrame()->evaluateJavaScript(js);
+    foreach (QWebView *webView, webViews) {
+        webView->page()->mainFrame()->evaluateJavaScript(js);
+    }
 #elif webengine
-    webView->page()->runJavaScript(js);
-    webView1->page()->runJavaScript(js);
-    webView2->page()->runJavaScript(js);
-    webView3->page()->runJavaScript(js);
+    foreach (QWebEngineView *webView, webViews) {
+        webView->page()->runJavaScript(js);
+    }
 #endif
 }

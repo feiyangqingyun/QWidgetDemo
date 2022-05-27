@@ -24,9 +24,9 @@ private slots:
 private:
     Ui::Widget *ui;
 #ifdef webkit
-    QWebView *webView, *webView1, *webView2, *webView3;
+    QList<QWebView *> webViews;
 #elif webengine
-    QWebEngineView *webView, *webView1, *webView2, *webView3;
+    QList<QWebEngineView *> webViews;
 #endif
 };
 
