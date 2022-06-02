@@ -1,9 +1,9 @@
-﻿
-## 0 前言说明﻿﻿
-1. **下载说明：由于可执行文件比较大，如有需要请到网盘下载。**
+
+## 0 前言说明
+1. **项目作品：[https://blog.csdn.net/feiyangqingyun/article/details/97565652](https://blog.csdn.net/feiyangqingyun/article/details/97565652)**
 2. **网店地址：https://shop244026315.taobao.com/**
 3. **联系方式：QQ（517216493）微信（feiyangqingyun）推荐加微信。**
-4. **以下项目已经全部支持Qt4/5/6所有版本以及后续版本**
+4. **版本支持：所有项目已经全部支持Qt4/5/6所有版本以及后续版本。**
 5. 监控作品体验：[https://pan.baidu.com/s/1d7TH_GEYl5nOecuNlWJJ7g](https://pan.baidu.com/s/1d7TH_GEYl5nOecuNlWJJ7g) 提取码：01jf
 6. 其他作品体验：[https://pan.baidu.com/s/1ZxG-oyUKe286LPMPxOrO2A](https://pan.baidu.com/s/1ZxG-oyUKe286LPMPxOrO2A) 提取码：o05q
 7. 监控系统在线文档：[https://feiyangqingyun.gitee.io/QWidgetDemo/video_system/](https://feiyangqingyun.gitee.io/QWidgetDemo/video_system/)

@@ -2,6 +2,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += printsupport
 greaterThan(QT_MAJOR_VERSION, 4): CONFIG += c++11
 #lessThan(QT_MAJOR_VERSION, 5): QMAKE_CXXFLAGS += -std=c++11
 
+#引入平滑曲线类
+HEADERS += $$PWD/smoothcurve.h
+SOURCES += $$PWD/smoothcurve.cpp
+
 #没有定义任何版本则默认采用2.0
 !contains(DEFINES, qcustomplot_v1_3) {
 !contains(DEFINES, qcustomplot_v2_0) {
