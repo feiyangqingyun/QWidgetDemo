@@ -102,7 +102,7 @@ border-radius:3px;
 .QGroupBox{
 border:1px solid #242424;
 border-radius:5px;
-margin-top:3ex;
+margin-top:9px;
 }
 
 .QGroupBox::title{
@@ -678,6 +678,10 @@ margin:2px;
 background:#444444;
 border-color:#484848;
 color:#242424;
+}
+
+QLabel:disabled{
+background:none;
 }
 
 /*TextColor:#DCDCDC*/

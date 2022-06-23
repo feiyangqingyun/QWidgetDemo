@@ -14,5 +14,5 @@ INCLUDEPATH += $$PWD
 INCLUDEPATH += $$PWD/form
 include ($$PWD/form/form.pri)
 
-INCLUDEPATH += $$PWD/../core_common
-include ($$PWD/../core_common/core_common.pri)
+INCLUDEPATH += $$PWD/../core_base
+include ($$PWD/../core_base/core_base.pri)

@@ -43,6 +43,10 @@ void frmMain::initForm()
 
 void frmMain::loadStyle(const QString &qssFile)
 {
+    //开启计时
+    QElapsedTimer time;
+    time.start();
+
     //加载样式表
     QString qss;
     QFile file(qssFile);
@@ -61,8 +65,11 @@ void frmMain::loadStyle(const QString &qssFile)
         qss = list.join("\n");
         QString paletteColor = qss.mid(20, 7);
         qApp->setPalette(QPalette(paletteColor));
+        //用时主要在下面这句
         qApp->setStyleSheet(qss);
     }
+
+    qDebug() << "用时:" << time.elapsed();
 }
 
 void frmMain::on_btnStyle1_clicked()
