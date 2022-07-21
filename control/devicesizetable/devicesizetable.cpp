@@ -120,7 +120,7 @@ void DeviceSizeTable::load()
     }
 
 #else
-    process->start("df -h");
+    process->start("df", QStringList() << "-h");
 #endif
 }
 
