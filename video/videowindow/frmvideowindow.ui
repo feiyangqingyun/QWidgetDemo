@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>frmVideoWidget</class>
- <widget class="QWidget" name="frmVideoWidget">
+ <class>frmVideoWindow</class>
+ <widget class="QWidget" name="frmVideoWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,9 +15,9 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="1">
-    <widget class="VideoWidget" name="videoWidget2" native="true">
+    <widget class="VideoWindow" name="videoWindow2" native="true">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -25,9 +25,9 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="VideoWidget" name="videoWidget1" native="true">
+    <widget class="VideoWindow" name="videoWindow1" native="true">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -35,9 +35,9 @@
     </widget>
    </item>
    <item row="1" column="1">
-    <widget class="VideoWidget" name="videoWidget4" native="true">
+    <widget class="VideoWindow" name="videoWindow4" native="true">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -45,9 +45,9 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="VideoWidget" name="videoWidget3" native="true">
+    <widget class="VideoWindow" name="videoWindow3" native="true">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -71,9 +71,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>VideoWidget</class>
+   <class>VideoWindow</class>
    <extends>QWidget</extends>
-   <header>videowidget.h</header>
+   <header>videowindow.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

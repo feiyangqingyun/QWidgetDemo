@@ -1,6 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 
-#include "frmvideowidget.h"
+#include "frmvideowindow.h"
 #include <QApplication>
 #include <QTextCodec>
 
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(codec);
 #endif
 
-    frmVideoWidget w;
+    frmVideoWindow w;
     w.setWindowTitle("视频监控控件 (QQ: 517216493 WX: feiyangqingyun)");
     w.resize(800, 600);
     w.show();

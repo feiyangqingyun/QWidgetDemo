@@ -2,18 +2,18 @@ QT += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 greaterThan(QT_MAJOR_VERSION, 5): QT += core5compat
 
-TARGET      = videowidget
+TARGET      = videowindow
 TEMPLATE    = app
 DESTDIR     = $$PWD/../bin
 CONFIG      += warn_off
 
 SOURCES     += main.cpp
-SOURCES     += frmvideowidget.cpp
-SOURCES     += videowidget.cpp
+SOURCES     += frmvideowindow.cpp
+SOURCES     += videowindow.cpp
 
-HEADERS     += frmvideowidget.h
-HEADERS     += videowidget.h
+HEADERS     += frmvideowindow.h
+HEADERS     += videowindow.h
 
-FORMS       += frmvideowidget.ui
+FORMS       += frmvideowindow.ui
 
-RESOURCES += main.qrc
+RESOURCES   += main.qrc

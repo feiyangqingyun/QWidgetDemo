@@ -1,7 +1,7 @@
 TEMPLATE = subdirs
 SUBDIRS += videobox
 SUBDIRS += videopanel
-SUBDIRS += videowidget
+SUBDIRS += videowindow
 
 win32 {
 SUBDIRS += playffmpeg

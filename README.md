@@ -49,7 +49,7 @@
 | tool      | 工具相关 | livedemo            | 程序启动示例                |
 | video     | 视频播放 | videobox            | **视频监控布局**            |
 | video     | 视频播放 | videopanel          | **视频监控面板**            |
-| video     | 视频播放 | videowidget         | 视频监控控件                |
+| video     | 视频播放 | videowindow         | 视频监控控件                |
 | video     | 视频播放 | playffmpeg          | 视频播放ffmpeg              |
 | video     | 视频播放 | playvlc             | 视频播放vlc                 |
 | video     | 视频播放 | plaympv             | 视频播放mpv                 |
@@ -144,8 +144,8 @@
 ![](video/0snap/videobox.jpg)
 - 视频监控面板-videopanel
 ![](video/0snap/videopanel.jpg)
-- 视频监控控件-videowidget
-![](video/0snap/videowidget.jpg)
+- 视频监控控件-videowindow
+![](video/0snap/videowindow.jpg)
 - 视频播放ffmpeg-playffmpeg
 ![](video/0snap/playffmpeg.jpg)
 - 视频播放vlc-playvlc

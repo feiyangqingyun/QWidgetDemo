@@ -1,5 +1,5 @@
-﻿#ifndef VIDEOWIDGET_H
-#define VIDEOWIDGET_H
+﻿#ifndef VIDEOWINDOW_H
+#define VIDEOWINDOW_H
 
 /**
  * 通用视频播放控件 作者:feiyangqingyun(QQ:517216493) 2018-05-01
@@ -23,10 +23,10 @@
 class QTimer;
 
 #ifdef quc
-class Q_DECL_EXPORT VideoWidget : public QWidget
-        #else
-class VideoWidget : public QWidget
-        #endif
+class Q_DECL_EXPORT VideoWindow : public QWidget
+#else
+class VideoWindow : public QWidget
+#endif
 
 {
     Q_OBJECT
@@ -84,8 +84,8 @@ public:
         OSDPosition_Right_Bottom = 3    //右下角
     };
 
-    explicit VideoWidget(QWidget *parent = 0);
-    ~VideoWidget();
+    explicit VideoWindow(QWidget *parent = 0);
+    ~VideoWindow();
 
 protected:
     void resizeEvent(QResizeEvent *);
@@ -378,4 +378,4 @@ public slots:
     void snap(const QString &fileName);
 };
 
-#endif // VIDEOWIDGET_H
+#endif // VIDEOWINDOW_H

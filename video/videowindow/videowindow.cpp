@@ -1,6 +1,6 @@
 ﻿#pragma execution_character_set("utf-8")
 
-#include "videowidget.h"
+#include "videowindow.h"
 #include "qfontdatabase.h"
 #include "qpushbutton.h"
 #include "qtreewidget.h"
@@ -13,7 +13,7 @@
 #include "qurl.h"
 #include "qdebug.h"
 
-VideoWidget::VideoWidget(QWidget *parent) : QWidget(parent)
+VideoWindow::VideoWindow(QWidget *parent) : QWidget(parent)
 {
     //设置强焦点
     setFocusPolicy(Qt::StrongFocus);
@@ -67,12 +67,12 @@ VideoWidget::VideoWidget(QWidget *parent) : QWidget(parent)
     this->initFlowStyle();
 }
 
-void VideoWidget::initThread()
+void VideoWindow::initThread()
 {
 
 }
 
-void VideoWidget::initFlowPanel()
+void VideoWindow::initFlowPanel()
 {
     //顶部工具栏,默认隐藏,鼠标移入显示移除隐藏
     flowPanel = new QWidget(this);
@@ -151,7 +151,7 @@ void VideoWidget::initFlowPanel()
     }
 }
 
-void VideoWidget::initFlowStyle()
+void VideoWindow::initFlowStyle()
 {
     //设置样式以便区分,可以自行更改样式,也可以不用样式
     QStringList qss;
@@ -162,7 +162,7 @@ void VideoWidget::initFlowStyle()
     flowPanel->setStyleSheet(qss.join(""));
 }
 
-VideoWidget::~VideoWidget()
+VideoWindow::~VideoWindow()
 {
     if (timerCheck->isActive()) {
         timerCheck->stop();
@@ -171,7 +171,7 @@ VideoWidget::~VideoWidget()
     close();
 }
 
-void VideoWidget::resizeEvent(QResizeEvent *)
+void VideoWindow::resizeEvent(QResizeEvent *)
 {
     //重新设置顶部工具栏的位置和宽高,可以自行设置顶部显示或者底部显示
     int height = 20;
@@ -180,9 +180,9 @@ void VideoWidget::resizeEvent(QResizeEvent *)
 }
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
-void VideoWidget::enterEvent(QEnterEvent *)
+void VideoWindow::enterEvent(QEnterEvent *)
 #else
-void VideoWidget::enterEvent(QEvent *)
+void VideoWindow::enterEvent(QEvent *)
 #endif
 {
     //这里还可以增加一个判断,是否获取了焦点的才需要显示
@@ -192,14 +192,14 @@ void VideoWidget::enterEvent(QEvent *)
     }
 }
 
-void VideoWidget::leaveEvent(QEvent *)
+void VideoWindow::leaveEvent(QEvent *)
 {
     if (flowEnable) {
         flowPanel->setVisible(false);
     }
 }
 
-void VideoWidget::dropEvent(QDropEvent *event)
+void VideoWindow::dropEvent(QDropEvent *event)
 {
     //拖放完毕鼠标松开的时候执行
     //判断拖放进来的类型,取出文件,进行播放
@@ -219,7 +219,7 @@ void VideoWidget::dropEvent(QDropEvent *event)
     }
 }
 
-void VideoWidget::dragEnterEvent(QDragEnterEvent *event)
+void VideoWindow::dragEnterEvent(QDragEnterEvent *event)
 {
     //拖曳进来的时候先判断下类型,非法类型则不处理
     if (event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
@@ -233,7 +233,7 @@ void VideoWidget::dragEnterEvent(QDragEnterEvent *event)
     }
 }
 
-void VideoWidget::paintEvent(QPaintEvent *)
+void VideoWindow::paintEvent(QPaintEvent *)
 {
     //如果不需要绘制
     if (!drawImage) {
@@ -258,7 +258,7 @@ void VideoWidget::paintEvent(QPaintEvent *)
     }
 }
 
-void VideoWidget::drawBorder(QPainter *painter)
+void VideoWindow::drawBorder(QPainter *painter)
 {
     painter->save();
 
@@ -276,7 +276,7 @@ void VideoWidget::drawBorder(QPainter *painter)
     painter->restore();
 }
 
-void VideoWidget::drawBg(QPainter *painter)
+void VideoWindow::drawBg(QPainter *painter)
 {
     painter->save();
 
@@ -296,7 +296,7 @@ void VideoWidget::drawBg(QPainter *painter)
     painter->restore();
 }
 
-void VideoWidget::drawImg(QPainter *painter, QImage img)
+void VideoWindow::drawImg(QPainter *painter, QImage img)
 {
     painter->save();
 
@@ -316,14 +316,14 @@ void VideoWidget::drawImg(QPainter *painter, QImage img)
     painter->restore();
 }
 
-void VideoWidget::drawOSD(QPainter *painter,
+void VideoWindow::drawOSD(QPainter *painter,
                           bool osdVisible,
                           int osdFontSize,
                           const QString &osdText,
                           const QColor &osdColor,
                           const QImage &osdImage,
-                          const VideoWidget::OSDFormat &osdFormat,
-                          const VideoWidget::OSDPosition &osdPosition)
+                          const VideoWindow::OSDFormat &osdFormat,
+                          const VideoWindow::OSDPosition &osdPosition)
 {
     if (!osdVisible) {
         return;
@@ -375,212 +375,212 @@ void VideoWidget::drawOSD(QPainter *painter,
     painter->restore();
 }
 
-QImage VideoWidget::getImage() const
+QImage VideoWindow::getImage() const
 {
     return this->image;
 }
 
-QPixmap VideoWidget::getPixmap() const
+QPixmap VideoWindow::getPixmap() const
 {
     return QPixmap();
 }
 
-QString VideoWidget::getUrl() const
+QString VideoWindow::getUrl() const
 {
     return this->property("url").toString();
 }
 
-QDateTime VideoWidget::getLastTime() const
+QDateTime VideoWindow::getLastTime() const
 {
     return QDateTime::currentDateTime();
 }
 
-bool VideoWidget::getCallback() const
+bool VideoWindow::getCallback() const
 {
     return false;
 }
 
-bool VideoWidget::getIsPlaying() const
+bool VideoWindow::getIsPlaying() const
 {
     return false;
 }
 
-bool VideoWidget::getIsRtsp() const
+bool VideoWindow::getIsRtsp() const
 {
     return false;
 }
 
-bool VideoWidget::getIsUsbCamera() const
+bool VideoWindow::getIsUsbCamera() const
 {
     return false;
 }
 
-bool VideoWidget::getCopyImage() const
+bool VideoWindow::getCopyImage() const
 {
     return this->copyImage;
 }
 
-bool VideoWidget::getCheckLive() const
+bool VideoWindow::getCheckLive() const
 {
     return this->checkLive;
 }
 
-bool VideoWidget::getDrawImage() const
+bool VideoWindow::getDrawImage() const
 {
     return this->drawImage;
 }
 
-bool VideoWidget::getFillImage() const
+bool VideoWindow::getFillImage() const
 {
     return this->fillImage;
 }
 
-bool VideoWidget::getFlowEnable() const
+bool VideoWindow::getFlowEnable() const
 {
     return this->flowEnable;
 }
 
-QColor VideoWidget::getFlowBgColor() const
+QColor VideoWindow::getFlowBgColor() const
 {
     return this->flowBgColor;
 }
 
-QColor VideoWidget::getFlowPressColor() const
+QColor VideoWindow::getFlowPressColor() const
 {
     return this->flowPressColor;
 }
 
-int VideoWidget::getTimeout() const
+int VideoWindow::getTimeout() const
 {
     return this->timeout;
 }
 
-int VideoWidget::getBorderWidth() const
+int VideoWindow::getBorderWidth() const
 {
     return this->borderWidth;
 }
 
-QColor VideoWidget::getBorderColor() const
+QColor VideoWindow::getBorderColor() const
 {
     return this->borderColor;
 }
 
-QColor VideoWidget::getFocusColor() const
+QColor VideoWindow::getFocusColor() const
 {
     return this->focusColor;
 }
 
-QColor VideoWidget::getBgColor() const
+QColor VideoWindow::getBgColor() const
 {
     return this->bgColor;
 }
 
-QString VideoWidget::getBgText() const
+QString VideoWindow::getBgText() const
 {
     return this->bgText;
 }
 
-QImage VideoWidget::getBgImage() const
+QImage VideoWindow::getBgImage() const
 {
     return this->bgImage;
 }
 
-bool VideoWidget::getOSD1Visible() const
+bool VideoWindow::getOSD1Visible() const
 {
     return this->osd1Visible;
 }
 
-int VideoWidget::getOSD1FontSize() const
+int VideoWindow::getOSD1FontSize() const
 {
     return this->osd1FontSize;
 }
 
-QString VideoWidget::getOSD1Text() const
+QString VideoWindow::getOSD1Text() const
 {
     return this->osd1Text;
 }
 
-QColor VideoWidget::getOSD1Color() const
+QColor VideoWindow::getOSD1Color() const
 {
     return this->osd1Color;
 }
 
-QImage VideoWidget::getOSD1Image() const
+QImage VideoWindow::getOSD1Image() const
 {
     return this->osd1Image;
 }
 
-VideoWidget::OSDFormat VideoWidget::getOSD1Format() const
+VideoWindow::OSDFormat VideoWindow::getOSD1Format() const
 {
     return this->osd1Format;
 }
 
-VideoWidget::OSDPosition VideoWidget::getOSD1Position() const
+VideoWindow::OSDPosition VideoWindow::getOSD1Position() const
 {
     return this->osd1Position;
 }
 
-bool VideoWidget::getOSD2Visible() const
+bool VideoWindow::getOSD2Visible() const
 {
     return this->osd2Visible;
 }
 
-int VideoWidget::getOSD2FontSize() const
+int VideoWindow::getOSD2FontSize() const
 {
     return this->osd2FontSize;
 }
 
-QString VideoWidget::getOSD2Text() const
+QString VideoWindow::getOSD2Text() const
 {
     return this->osd2Text;
 }
 
-QColor VideoWidget::getOSD2Color() const
+QColor VideoWindow::getOSD2Color() const
 {
     return this->osd2Color;
 }
 
-QImage VideoWidget::getOSD2Image() const
+QImage VideoWindow::getOSD2Image() const
 {
     return this->osd2Image;
 }
 
-VideoWidget::OSDFormat VideoWidget::getOSD2Format() const
+VideoWindow::OSDFormat VideoWindow::getOSD2Format() const
 {
     return this->osd2Format;
 }
 
-VideoWidget::OSDPosition VideoWidget::getOSD2Position() const
+VideoWindow::OSDPosition VideoWindow::getOSD2Position() const
 {
     return this->osd2Position;
 }
 
-int VideoWidget::getFaceBorder() const
+int VideoWindow::getFaceBorder() const
 {
     return this->faceBorder;
 }
 
-QColor VideoWidget::getFaceColor() const
+QColor VideoWindow::getFaceColor() const
 {
     return this->faceColor;
 }
 
-QList<QRect> VideoWidget::getFaceRects() const
+QList<QRect> VideoWindow::getFaceRects() const
 {
     return this->faceRects;
 }
 
-QSize VideoWidget::sizeHint() const
+QSize VideoWindow::sizeHint() const
 {
     return QSize(400, 300);
 }
 
-QSize VideoWidget::minimumSizeHint() const
+QSize VideoWindow::minimumSizeHint() const
 {
     return QSize(40, 30);
 }
 
-void VideoWidget::updateImage(const QImage &image)
+void VideoWindow::updateImage(const QImage &image)
 {
     //拷贝图片有个好处,当处理器比较差的时候,图片不会产生断层,缺点是占用时间
     //默认QImage类型是浅拷贝,可能正在绘制的时候,那边已经更改了图片的上部分数据
@@ -588,7 +588,7 @@ void VideoWidget::updateImage(const QImage &image)
     this->update();
 }
 
-void VideoWidget::checkVideo()
+void VideoWindow::checkVideo()
 {
     QDateTime now = QDateTime::currentDateTime();
     QDateTime lastTime = now;
@@ -598,103 +598,103 @@ void VideoWidget::checkVideo()
     }
 }
 
-void VideoWidget::btnClicked()
+void VideoWindow::btnClicked()
 {
     QPushButton *btn = (QPushButton *)sender();
     emit btnClicked(btn->objectName());
 }
 
-uint VideoWidget::getLength()
+uint VideoWindow::getLength()
 {
     return 0;
 }
 
-uint VideoWidget::getPosition()
+uint VideoWindow::getPosition()
 {
     return 0;
 }
 
-void VideoWidget::setPosition(int position)
+void VideoWindow::setPosition(int position)
 {
 
 }
 
-bool VideoWidget::getMuted()
+bool VideoWindow::getMuted()
 {
     return false;
 }
 
-void VideoWidget::setMuted(bool muted)
+void VideoWindow::setMuted(bool muted)
 {
 
 }
 
-int VideoWidget::getVolume()
+int VideoWindow::getVolume()
 {
     return 0;
 }
 
-void VideoWidget::setVolume(int volume)
+void VideoWindow::setVolume(int volume)
 {
 
 }
 
-void VideoWidget::setInterval(int interval)
+void VideoWindow::setInterval(int interval)
 {
 
 }
 
-void VideoWidget::setSleepTime(int sleepTime)
+void VideoWindow::setSleepTime(int sleepTime)
 {
 
 }
 
-void VideoWidget::setCheckTime(int checkTime)
+void VideoWindow::setCheckTime(int checkTime)
 {
 
 }
 
-void VideoWidget::setCheckConn(bool checkConn)
+void VideoWindow::setCheckConn(bool checkConn)
 {
 
 }
 
-void VideoWidget::setUrl(const QString &url)
+void VideoWindow::setUrl(const QString &url)
 {
     this->setProperty("url", url);
 }
 
-void VideoWidget::setCallback(bool callback)
+void VideoWindow::setCallback(bool callback)
 {
 
 }
 
-void VideoWidget::setHardware(const QString &hardware)
+void VideoWindow::setHardware(const QString &hardware)
 {
 
 }
 
-void VideoWidget::setTransport(const QString &transport)
+void VideoWindow::setTransport(const QString &transport)
 {
 
 }
 
-void VideoWidget::setSaveFile(bool saveFile)
+void VideoWindow::setSaveFile(bool saveFile)
 {
 
 }
 
-void VideoWidget::setSaveInterval(int saveInterval)
+void VideoWindow::setSaveInterval(int saveInterval)
 {
 
 }
 
-void VideoWidget::setFileFlag(const QString &fileFlag)
+void VideoWindow::setFileFlag(const QString &fileFlag)
 {
 
 }
 
-void VideoWidget::setSavePath(const QString &savePath)
+void VideoWindow::setSavePath(const QString &savePath)
 {
     //如果目录不存在则新建
     QDir dir(savePath);
@@ -703,37 +703,37 @@ void VideoWidget::setSavePath(const QString &savePath)
     }
 }
 
-void VideoWidget::setFileName(const QString &fileName)
+void VideoWindow::setFileName(const QString &fileName)
 {
 
 }
 
-void VideoWidget::setCopyImage(bool copyImage)
+void VideoWindow::setCopyImage(bool copyImage)
 {
     this->copyImage = copyImage;
 }
 
-void VideoWidget::setCheckLive(bool checkLive)
+void VideoWindow::setCheckLive(bool checkLive)
 {
     this->checkLive = checkLive;
 }
 
-void VideoWidget::setDrawImage(bool drawImage)
+void VideoWindow::setDrawImage(bool drawImage)
 {
     this->drawImage = drawImage;
 }
 
-void VideoWidget::setFillImage(bool fillImage)
+void VideoWindow::setFillImage(bool fillImage)
 {
     this->fillImage = fillImage;
 }
 
-void VideoWidget::setFlowEnable(bool flowEnable)
+void VideoWindow::setFlowEnable(bool flowEnable)
 {
     this->flowEnable = flowEnable;
 }
 
-void VideoWidget::setFlowBgColor(const QColor &flowBgColor)
+void VideoWindow::setFlowBgColor(const QColor &flowBgColor)
 {
     if (this->flowBgColor != flowBgColor) {
         this->flowBgColor = flowBgColor;
@@ -741,7 +741,7 @@ void VideoWidget::setFlowBgColor(const QColor &flowBgColor)
     }
 }
 
-void VideoWidget::setFlowPressColor(const QColor &flowPressColor)
+void VideoWindow::setFlowPressColor(const QColor &flowPressColor)
 {
     if (this->flowPressColor != flowPressColor) {
         this->flowPressColor = flowPressColor;
@@ -749,170 +749,170 @@ void VideoWidget::setFlowPressColor(const QColor &flowPressColor)
     }
 }
 
-void VideoWidget::setTimeout(int timeout)
+void VideoWindow::setTimeout(int timeout)
 {
     this->timeout = timeout;
 }
 
-void VideoWidget::setBorderWidth(int borderWidth)
+void VideoWindow::setBorderWidth(int borderWidth)
 {
     this->borderWidth = borderWidth;
     this->update();
 }
 
-void VideoWidget::setBorderColor(const QColor &borderColor)
+void VideoWindow::setBorderColor(const QColor &borderColor)
 {
     this->borderColor = borderColor;
     this->update();
 }
 
-void VideoWidget::setFocusColor(const QColor &focusColor)
+void VideoWindow::setFocusColor(const QColor &focusColor)
 {
     this->focusColor = focusColor;
     this->update();
 }
 
-void VideoWidget::setBgColor(const QColor &bgColor)
+void VideoWindow::setBgColor(const QColor &bgColor)
 {
     this->bgColor = bgColor;
     this->update();
 }
 
-void VideoWidget::setBgText(const QString &bgText)
+void VideoWindow::setBgText(const QString &bgText)
 {
     this->bgText = bgText;
     this->update();
 }
 
-void VideoWidget::setBgImage(const QImage &bgImage)
+void VideoWindow::setBgImage(const QImage &bgImage)
 {
     this->bgImage = bgImage;
     this->update();
 }
 
-void VideoWidget::setOSD1Visible(bool osdVisible)
+void VideoWindow::setOSD1Visible(bool osdVisible)
 {
     this->osd1Visible = osdVisible;
     this->update();
 }
 
-void VideoWidget::setOSD1FontSize(int osdFontSize)
+void VideoWindow::setOSD1FontSize(int osdFontSize)
 {
     this->osd1FontSize = osdFontSize;
     this->update();
 }
 
-void VideoWidget::setOSD1Text(const QString &osdText)
+void VideoWindow::setOSD1Text(const QString &osdText)
 {
     this->osd1Text = osdText;
     this->update();
 }
 
-void VideoWidget::setOSD1Color(const QColor &osdColor)
+void VideoWindow::setOSD1Color(const QColor &osdColor)
 {
     this->osd1Color = osdColor;
     this->update();
 }
 
-void VideoWidget::setOSD1Image(const QImage &osdImage)
+void VideoWindow::setOSD1Image(const QImage &osdImage)
 {
     this->osd1Image = osdImage;
     this->update();
 }
 
-void VideoWidget::setOSD1Format(const VideoWidget::OSDFormat &osdFormat)
+void VideoWindow::setOSD1Format(const VideoWindow::OSDFormat &osdFormat)
 {
     this->osd1Format = osdFormat;
     this->update();
 }
 
-void VideoWidget::setOSD1Position(const VideoWidget::OSDPosition &osdPosition)
+void VideoWindow::setOSD1Position(const VideoWindow::OSDPosition &osdPosition)
 {
     this->osd1Position = osdPosition;
     this->update();
 }
 
-void VideoWidget::setOSD2Visible(bool osdVisible)
+void VideoWindow::setOSD2Visible(bool osdVisible)
 {
     this->osd2Visible = osdVisible;
     this->update();
 }
 
-void VideoWidget::setOSD2FontSize(int osdFontSize)
+void VideoWindow::setOSD2FontSize(int osdFontSize)
 {
     this->osd2FontSize = osdFontSize;
     this->update();
 }
 
-void VideoWidget::setOSD2Text(const QString &osdText)
+void VideoWindow::setOSD2Text(const QString &osdText)
 {
     this->osd2Text = osdText;
     this->update();
 }
 
-void VideoWidget::setOSD2Color(const QColor &osdColor)
+void VideoWindow::setOSD2Color(const QColor &osdColor)
 {
     this->osd2Color = osdColor;
     this->update();
 }
 
-void VideoWidget::setOSD2Image(const QImage &osdImage)
+void VideoWindow::setOSD2Image(const QImage &osdImage)
 {
     this->osd2Image = osdImage;
     this->update();
 }
 
-void VideoWidget::setOSD2Format(const VideoWidget::OSDFormat &osdFormat)
+void VideoWindow::setOSD2Format(const VideoWindow::OSDFormat &osdFormat)
 {
     this->osd2Format = osdFormat;
     this->update();
 }
 
-void VideoWidget::setOSD2Position(const VideoWidget::OSDPosition &osdPosition)
+void VideoWindow::setOSD2Position(const VideoWindow::OSDPosition &osdPosition)
 {
     this->osd2Position = osdPosition;
     this->update();
 }
 
-void VideoWidget::setOSD1Format(quint8 osdFormat)
+void VideoWindow::setOSD1Format(quint8 osdFormat)
 {
-    setOSD1Format((VideoWidget::OSDFormat)osdFormat);
+    setOSD1Format((VideoWindow::OSDFormat)osdFormat);
 }
 
-void VideoWidget::setOSD2Format(quint8 osdFormat)
+void VideoWindow::setOSD2Format(quint8 osdFormat)
 {
-    setOSD2Format((VideoWidget::OSDFormat)osdFormat);
+    setOSD2Format((VideoWindow::OSDFormat)osdFormat);
 }
 
-void VideoWidget::setOSD1Position(quint8 osdPosition)
+void VideoWindow::setOSD1Position(quint8 osdPosition)
 {
-    setOSD1Position((VideoWidget::OSDPosition)osdPosition);
+    setOSD1Position((VideoWindow::OSDPosition)osdPosition);
 }
 
-void VideoWidget::setOSD2Position(quint8 osdPosition)
+void VideoWindow::setOSD2Position(quint8 osdPosition)
 {
-    setOSD2Position((VideoWidget::OSDPosition)osdPosition);
+    setOSD2Position((VideoWindow::OSDPosition)osdPosition);
 }
 
-void VideoWidget::setFaceBorder(int faceBorder)
+void VideoWindow::setFaceBorder(int faceBorder)
 {
     this->faceBorder = faceBorder;
     this->update();
 }
 
-void VideoWidget::setFaceColor(const QColor &faceColor)
+void VideoWindow::setFaceColor(const QColor &faceColor)
 {
     this->faceColor = faceColor;
     this->update();
 }
 
-void VideoWidget::setFaceRects(const QList<QRect> &faceRects)
+void VideoWindow::setFaceRects(const QList<QRect> &faceRects)
 {
     this->faceRects = faceRects;
     this->update();
 }
 
-void VideoWidget::open()
+void VideoWindow::open()
 {
     //qDebug() << TIMEMS << "open video" << objectName();
     clear();
@@ -934,7 +934,7 @@ void VideoWidget::open()
     this->setProperty("isPause", false);
 }
 
-void VideoWidget::pause()
+void VideoWindow::pause()
 {
     if (!this->property("isPause").toBool()) {
         //thread->pause();
@@ -942,7 +942,7 @@ void VideoWidget::pause()
     }
 }
 
-void VideoWidget::next()
+void VideoWindow::next()
 {
     if (this->property("isPause").toBool()) {
         //thread->next();
@@ -950,7 +950,7 @@ void VideoWidget::next()
     }
 }
 
-void VideoWidget::close()
+void VideoWindow::close()
 {
     if (checkLive) {
         timerCheck->stop();
@@ -960,7 +960,7 @@ void VideoWidget::close()
     //QTimer::singleShot(5, this, SLOT(clear()));
 }
 
-void VideoWidget::restart(const QString &url, int delayOpen)
+void VideoWindow::restart(const QString &url, int delayOpen)
 {
     //qDebug() << TIMEMS << "restart video" << objectName();
     //关闭视频
@@ -976,13 +976,13 @@ void VideoWidget::restart(const QString &url, int delayOpen)
     }
 }
 
-void VideoWidget::clear()
+void VideoWindow::clear()
 {
     image = QImage();
     this->update();
 }
 
-void VideoWidget::snap(const QString &fileName)
+void VideoWindow::snap(const QString &fileName)
 {
 
 }

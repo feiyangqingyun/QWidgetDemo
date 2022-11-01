@@ -32,10 +32,10 @@ QImage Base64Helper::base64ToImagex(const QByteArray &data)
 
 QString Base64Helper::textToBase64(const QString &text)
 {
-    return QString(text.toLocal8Bit().toBase64());
+    return QString(text.toUtf8().toBase64());
 }
 
 QString Base64Helper::base64ToText(const QString &text)
 {
-    return QString(QByteArray::fromBase64(text.toLocal8Bit()));
+    return QString(QByteArray::fromBase64(text.toUtf8()));
 }
