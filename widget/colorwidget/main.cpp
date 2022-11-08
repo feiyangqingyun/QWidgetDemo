@@ -3,7 +3,9 @@
 #include "frmcolorwidget.h"
 #include <QApplication>
 #include <QTextCodec>
-
+//test
+int test;
+int test2;
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
