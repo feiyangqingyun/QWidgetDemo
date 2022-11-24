@@ -29,8 +29,10 @@ DeviceSizeTable::DeviceSizeTable(QWidget *parent) : QTableWidget(parent)
     textColor2 = QColor(255, 255, 255);
     textColor3 = QColor(255, 255, 255);
 
+#if defined(Q_OS_UNIX) && !defined(Q_OS_WASM)
     process = new QProcess(this);
     connect(process, SIGNAL(readyRead()), this, SLOT(readData()));
+#endif
 
     this->clear();
 
@@ -118,8 +120,7 @@ void DeviceSizeTable::load()
             insertSize(dirName, use, free, all, percent);
         }
     }
-
-#else
+#elif defined(Q_OS_UNIX) && !defined(Q_OS_WASM)
     process->start("df", QStringList() << "-h");
 #endif
 }
@@ -182,6 +183,7 @@ void DeviceSizeTable::setTextColor3(const QColor &textColor3)
 
 void DeviceSizeTable::readData()
 {
+#if defined(Q_OS_UNIX) && !defined(Q_OS_WASM)
     while (!process->atEnd()) {
         QString result = QLatin1String(process->readLine());
 #ifdef __arm__
@@ -206,6 +208,7 @@ void DeviceSizeTable::readData()
         }
 #endif
     }
+#endif
 }
 
 void DeviceSizeTable::checkSize(const QString &result, const QString &name)
@@ -217,7 +220,7 @@ void DeviceSizeTable::checkSize(const QString &result, const QString &name)
 
     for (int i = 0; i < list.count(); ++i) {
         QString s = list.at(i).trimmed();
-        if (s == "") {
+        if (s.isEmpty()) {
             continue;
         }
 

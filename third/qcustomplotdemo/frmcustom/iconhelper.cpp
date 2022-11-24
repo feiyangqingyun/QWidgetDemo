@@ -64,12 +64,12 @@ IconHelper *IconHelper::getIconHelper(int icon)
     //由于部分值范围冲突所以可以指定索引来取
     //fontawesome   0xf000-0xf2e0
     //fontawesome6  0xe000-0xe33d 0xf000-0xf8ff
-    //iconfont      0xe501-0xe793 0xe8d5-0xea5d
+    //iconfont      0xe501-0xe793 0xe8d5-0xea5d 0xeb00-0xec00
     //weather       0xe900-0xe9cf
 
     IconHelper *iconHelper = iconFontAwesome;
     if (iconFontIndex < 0) {
-        if ((icon > 0xe501 && icon < 0xe793) || (icon > 0xe8d5 && icon < 0xea5d)) {
+        if ((icon >= 0xe501 && icon <= 0xe793) || (icon >= 0xe8d5 && icon <= 0xea5d) || (icon >= 0xeb00 && icon <= 0xec00)) {
             iconHelper = iconFontAliBaBa;
         }
     } else if (iconFontIndex == 0) {

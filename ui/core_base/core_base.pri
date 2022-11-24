@@ -1,4 +1,9 @@
 QT += network
+greaterThan(QT_MAJOR_VERSION, 4) {
+lessThan(QT_MAJOR_VERSION, 6) {
+android {QT += androidextras}
+}}
+
 #指定编译产生的文件分门别类放到对应目录
 MOC_DIR     = temp/moc
 RCC_DIR     = temp/rcc
@@ -22,20 +27,26 @@ CONFIG += resources_big
 
 #引入全志H3芯片依赖
 include ($$PWD/h3.pri)
+#将当前目录加入到头文件路径
+INCLUDEPATH += $$PWD
 
-HEADERS += \
-    $$PWD/appdata.h \
-    $$PWD/appinit.h \
-    $$PWD/base64helper.h \
-    $$PWD/iconhelper.h \
-    $$PWD/quihelper.h
+HEADERS += $$PWD/appdata.h
+SOURCES += $$PWD/appdata.cpp
 
-SOURCES += \
-    $$PWD/appdata.cpp \
-    $$PWD/appinit.cpp \
-    $$PWD/base64helper.cpp \
-    $$PWD/iconhelper.cpp \
-    $$PWD/quihelper.cpp
+HEADERS += $$PWD/appinit.h
+SOURCES += $$PWD/appinit.cpp
+
+HEADERS += $$PWD/base64helper.h
+SOURCES += $$PWD/base64helper.cpp
+
+HEADERS += $$PWD/customstyle.h
+SOURCES += $$PWD/customstyle.cpp
+
+HEADERS += $$PWD/iconhelper.h
+SOURCES += $$PWD/iconhelper.cpp
+
+HEADERS += $$PWD/quihelper.h
+SOURCES += $$PWD/quihelper.cpp
 
 #可以指定不加载对应的资源文件
 !contains(DEFINES, no_qrc_image) {

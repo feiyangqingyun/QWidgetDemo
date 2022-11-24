@@ -125,7 +125,7 @@ void frmIconHelper::initPanel()
 
     if (ui->rbtnFontAliBaBa->isChecked()) {
         start = 0xe500;
-        end = 0xea5d;
+        end = 0xec00;
         iconFont = IconHelper::getIconFontAliBaBa();
     } else if (ui->rbtnFontAwesome6->isChecked()) {
         start = 0xe000;
@@ -197,7 +197,7 @@ bool frmIconHelper::checkIcon(int icon)
 
     //过滤不存在的图形字体
     //对该图片逐个扫描像素点,都是空白则意味着当前图形字体不存在
-    for (int i = 0; i < height; i++) {
+    for (int i = 0; i < height; ++i) {
         uchar *lineByte = img.scanLine(i);
         for (int j = 0; j < width; j++) {
             uchar tp = lineByte[j];

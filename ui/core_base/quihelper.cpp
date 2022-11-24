@@ -3,6 +3,7 @@
 #include "qnetworkproxy.h"
 
 #define TIMEMS qPrintable(QTime::currentTime().toString("HH:mm:ss zzz"))
+
 int QUIHelper::getScreenIndex()
 {
     //需要对多个屏幕进行处理
@@ -48,6 +49,38 @@ QRect QUIHelper::getScreenRect(bool available)
 #endif
     }
     return rect;
+}
+
+qreal QUIHelper::getScreenRatio(bool devicePixel)
+{
+    qreal ratio = 1.0;
+    int screenIndex = getScreenIndex();
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+    QScreen *screen = qApp->screens().at(screenIndex);
+    if (devicePixel) {
+        //需要开启 AA_EnableHighDpiScaling 属性才能正常获取
+        ratio = screen->devicePixelRatio() * 100;
+    } else {
+        ratio = screen->logicalDotsPerInch();
+    }
+#else
+    //Qt4不能动态识别缩放更改后的值
+    ratio = qApp->desktop()->screen(screenIndex)->logicalDpiX();
+#endif
+    return ratio / 96;
+}
+
+QRect QUIHelper::checkCenterRect(QRect &rect, bool available)
+{
+    QRect deskRect = QUIHelper::getScreenRect(available);
+    int formWidth = rect.width();
+    int formHeight = rect.height();
+    int deskWidth = deskRect.width();
+    int deskHeight = deskRect.height();
+    int formX = deskWidth / 2 - formWidth / 2 + deskRect.x();
+    int formY = deskHeight / 2 - formHeight / 2;
+    rect = QRect(formX, formY, formWidth, formHeight);
+    return deskRect;
 }
 
 int QUIHelper::deskWidth()
@@ -123,7 +156,7 @@ QString QUIHelper::appPath()
         path = path + "/0" + appName();
 #else
         path = qApp->applicationDirPath();
-#endif        
+#endif
     }
 
     return path;
@@ -137,7 +170,7 @@ QStringList QUIHelper::getLocalIPs()
         ips << "127.0.0.1";
 #else
         QList<QNetworkInterface> netInterfaces = QNetworkInterface::allInterfaces();
-        foreach (const QNetworkInterface  &netInterface, netInterfaces) {
+        foreach (QNetworkInterface netInterface, netInterfaces) {
             //移除虚拟机和抓包工具的虚拟网卡
             QString humanReadableName = netInterface.humanReadableName().toLower();
             if (humanReadableName.startsWith("vmware network adapter") || humanReadableName.startsWith("npcap loopback adapter")) {
@@ -276,6 +309,11 @@ QStringList QUIHelper::getRandPoint(int count, float mainLng, float mainLat, flo
     return points;
 }
 
+int QUIHelper::getRangeValue(int oldMin, int oldMax, int oldValue, int newMin, int newMax)
+{
+    return (((oldValue - oldMin) * (newMax - newMin)) / (oldMax - oldMin)) + newMin;
+}
+
 QString QUIHelper::getUuid()
 {
     QString uuid = QUuid::createUuid().toString();
@@ -284,19 +322,21 @@ QString QUIHelper::getUuid()
     return uuid;
 }
 
-void QUIHelper::newDir(const QString &dirName)
+void QUIHelper::checkPath(const QString &dirName)
 {
-    QString strDir = dirName;
-
-    //如果路径中包含斜杠字符则说明是绝对路径
-    //linux系统路径字符带有 /  windows系统 路径字符带有 :/
-    if (!strDir.startsWith("/") && !strDir.contains(":/")) {
-        strDir = QString("%1/%2").arg(QUIHelper::appPath()).arg(strDir);
+    //相对路径需要补全完整路径
+    QString path = dirName;
+    if (path.startsWith("./")) {
+        path.replace(".", "");
+        path = QUIHelper::appPath() + path;
+    } else if (!path.startsWith("/") && !path.contains(":/")) {
+        path = QUIHelper::appPath() + "/" + path;
     }
 
-    QDir dir(strDir);
+    //目录不存在则新建
+    QDir dir(path);
     if (!dir.exists()) {
-        dir.mkpath(strDir);
+        dir.mkpath(path);
     }
 }
 
@@ -417,30 +457,74 @@ void QUIHelper::setTranslator(const QString &qmFile)
     }
 }
 
+#ifdef Q_OS_ANDROID
+//Qt6中将相关类移到了core模块而且名字变了
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
+#include <QtAndroidExtras>
+#endif
+#endif
+
+bool QUIHelper::checkPermission(const QString &permission)
+{
+#ifdef Q_OS_ANDROID
+#if (QT_VERSION >= QT_VERSION_CHECK(5,10,0) && QT_VERSION < QT_VERSION_CHECK(6,0,0))
+    QtAndroid::PermissionResult result = QtAndroid::checkPermission(permission);
+    if (result == QtAndroid::PermissionResult::Denied) {
+        QtAndroid::requestPermissionsSync(QStringList() << permission);
+        result = QtAndroid::checkPermission(permission);
+        if (result == QtAndroid::PermissionResult::Denied) {
+            return false;
+        }
+    }
+#endif
+#endif
+    return true;
+}
+
+void QUIHelper::initAndroidPermission()
+{
+    //可以把所有要动态申请的权限都写在这里
+    checkPermission("android.permission.CALL_PHONE");
+    checkPermission("android.permission.SEND_SMS");
+    checkPermission("android.permission.CAMERA");
+    checkPermission("android.permission.READ_EXTERNAL_STORAGE");
+    checkPermission("android.permission.WRITE_EXTERNAL_STORAGE");
+
+    checkPermission("android.permission.ACCESS_COARSE_LOCATION");
+    checkPermission("android.permission.BLUETOOTH");
+    checkPermission("android.permission.BLUETOOTH_SCAN");
+    checkPermission("android.permission.BLUETOOTH_CONNECT");
+    checkPermission("android.permission.BLUETOOTH_ADVERTISE");
+}
+
 void QUIHelper::initAll(bool utf8, bool style, int fontSize)
 {
+    //初始化安卓权限
+    QUIHelper::initAndroidPermission();
     //初始化随机数种子
     QUIHelper::initRand();
     //设置编码
     QUIHelper::setCode(utf8);
+    //设置字体
+    QUIHelper::setFont(fontSize);
     //设置样式风格
     if (style) {
         QUIHelper::setStyle();
     }
-    //设置字体
-    QUIHelper::setFont(fontSize);
+
     //设置翻译文件支持多个
     QUIHelper::setTranslator(":/qm/widgets.qm");
     QUIHelper::setTranslator(":/qm/qt_zh_CN.qm");
     QUIHelper::setTranslator(":/qm/designer_zh_CN.qm");
+
     //设置不使用本地系统环境代理配置
     QNetworkProxyFactory::setUseSystemConfiguration(false);
 }
 
-void QUIHelper::initMain(bool on)
+void QUIHelper::initMain(bool desktopSettingsAware, bool useOpenGLES)
 {
     //设置是否应用操作系统设置比如字体
-    QApplication::setDesktopSettingsAware(on);
+    QApplication::setDesktopSettingsAware(desktopSettingsAware);
 
 #ifdef Q_OS_ANDROID
 #if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
@@ -463,14 +547,17 @@ void QUIHelper::initMain(bool on)
     //设置opengl模式 AA_UseDesktopOpenGL(默认) AA_UseOpenGLES AA_UseSoftwareOpenGL
     //在一些很旧的设备上或者对opengl支持很低的设备上需要使用AA_UseOpenGLES表示禁用硬件加速
     //如果开启的是AA_UseOpenGLES则无法使用硬件加速比如ffmpeg的dxva2
-    //QApplication::setAttribute(Qt::AA_UseOpenGLES);
+    if (useOpenGLES) {
+        QApplication::setAttribute(Qt::AA_UseOpenGLES);
+    }
+
     //设置opengl共享上下文
     QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 #endif
 }
 
 QVector<int> QUIHelper::msgTypes = QVector<int>() << 0 << 1 << 2 << 3 << 4;
-QVector<QString> QUIHelper::msgKeys = QVector<QString>() << "发送" << "接收" << "解析" << "错误" << "提示";
+QVector<QString> QUIHelper::msgKeys = QVector<QString>() << QString::fromUtf8("发送") << QString::fromUtf8("接收") << QString::fromUtf8("解析") << QString::fromUtf8("错误") << QString::fromUtf8("提示");
 QVector<QColor> QUIHelper::msgColors = QVector<QColor>() << QColor("#3BA372") << QColor("#EE6668") << QColor("#9861B4") << QColor("#FA8359") << QColor("#22A3A9");
 QString QUIHelper::appendMsg(QTextEdit *textEdit, int type, const QString &data, int maxCount, int &currentCount, bool clear, bool pause)
 {
@@ -690,10 +777,10 @@ QString QUIHelper::getXorEncryptDecrypt(const QString &value, char key)
     return result;
 }
 
-uchar QUIHelper::getOrCode(const QByteArray &data)
+quint8 QUIHelper::getOrCode(const QByteArray &data)
 {
     int len = data.length();
-    uchar result = 0;
+    quint8 result = 0;
     for (int i = 0; i < len; ++i) {
         result ^= data.at(i);
     }
@@ -701,11 +788,11 @@ uchar QUIHelper::getOrCode(const QByteArray &data)
     return result;
 }
 
-uchar QUIHelper::getCheckCode(const QByteArray &data)
+quint8 QUIHelper::getCheckCode(const QByteArray &data)
 {
     int len = data.length();
-    uchar temp = 0;
-    for (uchar i = 0; i < len; ++i) {
+    quint8 temp = 0;
+    for (int i = 0; i < len; ++i) {
         temp += data.at(i);
     }
 
@@ -807,12 +894,85 @@ bool QUIHelper::checkIniFile(const QString &iniFile)
     return true;
 }
 
-QString QUIHelper::cutString(const QString &text, int len, int left, int right, const QString &mid)
+QString QUIHelper::cutString(const QString &text, int len, int left, int right, bool file, const QString &mid)
 {
-    //如果是文件名则取文件名的前字符+末尾字符+去掉拓展名
-    QString result = text.split(".").first();
+    //如果指定了字符串分割则表示是文件名需要去掉拓展名
+    QString result = text;
+    if (file && result.contains(".")) {
+        int index = result.lastIndexOf(".");
+        result = result.mid(0, index);
+    }
+
+    //最终字符串格式为 前缀字符...后缀字符
     if (result.length() > len) {
         result = QString("%1%2%3").arg(result.left(left)).arg(mid).arg(result.right(right));
     }
+
     return result;
+}
+
+QRect QUIHelper::getCenterRect(const QSize &imageSize, const QRect &widgetRect, int borderWidth, int scaleMode)
+{
+    QSize newSize = imageSize;
+    QSize widgetSize = widgetRect.size() - QSize(borderWidth * 1, borderWidth * 1);
+
+    if (scaleMode == 0) {
+        if (newSize.width() > widgetSize.width() || newSize.height() > widgetSize.height()) {
+            newSize.scale(widgetSize, Qt::KeepAspectRatio);
+        }
+    } else if (scaleMode == 1) {
+        newSize.scale(widgetSize, Qt::KeepAspectRatio);
+    } else {
+        newSize = widgetSize;
+    }
+
+    int x = widgetRect.center().x() - newSize.width() / 2;
+    int y = widgetRect.center().y() - newSize.height() / 2;
+    //不是2的倍数需要偏移1像素
+    x += (x % 2 == 0 ? 1 : 0);
+    y += (y % 2 == 0 ? 1 : 0);
+    return QRect(x, y, newSize.width(), newSize.height());
+}
+
+void QUIHelper::getScaledImage(QImage &image, const QSize &widgetSize, int scaleMode, bool fast)
+{
+    Qt::TransformationMode mode = fast ? Qt::FastTransformation : Qt::SmoothTransformation;
+    if (scaleMode == 0) {
+        if (image.width() > widgetSize.width() || image.height() > widgetSize.height()) {
+            image = image.scaled(widgetSize, Qt::KeepAspectRatio, mode);
+        }
+    } else if (scaleMode == 1) {
+        image = image.scaled(widgetSize, Qt::KeepAspectRatio, mode);
+    } else {
+        image = image.scaled(widgetSize, Qt::IgnoreAspectRatio, mode);
+    }
+}
+
+QString QUIHelper::getTimeString(qint64 time)
+{
+    time = time / 1000;
+    QString min = QString("%1").arg(time / 60, 2, 10, QChar('0'));
+    QString sec = QString("%2").arg(time % 60, 2, 10, QChar('0'));
+    return QString("%1:%2").arg(min).arg(sec);
+}
+
+QString QUIHelper::getTimeString(QElapsedTimer timer)
+{
+    return QString::number((float)timer.elapsed() / 1000, 'f', 3);
+}
+
+QString QUIHelper::getSizeString(quint64 size)
+{
+    float num = size;
+    QStringList list;
+    list << "KB" << "MB" << "GB" << "TB";
+
+    QString unit("bytes");
+    QStringListIterator i(list);
+    while (num >= 1024.0 && i.hasNext()) {
+        unit = i.next();
+        num /= 1024.0;
+    }
+
+    return QString("%1 %2").arg(QString::number(num, 'f', 2)).arg(unit);
 }

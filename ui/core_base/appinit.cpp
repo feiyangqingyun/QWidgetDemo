@@ -3,6 +3,7 @@
 #include "qapplication.h"
 #include "qevent.h"
 #include "qwidget.h"
+#include "qdebug.h"
 
 QScopedPointer<AppInit> AppInit::self;
 AppInit *AppInit::Instance()
@@ -23,7 +24,7 @@ AppInit::AppInit(QObject *parent) : QObject(parent)
 }
 
 bool AppInit::eventFilter(QObject *watched, QEvent *event)
-{
+{ 
     QWidget *w = (QWidget *)watched;
     if (!w->property("canMove").toBool()) {
         return QObject::eventFilter(watched, event);
