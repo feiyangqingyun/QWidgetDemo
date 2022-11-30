@@ -11,9 +11,9 @@
  * 6. 自动识别双击标题栏响应。
  * 7. 无边框拉伸在windows下不抖动。
  * 8. 在windows下具有移动到边缘半屏、移动到顶部全屏特性。
- * 9. 解决mac系统上无边框最小化最大化失效的BUG。
- * 10. 解决系统休眠后再次启动程序懵逼的BUG。
- * 11. 解决有时候窗体重新显示的时候假死不刷新的BUG。
+ * 9. 解决mac系统上无边框最小化最大化失效的bug。
+ * 10. 解决系统休眠后再次启动程序懵逼的bug。
+ * 11. 解决有时候窗体重新显示的时候假死不刷新的bug。
  * 12. 轻量级，1个代码文件，核心代码行数不到300行。
  * 13. 注释详细，示例完美，非常适合阅读和学习。
  * 14. 开源开箱即用，保证任意Qt版本可正常编译运行，无需任何调整。
@@ -41,7 +41,7 @@ protected:
     void doResizeEvent(QEvent *event);
     bool eventFilter(QObject *watched, QEvent *event);
 
-    //拦截系统事件用于修复系统休眠后唤醒程序的BUG
+    //拦截系统事件用于修复系统休眠后唤醒程序的bug
 #if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
     bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result);
 #else

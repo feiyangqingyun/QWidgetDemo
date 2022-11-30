@@ -30,7 +30,7 @@ FramelessDialog::FramelessDialog(QWidget *parent) : QDialog(parent)
     flags = this->windowFlags();
     titleBar = 0;
 
-    //设置背景透明 官方在5.3以后才彻底修复 WA_TranslucentBackground+FramelessWindowHint 并存不绘制的BUG
+    //设置背景透明 官方在5.3以后才彻底修复 WA_TranslucentBackground+FramelessWindowHint 并存不绘制的bug
 #if (QT_VERSION >= QT_VERSION_CHECK(5,3,0))
     this->setAttribute(Qt::WA_TranslucentBackground);
 #endif
@@ -50,7 +50,7 @@ FramelessDialog::FramelessDialog(QWidget *parent) : QDialog(parent)
 
 void FramelessDialog::showEvent(QShowEvent *event)
 {
-    //解决有时候窗体重新显示的时候假死不刷新的BUG
+    //解决有时候窗体重新显示的时候假死不刷新的bug
     setAttribute(Qt::WA_Mapped);
     QDialog::showEvent(event);
 }
@@ -69,7 +69,7 @@ void FramelessDialog::doWindowStateChange(QEvent *event)
     //发出最大化最小化等改变事件,以便界面上更改对应的信息比如右上角图标和文字
     emit windowStateChange(!moveEnable);
 
-    //解决mac系统上无边框最小化失效的BUG
+    //解决mac系统上无边框最小化失效的bug
 #ifdef Q_OS_MACOS
     if (windowState() & Qt::WindowMinimized) {
         isMin = true;

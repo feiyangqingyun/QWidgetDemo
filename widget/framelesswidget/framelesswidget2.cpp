@@ -28,7 +28,7 @@ bool FramelessWidget2::eventFilter(QObject *watched, QEvent *event)
 {
     if (widget != 0 && watched == widget) {
         if (event->type() == QEvent::WindowStateChange) {
-            //解决mac系统上无边框最小化失效的BUG
+            //解决mac系统上无边框最小化失效的bug
 #ifdef Q_OS_MACOS
             if (widget->windowState() & Qt::WindowMinimized) {
                 isMin = true;
