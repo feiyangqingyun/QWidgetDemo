@@ -13,7 +13,7 @@ MoveWidget::MoveWidget(QObject *parent) : QObject(parent)
 
 bool MoveWidget::eventFilter(QObject *watched, QEvent *event)
 {
-    if (widget != 0 && watched == widget) {
+    if (widget && watched == widget) {
         QMouseEvent *mouseEvent = (QMouseEvent *)event;
         if (mouseEvent->type() == QEvent::MouseButtonPress) {
             //如果限定了只能鼠标左键拖动则判断当前是否是鼠标左键
@@ -38,7 +38,7 @@ bool MoveWidget::eventFilter(QObject *watched, QEvent *event)
                 bool xyOut = (x + widget->width() < offset || y + widget->height() < offset);
                 bool whOut = false;
                 QWidget *w = (QWidget *)widget->parent();
-                if (w != 0) {
+                if (w) {
                     whOut = (w->width() - x < offset || w->height() - y < offset);
                 }
                 if (xyOut || whOut) {

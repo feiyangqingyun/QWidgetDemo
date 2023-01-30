@@ -37,7 +37,7 @@ void VideoBox::addMenu(QMenu *menu, int type)
 
     //超过一个子元素则添加子菜单
     QMenu *menuSub;
-    if (flags.count() > 1) {
+    if (flags.size() > 1) {
         menuSub = menu->addMenu(name);
     } else {
         menuSub = menu;
@@ -50,7 +50,7 @@ void VideoBox::addMenu(QMenu *menu, int type)
 
         //对应菜单文本
         QString text = QString("%1%2-%1%3").arg(actionFlag).arg(start).arg(end);
-        if (flags.count() == 1) {
+        if (flags.size() == 1) {
             text = name;
         }
 
@@ -76,7 +76,7 @@ void VideoBox::setLayout(QGridLayout *gridLayout)
 void VideoBox::setWidgets(QWidgetList widgets)
 {
     this->widgets = widgets;
-    this->videoCount = widgets.count();
+    this->videoCount = widgets.size();
 }
 
 void VideoBox::setMenuFlag(const QString &menuFlag)
@@ -97,7 +97,7 @@ void VideoBox::setTypes(const QMap<int, QStringList> &types)
 void VideoBox::initMenu(QMenu *menu, const QList<bool> &enable)
 {
     //通过菜单是否可见设置每个菜单可见与否
-    if (enable.count() < 9) {
+    if (enable.size() < 9) {
         return;
     }
 
@@ -209,7 +209,7 @@ void VideoBox::change_video_normal(int index, int flag)
 {
     //首先隐藏所有通道
     hide_video_all();
-    int count = 0;
+    int size = 0;
     int row = 0;
     int column = 0;
 
@@ -221,7 +221,7 @@ void VideoBox::change_video_normal(int index, int flag)
             gridLayout->addWidget(widgets.at(i), row, column);
             widgets.at(i)->setVisible(true);
 
-            count++;
+            size++;
             column++;
             if (column == flag) {
                 row++;
@@ -229,7 +229,7 @@ void VideoBox::change_video_normal(int index, int flag)
             }
         }
 
-        if (count == (flag * flag)) {
+        if (size == (flag * flag)) {
             break;
         }
     }
@@ -255,7 +255,7 @@ void VideoBox::change_video_custom(int index, int type)
 void VideoBox::change_video_6(const QList<int> &indexs)
 {
     //过滤防止索引越界
-    if (indexs.count() < 6) {
+    if (indexs.size() < 6) {
         return;
     }
 
@@ -277,7 +277,7 @@ void VideoBox::change_video_6(const QList<int> &indexs)
 void VideoBox::change_video_8(const QList<int> &indexs)
 {
     //过滤防止索引越界
-    if (indexs.count() < 8) {
+    if (indexs.size() < 8) {
         return;
     }
 
@@ -301,7 +301,7 @@ void VideoBox::change_video_8(const QList<int> &indexs)
 void VideoBox::change_video_13(const QList<int> &indexs)
 {
     //过滤防止索引越界
-    if (indexs.count() < 13) {
+    if (indexs.size() < 13) {
         return;
     }
 

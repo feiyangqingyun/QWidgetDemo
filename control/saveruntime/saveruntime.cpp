@@ -28,7 +28,7 @@ SaveRunTime::SaveRunTime(QObject *parent) : QObject(parent)
     path = qApp->applicationDirPath();
     QString str = qApp->applicationFilePath();
     QStringList list = str.split("/");
-    name = list.at(list.count() - 1).split(".").at(0);
+    name = list.at(list.size() - 1).split(".").at(0);
 
     saveInterval = 1 * 60 * 1000;
     startTime = QDateTime::currentDateTime();
@@ -187,7 +187,7 @@ void SaveRunTime::saveLog()
         //重新清空文件
         file.resize(0);
         //如果行数小于2则返回
-        if (content.count() < 2) {
+        if (content.size() < 2) {
             file.close();
             return;
         }
@@ -206,7 +206,7 @@ void SaveRunTime::saveLog()
         lastLine = list.join("\t");
 
         //重新替换最后一行并写入新的数据
-        content[content.count() - 1] = lastLine;
+        content[content.size() - 1] = lastLine;
 
         QTextStream stream(&file);
         stream << content.join("") << "\n";

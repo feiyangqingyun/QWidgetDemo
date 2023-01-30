@@ -109,7 +109,7 @@ void VideoWindow::initFlowPanel()
     if (!fontDb.families().contains("iconfont")) {
         int fontId = fontDb.addApplicationFont(":/font/iconfont.ttf");
         QStringList fontName = fontDb.applicationFontFamilies(fontId);
-        if (fontName.count() == 0) {
+        if (fontName.size() == 0) {
             qDebug() << "load iconfont.ttf error";
         }
     }
@@ -124,7 +124,7 @@ void VideoWindow::initFlowPanel()
 #endif
 
     //循环添加顶部按钮
-    for (int i = 0; i < btns.count(); ++i) {
+    for (int i = 0; i < btns.size(); ++i) {
         QPushButton *btn = new QPushButton;
         //绑定按钮单击事件,用来发出信号通知
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(btnClicked()));
@@ -208,7 +208,7 @@ void VideoWindow::dropEvent(QDropEvent *event)
         url = event->mimeData()->urls().first().toLocalFile();
     } else if (event->mimeData()->hasFormat("application/x-qabstractitemmodeldatalist")) {
         QTreeWidget *treeWidget = (QTreeWidget *)event->source();
-        if (treeWidget != 0) {
+        if (treeWidget) {
             url = treeWidget->currentItem()->data(0, Qt::UserRole).toString();
         }
     }

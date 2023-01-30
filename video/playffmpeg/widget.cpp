@@ -7,7 +7,7 @@ Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
     ui->setupUi(this);
 
     QStringList urls;
-    urls << "https://hls01open.ys7.com/openlive/6e0b2be040a943489ef0b9bb344b96b8.hd.m3u8";
+    urls << "f:/1.mp4";
     urls << "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov";
     urls << "http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4";
     urls << "rtsp://admin:Admin123456@192.168.0.15:554/media/video1";

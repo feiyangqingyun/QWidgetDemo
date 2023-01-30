@@ -16,6 +16,7 @@ class QScrollArea;
 class QFrame;
 class QVBoxLayout;
 class QGridLayout;
+class QSpacerItem;
 
 #ifdef quc
 class Q_DECL_EXPORT PanelWidget : public QWidget
@@ -43,6 +44,8 @@ private:
     QFrame *frame;                  //放置设备的框架,自动变宽变高
     QVBoxLayout *verticalLayout;    //设备面板总布局
     QGridLayout *gridLayout;        //设备表格布局
+    QSpacerItem *hSpacer;           //横向弹簧
+    QSpacerItem *vSpacer;           //垂直弹簧
 
     int margin;                     //边距
     int space;                      //设备之间的间隔

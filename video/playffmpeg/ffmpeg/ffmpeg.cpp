@@ -253,7 +253,7 @@ void FFmpegThread::run()
                     continue;
                 }
 
-                frameFinish = avcodec_receive_frame(videoCodec, avFrame2);                
+                frameFinish = avcodec_receive_frame(videoCodec, avFrame2);
                 if (frameFinish < 0) {
                     continue;
                 }
@@ -383,7 +383,16 @@ void FFmpegWidget::paintEvent(QPaintEvent *)
 
     //qDebug() << TIMEMS << "paintEvent" << objectName();
     QPainter painter(this);
+#if 0
+    //image = image.scaled(this->size(), Qt::KeepAspectRatio);
+    //按照比例自动居中绘制
+    int pixX = rect().center().x() - image.width() / 2;
+    int pixY = rect().center().y() - image.height() / 2;
+    QPoint point(pixX, pixY);
+    painter.drawImage(point, image);
+#else
     painter.drawImage(this->rect(), image);
+#endif
 }
 
 void FFmpegWidget::updateImage(const QImage &image)

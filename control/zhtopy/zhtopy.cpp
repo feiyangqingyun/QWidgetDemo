@@ -250,7 +250,7 @@ void ZhToPY::loadPY(const QString &fileName)
 
 QString ZhToPY::zhToPY(const QString &chinese)
 {
-    if (listPY.count() == 0) {
+    if (listPY.size() == 0) {
         return "";
     }
 

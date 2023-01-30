@@ -114,7 +114,7 @@ SaveLog::SaveLog(QObject *parent) : QObject(parent)
     //默认取应用程序可执行文件名称
     QString str = qApp->applicationFilePath();
     QStringList list = str.split("/");
-    name = list.at(list.count() - 1).split(".").at(0);
+    name = list.at(list.size() - 1).split(".").at(0);
     fileName = "";
 
     //默认所有类型都输出

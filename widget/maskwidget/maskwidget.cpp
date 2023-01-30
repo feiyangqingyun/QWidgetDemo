@@ -71,7 +71,7 @@ void MaskWidget::setBgColor(const QColor &bgColor)
 
 void MaskWidget::showEvent(QShowEvent *)
 {
-    if (mainWidget != 0) {
+    if (mainWidget) {
         this->setGeometry(mainWidget->geometry());
     }
 }
@@ -91,7 +91,7 @@ bool MaskWidget::eventFilter(QObject *obj, QEvent *event)
         }
     } else if (event->type() == QEvent::WindowActivate) {
         //当主窗体激活时,同时激活遮罩层
-        if (mainWidget != 0) {
+        if (mainWidget) {
             if (obj->objectName() == mainWidget->objectName()) {
                 if (this->isVisible()) {
                     this->activateWindow();

@@ -30,6 +30,9 @@ PanelWidget::PanelWidget(QWidget *parent) : QWidget(parent)
     scrollArea->setWidget(scrollAreaContents);
     frame->setStyleSheet("QFrame#frameMain{border-width:0px;}");
 
+    hSpacer = new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Minimum);
+    vSpacer = new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
     margin = 0;
     space = 0;
     autoWidth = false;
@@ -133,11 +136,15 @@ void PanelWidget::loadWidgets()
     int column = 0;
     int index = 0;
 
-    //先把之前的所有移除并不可见
+    //先把之前的所有移除并不可见    
     foreach (QWidget *widget, widgets) {
         gridLayout->removeWidget(widget);
         widget->setVisible(false);
     }
+
+    //移除所有弹簧
+    gridLayout->removeItem(hSpacer);
+    gridLayout->removeItem(vSpacer);
 
     //重新添加到布局中并可见
     foreach (QWidget *widget, widgets) {
@@ -156,13 +163,11 @@ void PanelWidget::loadWidgets()
 
     //设置右边弹簧
     if (!autoWidth) {
-        QSpacerItem *hSpacer = new QSpacerItem(1, 1, QSizePolicy::Expanding, QSizePolicy::Minimum);
         gridLayout->addItem(hSpacer, 0, gridLayout->columnCount());
     }
 
     //设置底边弹簧
     if (!autoHeight) {
-        QSpacerItem *vSpacer = new QSpacerItem(1, 1, QSizePolicy::Minimum, QSizePolicy::Expanding);
         gridLayout->addItem(vSpacer, row, 0);
     }
 }

@@ -17,7 +17,7 @@ LunarCalendarWidget::LunarCalendarWidget(QWidget *parent) : QWidget(parent)
     if (!fontDb.families().contains("FontAwesome")) {
         int fontId = fontDb.addApplicationFont(":/font/fontawesome-webfont.ttf");
         QStringList fontName = fontDb.applicationFontFamilies(fontId);
-        if (fontName.count() == 0) {
+        if (fontName.size() == 0) {
             qDebug() << "load fontawesome-webfont.ttf error";
         }
     }

@@ -319,7 +319,7 @@ bool FramelessDialog::nativeEvent(const QByteArray &eventType, void *message, lo
             }
 
             //识别标题栏拖动产生半屏全屏效果
-            if (titleBar != 0 && titleBar->rect().contains(pos)) {
+            if (titleBar && titleBar->rect().contains(pos)) {
                 QWidget *child = titleBar->childAt(pos);
                 if (!child) {
                     *result = HTCAPTION;
