@@ -1145,15 +1145,15 @@ void QCPLayer::drawToPaintBuffer()
             if (painter->isActive()) {
                 draw(painter);
             } else {
-                qDebug() << Q_FUNC_INFO << "paint buffer returned inactive painter";
+                //qDebug() << Q_FUNC_INFO << "paint buffer returned inactive painter";
             }
             delete painter;
             mPaintBuffer.data()->donePainting();
         } else {
-            qDebug() << Q_FUNC_INFO << "paint buffer returned zero painter";
+            //qDebug() << Q_FUNC_INFO << "paint buffer returned zero painter";
         }
     } else {
-        qDebug() << Q_FUNC_INFO << "no valid paint buffer associated with this layer";
+        //qDebug() << Q_FUNC_INFO << "no valid paint buffer associated with this layer";
     }
 }
 

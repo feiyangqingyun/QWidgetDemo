@@ -109,7 +109,7 @@ void VideoWindow::initFlowPanel()
     if (!fontDb.families().contains("iconfont")) {
         int fontId = fontDb.addApplicationFont(":/font/iconfont.ttf");
         QStringList fontName = fontDb.applicationFontFamilies(fontId);
-        if (fontName.size() == 0) {
+        if (fontName.count() == 0) {
             qDebug() << "load iconfont.ttf error";
         }
     }
@@ -124,7 +124,7 @@ void VideoWindow::initFlowPanel()
 #endif
 
     //循环添加顶部按钮
-    for (int i = 0; i < btns.size(); ++i) {
+    for (int i = 0; i < btns.count(); ++i) {
         QPushButton *btn = new QPushButton;
         //绑定按钮单击事件,用来发出信号通知
         connect(btn, SIGNAL(clicked(bool)), this, SLOT(btnClicked()));

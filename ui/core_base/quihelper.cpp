@@ -9,7 +9,7 @@ int QUIHelper::getScreenIndex()
     //需要对多个屏幕进行处理
     int screenIndex = 0;
 #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
-    int screenCount = qApp->screens().count();
+    int screenCount = qApp->screens().size();
 #else
     int screenCount = qApp->desktop()->screenCount();
 #endif
@@ -136,10 +136,11 @@ QString QUIHelper::appName()
     static QString name;
     if (name.isEmpty()) {
         name = qApp->applicationFilePath();
-        //下面的方法主要为了过滤安卓的路径 lib程序名_armeabi-v7a
+        //下面的方法主要为了过滤安卓的路径 lib程序名_armeabi-v7a/lib程序名_arm64-v8a
         QStringList list = name.split("/");
-        name = list.at(list.count() - 1).split(".").at(0);
+        name = list.at(list.size() - 1).split(".").at(0);
         name.replace("_armeabi-v7a", "");
+        name.replace("_arm64-v8a", "");
     }
 
     return name;
@@ -165,7 +166,7 @@ QString QUIHelper::appPath()
 QStringList QUIHelper::getLocalIPs()
 {
     static QStringList ips;
-    if (ips.count() == 0) {
+    if (ips.size() == 0) {
 #ifdef Q_OS_WASM
         ips << "127.0.0.1";
 #else
@@ -206,7 +207,7 @@ QList<QColor> QUIHelper::colors = QList<QColor>();
 QList<QColor> QUIHelper::getColorList()
 {
     //备用颜色集合 可以自行添加
-    if (colors.count() == 0) {
+    if (colors.size() == 0) {
         colors << QColor(0, 176, 180) << QColor(0, 113, 193) << QColor(255, 192, 0);
         colors << QColor(72, 103, 149) << QColor(185, 87, 86) << QColor(0, 177, 125);
         colors << QColor(214, 77, 84) << QColor(71, 164, 233) << QColor(34, 163, 169);
@@ -230,7 +231,7 @@ QStringList QUIHelper::getColorNames()
 QColor QUIHelper::getRandColor()
 {
     QList<QColor> colors = getColorList();
-    int index = getRandValue(0, colors.count(), true);
+    int index = getRandValue(0, colors.size(), true);
     return colors.at(index);
 }
 
@@ -380,7 +381,7 @@ QFont QUIHelper::addFont(const QString &fontFile, const QString &fontName)
     if (!fontDb.families().contains(fontName)) {
         int fontId = fontDb.addApplicationFont(fontFile);
         QStringList listName = fontDb.applicationFontFamilies(fontId);
-        if (listName.count() == 0) {
+        if (listName.size() == 0) {
             qDebug() << QString("load %1 error").arg(fontName);
         }
     }
@@ -458,9 +459,11 @@ void QUIHelper::setTranslator(const QString &qmFile)
 }
 
 #ifdef Q_OS_ANDROID
-//Qt6中将相关类移到了core模块而且名字变了
 #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
 #include <QtAndroidExtras>
+#else
+//Qt6中将相关类移到了core模块而且名字变了
+#include <QtCore/private/qandroidextras_p.h>
 #endif
 #endif
 
@@ -475,6 +478,11 @@ bool QUIHelper::checkPermission(const QString &permission)
         if (result == QtAndroid::PermissionResult::Denied) {
             return false;
         }
+    }
+#else
+    QFuture<QtAndroidPrivate::PermissionResult> result = QtAndroidPrivate::requestPermission(permission);
+    if (result.resultAt(0) == QtAndroidPrivate::PermissionResult::Denied) {
+        return false;
     }
 #endif
 #endif
@@ -544,6 +552,26 @@ void QUIHelper::initMain(bool desktopSettingsAware, bool useOpenGLES)
 #endif
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5,4,0))
+    //win上获取显卡是否被禁用(禁用则必须启用OpenGLES)
+#ifdef Q_OS_WIN
+    QProcess p;
+    QStringList args;
+    args << "path" << "win32_VideoController" << "get" << "name,Status";
+    p.start("wmic", args);
+    p.waitForFinished(1000);
+    QString result = QString::fromLocal8Bit(p.readAllStandardOutput());
+    result.replace("\r", "");
+    result.replace("\n", "");
+    result = result.simplified();
+    result = result.trimmed();
+    //Name Status Intel(R) UHD Graphics 630 OK
+    //Name Status Intel(R) UHD Graphics 630 Error
+    //QStringList list = result.split(" ");
+    if (result.contains("Error")) {
+        useOpenGLES = true;
+    }
+#endif
+
     //设置opengl模式 AA_UseDesktopOpenGL(默认) AA_UseOpenGLES AA_UseSoftwareOpenGL
     //在一些很旧的设备上或者对opengl支持很低的设备上需要使用AA_UseOpenGLES表示禁用硬件加速
     //如果开启的是AA_UseOpenGLES则无法使用硬件加速比如ffmpeg的dxva2
@@ -619,41 +647,41 @@ void QUIHelper::setFramelessForm(QWidget *widgetMain, bool tool, bool top, bool 
     }
 }
 
-int QUIHelper::showMessageBox(const QString &info, int type, int closeSec, bool exec)
+int QUIHelper::showMessageBox(const QString &text, int type, int closeSec, bool exec)
 {
     int result = 0;
     if (type == 0) {
-        showMessageBoxInfo(info, closeSec, exec);
+        showMessageBoxInfo(text, closeSec, exec);
     } else if (type == 1) {
-        showMessageBoxError(info, closeSec, exec);
+        showMessageBoxError(text, closeSec, exec);
     } else if (type == 2) {
-        result = showMessageBoxQuestion(info);
+        result = showMessageBoxQuestion(text);
     }
 
     return result;
 }
 
-void QUIHelper::showMessageBoxInfo(const QString &info, int closeSec, bool exec)
+void QUIHelper::showMessageBoxInfo(const QString &text, int closeSec, bool exec)
 {
-    QMessageBox box(QMessageBox::Information, "提示", info);
+    QMessageBox box(QMessageBox::Information, "提示", text);
     box.setStandardButtons(QMessageBox::Yes);
     box.setButtonText(QMessageBox::Yes, QString("确 定"));
     box.exec();
     //QMessageBox::information(0, "提示", info, QMessageBox::Yes);
 }
 
-void QUIHelper::showMessageBoxError(const QString &info, int closeSec, bool exec)
+void QUIHelper::showMessageBoxError(const QString &text, int closeSec, bool exec)
 {
-    QMessageBox box(QMessageBox::Critical, "错误", info);
+    QMessageBox box(QMessageBox::Critical, "错误", text);
     box.setStandardButtons(QMessageBox::Yes);
     box.setButtonText(QMessageBox::Yes, QString("确 定"));
     box.exec();
     //QMessageBox::critical(0, "错误", info, QMessageBox::Yes);
 }
 
-int QUIHelper::showMessageBoxQuestion(const QString &info)
+int QUIHelper::showMessageBoxQuestion(const QString &text)
 {
-    QMessageBox box(QMessageBox::Question, "询问", info);
+    QMessageBox box(QMessageBox::Question, "询问", text);
     box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     box.setButtonText(QMessageBox::Yes, QString("确 定"));
     box.setButtonText(QMessageBox::No, QString("取 消"));
@@ -770,8 +798,8 @@ QString QUIHelper::getXorEncryptDecrypt(const QString &value, char key)
         result = result.mid(8, result.length() - 9);
     }
 
-    int count = result.count();
-    for (int i = 0; i < count; ++i) {
+    int size = result.size();
+    for (int i = 0; i < size; ++i) {
         result[i] = QChar(result.at(i).toLatin1() ^ key);
     }
     return result;
@@ -873,7 +901,7 @@ bool QUIHelper::checkIniFile(const QString &iniFile)
             line.replace("\n", "");
             QStringList list = line.split("=");
 
-            if (list.count() == 2) {
+            if (list.size() == 2) {
                 QString key = list.at(0);
                 QString value = list.at(1);
                 if (value.isEmpty()) {

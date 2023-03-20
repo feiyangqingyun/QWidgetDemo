@@ -2,6 +2,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += printsupport
 greaterThan(QT_MAJOR_VERSION, 4): CONFIG += c++11
 #lessThan(QT_MAJOR_VERSION, 5): QMAKE_CXXFLAGS += -std=c++11
 
+#将当前目录加入到头文件路径
+INCLUDEPATH += $$PWD
 DEFINES += qcustomplot
 
 #引入平滑曲线类

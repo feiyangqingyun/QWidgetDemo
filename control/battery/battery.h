@@ -27,7 +27,9 @@ class Battery : public QWidget
     Q_PROPERTY(double value READ getValue WRITE setValue)
     Q_PROPERTY(double alarmValue READ getAlarmValue WRITE setAlarmValue)
 
-    Q_PROPERTY(double step READ getStep WRITE setStep)
+    Q_PROPERTY(bool animation READ getAnimation WRITE setAnimation)
+    Q_PROPERTY(double animationStep READ getAnimationStep WRITE setAnimationStep)
+
     Q_PROPERTY(int borderWidth READ getBorderWidth WRITE setBorderWidth)
     Q_PROPERTY(int borderRadius READ getBorderRadius WRITE setBorderRadius)
     Q_PROPERTY(int bgRadius READ getBgRadius WRITE setBgRadius)
@@ -61,7 +63,9 @@ private:
     double value;                   //目标电量
     double alarmValue;              //电池电量警戒值
 
-    double step;                    //每次移动的步长
+    bool animation;                 //是否启用动画显示
+    double animationStep;           //动画显示时步长
+
     int borderWidth;                //边框粗细
     int borderRadius;               //边框圆角角度
     int bgRadius;                   //背景进度圆角角度
@@ -87,7 +91,9 @@ public:
     double getValue()               const;
     double getAlarmValue()          const;
 
-    double getStep()                const;
+    bool getAnimation()             const;
+    double getAnimationStep()       const;
+
     int getBorderWidth()            const;
     int getBorderRadius()           const;
     int getBgRadius()               const;
@@ -122,9 +128,10 @@ public Q_SLOTS:
     void setAlarmValue(double alarmValue);
     void setAlarmValue(int alarmValue);
 
-    //设置步长
-    void setStep(double step);
-    void setStep(int step);
+    //设置是否启用动画显示
+    void setAnimation(bool animation);
+    //设置动画显示的步长
+    void setAnimationStep(double animationStep);
 
     //设置边框粗细
     void setBorderWidth(int borderWidth);

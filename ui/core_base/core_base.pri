@@ -2,6 +2,8 @@ QT += network
 greaterThan(QT_MAJOR_VERSION, 4) {
 lessThan(QT_MAJOR_VERSION, 6) {
 android {QT += androidextras}
+} else {
+QT += core-private
 }}
 
 #指定编译产生的文件分门别类放到对应目录

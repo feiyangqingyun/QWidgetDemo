@@ -218,7 +218,7 @@ void DeviceSizeTable::checkSize(const QString &result, const QString &name)
     QStringList list = result.split(" ");
     int index = 0;
 
-    for (int i = 0; i < list.size(); ++i) {
+    for (int i = 0; i < list.count(); ++i) {
         QString s = list.at(i).trimmed();
         if (s.isEmpty()) {
             continue;

@@ -88,13 +88,13 @@ public:
     static void setFramelessForm(QWidget *widgetMain, bool tool = false, bool top = false, bool menu = true);
 
     //弹出框
-    static int showMessageBox(const QString &info, int type = 0, int closeSec = 0, bool exec = false);
+    static int showMessageBox(const QString &text, int type = 0, int closeSec = 0, bool exec = false);
     //弹出消息框
-    static void showMessageBoxInfo(const QString &info, int closeSec = 0, bool exec = false);
+    static void showMessageBoxInfo(const QString &text, int closeSec = 0, bool exec = false);
     //弹出错误框
-    static void showMessageBoxError(const QString &info, int closeSec = 0, bool exec = false);
+    static void showMessageBoxError(const QString &text, int closeSec = 0, bool exec = false);
     //弹出询问框
-    static int showMessageBoxQuestion(const QString &info);
+    static int showMessageBoxQuestion(const QString &text);
 
     //为什么还要自定义对话框因为可控宽高和汉化对应文本等
     //初始化对话框文本

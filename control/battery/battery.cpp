@@ -11,7 +11,9 @@ Battery::Battery(QWidget *parent) : QWidget(parent)
     maxValue = 100;
     value = 0;
     alarmValue = 30;
-    step = 0.5;
+
+    animation = true;
+    animationStep = 0.5;
 
     borderWidth = 5;
     borderRadius = 8;
@@ -91,7 +93,7 @@ void Battery::drawBg(QPainter *painter)
     }
 
     int margin = qMin(width(), height()) / 20;
-    double unit = (batteryRect.width() - (margin * 2)) / 100;
+    double unit = (batteryRect.width() - (margin * 2)) / (maxValue - minValue);
     double width = currentValue * unit;
     QPointF topLeft(batteryRect.topLeft().x() + margin, batteryRect.topLeft().y() + margin);
     QPointF bottomRight(width + margin + borderWidth, batteryRect.bottomRight().y() - margin);
@@ -126,13 +128,13 @@ void Battery::drawHead(QPainter *painter)
 void Battery::updateValue()
 {
     if (isForward) {
-        currentValue -= step;
+        currentValue -= animationStep;
         if (currentValue <= value) {
             currentValue = value;
             timer->stop();
         }
     } else {
-        currentValue += step;
+        currentValue += animationStep;
         if (currentValue >= value) {
             currentValue = value;
             timer->stop();
@@ -162,9 +164,14 @@ double Battery::getAlarmValue() const
     return this->alarmValue;
 }
 
-double Battery::getStep() const
+bool Battery::getAnimation() const
 {
-    return this->step;
+    return this->animation;
+}
+
+double Battery::getAnimationStep() const
+{
+    return this->animationStep;
 }
 
 int Battery::getBorderWidth() const
@@ -288,10 +295,14 @@ void Battery::setValue(double value)
     }
 
     this->value = value;
-    this->update();
     emit valueChanged(value);
-    timer->stop();
-    timer->start();
+    if (animation) {
+        timer->stop();
+        timer->start();
+    } else {
+        this->currentValue = value;
+        this->update();
+    }
 }
 
 void Battery::setValue(int value)
@@ -312,17 +323,20 @@ void Battery::setAlarmValue(int alarmValue)
     setAlarmValue((double)alarmValue);
 }
 
-void Battery::setStep(double step)
+void Battery::setAnimation(bool animation)
 {
-    if (this->step != step) {
-        this->step = step;
+    if (this->animation != animation) {
+        this->animation = animation;
         this->update();
     }
 }
 
-void Battery::setStep(int step)
+void Battery::setAnimationStep(double animationStep)
 {
-    setStep((double)step);
+    if (this->animationStep != animationStep) {
+        this->animationStep = animationStep;
+        this->update();
+    }
 }
 
 void Battery::setBorderWidth(int borderWidth)

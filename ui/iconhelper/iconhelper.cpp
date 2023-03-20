@@ -136,7 +136,7 @@ IconHelper::IconHelper(const QString &fontFile, const QString &fontName, QObject
     if (!fontDb.families().contains(fontName) && QFile(fontFile).exists()) {
         int fontId = fontDb.addApplicationFont(fontFile);
         QStringList listName = fontDb.applicationFontFamilies(fontId);
-        if (listName.size() == 0) {
+        if (listName.count() == 0) {
             qDebug() << QString("load %1 error").arg(fontName);
         }
     }
@@ -265,8 +265,8 @@ void IconHelper::setStyle1(QWidget *widget, QList<QToolButton *> btns, QList<int
 
 void IconHelper::setStyle1(QWidget *widget, QList<QAbstractButton *> btns, QList<int> icons, const IconHelper::StyleColor &styleColor)
 {
-    int btnCount = btns.size();
-    int iconCount = icons.size();
+    int btnCount = btns.count();
+    int iconCount = icons.count();
     if (btnCount <= 0 || iconCount <= 0 || btnCount != iconCount) {
         return;
     }
@@ -329,7 +329,7 @@ void IconHelper::setStyle1(QWidget *widget, QList<QAbstractButton *> btns, QList
 
     //可能会重复调用设置所以先要移除上一次的
     for (int i = 0; i < btnCount; ++i) {
-        for (int j = 0; j < this->btns.size(); j++) {
+        for (int j = 0; j < this->btns.count(); j++) {
             if (this->btns.at(j) == btns.at(i)) {
                 disconnect(btns.at(i), SIGNAL(toggled(bool)), this, SLOT(toggled(bool)));
                 this->btns.at(j)->removeEventFilter(this);
