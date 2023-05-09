@@ -71,6 +71,9 @@ private:
     bool showOverlay;               //是否显示遮罩层
     QColor overlayColor;            //遮罩层颜色
 
+    bool pressed;                   //鼠标是否按下
+    QPoint lastPoint;               //鼠标最后按下坐标
+
     bool isAlarm;                   //是否报警
     QTimer *timerAlarm;             //定时器切换颜色
 
@@ -147,6 +150,10 @@ public Q_SLOTS:
     void startAlarm();
     void stopAlarm();
     void alarm();
+
+Q_SIGNALS:
+    //单击信号
+    void clicked();
 };
 
 #endif // LIGHTBUTTON_H

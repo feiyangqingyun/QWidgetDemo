@@ -27,6 +27,7 @@ LightButton::LightButton(QWidget *parent) : QWidget(parent)
     overlayColor = QColor(255, 255, 255);
 
     canMove = false;
+    pressed = false;
     this->installEventFilter(this);
 
     isAlarm = false;
@@ -37,23 +38,21 @@ LightButton::LightButton(QWidget *parent) : QWidget(parent)
 
 bool LightButton::eventFilter(QObject *watched, QEvent *event)
 {
-    if (canMove) {
-        static QPoint lastPoint;
-        static bool pressed = false;
-        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-
-        if (mouseEvent->type() == QEvent::MouseButtonPress) {
-            if (this->rect().contains(mouseEvent->pos()) && (mouseEvent->button() == Qt::LeftButton)) {
-                lastPoint = mouseEvent->pos();
-                pressed = true;
-            }
-        } else if (mouseEvent->type() == QEvent::MouseMove && pressed) {
+    QMouseEvent *mouseEvent = (QMouseEvent *)event;
+    if (mouseEvent->type() == QEvent::MouseButtonPress) {
+        if (this->rect().contains(mouseEvent->pos()) && (mouseEvent->button() == Qt::LeftButton)) {
+            lastPoint = mouseEvent->pos();
+            pressed = true;
+        }
+    } else if (mouseEvent->type() == QEvent::MouseMove && pressed) {
+        if (canMove) {
             int dx = mouseEvent->pos().x() - lastPoint.x();
             int dy = mouseEvent->pos().y() - lastPoint.y();
             this->move(this->x() + dx, this->y() + dy);
-        } else if (mouseEvent->type() == QEvent::MouseButtonRelease && pressed) {
-            pressed = false;
         }
+    } else if (mouseEvent->type() == QEvent::MouseButtonRelease && pressed) {
+        pressed = false;
+        emit clicked();
     }
 
     return QWidget::eventFilter(watched, event);
