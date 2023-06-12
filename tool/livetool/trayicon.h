@@ -45,6 +45,8 @@ public Q_SLOTS:
 
     //设置所属主窗体
     void setMainWidget(QWidget *mainWidget);
+    //显示主窗体
+    void showMainWidget();
 
     //显示消息
     void showMessage(const QString &title, const QString &msg,
