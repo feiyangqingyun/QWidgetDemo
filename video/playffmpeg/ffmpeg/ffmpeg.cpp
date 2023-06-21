@@ -231,6 +231,7 @@ bool FFmpegThread::init()
 
 void FFmpegThread::run()
 {
+    qint64 startTime = av_gettime();
     while (!stopped) {
         //根据标志位执行初始化操作
         if (isPlay) {
@@ -270,16 +271,25 @@ void FFmpegThread::run()
                         emit receiveImage(image);
                     }
 
-                    msleep(1);
+                    usleep(1);
                 }
+#if 1
+                //延时(不然文件会立即全部播放完)
+                AVRational timeBase = {1, AV_TIME_BASE};
+                int64_t ptsTime = av_rescale_q(avPacket->dts, avFormatContext->streams[videoStreamIndex]->time_base, timeBase);
+                int64_t nowTime = av_gettime() - startTime;
+                if (ptsTime > nowTime) {
+                    av_usleep(ptsTime - nowTime);
+                }
+#endif
             } else if (index == audioStreamIndex) {
-                //解码音频流,这里暂不处理,以后交给sdl播放
+                //解码音频流,自行处理
             }
         }
 
         av_packet_unref(avPacket);
         av_freep(avPacket);
-        msleep(1);
+        usleep(1);
     }
 
     //线程结束后释放资源

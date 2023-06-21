@@ -6,10 +6,10 @@ Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
 {
     ui->setupUi(this);
 
+    //本示例支持的是rtsp视频流(其他的一概不支持/没有做音视频同步)
     QStringList urls;
-    urls << "f:/1.mp4";
-    urls << "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov";
-    urls << "http://vfx.mtime.cn/Video/2019/02/04/mp4/190204084208765161.mp4";
+    urls << "http://vfx.mtime.cn/Video/2021/11/16/mp4/211116131456748178.mp4";
+    urls << "http://vd3.bdstatic.com/mda-jennyc5ci1ugrxzi/mda-jennyc5ci1ugrxzi.mp4";
     urls << "rtsp://admin:Admin123456@192.168.0.15:554/media/video1";
     ui->cboxUrl->addItems(urls);
     ui->cboxUrl->setCurrentIndex(0);
