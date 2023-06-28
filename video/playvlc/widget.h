@@ -16,6 +16,7 @@ public:
     ~Widget();
 
 private slots:
+    void on_btnSelect_clicked();
     void on_btnOpen_clicked();
 
 private:

@@ -19,6 +19,18 @@ Widget::~Widget()
     delete ui;
 }
 
+void Widget::on_btnSelect_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName();
+    if (!fileName.isEmpty()) {
+        ui->cboxUrl->addItem(fileName);
+        ui->cboxUrl->lineEdit()->setText(fileName);
+        if (ui->btnOpen->text() == "打开") {
+            on_btnOpen_clicked();
+        }
+    }
+}
+
 void Widget::on_btnOpen_clicked()
 {
     if (ui->btnOpen->text() == "打开") {

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
+    <width>800</width>
     <height>600</height>
    </rect>
   </property>
@@ -36,6 +36,13 @@
        </property>
        <property name="editable">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnSelect">
+       <property name="text">
+        <string>选择</string>
        </property>
       </widget>
      </item>
