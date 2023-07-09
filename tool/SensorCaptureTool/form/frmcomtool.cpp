@@ -24,6 +24,7 @@ void frmComTool::initForm()
     receiveCount = 0;
     sendCount = 0;
     isShow = true;
+    mModbusCtx = nullptr;
 
     ui->cboxSendInterval->addItems(AppData::Intervals);
     ui->cboxData->addItems(AppData::Datas);
@@ -291,6 +292,12 @@ void frmComTool::append(int type, const QString &data, bool clear)
     } else if (type == 6) {
         strType = "提示信息 >>";
         ui->txtMain->setTextColor(QColor(100, 184, 255));
+    } else if (type == 7) {
+        strType = "Modbus send >>";
+        ui->txtMain->setTextColor(QColor("dodgerblue"));
+    } else if (type == 8) {
+        strType = "Modbus recv >>";
+        ui->txtMain->setTextColor(QColor("red"));
     }
 
     strData = QString("时间[%1] %2 %3").arg(TIMEMS).arg(strType).arg(strData);
@@ -361,6 +368,26 @@ void frmComTool::sendData()
 
 void frmComTool::sendData(QString data)
 {
+    uint16_t modbusData[128] = {0};
+
+    append(7, QString("polling holding register 0x2000"));
+    int ret = modbusRead(nullptr, modbusData, 0x2000, 3, 2 );
+
+    if (ret == -1)
+    {
+        printf("Read register fail!");
+    }
+    else
+    {
+        QString infoStr;
+        float sensor1 = (float(*((int16_t *)(&modbusData[0])))) / 10;
+        float sensor2 = (float(*((int16_t *)(&modbusData[1])))) / 10;
+
+        infoStr.sprintf("Read register num:[%d], sensor1:[%.1f]um, sensor2: [%.1f]um!", ret, sensor1, sensor2);
+
+        append(8, infoStr);
+    }
+            /*
     if (com == 0 || !com->isOpen()) {
         return;
     }
@@ -381,6 +408,7 @@ void frmComTool::sendData(QString data)
     append(0, data);
     sendCount = sendCount + buffer.size();
     ui->btnSendCount->setText(QString("发送 : %1 字节").arg(sendCount));
+            */
 }
 
 void frmComTool::saveData()
@@ -406,6 +434,7 @@ void frmComTool::saveData()
 void frmComTool::on_btnOpen_clicked()
 {
     if (ui->btnOpen->text() == "打开串口") {
+        /*
         com = new QextSerialPort(ui->cboxPortName->currentText(), QextSerialPort::Polling);
         comOk = com->open(QIODevice::ReadWrite);
 
@@ -427,10 +456,34 @@ void frmComTool::on_btnOpen_clicked()
             ui->btnOpen->setText("关闭串口");
             timerRead->start();
         }
+        */
+        comOk = true;
+
+        if (modbusInit() == false)
+        {
+             comOk = false;
+        }
+        else
+        {
+            changeEnable(true);
+            ui->btnOpen->setText("关闭串口");
+        }
+
     } else {
+        /*
         timerRead->stop();
         com->close();
         com->deleteLater();
+
+        changeEnable(false);
+        ui->btnOpen->setText("打开串口");
+        on_btnClear_clicked();
+        comOk = false;
+        */
+
+
+        timerRead->stop();
+        modbusClean();
 
         changeEnable(false);
         ui->btnOpen->setText("打开串口");
@@ -584,4 +637,116 @@ void frmComTool::readErrorNet()
     append(6, QString("连接服务器失败,%1").arg(socket->errorString()));
     socket->disconnectFromHost();
     tcpOk = false;
+}
+
+
+bool frmComTool::modbusInit()
+{
+    bool ret = true;
+    int nSlaveId = 1;
+
+    if (mModbusCtx != nullptr)
+    {
+        modbusClean();
+    }
+
+    mModbusCtx = modbus_new_rtu((const char *)(ui->cboxPortName->currentText().toStdString().c_str()), ui->cboxBaudRate->currentText().toInt(), (char)'N', 8, 1);
+    if (mModbusCtx == nullptr)
+    {
+        ret = false;
+        printf("Unable to create modbus device context!");
+    }
+    else
+    {
+        modbus_set_slave(mModbusCtx , nSlaveId);  // 设置从机号
+
+        if (modbus_connect(mModbusCtx) == -1) // 连接
+        {
+            ret = false;
+            printf("Unable to connect modbus device slave:%d!", nSlaveId);
+            modbusClean();
+        }
+    }
+
+    return ret;
+}
+
+void frmComTool::modbusClean()
+{
+    if (mModbusCtx != nullptr)
+    {
+        modbus_close(mModbusCtx);
+        modbus_free(mModbusCtx);
+        mModbusCtx = nullptr;
+    }
+
+}
+
+/**********************************************/
+// 功能: 读取寄存器内容
+// 返回值: 读取到的字符个数
+// 参数: destCh, destSh 读取到的结果
+//          addr 读取的寄存器地址
+//          funcCode 功能码
+//          size 读取的寄存器个数
+/*********************************************/
+int frmComTool::modbusRead(unsigned char* destCh, unsigned short* destSh, int addr, int funcCode,int size)
+{
+    int nRet = -1;
+    switch(funcCode)
+    {
+    case 0x01:
+        // 0x01:读取线圈状态取得一组逻辑线圈的当前状态（ON/OFF)?
+        // Reads the boolean status of bits and sets the array elements in the destination to TRUE or FALSE (single bits).
+        nRet = modbus_read_bits(mModbusCtx, addr, size, destCh);
+        break;
+    case 0x02:
+        // 0x02:读取输入状态 取得一组开关输入的当前状态（ON/OFF)
+        nRet = modbus_read_input_bits(mModbusCtx, addr,  size, destCh);
+        break;
+    case 0x03:
+        // 0x03:读取保持寄存器 在一个或多个保持寄存器中取得当前的二进制值
+        nRet = modbus_read_registers(mModbusCtx, addr, size, destSh);
+        break;
+    case 0x04:
+        // 0x04:读取输入寄存器 在一个或多个输入寄存器中取得当前的二进制值
+        nRet = modbus_read_input_registers(mModbusCtx, addr,  size, destSh);
+        break;
+    }
+    return nRet;
+}
+
+/**********************************************/
+// 功能: 写寄存器内容
+// 返回值: 保存到的字符个数
+// 参数: destCh, destSh,value 保存的结果
+//          addr 保存的寄存器地址
+//          funcCode 功能码
+//          size 保存的寄存器个数
+/*********************************************/
+int frmComTool::modbusWrite(unsigned char* destCh, unsigned short* destSh, int value,int addr,int funcCode,int size)
+{
+    int nRet = -1;
+    switch(funcCode)
+    {
+    case 5:
+        //0x05:强置单线圈 强置一个逻辑线圈的通断状态
+        nRet = modbus_write_bit(mModbusCtx, addr, value);
+        break;
+    case 6:
+        //0x06:预置单寄存器 把具体二进值装入一个保持寄存器
+        nRet = modbus_write_register(mModbusCtx, addr, value);
+        break;
+    case 15:
+        // 0x0F:强置多线圈 强置一串连续逻辑线圈的通断
+        // Write the bits of the array in the remote device
+        nRet = modbus_write_bits(mModbusCtx, addr, size, destCh);
+        break;
+    case 16:
+        // 0x10:控询（只用于484） 可使主机与一台正在执行长程序任务从机通信，探询该从机是否已完成其操作任务，仅在含有功能码9的报文发送后，本功能码才发送
+        // Write the values from the array to the registers of the remote device
+        nRet = modbus_write_registers(mModbusCtx, addr,  size, destSh);
+        break;
+    }
+    return nRet;
 }

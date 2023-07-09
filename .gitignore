@@ -1,0 +1,11 @@
+
+build-tool-Desktop_Qt_5_9_0_MinGW_32bit-Debug/*
+tool/build-digital_sensor_capture_tool-Desktop_Qt_5_9_0_MinGW_32bit-Debug/*
+tool/build-comtool-Desktop_Qt_5_9_0_MinGW_32bit-Debug/*
+ui/bin/*
+tool/bin/*
+video/bin/*
+widget/bin/*
+control/bin/*
+other/bin/*
+third/bin/*

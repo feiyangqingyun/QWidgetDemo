@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.ico</file>
+        <file>qm/qt_zh_CN.qm</file>
+        <file>qm/widgets.qm</file>
+    </qresource>
+</RCC>

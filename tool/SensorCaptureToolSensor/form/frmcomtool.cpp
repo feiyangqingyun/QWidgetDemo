@@ -24,13 +24,15 @@ void frmComTool::initForm()
     receiveCount = 0;
     sendCount = 0;
     isShow = true;
+    sensor1 = 0xFF1F;
+    sensor2 = 0XA0;
 
     ui->cboxSendInterval->addItems(AppData::Intervals);
     ui->cboxData->addItems(AppData::Datas);
 
     //读取数据
     timerRead = new QTimer(this);
-    timerRead->setInterval(100);
+    timerRead->setInterval(25);
     connect(timerRead, SIGNAL(timeout()), this, SLOT(readData()));
 
     //发送数据
@@ -298,6 +300,46 @@ void frmComTool::append(int type, const QString &data, bool clear)
     currentCount++;
 }
 
+void frmComTool::sendModbusFakeSensorData()
+{
+    QString dataStr;
+    unsigned char dataHex[128] = {0};
+    int16_t *pdata;
+    int16_t crc;
+    ui->ckHexSend->setCheckState(Qt::CheckState::Checked);
+
+    dataHex[0] = 1;
+    dataHex[1] = 3;
+    dataHex[2] = 4;
+
+    pdata = (int16_t *)&dataHex[3];
+    *pdata = QUIHelperData::int16EndinChange(sensor1);
+
+    pdata = (int16_t *)&dataHex[5];
+    *pdata = QUIHelperData::int16EndinChange(sensor2);
+
+
+    crc = QUIHelperData::getModbus16Ex(&dataHex[0], 7);
+
+
+
+    pdata = (int16_t *)&dataHex[7];
+    *pdata = crc;
+
+
+
+    dataStr.sprintf("%02x %02x %02x %02x %02x %02x %02x %02x %02x", dataHex[0], dataHex[1], dataHex[2], dataHex[3], dataHex[4],
+                                                                              dataHex[5], dataHex[6], dataHex[7], dataHex[8]);
+
+
+    frmComTool::sendData(dataStr);
+
+    sensor1 = sensor1 + 15;
+    sensor2 = sensor2 + 5;
+
+
+}
+
 void frmComTool::readData()
 {
     if (com->bytesAvailable() <= 0) {
@@ -335,6 +377,11 @@ void frmComTool::readData()
         receiveCount = receiveCount + data.size();
         ui->btnReceiveCount->setText(QString("接收 : %1 字节").arg(receiveCount));
 
+        if (ui->ckDebug->isChecked())
+        {
+            sendModbusFakeSensorData();
+
+        }
         //启用网络转发则调用网络发送数据
         if (tcpOk) {
             socket->write(data);
