@@ -4,7 +4,7 @@
 /**
  * 监控画面切换控件 作者:feiyangqingyun(QQ:517216493) 2021-11-08
  * 1. 将所有通道切换处理全部集中到一个类。
- * 2. 通用整数倍数布局切换函数，可方便拓展到100、255通道等。
+ * 2. 通用整数倍数布局切换函数，可方便拓展到100/255通道等。
  * 3. 通用异形布局切换函数，可以参考进行自定义异形布局。
  * 4. 通道布局切换发出信号通知。
  * 5. 可控每种布局切换菜单是否启用。
@@ -43,6 +43,9 @@ private:
     //当前画面类型
     QString videoType;
 
+    //启用其他通道画面(2画面/3画面)
+    bool enableOther;
+
     //主菜单子菜单文字标识
     QString menuFlag;
     QString actionFlag;
@@ -58,6 +61,9 @@ public Q_SLOTS:
     void setLayout(QGridLayout *gridLayout);
     //设置视频控件集合
     void setWidgets(QWidgetList widgets);
+
+    //设置启用其他通道画面
+    void setEnableOther(bool enableOther);
 
     //设置主菜单子菜单文字标识
     void setMenuFlag(const QString &menuFlag);
@@ -88,6 +94,8 @@ public Q_SLOTS:
 
     //具体通道切换函数
     void change_video_1(int index);
+    void change_video_2(int index);
+    void change_video_3(int index);
     void change_video_4(int index);
     void change_video_6(int index);
     void change_video_8(int index);

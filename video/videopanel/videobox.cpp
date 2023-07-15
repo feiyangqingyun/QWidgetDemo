@@ -12,11 +12,13 @@ VideoBox::VideoBox(QObject *parent) : QObject(parent)
     videoCount = 64;
     videoType = "1_16";
 
+    enableOther = false;
     menuFlag = "画面";
     actionFlag = "通道";
 
-    //通过这里设置好数据下面只需要循环添加和判断就行
-    //灵活性大大增强,只需要这里改动下就行
+    //通过这里设置好数据下面只需要循环添加和判断就行(灵活性大大增强/只需要这里改动下就行)
+    types.insert(2, QStringList() << "1_2");
+    types.insert(3, QStringList() << "1_3");
     types.insert(4, QStringList() << "1_4" << "5_8" << "9_12" << "13_16" << "17_20" << "21_24" << "25_28" << "29_32" << "33_36");
     types.insert(6, QStringList() << "1_6" << "7_12" << "13_18" << "19_24" << "25_30" << "31_36");
     types.insert(8, QStringList() << "1_8" << "9_16" << "17_24" << "25_32" << "33_40" << "41_48" << "49_57" << "57_64");
@@ -49,6 +51,8 @@ void VideoBox::addMenu(QMenu *menu, int type)
         QString end = list.at(1);
 
         //对应菜单文本
+        start = QString("%1").arg(start, 2, QChar('0'));
+        end = QString("%1").arg(end, 2, QChar('0'));
         QString text = QString("%1%2-%1%3").arg(actionFlag).arg(start).arg(end);
         if (flags.count() == 1) {
             text = name;
@@ -79,6 +83,11 @@ void VideoBox::setWidgets(QWidgetList widgets)
     this->videoCount = widgets.count();
 }
 
+void VideoBox::setEnableOther(bool enableOther)
+{
+    this->enableOther = enableOther;
+}
+
 void VideoBox::setMenuFlag(const QString &menuFlag)
 {
     this->menuFlag = menuFlag;
@@ -96,6 +105,11 @@ void VideoBox::setTypes(const QMap<int, QStringList> &types)
 
 void VideoBox::initMenu(QMenu *menu, const QList<bool> &enable)
 {
+    if (enableOther) {
+        addMenu(menu, 2);
+        addMenu(menu, 3);
+    }
+
     //通过菜单是否可见设置每个菜单可见与否
     if (enable.count() < 9) {
         return;
@@ -135,6 +149,10 @@ void VideoBox::show_video(int type, int index)
     //根据不同的父菜单类型执行对应的函数
     if (type == 1) {
         change_video_1(index);
+    } else if (type == 2) {
+        change_video_2(index);
+    } else if (type == 3) {
+        change_video_3(index);
     } else if (type == 4) {
         change_video_4(index);
     } else if (type == 6) {
@@ -332,9 +350,35 @@ void VideoBox::change_video_1(int index)
     //首先隐藏所有通道
     hide_video_all();
     //添加通道到布局
-    gridLayout->addWidget(widgets.at(index), 0, 0);
+    gridLayout->addWidget(widgets.at(0), 0, 0);
     //设置可见
-    widgets.at(index)->setVisible(true);
+    widgets.at(0)->setVisible(true);
+}
+
+void VideoBox::change_video_2(int index)
+{
+    //首先隐藏所有通道
+    hide_video_all();
+    //添加通道到布局
+    gridLayout->addWidget(widgets.at(0), 0, 0);
+    gridLayout->addWidget(widgets.at(1), 0, 1);
+    //设置可见
+    widgets.at(0)->setVisible(true);
+    widgets.at(1)->setVisible(true);
+}
+
+void VideoBox::change_video_3(int index)
+{
+    //首先隐藏所有通道
+    hide_video_all();
+    //添加通道到布局
+    gridLayout->addWidget(widgets.at(0), 0, 0, 1, 2);
+    gridLayout->addWidget(widgets.at(1), 1, 0);
+    gridLayout->addWidget(widgets.at(2), 1, 1);
+    //设置可见
+    widgets.at(0)->setVisible(true);
+    widgets.at(1)->setVisible(true);
+    widgets.at(2)->setVisible(true);
 }
 
 void VideoBox::change_video_4(int index)

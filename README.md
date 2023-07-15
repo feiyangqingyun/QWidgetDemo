@@ -1,25 +1,27 @@
 
 ## 0 前言说明
-1. **项目作品：[https://blog.csdn.net/feiyangqingyun/article/details/97565652](https://blog.csdn.net/feiyangqingyun/article/details/97565652)**
-2. **网店地址：https://shop244026315.taobao.com/**
-3. **联系方式：QQ（517216493）微信（feiyangqingyun）推荐加微信。**
-4. **公 众 号：Qt教程（民间）  Qt软件（官方）**
-5. **版本支持：所有项目已经全部支持Qt4/5/6所有版本以及后续版本。**
-6. 监控作品体验：[https://pan.baidu.com/s/1d7TH_GEYl5nOecuNlWJJ7g](https://pan.baidu.com/s/1d7TH_GEYl5nOecuNlWJJ7g) 提取码：01jf
-7. 其他作品体验：[https://pan.baidu.com/s/1ZxG-oyUKe286LPMPxOrO2A](https://pan.baidu.com/s/1ZxG-oyUKe286LPMPxOrO2A) 提取码：o05q
-8. 监控系统在线文档：[https://feiyangqingyun.gitee.io/QWidgetDemo/video_system/](https://feiyangqingyun.gitee.io/QWidgetDemo/video_system/)
-9. 大屏系统在线文档：[https://feiyangqingyun.gitee.io/QWidgetDemo/bigscreen/](https://feiyangqingyun.gitee.io/QWidgetDemo/bigscreen/)
-10. 物联网系统在线文档：[https://feiyangqingyun.gitee.io/QWidgetDemo/iotsystem/](https://feiyangqingyun.gitee.io/QWidgetDemo/iotsystem/)
+1. **项目作品：[https://qtchina.blog.csdn.net/article/details/97565652](https://qtchina.blog.csdn.net/article/details/97565652)**
+2. **视频主页：[https://space.bilibili.com/687803542](https://space.bilibili.com/687803542)**
+3. **网店地址：[https://shop244026315.taobao.com](https://shop244026315.taobao.com)**
+4. **联系方式：QQ（517216493）微信（feiyangqingyun）推荐加微信。**
+5. **公 众 号：Qt教程（民间）  Qt软件（官方）**
+6. **版本支持：所有项目已经全部支持Qt4/5/6所有版本以及后续版本。**
+7. 监控作品体验：[https://pan.baidu.com/s/1d7TH_GEYl5nOecuNlWJJ7g](https://pan.baidu.com/s/1d7TH_GEYl5nOecuNlWJJ7g) 提取码：01jf
+8. 其他作品体验：[https://pan.baidu.com/s/1ZxG-oyUKe286LPMPxOrO2A](https://pan.baidu.com/s/1ZxG-oyUKe286LPMPxOrO2A) 提取码：o05q
+9. 监控系统在线文档：[https://feiyangqingyun.gitee.io/QWidgetDemo/video_system/](https://feiyangqingyun.gitee.io/QWidgetDemo/video_system/)
+10. 大屏系统在线文档：[https://feiyangqingyun.gitee.io/QWidgetDemo/bigscreen/](https://feiyangqingyun.gitee.io/QWidgetDemo/bigscreen/)
+11. 物联网系统在线文档：[https://feiyangqingyun.gitee.io/QWidgetDemo/iotsystem/](https://feiyangqingyun.gitee.io/QWidgetDemo/iotsystem/)
 
 ## 1 特别说明
 1. 可以选择打开QWidgetDemo.pro一次性编译所有的，也可以到目录下打开pro编译。
 2. 如果发现有些子项目没有加载请打开对应目录下的.pro仔细看里面的注释。
 3. 编译好的可执行文件在源码同级目录下的bin目录。
-4. 亲测Qt4.6到Qt6.2所有版本，亲测win、linux、mac、uos等系统。
+4. 亲测Qt4.6到Qt6.6所有版本，亲测win、linux、mac、uos等系统。
 5. 有少部分项目不支持部分Qt版本比如Qt6，会自动跳过。
 6. **建议用git命令行下载，压缩包下载后重新解压文件可能会有问题，不知为何。**
 8. **强烈推荐各位搭配Qt开发经验一起学习 [https://gitee.com/feiyangqingyun/qtkaifajingyan](https://gitee.com/feiyangqingyun/qtkaifajingyan)**
-9. **各位有需要购买Qt商业版可以联系Qt中国商务人员微信 zzwdkxx ，支持Qt。**
+9. 视频演示 [https://www.bilibili.com/video/BV1kg4y1P7VD](https://www.bilibili.com/video/BV1kg4y1P7VD)
+10. **各位有需要购买Qt商业版可以联系Qt中国商务人员微信 zzwdkxx ，支持Qt。**
 
 ## 2 目录说明
 **高质量项目加粗显示**
