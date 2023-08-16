@@ -272,6 +272,8 @@ void IconHelper::setStyle1(QWidget *widget, QList<QAbstractButton *> btns, QList
     }
 
     QString position = styleColor.position;
+    quint32 btnWidth = styleColor.btnWidth;
+    quint32 btnHeight = styleColor.btnHeight;
     quint32 iconSize = styleColor.iconSize;
     quint32 iconWidth = styleColor.iconWidth;
     quint32 iconHeight = styleColor.iconHeight;
@@ -323,6 +325,14 @@ void IconHelper::setStyle1(QWidget *widget, QList<QAbstractButton *> btns, QList
         .arg(styleColor.pressedBgColor).arg(styleColor.pressedTextColor);
     qss << QString("QWidget>QAbstractButton:checked{background-color:%1;color:%2;}")
         .arg(styleColor.checkedBgColor).arg(styleColor.checkedTextColor);
+
+    //按钮宽度高度
+    if (btnWidth > 0) {
+        qss << QString("QWidget>QAbstractButton{min-width:%1px;}").arg(btnWidth);
+    }
+    if (btnHeight > 0) {
+        qss << QString("QWidget>QAbstractButton{min-height:%1px;}").arg(btnHeight);
+    }
 
     //设置样式表
     widget->setStyleSheet(qss.join(""));

@@ -350,9 +350,9 @@ void VideoBox::change_video_1(int index)
     //首先隐藏所有通道
     hide_video_all();
     //添加通道到布局
-    gridLayout->addWidget(widgets.at(0), 0, 0);
+    gridLayout->addWidget(widgets.at(index), 0, 0);
     //设置可见
-    widgets.at(0)->setVisible(true);
+    widgets.at(index)->setVisible(true);
 }
 
 void VideoBox::change_video_2(int index)
