@@ -44,36 +44,6 @@ void PanelWidget::resizeEvent(QResizeEvent *)
     scrollArea->resize(this->size());
 }
 
-int PanelWidget::getMargin() const
-{
-    return this->margin;
-}
-
-int PanelWidget::getSpace() const
-{
-    return this->space;
-}
-
-bool PanelWidget::getAutoWidth() const
-{
-    return this->autoWidth;
-}
-
-bool PanelWidget::getAutoHeight() const
-{
-    return this->autoHeight;
-}
-
-int PanelWidget::getColumnCount() const
-{
-    return this->columnCount;
-}
-
-QList<QWidget *> PanelWidget::getWidgets() const
-{
-    return this->widgets;
-}
-
 QSize PanelWidget::sizeHint() const
 {
     return QSize(300, 200);
@@ -89,11 +59,21 @@ void PanelWidget::setMargin(int left, int top, int right, int bottom)
     gridLayout->setContentsMargins(left, top, right, bottom);
 }
 
+int PanelWidget::getMargin() const
+{
+    return this->margin;
+}
+
 void PanelWidget::setMargin(int margin)
 {
     if (this->margin != margin) {
         setMargin(margin, margin, margin, margin);
     }
+}
+
+int PanelWidget::getSpace() const
+{
+    return this->space;
 }
 
 void PanelWidget::setSpace(int space)
@@ -103,11 +83,21 @@ void PanelWidget::setSpace(int space)
     }
 }
 
+bool PanelWidget::getAutoWidth() const
+{
+    return this->autoWidth;
+}
+
 void PanelWidget::setAutoWidth(bool autoWidth)
 {
     if (this->autoWidth != autoWidth) {
         this->autoWidth = autoWidth;
     }
+}
+
+bool PanelWidget::getAutoHeight() const
+{
+    return this->autoHeight;
 }
 
 void PanelWidget::setAutoHeight(bool autoHeight)
@@ -117,11 +107,21 @@ void PanelWidget::setAutoHeight(bool autoHeight)
     }
 }
 
+int PanelWidget::getColumnCount() const
+{
+    return this->columnCount;
+}
+
 void PanelWidget::setColumnCount(int columnCount)
 {
     if (this->columnCount != columnCount) {
         this->columnCount = columnCount;
     }
+}
+
+QList<QWidget *> PanelWidget::getWidgets() const
+{
+    return this->widgets;
 }
 
 void PanelWidget::setWidgets(QList<QWidget *> widgets)

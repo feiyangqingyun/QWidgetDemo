@@ -123,7 +123,7 @@ SaveLog::SaveLog(QObject *parent) : QObject(parent)
 
 SaveLog::~SaveLog()
 {
-    file->close();
+    this->stop();
 }
 
 void SaveLog::openFile(const QString &fileName)

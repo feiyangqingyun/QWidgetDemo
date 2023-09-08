@@ -52,15 +52,14 @@ private slots:
     void textChanged(const QString &text);
 
 public:
-    //获取IP地址
-    QString getIP()                 const;
+    //默认尺寸和最小尺寸
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
 
-    QSize sizeHint()                const;
-    QSize minimumSizeHint()         const;
-
-public Q_SLOTS:
-    //设置IP地址
+    //获取和设置IP地址
+    QString getIP() const;
     void setIP(const QString &ip);
+
     //清空
     void clear();
 
@@ -70,7 +69,6 @@ public Q_SLOTS:
     void setBorderColor(const QString &borderColor);
     //设置边框圆角角度
     void setBorderRadius(int borderRadius);
-
 };
 
 #endif // IPADDRESS_H

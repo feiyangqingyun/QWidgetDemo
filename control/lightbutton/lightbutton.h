@@ -55,78 +55,84 @@ protected:
     void drawOverlay(QPainter *painter);
 
 private:
-    QString text;                   //文本
-    QColor textColor;               //文字颜色
-    QColor alarmColor;              //报警颜色
-    QColor normalColor;             //正常颜色
+    QString text;               //文本
+    QColor textColor;           //文字颜色
+    QColor alarmColor;          //报警颜色
+    QColor normalColor;         //正常颜色
 
-    QColor borderOutColorStart;     //外边框渐变开始颜色
-    QColor borderOutColorEnd;       //外边框渐变结束颜色
-    QColor borderInColorStart;      //里边框渐变开始颜色
-    QColor borderInColorEnd;        //里边框渐变结束颜色
-    QColor bgColor;                 //背景颜色
+    QColor borderOutColorStart; //外边框渐变开始颜色
+    QColor borderOutColorEnd;   //外边框渐变结束颜色
+    QColor borderInColorStart;  //里边框渐变开始颜色
+    QColor borderInColorEnd;    //里边框渐变结束颜色
+    QColor bgColor;             //背景颜色
 
-    bool showRect;                  //显示成矩形
-    bool canMove;                   //是否能够移动
-    bool showOverlay;               //是否显示遮罩层
-    QColor overlayColor;            //遮罩层颜色
+    bool showRect;              //显示成矩形
+    bool canMove;               //是否能够移动
+    bool showOverlay;           //是否显示遮罩层
+    QColor overlayColor;        //遮罩层颜色
 
-    bool pressed;                   //鼠标是否按下
-    QPoint lastPoint;               //鼠标最后按下坐标
+    bool pressed;               //鼠标是否按下
+    QPoint lastPoint;           //鼠标最后按下坐标
 
-    bool isAlarm;                   //是否报警
-    QTimer *timerAlarm;             //定时器切换颜色
+    bool isAlarm;               //是否报警
+    QTimer *timerAlarm;         //定时器切换颜色
 
 public:
-    QString getText()               const;
-    QColor getTextColor()           const;
-    QColor getAlarmColor()          const;
-    QColor getNormalColor()         const;
+    //默认尺寸和最小尺寸
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
 
-    QColor getBorderOutColorStart() const;
-    QColor getBorderOutColorEnd()   const;
-    QColor getBorderInColorStart()  const;
-    QColor getBorderInColorEnd()    const;
-    QColor getBgColor()             const;
-
-    bool getCanMove()               const;
-    bool getShowRect()              const;
-    bool getShowOverlay()           const;
-    QColor getOverlayColor()        const;
-
-    QSize sizeHint()                const;
-    QSize minimumSizeHint()         const;
-
-public Q_SLOTS:
-    //设置文本
+    //获取和设置文本
+    QString getText() const;
     void setText(const QString &text);
-    //设置文本颜色
+
+    //获取和设置文本颜色
+    QColor getTextColor() const;
     void setTextColor(const QColor &textColor);
 
-    //设置报警颜色+正常颜色
+    //获取和设置报警颜色
+    QColor getAlarmColor() const;
     void setAlarmColor(const QColor &alarmColor);
+
+    //获取和设置正常颜色
+    QColor getNormalColor() const;
     void setNormalColor(const QColor &normalColor);
 
-    //设置外边框渐变颜色
+    //获取和设置外边框渐变颜色
+    QColor getBorderOutColorStart() const;
     void setBorderOutColorStart(const QColor &borderOutColorStart);
+
+    QColor getBorderOutColorEnd() const;
     void setBorderOutColorEnd(const QColor &borderOutColorEnd);
 
-    //设置里边框渐变颜色
+    //获取和设置里边框渐变颜色
+    QColor getBorderInColorStart() const;
     void setBorderInColorStart(const QColor &borderInColorStart);
+
+    QColor getBorderInColorEnd() const;
     void setBorderInColorEnd(const QColor &borderInColorEnd);
 
-    //设置背景色
+    //获取和设置背景色
+    QColor getBgColor() const;
     void setBgColor(const QColor &bgColor);
 
-    //设置是否可移动
+    //获取和设置是否可移动
+    bool getCanMove() const;
     void setCanMove(bool canMove);
-    //设置是否显示矩形
+
+    //获取和设置是否显示矩形
+    bool getShowRect() const;
     void setShowRect(bool showRect);
-    //设置是否显示遮罩层
+
+    //获取和设置是否显示遮罩层
+    bool getShowOverlay() const;
     void setShowOverlay(bool showOverlay);
-    //设置遮罩层颜色
+
+    //获取和设置遮罩层颜色
+    QColor getOverlayColor() const;
     void setOverlayColor(const QColor &overlayColor);
 
+public Q_SLOTS:
     //设置为绿色
     void setGreen();
     //设置为红色
@@ -139,6 +145,7 @@ public Q_SLOTS:
     void setGray();
     //设置为蓝色
     void setBlue();
+
     //设置为淡蓝色
     void setLightBlue();
     //设置为淡红色

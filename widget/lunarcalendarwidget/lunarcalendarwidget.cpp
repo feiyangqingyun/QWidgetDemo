@@ -183,10 +183,10 @@ void LunarCalendarWidget::initWidget()
 
     //逐个添加日标签
     for (int i = 0; i < 42; ++i) {
-        LunarCalendarItem *lab = new LunarCalendarItem;
-        connect(lab, SIGNAL(clicked(QDate, LunarCalendarItem::DayType)), this, SLOT(clicked(QDate, LunarCalendarItem::DayType)));
-        layoutBody->addWidget(lab, i / 7, i % 7);
-        dayItems.append(lab);
+        LunarCalendarItem *item = new LunarCalendarItem;
+        connect(item, SIGNAL(clicked(QDate, LunarCalendarItem::DayType)), this, SLOT(clicked(QDate, LunarCalendarItem::DayType)));
+        layoutBody->addWidget(item, i / 7, i % 7);
+        items << item;
     }
 
     //主布局
@@ -309,7 +309,7 @@ void LunarCalendarWidget::initDate()
 
         QDate date(tempYear, tempMonth, tempDay);
         QString lunar = LunarCalendarInfo::Instance()->getLunarDay(tempYear, tempMonth, tempDay);
-        dayItems.at(index)->setDate(date, lunar, LunarCalendarItem::DayType_MonthPre);
+        items.at(index)->setDate(date, lunar, LunarCalendarItem::DayType_MonthPre);
     }
 
     //纠正12月份后面部分偏差,12月份后面部分是下一年1月份
@@ -327,7 +327,7 @@ void LunarCalendarWidget::initDate()
 
         QDate date(tempYear, tempMonth, tempDay);
         QString lunar = LunarCalendarInfo::Instance()->getLunarDay(tempYear, tempMonth, tempDay);
-        dayItems.at(index)->setDate(date, lunar, LunarCalendarItem::DayType_MonthNext);
+        items.at(index)->setDate(date, lunar, LunarCalendarItem::DayType_MonthNext);
     }
 
     //重新置为当前年月
@@ -342,9 +342,9 @@ void LunarCalendarWidget::initDate()
         QDate date(tempYear, tempMonth, tempDay);
         QString lunar = LunarCalendarInfo::Instance()->getLunarDay(tempYear, tempMonth, tempDay);
         if (0 == (i % 7) || 6 == (i % 7)) {
-            dayItems.at(index)->setDate(date, lunar, LunarCalendarItem::DayType_WeekEnd);
+            items.at(index)->setDate(date, lunar, LunarCalendarItem::DayType_WeekEnd);
         } else {
-            dayItems.at(index)->setDate(date, lunar, LunarCalendarItem::DayType_MonthCurrent);
+            items.at(index)->setDate(date, lunar, LunarCalendarItem::DayType_MonthCurrent);
         }
     }
 
@@ -408,7 +408,7 @@ void LunarCalendarWidget::dayChanged(const QDate &date)
             index = day + 6;
         }
 
-        dayItems.at(i)->setSelect(i == index);
+        items.at(i)->setSelect(i == index);
     }
 
     //发送日期单击信号
@@ -424,126 +424,6 @@ void LunarCalendarWidget::dateChanged(int year, int month, int day)
     initDate();
 }
 
-LunarCalendarWidget::CalendarStyle LunarCalendarWidget::getCalendarStyle() const
-{
-    return this->calendarStyle;
-}
-
-LunarCalendarWidget::WeekNameFormat LunarCalendarWidget::getWeekNameFormat() const
-{
-    return this->weekNameFormat;
-}
-
-QDate LunarCalendarWidget::getDate() const
-{
-    return this->date;
-}
-
-QColor LunarCalendarWidget::getWeekTextColor() const
-{
-    return this->weekTextColor;
-}
-
-QColor LunarCalendarWidget::getWeekBgColor() const
-{
-    return this->weekBgColor;
-}
-
-bool LunarCalendarWidget::getShowLunar() const
-{
-    return this->showLunar;
-}
-
-QString LunarCalendarWidget::getBgImage() const
-{
-    return this->bgImage;
-}
-
-LunarCalendarWidget::SelectType LunarCalendarWidget::getSelectType() const
-{
-    return this->selectType;
-}
-
-QColor LunarCalendarWidget::getBorderColor() const
-{
-    return this->borderColor;
-}
-
-QColor LunarCalendarWidget::getWeekColor() const
-{
-    return this->weekColor;
-}
-
-QColor LunarCalendarWidget::getSuperColor() const
-{
-    return this->superColor;
-}
-
-QColor LunarCalendarWidget::getLunarColor() const
-{
-    return this->lunarColor;
-}
-
-QColor LunarCalendarWidget::getCurrentTextColor() const
-{
-    return this->currentTextColor;
-}
-
-QColor LunarCalendarWidget::getOtherTextColor() const
-{
-    return this->otherTextColor;
-}
-
-QColor LunarCalendarWidget::getSelectTextColor() const
-{
-    return this->selectTextColor;
-}
-
-QColor LunarCalendarWidget::getHoverTextColor() const
-{
-    return this->hoverTextColor;
-}
-
-QColor LunarCalendarWidget::getCurrentLunarColor() const
-{
-    return this->currentLunarColor;
-}
-
-QColor LunarCalendarWidget::getOtherLunarColor() const
-{
-    return this->otherLunarColor;
-}
-
-QColor LunarCalendarWidget::getSelectLunarColor() const
-{
-    return this->selectLunarColor;
-}
-
-QColor LunarCalendarWidget::getHoverLunarColor() const
-{
-    return this->hoverLunarColor;
-}
-
-QColor LunarCalendarWidget::getCurrentBgColor() const
-{
-    return this->currentBgColor;
-}
-
-QColor LunarCalendarWidget::getOtherBgColor() const
-{
-    return this->otherBgColor;
-}
-
-QColor LunarCalendarWidget::getSelectBgColor() const
-{
-    return this->selectBgColor;
-}
-
-QColor LunarCalendarWidget::getHoverBgColor() const
-{
-    return this->hoverBgColor;
-}
-
 QSize LunarCalendarWidget::sizeHint() const
 {
     return QSize(600, 500);
@@ -552,6 +432,335 @@ QSize LunarCalendarWidget::sizeHint() const
 QSize LunarCalendarWidget::minimumSizeHint() const
 {
     return QSize(200, 150);
+}
+
+LunarCalendarWidget::CalendarStyle LunarCalendarWidget::getCalendarStyle() const
+{
+    return this->calendarStyle;
+}
+
+void LunarCalendarWidget::setCalendarStyle(const LunarCalendarWidget::CalendarStyle &calendarStyle)
+{
+    if (this->calendarStyle != calendarStyle) {
+        this->calendarStyle = calendarStyle;
+    }
+}
+
+LunarCalendarWidget::WeekNameFormat LunarCalendarWidget::getWeekNameFormat() const
+{
+    return this->weekNameFormat;
+}
+
+void LunarCalendarWidget::setWeekNameFormat(const LunarCalendarWidget::WeekNameFormat &weekNameFormat)
+{
+    if (this->weekNameFormat != weekNameFormat) {
+        this->weekNameFormat = weekNameFormat;
+
+        QStringList listWeek;
+        if (weekNameFormat == WeekNameFormat_Short) {
+            listWeek << "日" << "一" << "二" << "三" << "四" << "五" << "六";
+        } else if (weekNameFormat == WeekNameFormat_Normal) {
+            listWeek << "周日" << "周一" << "周二" << "周三" << "周四" << "周五" << "周六";
+        } else if (weekNameFormat == WeekNameFormat_Long) {
+            listWeek << "星期天" << "星期一" << "星期二" << "星期三" << "星期四" << "星期五" << "星期六";
+        } else if (weekNameFormat == WeekNameFormat_En) {
+            listWeek << "Sun" << "Mon" << "Tue" << "Wed" << "Thu" << "Fri" << "Sat";
+        }
+
+        //逐个添加日期文字
+        for (int i = 0; i < 7; ++i) {
+            labWeeks.at(i)->setText(listWeek.at(i));
+        }
+    }
+}
+
+QDate LunarCalendarWidget::getDate() const
+{
+    return this->date;
+}
+
+void LunarCalendarWidget::setDate(const QDate &date)
+{
+    if (this->date != date) {
+        this->date = date;
+        initDate();
+    }
+}
+
+QColor LunarCalendarWidget::getWeekTextColor() const
+{
+    return this->weekTextColor;
+}
+
+void LunarCalendarWidget::setWeekTextColor(const QColor &weekTextColor)
+{
+    if (this->weekTextColor != weekTextColor) {
+        this->weekTextColor = weekTextColor;
+        this->initStyle();
+    }
+}
+
+
+QColor LunarCalendarWidget::getWeekBgColor() const
+{
+    return this->weekBgColor;
+}
+
+void LunarCalendarWidget::setWeekBgColor(const QColor &weekBgColor)
+{
+    if (this->weekBgColor != weekBgColor) {
+        this->weekBgColor = weekBgColor;
+        this->initStyle();
+    }
+}
+
+bool LunarCalendarWidget::getShowLunar() const
+{
+    return this->showLunar;
+}
+
+void LunarCalendarWidget::setShowLunar(bool showLunar)
+{
+    if (this->showLunar != showLunar) {
+        this->showLunar = showLunar;
+        this->initStyle();
+    }
+}
+
+QString LunarCalendarWidget::getBgImage() const
+{
+    return this->bgImage;
+}
+
+void LunarCalendarWidget::setBgImage(const QString &bgImage)
+{
+    if (this->bgImage != bgImage) {
+        this->bgImage = bgImage;
+        this->initStyle();
+    }
+}
+
+LunarCalendarWidget::SelectType LunarCalendarWidget::getSelectType() const
+{
+    return this->selectType;
+}
+
+void LunarCalendarWidget::setSelectType(const LunarCalendarWidget::SelectType &selectType)
+{
+    if (this->selectType != selectType) {
+        this->selectType = selectType;
+        this->initStyle();
+    }
+}
+
+
+QColor LunarCalendarWidget::getBorderColor() const
+{
+    return this->borderColor;
+}
+
+void LunarCalendarWidget::setBorderColor(const QColor &borderColor)
+{
+    if (this->borderColor != borderColor) {
+        this->borderColor = borderColor;
+        this->initStyle();
+    }
+}
+
+QColor LunarCalendarWidget::getWeekColor() const
+{
+    return this->weekColor;
+}
+
+void LunarCalendarWidget::setWeekColor(const QColor &weekColor)
+{
+    if (this->weekColor != weekColor) {
+        this->weekColor = weekColor;
+        this->initStyle();
+    }
+}
+
+QColor LunarCalendarWidget::getSuperColor() const
+{
+    return this->superColor;
+}
+
+void LunarCalendarWidget::setSuperColor(const QColor &superColor)
+{
+    if (this->superColor != superColor) {
+        this->superColor = superColor;
+        this->initStyle();
+    }
+}
+
+QColor LunarCalendarWidget::getLunarColor() const
+{
+    return this->lunarColor;
+}
+
+void LunarCalendarWidget::setLunarColor(const QColor &lunarColor)
+{
+    if (this->lunarColor != lunarColor) {
+        this->lunarColor = lunarColor;
+        this->initStyle();
+    }
+}
+
+QColor LunarCalendarWidget::getCurrentTextColor() const
+{
+    return this->currentTextColor;
+}
+
+void LunarCalendarWidget::setCurrentTextColor(const QColor &currentTextColor)
+{
+    if (this->currentTextColor != currentTextColor) {
+        this->currentTextColor = currentTextColor;
+        this->initStyle();
+    }
+}
+
+QColor LunarCalendarWidget::getOtherTextColor() const
+{
+    return this->otherTextColor;
+}
+
+void LunarCalendarWidget::setOtherTextColor(const QColor &otherTextColor)
+{
+    if (this->otherTextColor != otherTextColor) {
+        this->otherTextColor = otherTextColor;
+        this->initStyle();
+    }
+}
+
+QColor LunarCalendarWidget::getSelectTextColor() const
+{
+    return this->selectTextColor;
+}
+
+void LunarCalendarWidget::setSelectTextColor(const QColor &selectTextColor)
+{
+    if (this->selectTextColor != selectTextColor) {
+        this->selectTextColor = selectTextColor;
+        this->initStyle();
+    }
+}
+
+QColor LunarCalendarWidget::getHoverTextColor() const
+{
+    return this->hoverTextColor;
+}
+
+void LunarCalendarWidget::setHoverTextColor(const QColor &hoverTextColor)
+{
+    if (this->hoverTextColor != hoverTextColor) {
+        this->hoverTextColor = hoverTextColor;
+        this->initStyle();
+    }
+}
+
+QColor LunarCalendarWidget::getCurrentLunarColor() const
+{
+    return this->currentLunarColor;
+}
+
+void LunarCalendarWidget::setCurrentLunarColor(const QColor &currentLunarColor)
+{
+    if (this->currentLunarColor != currentLunarColor) {
+        this->currentLunarColor = currentLunarColor;
+        this->initStyle();
+    }
+}
+
+QColor LunarCalendarWidget::getOtherLunarColor() const
+{
+    return this->otherLunarColor;
+}
+
+void LunarCalendarWidget::setOtherLunarColor(const QColor &otherLunarColor)
+{
+    if (this->otherLunarColor != otherLunarColor) {
+        this->otherLunarColor = otherLunarColor;
+        this->initStyle();
+    }
+}
+
+
+QColor LunarCalendarWidget::getSelectLunarColor() const
+{
+    return this->selectLunarColor;
+}
+
+void LunarCalendarWidget::setSelectLunarColor(const QColor &selectLunarColor)
+{
+    if (this->selectLunarColor != selectLunarColor) {
+        this->selectLunarColor = selectLunarColor;
+        this->initStyle();
+    }
+}
+
+QColor LunarCalendarWidget::getHoverLunarColor() const
+{
+    return this->hoverLunarColor;
+}
+
+void LunarCalendarWidget::setHoverLunarColor(const QColor &hoverLunarColor)
+{
+    if (this->hoverLunarColor != hoverLunarColor) {
+        this->hoverLunarColor = hoverLunarColor;
+        this->initStyle();
+    }
+}
+
+QColor LunarCalendarWidget::getCurrentBgColor() const
+{
+    return this->currentBgColor;
+}
+
+void LunarCalendarWidget::setCurrentBgColor(const QColor &currentBgColor)
+{
+    if (this->currentBgColor != currentBgColor) {
+        this->currentBgColor = currentBgColor;
+        this->initStyle();
+    }
+}
+
+QColor LunarCalendarWidget::getOtherBgColor() const
+{
+    return this->otherBgColor;
+}
+
+void LunarCalendarWidget::setOtherBgColor(const QColor &otherBgColor)
+{
+    if (this->otherBgColor != otherBgColor) {
+        this->otherBgColor = otherBgColor;
+        this->initStyle();
+    }
+}
+
+QColor LunarCalendarWidget::getSelectBgColor() const
+{
+    return this->selectBgColor;
+}
+
+void LunarCalendarWidget::setSelectBgColor(const QColor &selectBgColor)
+{
+    if (this->selectBgColor != selectBgColor) {
+        this->selectBgColor = selectBgColor;
+        this->initStyle();
+    }
+}
+
+QColor LunarCalendarWidget::getHoverBgColor() const
+{
+    return this->hoverBgColor;
+}
+
+void LunarCalendarWidget::setHoverBgColor(const QColor &hoverBgColor)
+{
+    if (this->hoverBgColor != hoverBgColor) {
+        this->hoverBgColor = hoverBgColor;
+        this->initStyle();
+    }
 }
 
 //显示上一年
@@ -626,210 +835,4 @@ void LunarCalendarWidget::showToday()
     date = QDate::currentDate();
     initDate();
     dayChanged(date);
-}
-
-void LunarCalendarWidget::setCalendarStyle(const LunarCalendarWidget::CalendarStyle &calendarStyle)
-{
-    if (this->calendarStyle != calendarStyle) {
-        this->calendarStyle = calendarStyle;
-    }
-}
-
-void LunarCalendarWidget::setWeekNameFormat(const LunarCalendarWidget::WeekNameFormat &weekNameFormat)
-{
-    if (this->weekNameFormat != weekNameFormat) {
-        this->weekNameFormat = weekNameFormat;
-
-        QStringList listWeek;
-        if (weekNameFormat == WeekNameFormat_Short) {
-            listWeek << "日" << "一" << "二" << "三" << "四" << "五" << "六";
-        } else if (weekNameFormat == WeekNameFormat_Normal) {
-            listWeek << "周日" << "周一" << "周二" << "周三" << "周四" << "周五" << "周六";
-        } else if (weekNameFormat == WeekNameFormat_Long) {
-            listWeek << "星期天" << "星期一" << "星期二" << "星期三" << "星期四" << "星期五" << "星期六";
-        } else if (weekNameFormat == WeekNameFormat_En) {
-            listWeek << "Sun" << "Mon" << "Tue" << "Wed" << "Thu" << "Fri" << "Sat";
-        }
-
-        //逐个添加日期文字
-        for (int i = 0; i < 7; ++i) {
-            labWeeks.at(i)->setText(listWeek.at(i));
-        }
-    }
-}
-
-void LunarCalendarWidget::setDate(const QDate &date)
-{
-    if (this->date != date) {
-        this->date = date;
-        initDate();
-    }
-}
-
-void LunarCalendarWidget::setWeekTextColor(const QColor &weekTextColor)
-{
-    if (this->weekTextColor != weekTextColor) {
-        this->weekTextColor = weekTextColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setWeekBgColor(const QColor &weekBgColor)
-{
-    if (this->weekBgColor != weekBgColor) {
-        this->weekBgColor = weekBgColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setShowLunar(bool showLunar)
-{
-    if (this->showLunar != showLunar) {
-        this->showLunar = showLunar;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setBgImage(const QString &bgImage)
-{
-    if (this->bgImage != bgImage) {
-        this->bgImage = bgImage;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setSelectType(const LunarCalendarWidget::SelectType &selectType)
-{
-    if (this->selectType != selectType) {
-        this->selectType = selectType;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setBorderColor(const QColor &borderColor)
-{
-    if (this->borderColor != borderColor) {
-        this->borderColor = borderColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setWeekColor(const QColor &weekColor)
-{
-    if (this->weekColor != weekColor) {
-        this->weekColor = weekColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setSuperColor(const QColor &superColor)
-{
-    if (this->superColor != superColor) {
-        this->superColor = superColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setLunarColor(const QColor &lunarColor)
-{
-    if (this->lunarColor != lunarColor) {
-        this->lunarColor = lunarColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setCurrentTextColor(const QColor &currentTextColor)
-{
-    if (this->currentTextColor != currentTextColor) {
-        this->currentTextColor = currentTextColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setOtherTextColor(const QColor &otherTextColor)
-{
-    if (this->otherTextColor != otherTextColor) {
-        this->otherTextColor = otherTextColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setSelectTextColor(const QColor &selectTextColor)
-{
-    if (this->selectTextColor != selectTextColor) {
-        this->selectTextColor = selectTextColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setHoverTextColor(const QColor &hoverTextColor)
-{
-    if (this->hoverTextColor != hoverTextColor) {
-        this->hoverTextColor = hoverTextColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setCurrentLunarColor(const QColor &currentLunarColor)
-{
-    if (this->currentLunarColor != currentLunarColor) {
-        this->currentLunarColor = currentLunarColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setOtherLunarColor(const QColor &otherLunarColor)
-{
-    if (this->otherLunarColor != otherLunarColor) {
-        this->otherLunarColor = otherLunarColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setSelectLunarColor(const QColor &selectLunarColor)
-{
-    if (this->selectLunarColor != selectLunarColor) {
-        this->selectLunarColor = selectLunarColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setHoverLunarColor(const QColor &hoverLunarColor)
-{
-    if (this->hoverLunarColor != hoverLunarColor) {
-        this->hoverLunarColor = hoverLunarColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setCurrentBgColor(const QColor &currentBgColor)
-{
-    if (this->currentBgColor != currentBgColor) {
-        this->currentBgColor = currentBgColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setOtherBgColor(const QColor &otherBgColor)
-{
-    if (this->otherBgColor != otherBgColor) {
-        this->otherBgColor = otherBgColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setSelectBgColor(const QColor &selectBgColor)
-{
-    if (this->selectBgColor != selectBgColor) {
-        this->selectBgColor = selectBgColor;
-        initStyle();
-    }
-}
-
-void LunarCalendarWidget::setHoverBgColor(const QColor &hoverBgColor)
-{
-    if (this->hoverBgColor != hoverBgColor) {
-        this->hoverBgColor = hoverBgColor;
-        initStyle();
-    }
 }

@@ -232,121 +232,6 @@ void LunarCalendarItem::drawLunar(QPainter *painter)
     painter->restore();
 }
 
-bool LunarCalendarItem::getSelect() const
-{
-    return this->select;
-}
-
-bool LunarCalendarItem::getShowLunar() const
-{
-    return this->showLunar;
-}
-
-QString LunarCalendarItem::getBgImage() const
-{
-    return this->bgImage;
-}
-
-LunarCalendarItem::SelectType LunarCalendarItem::getSelectType() const
-{
-    return this->selectType;
-}
-
-QDate LunarCalendarItem::getDate() const
-{
-    return this->date;
-}
-
-QString LunarCalendarItem::getLunar() const
-{
-    return this->lunar;
-}
-
-LunarCalendarItem::DayType LunarCalendarItem::getDayType() const
-{
-    return this->dayType;
-}
-
-QColor LunarCalendarItem::getBorderColor() const
-{
-    return this->borderColor;
-}
-
-QColor LunarCalendarItem::getWeekColor() const
-{
-    return this->weekColor;
-}
-
-QColor LunarCalendarItem::getSuperColor() const
-{
-    return this->superColor;
-}
-
-QColor LunarCalendarItem::getLunarColor() const
-{
-    return this->lunarColor;
-}
-
-QColor LunarCalendarItem::getCurrentTextColor() const
-{
-    return this->currentTextColor;
-}
-
-QColor LunarCalendarItem::getOtherTextColor() const
-{
-    return this->otherTextColor;
-}
-
-QColor LunarCalendarItem::getSelectTextColor() const
-{
-    return this->selectTextColor;
-}
-
-QColor LunarCalendarItem::getHoverTextColor() const
-{
-    return this->hoverTextColor;
-}
-
-QColor LunarCalendarItem::getCurrentLunarColor() const
-{
-    return this->currentLunarColor;
-}
-
-QColor LunarCalendarItem::getOtherLunarColor() const
-{
-    return this->otherLunarColor;
-}
-
-QColor LunarCalendarItem::getSelectLunarColor() const
-{
-    return this->selectLunarColor;
-}
-
-QColor LunarCalendarItem::getHoverLunarColor() const
-{
-    return this->hoverLunarColor;
-}
-
-QColor LunarCalendarItem::getCurrentBgColor() const
-{
-    return this->currentBgColor;
-}
-
-QColor LunarCalendarItem::getOtherBgColor() const
-{
-    return this->otherBgColor;
-}
-
-QColor LunarCalendarItem::getSelectBgColor() const
-{
-    return this->selectBgColor;
-}
-
-QColor LunarCalendarItem::getHoverBgColor() const
-{
-    return this->hoverBgColor;
-}
-
 QSize LunarCalendarItem::sizeHint() const
 {
     return QSize(100, 100);
@@ -357,12 +242,22 @@ QSize LunarCalendarItem::minimumSizeHint() const
     return QSize(20, 20);
 }
 
+bool LunarCalendarItem::getSelect() const
+{
+    return this->select;
+}
+
 void LunarCalendarItem::setSelect(bool select)
 {
     if (this->select != select) {
         this->select = select;
         this->update();
     }
+}
+
+bool LunarCalendarItem::getShowLunar() const
+{
+    return this->showLunar;
 }
 
 void LunarCalendarItem::setShowLunar(bool showLunar)
@@ -373,12 +268,22 @@ void LunarCalendarItem::setShowLunar(bool showLunar)
     }
 }
 
+QString LunarCalendarItem::getBgImage() const
+{
+    return this->bgImage;
+}
+
 void LunarCalendarItem::setBgImage(const QString &bgImage)
 {
     if (this->bgImage != bgImage) {
         this->bgImage = bgImage;
         this->update();
     }
+}
+
+LunarCalendarItem::SelectType LunarCalendarItem::getSelectType() const
+{
+    return this->selectType;
 }
 
 void LunarCalendarItem::setSelectType(const LunarCalendarItem::SelectType &selectType)
@@ -389,6 +294,11 @@ void LunarCalendarItem::setSelectType(const LunarCalendarItem::SelectType &selec
     }
 }
 
+QDate LunarCalendarItem::getDate() const
+{
+    return this->date;
+}
+
 void LunarCalendarItem::setDate(const QDate &date)
 {
     if (this->date != date) {
@@ -397,12 +307,22 @@ void LunarCalendarItem::setDate(const QDate &date)
     }
 }
 
+QString LunarCalendarItem::getLunar() const
+{
+    return this->lunar;
+}
+
 void LunarCalendarItem::setLunar(const QString &lunar)
 {
     if (this->lunar != lunar) {
         this->lunar = lunar;
         this->update();
     }
+}
+
+LunarCalendarItem::DayType LunarCalendarItem::getDayType() const
+{
+    return this->dayType;
 }
 
 void LunarCalendarItem::setDayType(const LunarCalendarItem::DayType &dayType)
@@ -421,12 +341,23 @@ void LunarCalendarItem::setDate(const QDate &date, const QString &lunar, const D
     this->update();
 }
 
+QColor LunarCalendarItem::getBorderColor() const
+{
+    return this->borderColor;
+}
+
 void LunarCalendarItem::setBorderColor(const QColor &borderColor)
 {
     if (this->borderColor != borderColor) {
         this->borderColor = borderColor;
         this->update();
     }
+}
+
+
+QColor LunarCalendarItem::getWeekColor() const
+{
+    return this->weekColor;
 }
 
 void LunarCalendarItem::setWeekColor(const QColor &weekColor)
@@ -437,12 +368,22 @@ void LunarCalendarItem::setWeekColor(const QColor &weekColor)
     }
 }
 
+QColor LunarCalendarItem::getSuperColor() const
+{
+    return this->superColor;
+}
+
 void LunarCalendarItem::setSuperColor(const QColor &superColor)
 {
     if (this->superColor != superColor) {
         this->superColor = superColor;
         this->update();
     }
+}
+
+QColor LunarCalendarItem::getLunarColor() const
+{
+    return this->lunarColor;
 }
 
 void LunarCalendarItem::setLunarColor(const QColor &lunarColor)
@@ -453,12 +394,22 @@ void LunarCalendarItem::setLunarColor(const QColor &lunarColor)
     }
 }
 
+QColor LunarCalendarItem::getCurrentTextColor() const
+{
+    return this->currentTextColor;
+}
+
 void LunarCalendarItem::setCurrentTextColor(const QColor &currentTextColor)
 {
     if (this->currentTextColor != currentTextColor) {
         this->currentTextColor = currentTextColor;
         this->update();
     }
+}
+
+QColor LunarCalendarItem::getOtherTextColor() const
+{
+    return this->otherTextColor;
 }
 
 void LunarCalendarItem::setOtherTextColor(const QColor &otherTextColor)
@@ -469,12 +420,22 @@ void LunarCalendarItem::setOtherTextColor(const QColor &otherTextColor)
     }
 }
 
+QColor LunarCalendarItem::getSelectTextColor() const
+{
+    return this->selectTextColor;
+}
+
 void LunarCalendarItem::setSelectTextColor(const QColor &selectTextColor)
 {
     if (this->selectTextColor != selectTextColor) {
         this->selectTextColor = selectTextColor;
         this->update();
     }
+}
+
+QColor LunarCalendarItem::getHoverTextColor() const
+{
+    return this->hoverTextColor;
 }
 
 void LunarCalendarItem::setHoverTextColor(const QColor &hoverTextColor)
@@ -485,12 +446,23 @@ void LunarCalendarItem::setHoverTextColor(const QColor &hoverTextColor)
     }
 }
 
+QColor LunarCalendarItem::getCurrentLunarColor() const
+{
+    return this->currentLunarColor;
+}
+
 void LunarCalendarItem::setCurrentLunarColor(const QColor &currentLunarColor)
 {
     if (this->currentLunarColor != currentLunarColor) {
         this->currentLunarColor = currentLunarColor;
         this->update();
     }
+}
+
+
+QColor LunarCalendarItem::getOtherLunarColor() const
+{
+    return this->otherLunarColor;
 }
 
 void LunarCalendarItem::setOtherLunarColor(const QColor &otherLunarColor)
@@ -501,12 +473,22 @@ void LunarCalendarItem::setOtherLunarColor(const QColor &otherLunarColor)
     }
 }
 
+QColor LunarCalendarItem::getSelectLunarColor() const
+{
+    return this->selectLunarColor;
+}
+
 void LunarCalendarItem::setSelectLunarColor(const QColor &selectLunarColor)
 {
     if (this->selectLunarColor != selectLunarColor) {
         this->selectLunarColor = selectLunarColor;
         this->update();
     }
+}
+
+QColor LunarCalendarItem::getHoverLunarColor() const
+{
+    return this->hoverLunarColor;
 }
 
 void LunarCalendarItem::setHoverLunarColor(const QColor &hoverLunarColor)
@@ -517,12 +499,23 @@ void LunarCalendarItem::setHoverLunarColor(const QColor &hoverLunarColor)
     }
 }
 
+QColor LunarCalendarItem::getCurrentBgColor() const
+{
+    return this->currentBgColor;
+}
+
 void LunarCalendarItem::setCurrentBgColor(const QColor &currentBgColor)
 {
     if (this->currentBgColor != currentBgColor) {
         this->currentBgColor = currentBgColor;
         this->update();
     }
+}
+
+
+QColor LunarCalendarItem::getOtherBgColor() const
+{
+    return this->otherBgColor;
 }
 
 void LunarCalendarItem::setOtherBgColor(const QColor &otherBgColor)
@@ -533,12 +526,22 @@ void LunarCalendarItem::setOtherBgColor(const QColor &otherBgColor)
     }
 }
 
+QColor LunarCalendarItem::getSelectBgColor() const
+{
+    return this->selectBgColor;
+}
+
 void LunarCalendarItem::setSelectBgColor(const QColor &selectBgColor)
 {
     if (this->selectBgColor != selectBgColor) {
         this->selectBgColor = selectBgColor;
         this->update();
     }
+}
+
+QColor LunarCalendarItem::getHoverBgColor() const
+{
+    return this->hoverBgColor;
 }
 
 void LunarCalendarItem::setHoverBgColor(const QColor &hoverBgColor)

@@ -39,6 +39,11 @@ SaveRunTime::SaveRunTime(QObject *parent) : QObject(parent)
     connect(timerSave, SIGNAL(timeout()), this, SLOT(saveLog()));
 }
 
+SaveRunTime::~SaveRunTime()
+{
+    this->stop();
+}
+
 void SaveRunTime::getDiffValue(const QDateTime &startTime, const QDateTime &endTime, int &day, int &hour, int &minute)
 {
     qint64 sec = startTime.secsTo(endTime);

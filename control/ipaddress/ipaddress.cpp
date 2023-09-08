@@ -144,11 +144,6 @@ void IPAddress::textChanged(const QString &text)
     ip = QString("%1.%2.%3.%4").arg(txtIP1->text()).arg(txtIP2->text()).arg(txtIP3->text()).arg(txtIP4->text());
 }
 
-QString IPAddress::getIP() const
-{
-    return this->ip;
-}
-
 QSize IPAddress::sizeHint() const
 {
     return QSize(250, 20);
@@ -157,6 +152,11 @@ QSize IPAddress::sizeHint() const
 QSize IPAddress::minimumSizeHint() const
 {
     return QSize(30, 10);
+}
+
+QString IPAddress::getIP() const
+{
+    return this->ip;
 }
 
 void IPAddress::setIP(const QString &ip)

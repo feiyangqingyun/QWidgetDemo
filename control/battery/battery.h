@@ -58,101 +58,106 @@ private slots:
     void updateValue();
 
 private:
-    double minValue;                //最小值
-    double maxValue;                //最大值
-    double value;                   //目标电量
-    double alarmValue;              //电池电量警戒值
+    double minValue;        //最小值
+    double maxValue;        //最大值
+    double value;           //目标电量
+    double alarmValue;      //电池电量警戒值
 
-    bool animation;                 //是否启用动画显示
-    double animationStep;           //动画显示时步长
+    bool animation;         //是否启用动画显示
+    double animationStep;   //动画显示时步长
 
-    int borderWidth;                //边框粗细
-    int borderRadius;               //边框圆角角度
-    int bgRadius;                   //背景进度圆角角度
-    int headRadius;                 //头部圆角角度
+    int borderWidth;        //边框粗细
+    int borderRadius;       //边框圆角角度
+    int bgRadius;           //背景进度圆角角度
+    int headRadius;         //头部圆角角度
 
-    QColor borderColorStart;        //边框渐变开始颜色
-    QColor borderColorEnd;          //边框渐变结束颜色
+    QColor borderColorStart;//边框渐变开始颜色
+    QColor borderColorEnd;  //边框渐变结束颜色
 
-    QColor alarmColorStart;         //电池低电量时的渐变开始颜色
-    QColor alarmColorEnd;           //电池低电量时的渐变结束颜色
+    QColor alarmColorStart; //电池低电量时的渐变开始颜色
+    QColor alarmColorEnd;   //电池低电量时的渐变结束颜色
 
-    QColor normalColorStart;        //电池正常电量时的渐变开始颜色
-    QColor normalColorEnd;          //电池正常电量时的渐变结束颜色
+    QColor normalColorStart;//电池正常电量时的渐变开始颜色
+    QColor normalColorEnd;  //电池正常电量时的渐变结束颜色
 
-    bool isForward;                 //是否往前移
-    double currentValue;            //当前电量
-    QRectF batteryRect;             //电池主体区域
-    QTimer *timer;                  //绘制定时器
+    bool isForward;         //是否往前移
+    double currentValue;    //当前电量
+    QRectF batteryRect;     //电池主体区域
+    QTimer *timer;          //绘制定时器
 
 public:
-    double getMinValue()            const;
-    double getMaxValue()            const;
-    double getValue()               const;
-    double getAlarmValue()          const;
+    //默认尺寸和最小尺寸
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
 
-    bool getAnimation()             const;
-    double getAnimationStep()       const;
-
-    int getBorderWidth()            const;
-    int getBorderRadius()           const;
-    int getBgRadius()               const;
-    int getHeadRadius()             const;
-
-    QColor getBorderColorStart()    const;
-    QColor getBorderColorEnd()      const;
-
-    QColor getAlarmColorStart()     const;
-    QColor getAlarmColorEnd()       const;
-
-    QColor getNormalColorStart()    const;
-    QColor getNormalColorEnd()      const;
-
-    QSize sizeHint()                const;
-    QSize minimumSizeHint()         const;
-
-public Q_SLOTS:
     //设置范围值
     void setRange(double minValue, double maxValue);
     void setRange(int minValue, int maxValue);
 
-    //设置最大最小值
+    //获取和设置最小值
+    double getMinValue() const;
     void setMinValue(double minValue);
+
+    //获取和设置最大值
+    double getMaxValue() const;
     void setMaxValue(double maxValue);
 
-    //设置电池电量值
+    //获取和设置电池电量值
+    double getValue() const;
     void setValue(double value);
-    void setValue(int value);
 
-    //设置电池电量警戒值
+    //获取和设置电池电量警戒值
+    double getAlarmValue() const;
     void setAlarmValue(double alarmValue);
-    void setAlarmValue(int alarmValue);
 
-    //设置是否启用动画显示
+    //获取和设置是否启用动画显示
+    bool getAnimation() const;
     void setAnimation(bool animation);
-    //设置动画显示的步长
+
+    //获取和设置动画显示的步长
+    double getAnimationStep() const;
     void setAnimationStep(double animationStep);
 
-    //设置边框粗细
+    //获取和设置边框粗细
+    int getBorderWidth() const;
     void setBorderWidth(int borderWidth);
-    //设置边框圆角角度
+
+    //获取和设置边框圆角角度
+    int getBorderRadius() const;
     void setBorderRadius(int borderRadius);
-    //设置背景圆角角度
+
+    //获取和设置背景圆角角度
+    int getBgRadius() const;
     void setBgRadius(int bgRadius);
-    //设置头部圆角角度
+
+    //获取和设置头部圆角角度
+    int getHeadRadius() const;
     void setHeadRadius(int headRadius);
 
-    //设置边框渐变颜色
+    //获取和设置边框渐变颜色
+    QColor getBorderColorStart() const;
     void setBorderColorStart(const QColor &borderColorStart);
+
+    QColor getBorderColorEnd() const;
     void setBorderColorEnd(const QColor &borderColorEnd);
 
-    //设置电池电量报警时的渐变颜色
+    //获取和设置电池电量报警时的渐变颜色
+    QColor getAlarmColorStart() const;
     void setAlarmColorStart(const QColor &alarmColorStart);
+
+    QColor getAlarmColorEnd() const;
     void setAlarmColorEnd(const QColor &alarmColorEnd);
 
-    //设置电池电量正常时的渐变颜色
+    //获取和设置电池电量正常时的渐变颜色
+    QColor getNormalColorStart() const;
     void setNormalColorStart(const QColor &normalColorStart);
+
+    QColor getNormalColorEnd() const;
     void setNormalColorEnd(const QColor &normalColorEnd);
+
+public Q_SLOTS:
+    void setValue(int value);
+    void setAlarmValue(int alarmValue);
 
 Q_SIGNALS:
     void valueChanged(double value);

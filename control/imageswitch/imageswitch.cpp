@@ -36,16 +36,6 @@ void ImageSwitch::paintEvent(QPaintEvent *)
     painter.drawImage(point, img);
 }
 
-bool ImageSwitch::getChecked() const
-{
-    return isChecked;
-}
-
-ImageSwitch::ButtonStyle ImageSwitch::getButtonStyle() const
-{
-    return this->buttonStyle;
-}
-
 QSize ImageSwitch::sizeHint() const
 {
     return QSize(87, 28);
@@ -56,6 +46,11 @@ QSize ImageSwitch::minimumSizeHint() const
     return QSize(87, 28);
 }
 
+bool ImageSwitch::getChecked() const
+{
+    return isChecked;
+}
+
 void ImageSwitch::setChecked(bool isChecked)
 {
     if (this->isChecked != isChecked) {
@@ -63,6 +58,11 @@ void ImageSwitch::setChecked(bool isChecked)
         imgFile = isChecked ? imgOnFile : imgOffFile;
         this->update();
     }
+}
+
+ImageSwitch::ButtonStyle ImageSwitch::getButtonStyle() const
+{
+    return this->buttonStyle;
 }
 
 void ImageSwitch::setButtonStyle(const ImageSwitch::ButtonStyle &buttonStyle)

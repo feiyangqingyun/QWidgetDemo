@@ -144,86 +144,6 @@ void Battery::updateValue()
     this->update();
 }
 
-double Battery::getMinValue() const
-{
-    return this->minValue;
-}
-
-double Battery::getMaxValue() const
-{
-    return this->maxValue;
-}
-
-double Battery::getValue() const
-{
-    return this->value;
-}
-
-double Battery::getAlarmValue() const
-{
-    return this->alarmValue;
-}
-
-bool Battery::getAnimation() const
-{
-    return this->animation;
-}
-
-double Battery::getAnimationStep() const
-{
-    return this->animationStep;
-}
-
-int Battery::getBorderWidth() const
-{
-    return this->borderWidth;
-}
-
-int Battery::getBorderRadius() const
-{
-    return this->borderRadius;
-}
-
-int Battery::getBgRadius() const
-{
-    return this->bgRadius;
-}
-
-int Battery::getHeadRadius() const
-{
-    return this->headRadius;
-}
-
-QColor Battery::getBorderColorStart() const
-{
-    return this->borderColorStart;
-}
-
-QColor Battery::getBorderColorEnd() const
-{
-    return this->borderColorEnd;
-}
-
-QColor Battery::getAlarmColorStart() const
-{
-    return this->alarmColorStart;
-}
-
-QColor Battery::getAlarmColorEnd() const
-{
-    return this->alarmColorEnd;
-}
-
-QColor Battery::getNormalColorStart() const
-{
-    return this->normalColorStart;
-}
-
-QColor Battery::getNormalColorEnd() const
-{
-    return this->normalColorEnd;
-}
-
 QSize Battery::sizeHint() const
 {
     return QSize(150, 80);
@@ -260,14 +180,29 @@ void Battery::setRange(int minValue, int maxValue)
     setRange((double)minValue, (double)maxValue);
 }
 
+double Battery::getMinValue() const
+{
+    return this->minValue;
+}
+
 void Battery::setMinValue(double minValue)
 {
     setRange(minValue, maxValue);
 }
 
+double Battery::getMaxValue() const
+{
+    return this->maxValue;
+}
+
 void Battery::setMaxValue(double maxValue)
 {
     setRange(minValue, maxValue);
+}
+
+double Battery::getValue() const
+{
+    return this->value;
 }
 
 void Battery::setValue(double value)
@@ -310,6 +245,11 @@ void Battery::setValue(int value)
     setValue((double)value);
 }
 
+double Battery::getAlarmValue() const
+{
+    return this->alarmValue;
+}
+
 void Battery::setAlarmValue(double alarmValue)
 {
     if (this->alarmValue != alarmValue) {
@@ -323,12 +263,23 @@ void Battery::setAlarmValue(int alarmValue)
     setAlarmValue((double)alarmValue);
 }
 
+
+bool Battery::getAnimation() const
+{
+    return this->animation;
+}
+
 void Battery::setAnimation(bool animation)
 {
     if (this->animation != animation) {
         this->animation = animation;
         this->update();
     }
+}
+
+double Battery::getAnimationStep() const
+{
+    return this->animationStep;
 }
 
 void Battery::setAnimationStep(double animationStep)
@@ -339,12 +290,22 @@ void Battery::setAnimationStep(double animationStep)
     }
 }
 
+int Battery::getBorderWidth() const
+{
+    return this->borderWidth;
+}
+
 void Battery::setBorderWidth(int borderWidth)
 {
     if (this->borderWidth != borderWidth) {
         this->borderWidth = borderWidth;
         this->update();
     }
+}
+
+int Battery::getBorderRadius() const
+{
+    return this->borderRadius;
 }
 
 void Battery::setBorderRadius(int borderRadius)
@@ -355,12 +316,22 @@ void Battery::setBorderRadius(int borderRadius)
     }
 }
 
+int Battery::getBgRadius() const
+{
+    return this->bgRadius;
+}
+
 void Battery::setBgRadius(int bgRadius)
 {
     if (this->bgRadius != bgRadius) {
         this->bgRadius = bgRadius;
         this->update();
     }
+}
+
+int Battery::getHeadRadius() const
+{
+    return this->headRadius;
 }
 
 void Battery::setHeadRadius(int headRadius)
@@ -371,12 +342,22 @@ void Battery::setHeadRadius(int headRadius)
     }
 }
 
+QColor Battery::getBorderColorStart() const
+{
+    return this->borderColorStart;
+}
+
 void Battery::setBorderColorStart(const QColor &borderColorStart)
 {
     if (this->borderColorStart != borderColorStart) {
         this->borderColorStart = borderColorStart;
         this->update();
     }
+}
+
+QColor Battery::getBorderColorEnd() const
+{
+    return this->borderColorEnd;
 }
 
 void Battery::setBorderColorEnd(const QColor &borderColorEnd)
@@ -387,12 +368,22 @@ void Battery::setBorderColorEnd(const QColor &borderColorEnd)
     }
 }
 
+QColor Battery::getAlarmColorStart() const
+{
+    return this->alarmColorStart;
+}
+
 void Battery::setAlarmColorStart(const QColor &alarmColorStart)
 {
     if (this->alarmColorStart != alarmColorStart) {
         this->alarmColorStart = alarmColorStart;
         this->update();
     }
+}
+
+QColor Battery::getAlarmColorEnd() const
+{
+    return this->alarmColorEnd;
 }
 
 void Battery::setAlarmColorEnd(const QColor &alarmColorEnd)
@@ -403,12 +394,22 @@ void Battery::setAlarmColorEnd(const QColor &alarmColorEnd)
     }
 }
 
+QColor Battery::getNormalColorStart() const
+{
+    return this->normalColorStart;
+}
+
 void Battery::setNormalColorStart(const QColor &normalColorStart)
 {
     if (this->normalColorStart != normalColorStart) {
         this->normalColorStart = normalColorStart;
         this->update();
     }
+}
+
+QColor Battery::getNormalColorEnd() const
+{
+    return this->normalColorEnd;
 }
 
 void Battery::setNormalColorEnd(const QColor &normalColorEnd)
@@ -418,4 +419,3 @@ void Battery::setNormalColorEnd(const QColor &normalColorEnd)
         this->update();
     }
 }
-

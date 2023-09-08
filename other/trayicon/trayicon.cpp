@@ -44,11 +44,6 @@ void TrayIcon::iconIsActived(QSystemTrayIcon::ActivationReason reason)
     }
 }
 
-bool TrayIcon::getVisible() const
-{
-    return trayIcon->isVisible();
-}
-
 void TrayIcon::setExitDirect(bool exitDirect)
 {
     if (this->exitDirect != exitDirect) {
@@ -91,6 +86,11 @@ void TrayIcon::setIcon(const QString &strIcon)
 void TrayIcon::setToolTip(const QString &tip)
 {
     trayIcon->setToolTip(tip);
+}
+
+bool TrayIcon::getVisible() const
+{
+    return trayIcon->isVisible();
 }
 
 void TrayIcon::setVisible(bool visible)

@@ -36,24 +36,24 @@ protected:
     void paintEvent(QPaintEvent *event);
 
 private:
-    bool isChecked;
-    ButtonStyle buttonStyle;
+    bool isChecked;             //是否选中
+    ButtonStyle buttonStyle;    //按钮样式
 
-    QString imgOffFile;
-    QString imgOnFile;
-    QString imgFile;
+    QString imgOffFile;         //关闭图片
+    QString imgOnFile;          //开启图片
+    QString imgFile;            //当前图片
 
 public:
-    bool getChecked()               const;
-    ButtonStyle getButtonStyle()    const;
+    //默认尺寸和最小尺寸
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
 
-    QSize sizeHint()                const;
-    QSize minimumSizeHint()         const;
-
-public Q_SLOTS:
-    //设置是否选中
+    //获取和设置是否选中
+    bool getChecked() const;
     void setChecked(bool isChecked);
-    //设置按钮样式
+
+    //获取和设置按钮样式
+    ButtonStyle getButtonStyle() const;
     void setButtonStyle(const ImageSwitch::ButtonStyle &buttonStyle);
 
 Q_SIGNALS:

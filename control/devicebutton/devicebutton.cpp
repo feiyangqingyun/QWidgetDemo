@@ -114,36 +114,6 @@ bool DeviceButton::eventFilter(QObject *watched, QEvent *event)
     return QWidget::eventFilter(watched, event);
 }
 
-bool DeviceButton::getCanMove() const
-{
-    return this->canMove;
-}
-
-QString DeviceButton::getText() const
-{
-    return this->text;
-}
-
-QString DeviceButton::getColorNormal() const
-{
-    return this->colorNormal;
-}
-
-QString DeviceButton::getColorAlarm() const
-{
-    return this->colorAlarm;
-}
-
-DeviceButton::ButtonStyle DeviceButton::getButtonStyle() const
-{
-    return this->buttonStyle;
-}
-
-DeviceButton::ButtonColor DeviceButton::getButtonColor() const
-{
-    return this->buttonColor;
-}
-
 QSize DeviceButton::sizeHint() const
 {
     return QSize(50, 50);
@@ -166,9 +136,19 @@ void DeviceButton::checkAlarm()
     this->update();
 }
 
+bool DeviceButton::getCanMove() const
+{
+    return this->canMove;
+}
+
 void DeviceButton::setCanMove(bool canMove)
 {
     this->canMove = canMove;
+}
+
+QString DeviceButton::getText() const
+{
+    return this->text;
 }
 
 void DeviceButton::setText(const QString &text)
@@ -179,6 +159,11 @@ void DeviceButton::setText(const QString &text)
     }
 }
 
+QString DeviceButton::getColorNormal() const
+{
+    return this->colorNormal;
+}
+
 void DeviceButton::setColorNormal(const QString &colorNormal)
 {
     if (this->colorNormal != colorNormal) {
@@ -187,12 +172,22 @@ void DeviceButton::setColorNormal(const QString &colorNormal)
     }
 }
 
+QString DeviceButton::getColorAlarm() const
+{
+    return this->colorAlarm;
+}
+
 void DeviceButton::setColorAlarm(const QString &colorAlarm)
 {
     if (this->colorAlarm != colorAlarm) {
         this->colorAlarm = colorAlarm;
         this->update();
     }
+}
+
+DeviceButton::ButtonStyle DeviceButton::getButtonStyle() const
+{
+    return this->buttonStyle;
 }
 
 void DeviceButton::setButtonStyle(const DeviceButton::ButtonStyle &buttonStyle)
@@ -215,6 +210,11 @@ void DeviceButton::setButtonStyle(const DeviceButton::ButtonStyle &buttonStyle)
     }
 
     setButtonColor(buttonColor);
+}
+
+DeviceButton::ButtonColor DeviceButton::getButtonColor() const
+{
+    return this->buttonColor;
 }
 
 void DeviceButton::setButtonColor(const DeviceButton::ButtonColor &buttonColor)

@@ -26,6 +26,7 @@ class DeviceSizeTable : public QTableWidget
     Q_PROPERTY(QColor chunkColor1 READ getChunkColor1 WRITE setChunkColor1)
     Q_PROPERTY(QColor chunkColor2 READ getChunkColor2 WRITE setChunkColor2)
     Q_PROPERTY(QColor chunkColor3 READ getChunkColor3 WRITE setChunkColor3)
+
     Q_PROPERTY(QColor textColor1 READ getTextColor1 WRITE setTextColor1)
     Q_PROPERTY(QColor textColor2 READ getTextColor2 WRITE setTextColor2)
     Q_PROPERTY(QColor textColor3 READ getTextColor3 WRITE setTextColor3)
@@ -34,15 +35,16 @@ public:
     explicit DeviceSizeTable(QWidget *parent = 0);
 
 private:
-    QProcess *process;          //执行命令进程
+    QProcess *process;      //执行命令进程
 
-    QColor bgColor;             //背景颜色
-    QColor chunkColor1;         //进度颜色1
-    QColor chunkColor2;         //进度颜色2
-    QColor chunkColor3;         //进度颜色3
-    QColor textColor1;          //文字颜色1
-    QColor textColor2;          //文字颜色2
-    QColor textColor3;          //文字颜色3
+    QColor bgColor;         //背景颜色
+    QColor chunkColor1;     //进度颜色1
+    QColor chunkColor2;     //进度颜色2
+    QColor chunkColor3;     //进度颜色3
+
+    QColor textColor1;      //文字颜色1
+    QColor textColor2;      //文字颜色2
+    QColor textColor3;      //文字颜色3
 
 private slots:
     void readData();
@@ -50,33 +52,41 @@ private slots:
     void insertSize(const QString &name, const QString &use, const QString &free, const QString &all, int percent);
 
 public:
-    QColor getBgColor()         const;
-    QColor getChunkColor1()     const;
-    QColor getChunkColor2()     const;
-    QColor getChunkColor3()     const;
-    QColor getTextColor1()      const;
-    QColor getTextColor2()      const;
-    QColor getTextColor3()      const;
+    //默认尺寸和最小尺寸
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
 
-    QSize sizeHint()            const;
-    QSize minimumSizeHint()     const;
+    //获取和设置背景颜色
+    QColor getBgColor() const;
+    void setBgColor(const QColor &bgColor);
+
+    //获取和设置进度颜色1
+    QColor getChunkColor1() const;
+    void setChunkColor1(const QColor &chunkColor1);
+
+    //获取和设置进度颜色2
+    QColor getChunkColor2() const;
+    void setChunkColor2(const QColor &chunkColor2);
+
+    //获取和设置进度颜色3
+    QColor getChunkColor3() const;
+    void setChunkColor3(const QColor &chunkColor3);
+
+    //获取和设置文字颜色1
+    QColor getTextColor1() const;
+    void setTextColor1(const QColor &textColor1);
+
+    //获取和设置文字颜色2
+    QColor getTextColor2() const;
+    void setTextColor2(const QColor &textColor2);
+
+    //获取和设置文字颜色3
+    QColor getTextColor3() const;
+    void setTextColor3(const QColor &textColor3);
 
 public Q_SLOTS:
     //载入容量
     void load();
-
-    //设置背景颜色
-    void setBgColor(const QColor &bgColor);
-
-    //设置进度颜色
-    void setChunkColor1(const QColor &chunkColor1);
-    void setChunkColor2(const QColor &chunkColor2);
-    void setChunkColor3(const QColor &chunkColor3);
-
-    //设置文字颜色
-    void setTextColor1(const QColor &textColor1);
-    void setTextColor2(const QColor &textColor2);
-    void setTextColor3(const QColor &textColor3);
 
 Q_SIGNALS:
     void sdcardReceive(const QString &sdcardName);

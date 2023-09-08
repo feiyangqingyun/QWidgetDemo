@@ -90,43 +90,43 @@ public:
     ~LunarCalendarWidget();
 
 private:
-    QFont iconFont;                     //图形字体
-    bool btnClick;                      //按钮单击,避开下拉选择重复触发
-    QComboBox *cboxYear;                //年份下拉框
-    QComboBox *cboxMonth;               //月份下拉框
-    QList<QLabel *> labWeeks;           //顶部星期名称
-    QList<LunarCalendarItem *> dayItems;//日期元素
+    QFont iconFont;                 //图形字体
+    bool btnClick;                  //按钮单击,避开下拉选择重复触发
+    QComboBox *cboxYear;            //年份下拉框
+    QComboBox *cboxMonth;           //月份下拉框
+    QList<QLabel *> labWeeks;       //顶部星期名称
+    QList<LunarCalendarItem *> items;//日期元素
 
-    CalendarStyle calendarStyle;        //整体样式
-    WeekNameFormat weekNameFormat;      //星期名称格式
-    QDate date;                         //当前日期
+    CalendarStyle calendarStyle;    //整体样式
+    WeekNameFormat weekNameFormat;  //星期名称格式
+    QDate date;                     //当前日期
 
-    QColor weekTextColor;               //星期名称文字颜色
-    QColor weekBgColor;                 //星期名称背景色
+    QColor weekTextColor;           //星期名称文字颜色
+    QColor weekBgColor;             //星期名称背景色
 
-    bool showLunar;                     //显示农历
-    QString bgImage;                    //背景图片
-    SelectType selectType;              //选中模式
+    bool showLunar;                 //显示农历
+    QString bgImage;                //背景图片
+    SelectType selectType;          //选中模式
 
-    QColor borderColor;                 //边框颜色
-    QColor weekColor;                   //周末颜色
-    QColor superColor;                  //角标颜色
-    QColor lunarColor;                  //农历节日颜色
+    QColor borderColor;             //边框颜色
+    QColor weekColor;               //周末颜色
+    QColor superColor;              //角标颜色
+    QColor lunarColor;              //农历节日颜色
 
-    QColor currentTextColor;            //当前月文字颜色
-    QColor otherTextColor;              //其他月文字颜色
-    QColor selectTextColor;             //选中日期文字颜色
-    QColor hoverTextColor;              //悬停日期文字颜色
+    QColor currentTextColor;        //当前月文字颜色
+    QColor otherTextColor;          //其他月文字颜色
+    QColor selectTextColor;         //选中日期文字颜色
+    QColor hoverTextColor;          //悬停日期文字颜色
 
-    QColor currentLunarColor;           //当前月农历文字颜色
-    QColor otherLunarColor;             //其他月农历文字颜色
-    QColor selectLunarColor;            //选中日期农历文字颜色
-    QColor hoverLunarColor;             //悬停日期农历文字颜色
+    QColor currentLunarColor;       //当前月农历文字颜色
+    QColor otherLunarColor;         //其他月农历文字颜色
+    QColor selectLunarColor;        //选中日期农历文字颜色
+    QColor hoverLunarColor;         //悬停日期农历文字颜色
 
-    QColor currentBgColor;              //当前月背景颜色
-    QColor otherBgColor;                //其他月背景颜色
-    QColor selectBgColor;               //选中日期背景颜色
-    QColor hoverBgColor;                //悬停日期背景颜色
+    QColor currentBgColor;          //当前月背景颜色
+    QColor otherBgColor;            //其他月背景颜色
+    QColor selectBgColor;           //选中日期背景颜色
+    QColor hoverBgColor;            //悬停日期背景颜色
 
 private slots:
     void initWidget();
@@ -139,106 +139,119 @@ private slots:
     void dateChanged(int year, int month, int day);
 
 public:
-    CalendarStyle getCalendarStyle()    const;
-    WeekNameFormat getWeekNameFormat()  const;
-    QDate getDate()                     const;
+    //默认尺寸和最小尺寸
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
 
-    QColor getWeekTextColor()           const;
-    QColor getWeekBgColor()             const;
+    //获取和设置整体样式
+    CalendarStyle getCalendarStyle() const;
+    void setCalendarStyle(const CalendarStyle &calendarStyle);
 
-    bool getShowLunar()                 const;
-    QString getBgImage()                const;
-    SelectType getSelectType()          const;
+    //获取和设置星期名称格式
+    WeekNameFormat getWeekNameFormat() const;
+    void setWeekNameFormat(const WeekNameFormat &weekNameFormat);
 
-    QColor getBorderColor()             const;
-    QColor getWeekColor()               const;
-    QColor getSuperColor()              const;
-    QColor getLunarColor()              const;
+    //获取和设置日期
+    QDate getDate() const;
+    void setDate(const QDate &date);
 
-    QColor getCurrentTextColor()        const;
-    QColor getOtherTextColor()          const;
-    QColor getSelectTextColor()         const;
-    QColor getHoverTextColor()          const;
+    //获取和设置顶部星期名称文字颜色
+    QColor getWeekTextColor() const;
+    void setWeekTextColor(const QColor &weekTextColor);
 
-    QColor getCurrentLunarColor()       const;
-    QColor getOtherLunarColor()         const;
-    QColor getSelectLunarColor()        const;
-    QColor getHoverLunarColor()         const;
+    //获取和设置顶部星期名称文字背景色
+    QColor getWeekBgColor() const;
+    void setWeekBgColor(const QColor &weekBgColor);
 
-    QColor getCurrentBgColor()          const;
-    QColor getOtherBgColor()            const;
-    QColor getSelectBgColor()           const;
-    QColor getHoverBgColor()            const;
+    //获取和设置是否显示农历信息
+    bool getShowLunar() const;
+    void setShowLunar(bool showLunar);
 
-    QSize sizeHint()                    const;
-    QSize minimumSizeHint()             const;
+    //获取和设置背景图片
+    QString getBgImage() const;
+    void setBgImage(const QString &bgImage);
+
+    //获取和设置选中背景样式
+    SelectType getSelectType() const;
+    void setSelectType(const SelectType &selectType);
+
+    //获取和设置边框颜色
+    QColor getBorderColor() const;
+    void setBorderColor(const QColor &borderColor);
+
+    //获取和设置周末颜色
+    QColor getWeekColor() const;
+    void setWeekColor(const QColor &weekColor);
+
+    //获取和设置角标颜色
+    QColor getSuperColor() const;
+    void setSuperColor(const QColor &superColor);
+
+    //获取和设置农历节日颜色
+    QColor getLunarColor() const;
+    void setLunarColor(const QColor &lunarColor);
+
+    //获取和设置当前月文字颜色
+    QColor getCurrentTextColor() const;
+    void setCurrentTextColor(const QColor &currentTextColor);
+
+    //获取和设置其他月文字颜色
+    QColor getOtherTextColor() const;
+    void setOtherTextColor(const QColor &otherTextColor);
+
+    //获取和设置选中日期文字颜色
+    QColor getSelectTextColor() const;
+    void setSelectTextColor(const QColor &selectTextColor);
+
+    //获取和设置悬停日期文字颜色
+    QColor getHoverTextColor() const;
+    void setHoverTextColor(const QColor &hoverTextColor);
+
+    //获取和设置当前月农历文字颜色
+    QColor getCurrentLunarColor() const;
+    void setCurrentLunarColor(const QColor &currentLunarColor);
+
+    //获取和设置其他月农历文字颜色
+    QColor getOtherLunarColor() const;
+    void setOtherLunarColor(const QColor &otherLunarColor);
+
+    //获取和设置选中日期农历文字颜色
+    QColor getSelectLunarColor() const;
+    void setSelectLunarColor(const QColor &selectLunarColor);
+
+    //获取和设置悬停日期农历文字颜色
+    QColor getHoverLunarColor() const;
+    void setHoverLunarColor(const QColor &hoverLunarColor);
+
+    //获取和设置当前月背景颜色
+    QColor getCurrentBgColor() const;
+    void setCurrentBgColor(const QColor &currentBgColor);
+
+    //获取和设置其他月背景颜色
+    QColor getOtherBgColor() const;
+    void setOtherBgColor(const QColor &otherBgColor);
+
+    //获取和设置选中日期背景颜色
+    QColor getSelectBgColor() const;
+    void setSelectBgColor(const QColor &selectBgColor);
+
+    //获取和设置悬停日期背景颜色
+    QColor getHoverBgColor() const;
+    void setHoverBgColor(const QColor &hoverBgColor);
 
 public Q_SLOTS:
-    //上一年,下一年
+    //转到上一年
     void showPreviousYear();
+    //转到下一年
     void showNextYear();
 
-    //上一月,下一月
+    //转到上一月
     void showPreviousMonth();
+    //转到下一月
     void showNextMonth();
 
     //转到今天
     void showToday();
-
-    //设置整体样式
-    void setCalendarStyle(const CalendarStyle &calendarStyle);
-    //设置星期名称格式
-    void setWeekNameFormat(const WeekNameFormat &weekNameFormat);
-
-    //设置日期
-    void setDate(const QDate &date);
-
-    //设置顶部星期名称文字颜色+背景色
-    void setWeekTextColor(const QColor &weekTextColor);
-    void setWeekBgColor(const QColor &weekBgColor);
-
-    //设置是否显示农历信息
-    void setShowLunar(bool showLunar);
-    //设置背景图片
-    void setBgImage(const QString &bgImage);
-    //设置选中背景样式
-    void setSelectType(const SelectType &selectType);
-
-    //设置边框颜色
-    void setBorderColor(const QColor &borderColor);
-    //设置周末颜色
-    void setWeekColor(const QColor &weekColor);
-    //设置角标颜色
-    void setSuperColor(const QColor &superColor);
-    //设置农历节日颜色
-    void setLunarColor(const QColor &lunarColor);
-
-    //设置当前月文字颜色
-    void setCurrentTextColor(const QColor &currentTextColor);
-    //设置其他月文字颜色
-    void setOtherTextColor(const QColor &otherTextColor);
-    //设置选中日期文字颜色
-    void setSelectTextColor(const QColor &selectTextColor);
-    //设置悬停日期文字颜色
-    void setHoverTextColor(const QColor &hoverTextColor);
-
-    //设置当前月农历文字颜色
-    void setCurrentLunarColor(const QColor &currentLunarColor);
-    //设置其他月农历文字颜色
-    void setOtherLunarColor(const QColor &otherLunarColor);
-    //设置选中日期农历文字颜色
-    void setSelectLunarColor(const QColor &selectLunarColor);
-    //设置悬停日期农历文字颜色
-    void setHoverLunarColor(const QColor &hoverLunarColor);
-
-    //设置当前月背景颜色
-    void setCurrentBgColor(const QColor &currentBgColor);
-    //设置其他月背景颜色
-    void setOtherBgColor(const QColor &otherBgColor);
-    //设置选中日期背景颜色
-    void setSelectBgColor(const QColor &selectBgColor);
-    //设置悬停日期背景颜色
-    void setHoverBgColor(const QColor &hoverBgColor);
 
 Q_SIGNALS:
     void clicked(const QDate &date);

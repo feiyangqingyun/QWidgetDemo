@@ -26,6 +26,7 @@ class PanelWidget : public QWidget
 
 {
     Q_OBJECT
+
     Q_PROPERTY(int margin READ getMargin WRITE setMargin)
     Q_PROPERTY(int space READ getSpace WRITE setSpace)
     Q_PROPERTY(bool autoWidth READ getAutoWidth WRITE setAutoWidth)
@@ -39,52 +40,61 @@ protected:
     void resizeEvent(QResizeEvent *);
 
 private:
-    QScrollArea *scrollArea;        //滚动区域
-    QWidget *scrollAreaContents;    //滚动区域载体
-    QFrame *frame;                  //放置设备的框架,自动变宽变高
-    QVBoxLayout *verticalLayout;    //设备面板总布局
-    QGridLayout *gridLayout;        //设备表格布局
-    QSpacerItem *hSpacer;           //横向弹簧
-    QSpacerItem *vSpacer;           //垂直弹簧
+    QScrollArea *scrollArea;    //滚动区域
+    QWidget *scrollAreaContents;//滚动区域载体
+    QFrame *frame;              //放置设备的框架,自动变宽变高
+    QVBoxLayout *verticalLayout;//设备面板总布局
+    QGridLayout *gridLayout;    //设备表格布局
+    QSpacerItem *hSpacer;       //横向弹簧
+    QSpacerItem *vSpacer;       //垂直弹簧
 
-    int margin;                     //边距
-    int space;                      //设备之间的间隔
-    bool autoWidth;                 //宽度自动拉伸
-    bool autoHeight;                //高度自动拉伸
+    int margin;                 //边距
+    int space;                  //设备之间的间隔
+    bool autoWidth;             //宽度自动拉伸
+    bool autoHeight;            //高度自动拉伸
 
-    int columnCount;                //面板列数
-    QList<QWidget *> widgets;       //设备面板对象集合
+    int columnCount;            //面板列数
+    QList<QWidget *> widgets;   //设备面板对象集合
 
 public:
-    int getMargin()                 const;
-    int getSpace()                  const;
-    bool getAutoWidth()             const;
-    bool getAutoHeight()            const;
+    //默认尺寸和最小尺寸
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
 
-    int getColumnCount()            const;
-    QList<QWidget *> getWidgets()   const;
-
-    QSize sizeHint()                const;
-    QSize minimumSizeHint()         const;
-
-public Q_SLOTS:
-    //设置边距+间距
+    //设置边距
     void setMargin(int left, int top, int right, int bottom);
+
+    //获取和设置边距
+    int getMargin() const;
     void setMargin(int margin);
+
+    //获取和设置间距
+    int getSpace() const;
     void setSpace(int space);
 
-    //设置自动填充宽度+自动填充高度
+    //获取和设置自动填充宽度
+    bool getAutoWidth() const;
     void setAutoWidth(bool autoWidth);
+
+    //获取和设置自自动填充高度
+    bool getAutoHeight() const;
     void setAutoHeight(bool autoHeight);
 
-    //设置列数+窗体集合
+    //获取和设置列数
+    int getColumnCount() const;
     void setColumnCount(int columnCount);
+
+    //获取和设置窗体集合
+    QList<QWidget *> getWidgets() const;
     void setWidgets(QList<QWidget *> widgets);
 
-    //载入窗体集合+指定位置插入新窗体+移除指定的窗体+清空窗体
+    //载入窗体集合
     void loadWidgets();
+    //指定位置插入新窗体
     void insertWidget(int index, QWidget *widget);
+    //移除指定的窗体
     void removeWidget(QWidget *widget);
+    //清空窗体
     void clearWidgets();
 };
 

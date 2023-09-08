@@ -59,128 +59,6 @@ DeviceSizeTable::DeviceSizeTable(QWidget *parent) : QTableWidget(parent)
     //QTimer::singleShot(10, this, SLOT(load()));
 }
 
-QColor DeviceSizeTable::getBgColor() const
-{
-    return this->bgColor;
-}
-
-QColor DeviceSizeTable::getChunkColor1() const
-{
-    return this->chunkColor1;
-}
-
-QColor DeviceSizeTable::getChunkColor2() const
-{
-    return this->chunkColor2;
-}
-
-QColor DeviceSizeTable::getChunkColor3() const
-{
-    return this->chunkColor3;
-}
-
-QColor DeviceSizeTable::getTextColor1() const
-{
-    return this->textColor1;
-}
-
-QColor DeviceSizeTable::getTextColor2() const
-{
-    return this->textColor2;
-}
-
-QColor DeviceSizeTable::getTextColor3() const
-{
-    return this->textColor3;
-}
-
-void DeviceSizeTable::load()
-{
-    //清空原有数据
-    int row = this->rowCount();
-    for (int i = 0; i < row; ++i) {
-        this->removeRow(0);
-    }
-
-#ifdef Q_OS_WIN
-    QFileInfoList list = QDir::drives();
-    foreach (QFileInfo dir, list) {
-        QString dirName = dir.absolutePath();
-        LPCWSTR lpcwstrDriver = (LPCWSTR)dirName.utf16();
-        ULARGE_INTEGER liFreeBytesAvailable, liTotalBytes, liTotalFreeBytes;
-
-        if (GetDiskFreeSpaceEx(lpcwstrDriver, &liFreeBytesAvailable, &liTotalBytes, &liTotalFreeBytes)) {
-            QString use = QString::number((double)(liTotalBytes.QuadPart - liTotalFreeBytes.QuadPart) / GB, 'f', 1);
-            use += "G";
-            QString free = QString::number((double) liTotalFreeBytes.QuadPart / GB, 'f', 1);
-            free += "G";
-            QString all = QString::number((double) liTotalBytes.QuadPart / GB, 'f', 1);
-            all += "G";
-            int percent = 100 - ((double)liTotalFreeBytes.QuadPart / liTotalBytes.QuadPart) * 100;
-            insertSize(dirName, use, free, all, percent);
-        }
-    }
-#elif defined(Q_OS_UNIX) && !defined(Q_OS_WASM)
-    process->start("df", QStringList() << "-h");
-#endif
-}
-
-void DeviceSizeTable::setBgColor(const QColor &bgColor)
-{
-    if (this->bgColor != bgColor) {
-        this->bgColor = bgColor;
-        this->load();
-    }
-}
-
-void DeviceSizeTable::setChunkColor1(const QColor &chunkColor1)
-{
-    if (this->chunkColor1 != chunkColor1) {
-        this->chunkColor1 = chunkColor1;
-        this->load();
-    }
-}
-
-void DeviceSizeTable::setChunkColor2(const QColor &chunkColor2)
-{
-    if (this->chunkColor2 != chunkColor2) {
-        this->chunkColor2 = chunkColor2;
-        this->load();
-    }
-}
-
-void DeviceSizeTable::setChunkColor3(const QColor &chunkColor3)
-{
-    if (this->chunkColor3 != chunkColor3) {
-        this->chunkColor3 = chunkColor3;
-        this->load();
-    }
-}
-
-void DeviceSizeTable::setTextColor1(const QColor &textColor1)
-{
-    if (this->textColor1 != textColor1) {
-        this->textColor1 = textColor1;
-        this->load();
-    }
-}
-
-void DeviceSizeTable::setTextColor2(const QColor &textColor2)
-{
-    if (this->textColor2 != textColor2) {
-        this->textColor2 = textColor2;
-        this->load();
-    }
-}
-
-void DeviceSizeTable::setTextColor3(const QColor &textColor3)
-{
-    if (this->textColor3 != textColor3) {
-        this->textColor3 = textColor3;
-        this->load();
-    }
-}
-
 void DeviceSizeTable::readData()
 {
 #if defined(Q_OS_UNIX) && !defined(Q_OS_WASM)
@@ -291,4 +169,126 @@ QSize DeviceSizeTable::sizeHint() const
 QSize DeviceSizeTable::minimumSizeHint() const
 {
     return QSize(200, 150);
+}
+
+QColor DeviceSizeTable::getBgColor() const
+{
+    return this->bgColor;
+}
+
+void DeviceSizeTable::setBgColor(const QColor &bgColor)
+{
+    if (this->bgColor != bgColor) {
+        this->bgColor = bgColor;
+        this->load();
+    }
+}
+
+QColor DeviceSizeTable::getChunkColor1() const
+{
+    return this->chunkColor1;
+}
+
+void DeviceSizeTable::setChunkColor1(const QColor &chunkColor1)
+{
+    if (this->chunkColor1 != chunkColor1) {
+        this->chunkColor1 = chunkColor1;
+        this->load();
+    }
+}
+
+QColor DeviceSizeTable::getChunkColor2() const
+{
+    return this->chunkColor2;
+}
+
+void DeviceSizeTable::setChunkColor2(const QColor &chunkColor2)
+{
+    if (this->chunkColor2 != chunkColor2) {
+        this->chunkColor2 = chunkColor2;
+        this->load();
+    }
+}
+
+QColor DeviceSizeTable::getChunkColor3() const
+{
+    return this->chunkColor3;
+}
+
+void DeviceSizeTable::setChunkColor3(const QColor &chunkColor3)
+{
+    if (this->chunkColor3 != chunkColor3) {
+        this->chunkColor3 = chunkColor3;
+        this->load();
+    }
+}
+
+QColor DeviceSizeTable::getTextColor1() const
+{
+    return this->textColor1;
+}
+
+void DeviceSizeTable::setTextColor1(const QColor &textColor1)
+{
+    if (this->textColor1 != textColor1) {
+        this->textColor1 = textColor1;
+        this->load();
+    }
+}
+
+QColor DeviceSizeTable::getTextColor2() const
+{
+    return this->textColor2;
+}
+
+void DeviceSizeTable::setTextColor2(const QColor &textColor2)
+{
+    if (this->textColor2 != textColor2) {
+        this->textColor2 = textColor2;
+        this->load();
+    }
+}
+
+QColor DeviceSizeTable::getTextColor3() const
+{
+    return this->textColor3;
+}
+
+void DeviceSizeTable::setTextColor3(const QColor &textColor3)
+{
+    if (this->textColor3 != textColor3) {
+        this->textColor3 = textColor3;
+        this->load();
+    }
+}
+
+void DeviceSizeTable::load()
+{
+    //清空原有数据
+    int row = this->rowCount();
+    for (int i = 0; i < row; ++i) {
+        this->removeRow(0);
+    }
+
+#ifdef Q_OS_WIN
+    QFileInfoList list = QDir::drives();
+    foreach (QFileInfo dir, list) {
+        QString dirName = dir.absolutePath();
+        LPCWSTR lpcwstrDriver = (LPCWSTR)dirName.utf16();
+        ULARGE_INTEGER liFreeBytesAvailable, liTotalBytes, liTotalFreeBytes;
+
+        if (GetDiskFreeSpaceEx(lpcwstrDriver, &liFreeBytesAvailable, &liTotalBytes, &liTotalFreeBytes)) {
+            QString use = QString::number((double)(liTotalBytes.QuadPart - liTotalFreeBytes.QuadPart) / GB, 'f', 1);
+            use += "G";
+            QString free = QString::number((double) liTotalFreeBytes.QuadPart / GB, 'f', 1);
+            free += "G";
+            QString all = QString::number((double) liTotalBytes.QuadPart / GB, 'f', 1);
+            all += "G";
+            int percent = 100 - ((double)liTotalFreeBytes.QuadPart / liTotalBytes.QuadPart) * 100;
+            insertSize(dirName, use, free, all, percent);
+        }
+    }
+#elif defined(Q_OS_UNIX) && !defined(Q_OS_WASM)
+    process->start("df", QStringList() << "-h");
+#endif
 }

@@ -26,6 +26,7 @@ class SaveRunTime : public QObject
 public:
     static SaveRunTime *Instance();
     explicit SaveRunTime(QObject *parent = 0);
+    ~SaveRunTime();
 
 private:
     static QScopedPointer<SaveRunTime> self;

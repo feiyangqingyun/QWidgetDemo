@@ -102,135 +102,154 @@ protected:
     void drawTriangle(QPainter *painter);
 
 private:
-    int paddingLeft;                    //文字左侧间隔
-    int paddingRight;                   //文字右侧间隔
-    int paddingTop;                     //文字顶部间隔
-    int paddingBottom;                  //文字底部间隔
-    TextAlign textAlign;                //文字对齐
+    int paddingLeft;            //文字左侧间隔
+    int paddingRight;           //文字右侧间隔
+    int paddingTop;             //文字顶部间隔
+    int paddingBottom;          //文字底部间隔
+    TextAlign textAlign;        //文字对齐
 
-    bool showTriangle;                  //显示倒三角
-    int triangleLen;                    //倒三角边长
-    TrianglePosition trianglePosition;  //倒三角位置
-    QColor triangleColor;               //倒三角颜色
+    bool showTriangle;          //显示倒三角
+    int triangleLen;            //倒三角边长
+    TrianglePosition trianglePosition;//倒三角位置
+    QColor triangleColor;       //倒三角颜色
 
-    bool showIcon;                      //显示图标
-    int iconSpace;                      //图标间隔
-    QSize iconSize;                     //图标尺寸
-    QPixmap iconNormal;                 //正常图标
-    QPixmap iconHover;                  //悬停图标
-    QPixmap iconCheck;                  //选中图标
+    bool showIcon;              //显示图标
+    int iconSpace;              //图标间隔
+    QSize iconSize;             //图标尺寸
+    QPixmap iconNormal;         //正常图标
+    QPixmap iconHover;          //悬停图标
+    QPixmap iconCheck;          //选中图标
 
-    bool showLine;                      //显示线条
-    int lineSpace;                      //线条间隔
-    int lineWidth;                      //线条宽度
-    LinePosition linePosition;          //线条位置
-    QColor lineColor;                   //线条颜色
+    bool showLine;              //显示线条
+    int lineSpace;              //线条间隔
+    int lineWidth;              //线条宽度
+    LinePosition linePosition;  //线条位置
+    QColor lineColor;           //线条颜色
 
-    QColor normalBgColor;               //正常背景颜色
-    QColor hoverBgColor;                //悬停背景颜色
-    QColor checkBgColor;                //选中背景颜色
-    QColor normalTextColor;             //正常文字颜色
-    QColor hoverTextColor;              //悬停文字颜色
-    QColor checkTextColor;              //选中文字颜色
+    QColor normalBgColor;       //正常背景颜色
+    QColor hoverBgColor;        //悬停背景颜色
+    QColor checkBgColor;        //选中背景颜色
+    QColor normalTextColor;     //正常文字颜色
+    QColor hoverTextColor;      //悬停文字颜色
+    QColor checkTextColor;      //选中文字颜色
 
-    QBrush normalBgBrush;               //正常背景画刷
-    QBrush hoverBgBrush;                //悬停背景画刷
-    QBrush checkBgBrush;                //选中背景画刷
+    QBrush normalBgBrush;       //正常背景画刷
+    QBrush hoverBgBrush;        //悬停背景画刷
+    QBrush checkBgBrush;        //选中背景画刷
 
-    bool hover;                         //悬停标志位
+    bool hover;                 //悬停标志位
 
 public:
-    int getPaddingLeft()                const;
-    int getPaddingRight()               const;
-    int getPaddingTop()                 const;
-    int getPaddingBottom()              const;
-    TextAlign getTextAlign()            const;
+    //默认尺寸和最小尺寸
+    QSize sizeHint() const;
+    QSize minimumSizeHint() const;
 
-    bool getShowTriangle()              const;
-    int getTriangleLen()                const;
-    TrianglePosition getTrianglePosition()const;
-    QColor getTriangleColor()           const;
-
-    bool getShowIcon()                  const;
-    int getIconSpace()                  const;
-    QSize getIconSize()                 const;
-    QPixmap getIconNormal()             const;
-    QPixmap getIconHover()              const;
-    QPixmap getIconCheck()              const;
-
-    bool getShowLine()                  const;
-    int getLineSpace()                  const;
-    int getLineWidth()                  const;
-    LinePosition getLinePosition()      const;
-    QColor getLineColor()               const;
-
-    QColor getNormalBgColor()           const;
-    QColor getHoverBgColor()            const;
-    QColor getCheckBgColor()            const;
-    QColor getNormalTextColor()         const;
-    QColor getHoverTextColor()          const;
-    QColor getCheckTextColor()          const;
-
-    QSize sizeHint()                    const;
-    QSize minimumSizeHint()             const;
-
-public Q_SLOTS:
-    //设置文字间隔
+    //获取和设置文字左侧间隔
+    int getPaddingLeft() const;
     void setPaddingLeft(int paddingLeft);
+
+    //获取和设置文字左侧间隔
+    int getPaddingRight() const;
     void setPaddingRight(int paddingRight);
+
+    //获取和设置文字顶部间隔
+    int getPaddingTop() const;
     void setPaddingTop(int paddingTop);
+
+    //获取和设置文字底部间隔
+    int getPaddingBottom() const;
     void setPaddingBottom(int paddingBottom);
+
+    //设置边距
     void setPadding(int padding);
     void setPadding(int paddingLeft, int paddingRight, int paddingTop, int paddingBottom);
 
-    //设置文字对齐
+    //获取和设置文字对齐
+    TextAlign getTextAlign() const;
     void setTextAlign(const TextAlign &textAlign);
 
-    //设置显示倒三角
+    //获取和设置显示倒三角
+    bool getShowTriangle() const;
     void setShowTriangle(bool showTriangle);
-    //设置倒三角边长
+
+    //获取和设置倒三角边长
+    int getTriangleLen() const;
     void setTriangleLen(int triangleLen);
-    //设置倒三角位置
+
+    //获取和设置倒三角位置
+    TrianglePosition getTrianglePosition() const;
     void setTrianglePosition(const TrianglePosition &trianglePosition);
-    //设置倒三角颜色
+
+    //获取和设置倒三角颜色
+    QColor getTriangleColor() const;
     void setTriangleColor(const QColor &triangleColor);
 
-    //设置显示图标
+    //获取和设置显示图标
+    bool getShowIcon() const;
     void setShowIcon(bool showIcon);
-    //设置图标间隔
+
+    //获取和设置图标间隔
+    int getIconSpace() const;
     void setIconSpace(int iconSpace);
-    //设置图标尺寸
+
+    //获取和设置图标尺寸
+    QSize getIconSize() const;
     void setIconSize(const QSize &iconSize);
-    //设置正常图标
+
+    //获取和设置正常图标
+    QPixmap getIconNormal() const;
     void setIconNormal(const QPixmap &iconNormal);
-    //设置悬停图标
+
+    //获取和设置悬停图标
+    QPixmap getIconHover() const;
     void setIconHover(const QPixmap &iconHover);
-    //设置按下图标
+
+    //获取和设置按下图标
+    QPixmap getIconCheck() const;
     void setIconCheck(const QPixmap &iconCheck);
 
-    //设置显示线条
+    //获取和设置显示线条
+    bool getShowLine() const;
     void setShowLine(bool showLine);
-    //设置线条间隔
+
+    //获取和设置线条间隔
+    int getLineSpace() const;
     void setLineSpace(int lineSpace);
-    //设置线条宽度
+
+    //获取和设置线条宽度
+    int getLineWidth() const;
     void setLineWidth(int lineWidth);
-    //设置线条位置
+
+    //获取和设置线条位置
+    LinePosition getLinePosition() const;
     void setLinePosition(const LinePosition &linePosition);
-    //设置线条颜色
+
+    //获取和设置线条颜色
+    QColor getLineColor() const;
     void setLineColor(const QColor &lineColor);
 
-    //设置正常背景颜色
+    //获取和设置正常背景颜色
+    QColor getNormalBgColor() const;
     void setNormalBgColor(const QColor &normalBgColor);
-    //设置悬停背景颜色
+
+    //获取和设置悬停背景颜色
+    QColor getHoverBgColor() const;
     void setHoverBgColor(const QColor &hoverBgColor);
-    //设置选中背景颜色
+
+    //获取和设置选中背景颜色
+    QColor getCheckBgColor() const;
     void setCheckBgColor(const QColor &checkBgColor);
 
-    //设置正常文字颜色
+    //获取和设置正常文字颜色
+    QColor getNormalTextColor() const;
     void setNormalTextColor(const QColor &normalTextColor);
-    //设置悬停文字颜色
+
+    //获取和设置悬停文字颜色
+    QColor getHoverTextColor() const;
     void setHoverTextColor(const QColor &hoverTextColor);
-    //设置选中文字颜色
+
+    //获取和设置选中文字颜色
+    QColor getCheckTextColor() const;
     void setCheckTextColor(const QColor &checkTextColor);
 
     //设置正常背景画刷
@@ -239,7 +258,6 @@ public Q_SLOTS:
     void setHoverBgBrush(const QBrush &hoverBgBrush);
     //设置选中背景画刷
     void setCheckBgBrush(const QBrush &checkBgBrush);
-
 };
 
 #endif // NAVBUTTON_H

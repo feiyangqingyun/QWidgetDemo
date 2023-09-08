@@ -249,136 +249,6 @@ void NavButton::drawTriangle(QPainter *painter)
     painter->restore();
 }
 
-int NavButton::getPaddingLeft() const
-{
-    return this->paddingLeft;
-}
-
-int NavButton::getPaddingRight() const
-{
-    return this->paddingRight;
-}
-
-int NavButton::getPaddingTop() const
-{
-    return this->paddingTop;
-}
-
-int NavButton::getPaddingBottom() const
-{
-    return this->paddingBottom;
-}
-
-NavButton::TextAlign NavButton::getTextAlign() const
-{
-    return this->textAlign;
-}
-
-bool NavButton::getShowTriangle() const
-{
-    return this->showTriangle;
-}
-
-int NavButton::getTriangleLen() const
-{
-    return this->triangleLen;
-}
-
-NavButton::TrianglePosition NavButton::getTrianglePosition() const
-{
-    return this->trianglePosition;
-}
-
-QColor NavButton::getTriangleColor() const
-{
-    return this->triangleColor;
-}
-
-bool NavButton::getShowIcon() const
-{
-    return this->showIcon;
-}
-
-int NavButton::getIconSpace() const
-{
-    return this->iconSpace;
-}
-
-QSize NavButton::getIconSize() const
-{
-    return this->iconSize;
-}
-
-QPixmap NavButton::getIconNormal() const
-{
-    return this->iconNormal;
-}
-
-QPixmap NavButton::getIconHover() const
-{
-    return this->iconHover;
-}
-
-QPixmap NavButton::getIconCheck() const
-{
-    return this->iconCheck;
-}
-
-bool NavButton::getShowLine() const
-{
-    return this->showLine;
-}
-
-int NavButton::getLineSpace() const
-{
-    return this->lineSpace;
-}
-
-int NavButton::getLineWidth() const
-{
-    return this->lineWidth;
-}
-
-NavButton::LinePosition NavButton::getLinePosition() const
-{
-    return this->linePosition;
-}
-
-QColor NavButton::getLineColor() const
-{
-    return this->lineColor;
-}
-
-QColor NavButton::getNormalBgColor() const
-{
-    return this->normalBgColor;
-}
-
-QColor NavButton::getHoverBgColor() const
-{
-    return this->hoverBgColor;
-}
-
-QColor NavButton::getCheckBgColor() const
-{
-    return this->checkBgColor;
-}
-
-QColor NavButton::getNormalTextColor() const
-{
-    return this->normalTextColor;
-}
-
-QColor NavButton::getHoverTextColor() const
-{
-    return this->hoverTextColor;
-}
-
-QColor NavButton::getCheckTextColor() const
-{
-    return this->checkTextColor;
-}
-
 QSize NavButton::sizeHint() const
 {
     return QSize(100, 30);
@@ -389,12 +259,22 @@ QSize NavButton::minimumSizeHint() const
     return QSize(20, 10);
 }
 
+int NavButton::getPaddingLeft() const
+{
+    return this->paddingLeft;
+}
+
 void NavButton::setPaddingLeft(int paddingLeft)
 {
     if (this->paddingLeft != paddingLeft) {
         this->paddingLeft = paddingLeft;
         this->update();
     }
+}
+
+int NavButton::getPaddingRight() const
+{
+    return this->paddingRight;
 }
 
 void NavButton::setPaddingRight(int paddingRight)
@@ -405,12 +285,22 @@ void NavButton::setPaddingRight(int paddingRight)
     }
 }
 
+int NavButton::getPaddingTop() const
+{
+    return this->paddingTop;
+}
+
 void NavButton::setPaddingTop(int paddingTop)
 {
     if (this->paddingTop != paddingTop) {
         this->paddingTop = paddingTop;
         this->update();
     }
+}
+
+int NavButton::getPaddingBottom() const
+{
+    return this->paddingBottom;
 }
 
 void NavButton::setPaddingBottom(int paddingBottom)
@@ -435,12 +325,22 @@ void NavButton::setPadding(int paddingLeft, int paddingRight, int paddingTop, in
     this->update();
 }
 
+NavButton::TextAlign NavButton::getTextAlign() const
+{
+    return this->textAlign;
+}
+
 void NavButton::setTextAlign(const NavButton::TextAlign &textAlign)
 {
     if (this->textAlign != textAlign) {
         this->textAlign = textAlign;
         this->update();
     }
+}
+
+bool NavButton::getShowTriangle() const
+{
+    return this->showTriangle;
 }
 
 void NavButton::setShowTriangle(bool showTriangle)
@@ -451,12 +351,22 @@ void NavButton::setShowTriangle(bool showTriangle)
     }
 }
 
+int NavButton::getTriangleLen() const
+{
+    return this->triangleLen;
+}
+
 void NavButton::setTriangleLen(int triangleLen)
 {
     if (this->triangleLen != triangleLen) {
         this->triangleLen = triangleLen;
         this->update();
     }
+}
+
+NavButton::TrianglePosition NavButton::getTrianglePosition() const
+{
+    return this->trianglePosition;
 }
 
 void NavButton::setTrianglePosition(const NavButton::TrianglePosition &trianglePosition)
@@ -467,12 +377,22 @@ void NavButton::setTrianglePosition(const NavButton::TrianglePosition &triangleP
     }
 }
 
+QColor NavButton::getTriangleColor() const
+{
+    return this->triangleColor;
+}
+
 void NavButton::setTriangleColor(const QColor &triangleColor)
 {
     if (this->triangleColor != triangleColor) {
         this->triangleColor = triangleColor;
         this->update();
     }
+}
+
+bool NavButton::getShowIcon() const
+{
+    return this->showIcon;
 }
 
 void NavButton::setShowIcon(bool showIcon)
@@ -483,12 +403,22 @@ void NavButton::setShowIcon(bool showIcon)
     }
 }
 
+int NavButton::getIconSpace() const
+{
+    return this->iconSpace;
+}
+
 void NavButton::setIconSpace(int iconSpace)
 {
     if (this->iconSpace != iconSpace) {
         this->iconSpace = iconSpace;
         this->update();
     }
+}
+
+QSize NavButton::getIconSize() const
+{
+    return this->iconSize;
 }
 
 void NavButton::setIconSize(const QSize &iconSize)
@@ -499,10 +429,20 @@ void NavButton::setIconSize(const QSize &iconSize)
     }
 }
 
+QPixmap NavButton::getIconNormal() const
+{
+    return this->iconNormal;
+}
+
 void NavButton::setIconNormal(const QPixmap &iconNormal)
 {
     this->iconNormal = iconNormal;
     this->update();
+}
+
+QPixmap NavButton::getIconHover() const
+{
+    return this->iconHover;
 }
 
 void NavButton::setIconHover(const QPixmap &iconHover)
@@ -511,10 +451,20 @@ void NavButton::setIconHover(const QPixmap &iconHover)
     this->update();
 }
 
+QPixmap NavButton::getIconCheck() const
+{
+    return this->iconCheck;
+}
+
 void NavButton::setIconCheck(const QPixmap &iconCheck)
 {
     this->iconCheck = iconCheck;
     this->update();
+}
+
+bool NavButton::getShowLine() const
+{
+    return this->showLine;
 }
 
 void NavButton::setShowLine(bool showLine)
@@ -525,12 +475,22 @@ void NavButton::setShowLine(bool showLine)
     }
 }
 
+int NavButton::getLineSpace() const
+{
+    return this->lineSpace;
+}
+
 void NavButton::setLineSpace(int lineSpace)
 {
     if (this->lineSpace != lineSpace) {
         this->lineSpace = lineSpace;
         this->update();
     }
+}
+
+int NavButton::getLineWidth() const
+{
+    return this->lineWidth;
 }
 
 void NavButton::setLineWidth(int lineWidth)
@@ -541,12 +501,22 @@ void NavButton::setLineWidth(int lineWidth)
     }
 }
 
+NavButton::LinePosition NavButton::getLinePosition() const
+{
+    return this->linePosition;
+}
+
 void NavButton::setLinePosition(const NavButton::LinePosition &linePosition)
 {
     if (this->linePosition != linePosition) {
         this->linePosition = linePosition;
         this->update();
     }
+}
+
+QColor NavButton::getLineColor() const
+{
+    return this->lineColor;
 }
 
 void NavButton::setLineColor(const QColor &lineColor)
@@ -557,12 +527,22 @@ void NavButton::setLineColor(const QColor &lineColor)
     }
 }
 
+QColor NavButton::getNormalBgColor() const
+{
+    return this->normalBgColor;
+}
+
 void NavButton::setNormalBgColor(const QColor &normalBgColor)
 {
     if (this->normalBgColor != normalBgColor) {
         this->normalBgColor = normalBgColor;
         this->update();
     }
+}
+
+QColor NavButton::getHoverBgColor() const
+{
+    return this->hoverBgColor;
 }
 
 void NavButton::setHoverBgColor(const QColor &hoverBgColor)
@@ -573,12 +553,22 @@ void NavButton::setHoverBgColor(const QColor &hoverBgColor)
     }
 }
 
+QColor NavButton::getCheckBgColor() const
+{
+    return this->checkBgColor;
+}
+
 void NavButton::setCheckBgColor(const QColor &checkBgColor)
 {
     if (this->checkBgColor != checkBgColor) {
         this->checkBgColor = checkBgColor;
         this->update();
     }
+}
+
+QColor NavButton::getNormalTextColor() const
+{
+    return this->normalTextColor;
 }
 
 void NavButton::setNormalTextColor(const QColor &normalTextColor)
@@ -589,12 +579,23 @@ void NavButton::setNormalTextColor(const QColor &normalTextColor)
     }
 }
 
+
+QColor NavButton::getHoverTextColor() const
+{
+    return this->hoverTextColor;
+}
+
 void NavButton::setHoverTextColor(const QColor &hoverTextColor)
 {
     if (this->hoverTextColor != hoverTextColor) {
         this->hoverTextColor = hoverTextColor;
         this->update();
     }
+}
+
+QColor NavButton::getCheckTextColor() const
+{
+    return this->checkTextColor;
 }
 
 void NavButton::setCheckTextColor(const QColor &checkTextColor)
