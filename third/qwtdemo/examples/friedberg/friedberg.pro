@@ -6,15 +6,13 @@ UI_DIR      = temp/ui
 OBJECTS_DIR = temp/obj
 DESTDIR     = $$PWD/../bin
 
-HEADERS = \
-    plot.h \
-    friedberg2007.h
+HEADERS += plot.h
+HEADERS += friedberg2007.h
 
-SOURCES = \
-    friedberg2007.cpp \
-    plot.cpp \
-    main.cpp
+SOURCES += friedberg2007.cpp
+SOURCES += plot.cpp
+SOURCES += main.cpp
 
-include     ($$PWD/../../qwt/qwt.pri)
 INCLUDEPATH += $$PWD
-INCLUDEPATH += $$PWD/../../qwt
+INCLUDEPATH += $$PWD/../../../3rd_qwt
+include ($$PWD/../../../3rd_qwt/3rd_qwt.pri)

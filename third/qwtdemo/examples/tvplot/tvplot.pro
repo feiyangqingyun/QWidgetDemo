@@ -6,13 +6,10 @@ UI_DIR      = temp/ui
 OBJECTS_DIR = temp/obj
 DESTDIR     = $$PWD/../bin
 
-SOURCES = \
-    tvplot.cpp \
-    main.cpp
+HEADERS += tvplot.h
+SOURCES += tvplot.cpp
+SOURCES += main.cpp
 
-HEADERS = \
-    tvplot.h
-
-include     ($$PWD/../../qwt/qwt.pri)
 INCLUDEPATH += $$PWD
-INCLUDEPATH += $$PWD/../../qwt
+INCLUDEPATH += $$PWD/../../../3rd_qwt
+include ($$PWD/../../../3rd_qwt/3rd_qwt.pri)

@@ -6,14 +6,15 @@ UI_DIR      = temp/ui
 OBJECTS_DIR = temp/obj
 DESTDIR     = $$PWD/../bin
 
-SOURCES += main.cpp
-SOURCES += plot.cpp
-SOURCES += mainwindow.cpp
-HEADERS += plot.h
 HEADERS += mainwindow.h
 HEADERS += complexnumber.h
 HEADERS += pixmaps.h
 
-include     ($$PWD/../../qwt/qwt.pri)
+SOURCES += main.cpp
+SOURCES += plot.cpp
+SOURCES += mainwindow.cpp
+HEADERS += plot.h
+
 INCLUDEPATH += $$PWD
-INCLUDEPATH += $$PWD/../../qwt
+INCLUDEPATH += $$PWD/../../../3rd_qwt
+include ($$PWD/../../../3rd_qwt/3rd_qwt.pri)

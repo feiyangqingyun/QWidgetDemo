@@ -19,6 +19,6 @@ SOURCES = \
     plot.cpp \
     event_filter.cpp 
 
-include     ($$PWD/../../qwt/qwt.pri)
 INCLUDEPATH += $$PWD
-INCLUDEPATH += $$PWD/../../qwt
+INCLUDEPATH += $$PWD/../../../3rd_qwt
+include ($$PWD/../../../3rd_qwt/3rd_qwt.pri)

@@ -6,16 +6,14 @@ UI_DIR      = temp/ui
 OBJECTS_DIR = temp/obj
 DESTDIR     = $$PWD/../bin
 
-HEADERS =  \
-    cpuplot.h \
-    cpustat.h \
-    cpupiemarker.h 
+HEADERS += cpuplot.h
+HEADERS += cpustat.h
+HEADERS += cpupiemarker.h
 
-SOURCES = \
-    cpuplot.cpp \
-    cpustat.cpp \
-    cpupiemarker.cpp 
+SOURCES += cpuplot.cpp
+SOURCES += cpustat.cpp
+SOURCES += cpupiemarker.cpp
 
-include     ($$PWD/../../qwt/qwt.pri)
 INCLUDEPATH += $$PWD
-INCLUDEPATH += $$PWD/../../qwt
+INCLUDEPATH += $$PWD/../../../3rd_qwt
+include ($$PWD/../../../3rd_qwt/3rd_qwt.pri)

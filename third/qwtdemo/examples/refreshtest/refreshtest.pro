@@ -6,20 +6,18 @@ UI_DIR      = temp/ui
 OBJECTS_DIR = temp/obj
 DESTDIR     = $$PWD/../bin
 
-HEADERS = \
-    settings.h \
-    circularbuffer.h \
-    panel.h \
-    plot.h \
-    mainwindow.h
+HEADERS += settings.h
+HEADERS += circularbuffer.h
+HEADERS += panel.h
+HEADERS += plot.h
+HEADERS += mainwindow.h
 
-SOURCES = \
-    circularbuffer.cpp \
-    panel.cpp \
-    plot.cpp \
-    mainwindow.cpp \
-    main.cpp
+SOURCES += circularbuffer.cpp
+SOURCES += panel.cpp
+SOURCES += plot.cpp
+SOURCES += mainwindow.cpp
+SOURCES += main.cpp
 
-include     ($$PWD/../../qwt/qwt.pri)
 INCLUDEPATH += $$PWD
-INCLUDEPATH += $$PWD/../../qwt
+INCLUDEPATH += $$PWD/../../../3rd_qwt
+include ($$PWD/../../../3rd_qwt/3rd_qwt.pri)
