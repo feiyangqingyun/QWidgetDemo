@@ -1,5 +1,5 @@
 ﻿#include "appconfig.h"
-#include "quihelper.h"
+#include "qthelper.h"
 
 QString AppConfig::ConfigFile = "config.ini";
 
@@ -32,7 +32,7 @@ void AppConfig::readConfig()
     set.endGroup();
 
     //配置文件不存在或者不全则重新生成
-    if (!QUIHelper::checkIniFile(AppConfig::ConfigFile)) {
+    if (!QtHelper::checkIniFile(AppConfig::ConfigFile)) {
         writeConfig();
         return;
     }

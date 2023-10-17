@@ -1,5 +1,5 @@
 ﻿#include "appdata.h"
-#include "quihelper.h"
+#include "qthelper.h"
 
 QStringList AppData::Intervals = QStringList();
 QStringList AppData::Datas = QStringList();
@@ -11,7 +11,7 @@ void AppData::readSendData()
 {
     //读取发送数据列表
     AppData::Datas.clear();
-    QString fileName = QString("%1/%2").arg(QUIHelper::appPath()).arg(AppData::SendFileName);
+    QString fileName = QString("%1/%2").arg(QtHelper::appPath()).arg(AppData::SendFileName);
     QFile file(fileName);
     if (file.size() > 0 && file.open(QFile::ReadOnly | QIODevice::Text)) {
         while (!file.atEnd()) {
@@ -39,7 +39,7 @@ void AppData::readDeviceData()
     //读取转发数据列表
     AppData::Keys.clear();
     AppData::Values.clear();
-    QString fileName = QString("%1/%2").arg(QUIHelper::appPath()).arg(AppData::DeviceFileName);
+    QString fileName = QString("%1/%2").arg(QtHelper::appPath()).arg(AppData::DeviceFileName);
     QFile file(fileName);
     if (file.size() > 0 && file.open(QFile::ReadOnly | QIODevice::Text)) {
         while (!file.atEnd()) {
@@ -72,7 +72,7 @@ void AppData::saveData(const QString &data)
         return;
     }
 
-    QString fileName = QString("%1/%2.txt").arg(QUIHelper::appPath()).arg(STRDATETIME);
+    QString fileName = QString("%1/%2.txt").arg(QtHelper::appPath()).arg(STRDATETIME);
     QFile file(fileName);
     if (file.open(QFile::WriteOnly | QFile::Text)) {
         file.write(data.toUtf8());

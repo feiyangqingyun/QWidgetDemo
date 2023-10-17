@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 #endif
 
     Widget w;
-    w.setWindowTitle("存款计算器 (QQ: 517216493 WX: feiyangqingyun)");
+    w.setWindowTitle("存款/贷款 计算器 (QQ: 517216493 WX: feiyangqingyun)");
     w.show();
 
     return a.exec();

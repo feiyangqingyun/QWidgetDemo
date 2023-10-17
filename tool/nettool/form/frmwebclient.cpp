@@ -1,7 +1,7 @@
 ﻿#include "frmwebclient.h"
 #include "ui_frmwebclient.h"
-#include "quihelper.h"
-#include "quihelperdata.h"
+#include "qthelper.h"
+#include "qthelperdata.h"
 
 frmWebClient::frmWebClient(QWidget *parent) : QWidget(parent), ui(new Ui::frmWebClient)
 {
@@ -187,7 +187,7 @@ void frmWebClient::sendData(const QString &data)
 {
     QByteArray buffer;
     if (AppConfig::HexSendWebClient) {
-        buffer = QUIHelperData::hexStrToByteArray(data);
+        buffer = QtHelperData::hexStrToByteArray(data);
     } else {
         buffer = data.toUtf8();
     }
@@ -222,7 +222,7 @@ void frmWebClient::binaryFrameReceived(const QByteArray &data, bool isLastFrame)
 {
     QString buffer;
     if (AppConfig::HexReceiveWebClient) {
-        buffer = QUIHelperData::byteArrayToHexStr(data);
+        buffer = QtHelperData::byteArrayToHexStr(data);
     } else {
         buffer = QString(data);
     }

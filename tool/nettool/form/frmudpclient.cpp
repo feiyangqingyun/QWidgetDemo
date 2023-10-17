@@ -1,7 +1,7 @@
 ﻿#include "frmudpclient.h"
 #include "ui_frmudpclient.h"
-#include "quihelper.h"
-#include "quihelperdata.h"
+#include "qthelper.h"
+#include "qthelperdata.h"
 
 frmUdpClient::frmUdpClient(QWidget *parent) : QWidget(parent), ui(new Ui::frmUdpClient)
 {
@@ -182,9 +182,9 @@ void frmUdpClient::readData()
         socket->readDatagram(data.data(), data.size(), &host, &port);
 
         if (AppConfig::HexReceiveUdpClient) {
-            buffer = QUIHelperData::byteArrayToHexStr(data);
+            buffer = QtHelperData::byteArrayToHexStr(data);
         } else if (AppConfig::AsciiUdpClient) {
-            buffer = QUIHelperData::byteArrayToAsciiStr(data);
+            buffer = QtHelperData::byteArrayToAsciiStr(data);
         } else {
             buffer = QString(data);
         }
@@ -214,9 +214,9 @@ void frmUdpClient::sendData(const QString &ip, int port, const QString &data)
 {
     QByteArray buffer;
     if (AppConfig::HexSendUdpClient) {
-        buffer = QUIHelperData::hexStrToByteArray(data);
+        buffer = QtHelperData::hexStrToByteArray(data);
     } else if (AppConfig::AsciiUdpClient) {
-        buffer = QUIHelperData::asciiStrToByteArray(data);
+        buffer = QtHelperData::asciiStrToByteArray(data);
     } else {
         buffer = data.toUtf8();
     }

@@ -15,11 +15,13 @@ public:
     explicit Widget(QWidget *parent = 0);
     ~Widget();
 
-private slots:
-    void on_btnOk_clicked();
-
 private:
     Ui::Widget *ui;
+
+private slots:
+    void initForm();
+    void on_btnCalc_clicked();
+    void on_btnCalc2_clicked();
 };
 
 #endif // WIDGET_H

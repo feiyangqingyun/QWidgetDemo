@@ -1,6 +1,6 @@
 ﻿#include "frmmain.h"
 #include "ui_frmmain.h"
-#include "quihelper.h"
+#include "qthelper.h"
 
 frmMain::frmMain(QWidget *parent) : QWidget(parent), ui(new Ui::frmMain)
 {

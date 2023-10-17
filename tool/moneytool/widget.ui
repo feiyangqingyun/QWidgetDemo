@@ -13,180 +13,189 @@
   <property name="windowTitle">
    <string>存款计算器</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
+  <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
-    <widget class="QWidget" name="widget" native="true">
-     <property name="maximumSize">
-      <size>
-       <width>600</width>
-       <height>16777215</height>
-      </size>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>存款计算</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item row="2" column="3">
-       <widget class="QLineEdit" name="txtMoneyAll"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="labYear">
-        <property name="text">
-         <string>期限</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="labRate">
-        <property name="text">
-         <string>利率</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QComboBox" name="cboxType">
-        <property name="currentIndex">
-         <number>1</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>单利</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>复利</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="2" column="6">
-       <widget class="QLineEdit" name="txtValue"/>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="txtMoneyCurrent">
-        <property name="text">
-         <string>1000000</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4" rowspan="3">
-       <widget class="QPushButton" name="btnOk">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>计算</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="6">
-       <widget class="QLineEdit" name="txtValue1"/>
-      </item>
+     <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="QLabel" name="labMoneyCurrent">
-        <property name="text">
-         <string>本金</string>
+       <widget class="QWidget" name="widget" native="true">
+        <property name="maximumSize">
+         <size>
+          <width>600</width>
+          <height>16777215</height>
+         </size>
         </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="cboxYear">
-        <property name="currentIndex">
-         <number>1</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>1年</string>
+        <layout class="QGridLayout" name="gridLayout">
+         <property name="leftMargin">
+          <number>0</number>
          </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>3年</string>
+         <property name="topMargin">
+          <number>0</number>
          </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>5年</string>
+         <property name="rightMargin">
+          <number>0</number>
          </property>
-        </item>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QLabel" name="labYears">
-        <property name="text">
-         <string>年限</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="labType">
-        <property name="text">
-         <string>方式</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="5">
-       <widget class="QRadioButton" name="rbtn2">
-        <property name="text">
-         <string>总计2</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="6">
-       <widget class="QLineEdit" name="txtValue2"/>
-      </item>
-      <item row="0" column="3">
-       <widget class="QLineEdit" name="txtRate">
-        <property name="text">
-         <string>0.04125</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="5">
-       <widget class="QRadioButton" name="rbtn1">
-        <property name="text">
-         <string>总计1</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QLabel" name="labMoneyAll">
-        <property name="text">
-         <string>总计</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="5">
-       <widget class="QLabel" name="labValue">
-        <property name="text">
-         <string>总计差额</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="3">
-       <widget class="QLineEdit" name="txtYears">
-        <property name="text">
-         <string>30</string>
-        </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item row="2" column="3">
+          <widget class="QLineEdit" name="txtMoneyAll"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="labYear">
+           <property name="text">
+            <string>期限</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="labRate">
+           <property name="text">
+            <string>利率</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QComboBox" name="cboxType">
+           <property name="currentIndex">
+            <number>1</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>单利</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>复利</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="2" column="6">
+          <widget class="QLineEdit" name="txtValue"/>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="txtMoneyCurrent">
+           <property name="text">
+            <string>1000000</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4" rowspan="3">
+          <widget class="QPushButton" name="btnCalc">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>计算</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
+          <widget class="QLineEdit" name="txtValue1"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="labMoneyCurrent">
+           <property name="text">
+            <string>本金</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QComboBox" name="cboxYear">
+           <property name="currentIndex">
+            <number>1</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>1年</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>3年</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>5年</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QLabel" name="labYears">
+           <property name="text">
+            <string>年限</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="labType">
+           <property name="text">
+            <string>方式</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5">
+          <widget class="QRadioButton" name="rbtn2">
+           <property name="text">
+            <string>总计2</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="6">
+          <widget class="QLineEdit" name="txtValue2"/>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLineEdit" name="txtRate">
+           <property name="text">
+            <string>0.04125</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QRadioButton" name="rbtn1">
+           <property name="text">
+            <string>总计1</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QLabel" name="labMoneyAll">
+           <property name="text">
+            <string>总计</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="5">
+          <widget class="QLabel" name="labValue">
+           <property name="text">
+            <string>总计差额</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QLineEdit" name="txtYears">
+           <property name="text">
+            <string>30</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
@@ -206,6 +215,140 @@
     </spacer>
    </item>
    <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>200</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>贷款计算</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="1" column="2">
+       <widget class="QLabel" name="labRate2">
+        <property name="text">
+         <string>贷款利率</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="labMoney2">
+        <property name="text">
+         <string>贷款金额</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6" rowspan="2">
+       <widget class="QPushButton" name="btnCalc2">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>计算</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QLineEdit" name="txtRate3">
+        <property name="text">
+         <string>0.0003</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labEnd">
+        <property name="text">
+         <string>到期日期</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QLabel" name="labRate3">
+        <property name="text">
+         <string>逾期利率</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="5">
+       <widget class="QLineEdit" name="txtRate4">
+        <property name="text">
+         <string>0.0003</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDateEdit" name="dateStart">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="displayFormat">
+         <string>yyyy-MM-dd</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDateEdit" name="dateEnd">
+        <property name="displayFormat">
+         <string>yyyy-MM-dd</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QLineEdit" name="txtMoney2">
+        <property name="text">
+         <string>100000</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QLineEdit" name="txtRate2">
+        <property name="text">
+         <string>0.0003</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="labStart">
+        <property name="text">
+         <string>贷款日期</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="QLabel" name="labRate4">
+        <property name="text">
+         <string>复利利率</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="labValue2">
+        <property name="text">
+         <string>贷款利息</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="txtResult2"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -228,7 +371,7 @@
   <tabstop>txtYears</tabstop>
   <tabstop>cboxType</tabstop>
   <tabstop>txtMoneyAll</tabstop>
-  <tabstop>btnOk</tabstop>
+  <tabstop>btnCalc</tabstop>
   <tabstop>rbtn1</tabstop>
   <tabstop>txtValue1</tabstop>
   <tabstop>rbtn2</tabstop>

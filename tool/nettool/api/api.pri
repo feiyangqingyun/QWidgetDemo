@@ -1,17 +1,3 @@
-HEADERS += $$PWD/appconfig.h \
-    $$PWD/appdata.h \
-    $$PWD/quihelper.h \
-    $$PWD/quihelperdata.h
-HEADERS += $$PWD/tcpclient.h
-HEADERS += $$PWD/tcpserver.h
-
-SOURCES += $$PWD/appconfig.cpp \
-    $$PWD/appdata.cpp \
-    $$PWD/quihelper.cpp \
-    $$PWD/quihelperdata.cpp
-SOURCES += $$PWD/tcpclient.cpp
-SOURCES += $$PWD/tcpserver.cpp
-
 contains(DEFINES, websocket) {
 HEADERS += $$PWD/webclient.h
 HEADERS += $$PWD/webserver.h
@@ -19,3 +5,19 @@ HEADERS += $$PWD/webserver.h
 SOURCES += $$PWD/webclient.cpp
 SOURCES += $$PWD/webserver.cpp
 }
+
+HEADERS += \
+    $$PWD/appconfig.h \
+    $$PWD/appdata.h \
+    $$PWD/qthelper.h \
+    $$PWD/qthelperdata.h \
+    $$PWD/tcpclient.h \
+    $$PWD/tcpserver.h
+
+SOURCES += \
+    $$PWD/appconfig.cpp \
+    $$PWD/appdata.cpp \
+    $$PWD/qthelper.cpp \
+    $$PWD/qthelperdata.cpp \
+    $$PWD/tcpclient.cpp \
+    $$PWD/tcpserver.cpp

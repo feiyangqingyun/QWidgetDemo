@@ -1,6 +1,6 @@
 ﻿#include "webclient.h"
-#include "quihelper.h"
-#include "quihelperdata.h"
+#include "qthelper.h"
+#include "qthelperdata.h"
 
 WebClient::WebClient(QWebSocket *socket, QObject *parent) : QObject(parent)
 {
@@ -63,7 +63,7 @@ void WebClient::binaryFrameReceived(const QByteArray &data, bool isLastFrame)
 {
     QString buffer;
     if (AppConfig::HexReceiveWebClient) {
-        buffer = QUIHelperData::byteArrayToHexStr(data);
+        buffer = QtHelperData::byteArrayToHexStr(data);
     } else {
         buffer = QString(data);
     }
@@ -85,7 +85,7 @@ void WebClient::sendData(const QString &data)
 {
     QByteArray buffer;
     if (AppConfig::HexSendWebServer) {
-        buffer = QUIHelperData::hexStrToByteArray(data);
+        buffer = QtHelperData::hexStrToByteArray(data);
     } else {
         buffer = data.toUtf8();
     }

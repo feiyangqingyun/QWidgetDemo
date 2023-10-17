@@ -1,5 +1,5 @@
 ﻿#include "tcpserver.h"
-#include "quihelper.h"
+#include "qthelper.h"
 
 TcpServer::TcpServer(QObject *parent) : QTcpServer(parent)
 {

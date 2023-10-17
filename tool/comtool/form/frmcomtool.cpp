@@ -1,14 +1,14 @@
 ﻿#include "frmcomtool.h"
 #include "ui_frmcomtool.h"
-#include "quihelper.h"
-#include "quihelperdata.h"
+#include "qthelper.h"
+#include "qthelperdata.h"
 
 frmComTool::frmComTool(QWidget *parent) : QWidget(parent), ui(new Ui::frmComTool)
 {
     ui->setupUi(this);
     this->initForm();
     this->initConfig();
-    QUIHelper::setFormInCenter(this);
+    QtHelper::setFormInCenter(this);
 }
 
 frmComTool::~frmComTool()
@@ -304,7 +304,7 @@ void frmComTool::readData()
         return;
     }
 
-    QUIHelper::sleep(sleepTime);
+    QtHelper::sleep(sleepTime);
     QByteArray data = com->readAll();
     int dataLen = data.length();
     if (dataLen <= 0) {
@@ -314,9 +314,9 @@ void frmComTool::readData()
     if (isShow) {
         QString buffer;
         if (ui->ckHexReceive->isChecked()) {
-            buffer = QUIHelperData::byteArrayToHexStr(data);
+            buffer = QtHelperData::byteArrayToHexStr(data);
         } else {
-            //buffer = QUIHelperData::byteArrayToAsciiStr(data);
+            //buffer = QtHelperData::byteArrayToAsciiStr(data);
             buffer = QString::fromLocal8Bit(data);
         }
 
@@ -372,9 +372,9 @@ void frmComTool::sendData(QString data)
 
     QByteArray buffer;
     if (ui->ckHexSend->isChecked()) {
-        buffer = QUIHelperData::hexStrToByteArray(data);
+        buffer = QtHelperData::hexStrToByteArray(data);
     } else {
-        buffer = QUIHelperData::asciiStrToByteArray(data);
+        buffer = QtHelperData::asciiStrToByteArray(data);
     }
 
     com->write(buffer);
@@ -392,7 +392,7 @@ void frmComTool::saveData()
 
     QDateTime now = QDateTime::currentDateTime();
     QString name = now.toString("yyyy-MM-dd-HH-mm-ss");
-    QString fileName = QString("%1/%2.txt").arg(QUIHelper::appPath()).arg(name);
+    QString fileName = QString("%1/%2.txt").arg(QtHelper::appPath()).arg(name);
 
     QFile file(fileName);
     file.open(QFile::WriteOnly | QIODevice::Text);
@@ -464,7 +464,7 @@ void frmComTool::on_btnStopShow_clicked()
 
 void frmComTool::on_btnData_clicked()
 {
-    QString fileName = QString("%1/%2").arg(QUIHelper::appPath()).arg("send.txt");
+    QString fileName = QString("%1/%2").arg(QtHelper::appPath()).arg("send.txt");
     QFile file(fileName);
     if (!file.exists()) {
         return;
@@ -558,14 +558,14 @@ void frmComTool::connectNet()
 void frmComTool::readDataNet()
 {
     if (socket->bytesAvailable() > 0) {
-        QUIHelper::sleep(AppConfig::SleepTime);
+        QtHelper::sleep(AppConfig::SleepTime);
         QByteArray data = socket->readAll();
 
         QString buffer;
         if (ui->ckHexReceive->isChecked()) {
-            buffer = QUIHelperData::byteArrayToHexStr(data);
+            buffer = QtHelperData::byteArrayToHexStr(data);
         } else {
-            buffer = QUIHelperData::byteArrayToAsciiStr(data);
+            buffer = QtHelperData::byteArrayToAsciiStr(data);
         }
 
         append(5, buffer);

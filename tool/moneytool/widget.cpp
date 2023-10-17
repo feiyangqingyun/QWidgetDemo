@@ -8,6 +8,7 @@
 Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    this->initForm();
 }
 
 Widget::~Widget()
@@ -15,7 +16,14 @@ Widget::~Widget()
     delete ui;
 }
 
-void Widget::on_btnOk_clicked()
+void Widget::initForm()
+{
+    QDateTime now = QDateTime::currentDateTime();
+    ui->dateStart->setDate(now.date());
+    ui->dateEnd->setDate(now.date().addYears(1));
+}
+
+void Widget::on_btnCalc_clicked()
 {
     //当前多少钱
     int moneyCurrent = ui->txtMoneyCurrent->text().toInt();
@@ -64,4 +72,17 @@ void Widget::on_btnOk_clicked()
         int value = qAbs(value1.toInt() - value2.toInt());
         ui->txtValue->setText(QString::number(value));
     }
+}
+
+void Widget::on_btnCalc2_clicked()
+{
+    //计算天数
+    QDateTime dateStart = ui->dateStart->dateTime();
+    QDateTime dateEnd = ui->dateEnd->dateTime();
+    int day = dateStart.daysTo(dateEnd);
+    int money = ui->txtMoney2->text().toInt();
+    float rate = ui->txtRate2->text().toFloat();
+    int result = money * rate * day;
+    ui->txtResult2->setText(QString::number(result));
+    qDebug() << day;
 }

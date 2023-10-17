@@ -1,7 +1,7 @@
 ﻿#include "frmtcpclient.h"
 #include "ui_frmtcpclient.h"
-#include "quihelper.h"
-#include "quihelperdata.h"
+#include "qthelper.h"
+#include "qthelperdata.h"
 
 frmTcpClient::frmTcpClient(QWidget *parent) : QWidget(parent), ui(new Ui::frmTcpClient)
 {
@@ -199,9 +199,9 @@ void frmTcpClient::readData()
 
     QString buffer;
     if (AppConfig::HexReceiveTcpClient) {
-        buffer = QUIHelperData::byteArrayToHexStr(data);
+        buffer = QtHelperData::byteArrayToHexStr(data);
     } else if (AppConfig::AsciiTcpClient) {
-        buffer = QUIHelperData::byteArrayToAsciiStr(data);
+        buffer = QtHelperData::byteArrayToAsciiStr(data);
     } else {
         buffer = QString(data);
     }
@@ -224,9 +224,9 @@ void frmTcpClient::sendData(const QString &data)
 {
     QByteArray buffer;
     if (AppConfig::HexSendTcpClient) {
-        buffer = QUIHelperData::hexStrToByteArray(data);
+        buffer = QtHelperData::hexStrToByteArray(data);
     } else if (AppConfig::AsciiTcpClient) {
-        buffer = QUIHelperData::asciiStrToByteArray(data);
+        buffer = QtHelperData::asciiStrToByteArray(data);
     } else {
         buffer = data.toUtf8();
     }

@@ -1,6 +1,6 @@
 ﻿#include "frmwebserver.h"
 #include "ui_frmwebserver.h"
-#include "quihelper.h"
+#include "qthelper.h"
 
 frmWebServer::frmWebServer(QWidget *parent) : QWidget(parent), ui(new Ui::frmWebServer)
 {

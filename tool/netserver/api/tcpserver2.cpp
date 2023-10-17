@@ -1,6 +1,6 @@
 ﻿#include "tcpserver2.h"
-#include "quihelper.h"
-#include "quihelperdata.h"
+#include "qthelper.h"
+#include "qthelperdata.h"
 
 TcpClient2::TcpClient2(QObject *parent) :  QTcpSocket(parent)
 {
@@ -60,7 +60,7 @@ void TcpClient2::readData()
 
     QString buffer;
     if (AppConfig::HexData2) {
-        buffer = QUIHelperData::byteArrayToHexStr(data);
+        buffer = QtHelperData::byteArrayToHexStr(data);
     } else {
         buffer = QString(data);
     }
@@ -72,7 +72,7 @@ void TcpClient2::sendData(const QString &data)
 {
     QByteArray buffer;
     if (AppConfig::HexData2) {
-        buffer = QUIHelperData::hexStrToByteArray(data);
+        buffer = QtHelperData::hexStrToByteArray(data);
     } else {
         buffer = data.toLatin1();
     }

@@ -1,9 +1,9 @@
-﻿#ifndef QUIHELPERDATA_H
-#define QUIHELPERDATA_H
+﻿#ifndef QTHELPERDATA_H
+#define QTHELPERDATA_H
 
 #include <QObject>
 
-class QUIHelperData
+class QtHelperData
 {
 public:
     //16进制字符串转10进制
@@ -22,33 +22,28 @@ public:
     //10进制转16进制字符串,补零.
     static QString decimalToStrHex(int decimal);
 
-    //int转字节数组
-    static QByteArray intToByte(int data);
-    static QByteArray intToByteRec(int data);
+    //int和字节数组互转
+    static QByteArray intToByte(int data, bool reverse = false);
+    static int byteToInt(const QByteArray &data, bool reverse = false);
 
-    //字节数组转int
-    static int byteToInt(const QByteArray &data);
-    static int byteToIntRec(const QByteArray &data);
-    static quint32 byteToUInt(const QByteArray &data);
-    static quint32 byteToUIntRec(const QByteArray &data);
-
-    //ushort转字节数组
-    static QByteArray ushortToByte(ushort data);
-    static QByteArray ushortToByteRec(ushort data);
-
-    //字节数组转ushort
-    static int byteToUShort(const QByteArray &data);
-    static int byteToUShortRec(const QByteArray &data);
+    //ushort和字节数组互转
+    static QByteArray ushortToByte(int data, bool reverse = false);
+    static int byteToShort(const QByteArray &data, bool reverse = false);
 
     //字符串补全
     static QString getValue(quint8 value);
+    //字符串去空格 -1=移除左侧空格 0=移除所有空格 1=移除右侧空格 2=移除首尾空格 3=首尾清除中间留一个空格
+    static QString trimmed(const QString &text, int type);
 
     //异或加密-只支持字符,如果是中文需要将其转换base64编码
     static QString getXorEncryptDecrypt(const QString &value, char key);
     //异或校验
-    static uchar getOrCode(const QByteArray &data);
-    //计算校验码
-    static uchar getCheckCode(const QByteArray &data);
+    static quint8 getOrCode(const QByteArray &data);
+
+    //公司专用-计算校验码
+    static quint8 getCheckCode(const QByteArray &data);
+    //公司专用-加上桢头和校验码完整数据
+    static void getFullData(QByteArray &buffer);
 
     //CRC校验
     static quint16 getCrc16Rec(quint8 *data, int len, quint16 init, const quint16 *table);
@@ -67,4 +62,4 @@ public:
     static QString byteArrayToHexStr(const QByteArray &data);
 };
 
-#endif // QUIHELPERDATA_H
+#endif // QTHELPERDATA_H
