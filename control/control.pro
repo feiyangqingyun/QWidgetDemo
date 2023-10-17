@@ -10,3 +10,4 @@ SUBDIRS += savelog
 SUBDIRS += saveruntime
 SUBDIRS += smoothcurve
 SUBDIRS += zhtopy
+SUBDIRS += cpumemorylabel
