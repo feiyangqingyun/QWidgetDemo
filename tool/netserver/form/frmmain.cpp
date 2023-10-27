@@ -53,72 +53,14 @@ void frmMain::append1(int type, const QString &data, bool clear)
 {
     static int currentCount = 0;
     static int maxCount = 100;
-
-    if (clear) {
-        ui->txtMain1->clear();
-        currentCount = 0;
-        return;
-    }
-
-    if (currentCount >= maxCount) {
-        ui->txtMain1->clear();
-        currentCount = 0;
-    }
-
-    //过滤回车换行符
-    QString strData = data.left(500);
-    strData = strData.replace("\r", "");
-    strData = strData.replace("\n", "");
-
-    //不同类型不同颜色显示
-    QString strType;
-    if (type == 0) {
-        strType = "发送";
-        ui->txtMain1->setTextColor(QColor("darkgreen"));
-    } else {
-        strType = "接收";
-        ui->txtMain1->setTextColor(QColor("red"));
-    }
-
-    strData = QString("时间[%1] %2: %3").arg(TIMEMS).arg(strType).arg(strData);
-    ui->txtMain1->append(strData);
-    currentCount++;
+    QtHelper::appendMsg(ui->txtMain1, type, data.left(500), maxCount, currentCount, clear);
 }
 
 void frmMain::append2(int type, const QString &data, bool clear)
 {
     static int currentCount = 0;
     static int maxCount = 100;
-
-    if (clear) {
-        ui->txtMain2->clear();
-        currentCount = 0;
-        return;
-    }
-
-    if (currentCount >= maxCount) {
-        ui->txtMain2->clear();
-        currentCount = 0;
-    }
-
-    //过滤回车换行符
-    QString strData = data.left(500);
-    strData = strData.replace("\r", "");
-    strData = strData.replace("\n", "");
-
-    //不同类型不同颜色显示
-    QString strType;
-    if (type == 0) {
-        strType = "发送";
-        ui->txtMain2->setTextColor(QColor("darkgreen"));
-    } else {
-        strType = "接收";
-        ui->txtMain2->setTextColor(QColor("red"));
-    }
-
-    strData = QString("时间[%1] %2: %3").arg(TIMEMS).arg(strType).arg(strData);
-    ui->txtMain2->append(strData);
-    currentCount++;
+    QtHelper::appendMsg(ui->txtMain2, type, data.left(500), maxCount, currentCount, clear);
 }
 
 void frmMain::clientConnected1(const QString &ip, int port, const QString &deviceID)

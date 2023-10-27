@@ -54,7 +54,7 @@ void frmTcpClient::initForm()
     //填充数据到下拉框
     ui->cboxInterval->addItems(AppData::Intervals);
     ui->cboxData->addItems(AppData::Datas);
-    AppData::loadIP(ui->cboxBindIP);    
+    AppData::loadIP(ui->cboxBindIP);
 }
 
 void frmTcpClient::initConfig()
@@ -130,64 +130,28 @@ void frmTcpClient::append(int type, const QString &data, bool clear)
 {
     static int currentCount = 0;
     static int maxCount = 100;
-
-    if (clear) {
-        ui->txtMain->clear();
-        currentCount = 0;
-        return;
-    }
-
-    if (currentCount >= maxCount) {
-        ui->txtMain->clear();
-        currentCount = 0;
-    }
-
-    if (ui->ckShow->isChecked()) {
-        return;
-    }
-
-    //过滤回车换行符
-    QString strData = data;
-    strData = strData.replace("\r", "");
-    strData = strData.replace("\n", "");
-
-    //不同类型不同颜色显示
-    QString strType;
-    if (type == 0) {
-        strType = "发送";
-        ui->txtMain->setTextColor(QColor("#22A3A9"));
-    } else if (type == 1) {
-        strType = "接收";
-        ui->txtMain->setTextColor(QColor("#753775"));
-    } else {
-        strType = "错误";
-        ui->txtMain->setTextColor(QColor("#D64D54"));
-    }
-
-    strData = QString("时间[%1] %2: %3").arg(TIMEMS).arg(strType).arg(strData);
-    ui->txtMain->append(strData);
-    currentCount++;
+    QtHelper::appendMsg(ui->txtMain, type, data, maxCount, currentCount, clear, ui->ckShow->isChecked());
 }
 
 void frmTcpClient::connected()
 {
     isOk = true;
     ui->btnConnect->setText("断开");
-    append(0, "服务器连接");
-    append(0, QString("本地地址: %1  本地端口: %2").arg(socket->localAddress().toString()).arg(socket->localPort()));
-    append(0, QString("远程地址: %1  远程端口: %2").arg(socket->peerAddress().toString()).arg(socket->peerPort()));
+    append(2, "服务器连接");
+    append(4, QString("本地地址: %1  本地端口: %2").arg(socket->localAddress().toString()).arg(socket->localPort()));
+    append(4, QString("远程地址: %1  远程端口: %2").arg(socket->peerAddress().toString()).arg(socket->peerPort()));
 }
 
 void frmTcpClient::disconnected()
 {
     isOk = false;
     ui->btnConnect->setText("连接");
-    append(1, "服务器断开");
+    append(2, "服务器断开");
 }
 
 void frmTcpClient::error()
 {
-    append(2, socket->errorString());
+    append(3, socket->errorString());
 }
 
 void frmTcpClient::readData()

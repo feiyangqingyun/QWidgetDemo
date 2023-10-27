@@ -125,48 +125,12 @@ void frmTcpServer::append(int type, const QString &data, bool clear)
 {
     static int currentCount = 0;
     static int maxCount = 100;
-
-    if (clear) {
-        ui->txtMain->clear();
-        currentCount = 0;
-        return;
-    }
-
-    if (currentCount >= maxCount) {
-        ui->txtMain->clear();
-        currentCount = 0;
-    }
-
-    if (ui->ckShow->isChecked()) {
-        return;
-    }
-
-    //过滤回车换行符
-    QString strData = data;
-    strData = strData.replace("\r", "");
-    strData = strData.replace("\n", "");
-
-    //不同类型不同颜色显示
-    QString strType;
-    if (type == 0) {
-        strType = "发送";
-        ui->txtMain->setTextColor(QColor("#22A3A9"));
-    } else if (type == 1) {
-        strType = "接收";
-        ui->txtMain->setTextColor(QColor("#753775"));
-    } else {
-        strType = "错误";
-        ui->txtMain->setTextColor(QColor("#D64D54"));
-    }
-
-    strData = QString("时间[%1] %2: %3").arg(TIMEMS).arg(strType).arg(strData);
-    ui->txtMain->append(strData);
-    currentCount++;
+    QtHelper::appendMsg(ui->txtMain, type, data, maxCount, currentCount, clear, ui->ckShow->isChecked());
 }
 
 void frmTcpServer::connected(const QString &ip, int port)
 {
-    append(0, QString("[%1:%2] %3").arg(ip).arg(port).arg("客户端上线"));
+    append(2, QString("[%1:%2] %3").arg(ip).arg(port).arg("客户端上线"));
 
     QString str = QString("%1:%2").arg(ip).arg(port);
     ui->listWidget->addItem(str);
@@ -192,7 +156,7 @@ void frmTcpServer::disconnected(const QString &ip, int port)
 
 void frmTcpServer::error(const QString &ip, int port, const QString &error)
 {
-    append(2, QString("[%1:%2] %3").arg(ip).arg(port).arg(error));
+    append(3, QString("[%1:%2] %3").arg(ip).arg(port).arg(error));
 }
 
 void frmTcpServer::sendData(const QString &ip, int port, const QString &data)
@@ -210,10 +174,10 @@ void frmTcpServer::on_btnListen_clicked()
     if (ui->btnListen->text() == "监听") {
         isOk = server->start();
         if (isOk) {
-            append(0, "监听成功");
+            append(2, "监听成功");
             ui->btnListen->setText("关闭");
         } else {
-            append(2, QString("监听失败: %1").arg(server->errorString()));
+            append(3, QString("监听失败: %1").arg(server->errorString()));
         }
     } else {
         isOk = false;
