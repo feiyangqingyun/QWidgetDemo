@@ -219,7 +219,7 @@ private slots:
     //处理按钮单击
     void btnClicked();
 
-signals:
+Q_SIGNALS:
     //播放成功
     void receivePlayStart();
     //播放失败
@@ -241,7 +241,7 @@ signals:
     //工具栏单击
     void btnClicked(const QString &objName);
 
-public slots:
+public Q_SLOTS:
     //获取长度
     uint getLength();
     //获取当前播放位置

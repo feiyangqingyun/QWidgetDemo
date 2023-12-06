@@ -72,17 +72,17 @@ void DeviceSizeTable::readData()
         } else if (result.startsWith("/dev/mmcblk1p")) {
             checkSize(result, "SD卡");
             QStringList list = result.split(" ");
-            emit sdcardReceive(list.at(0));
+            Q_EMIT sdcardReceive(list.at(0));
         } else if (result.startsWith("/dev/sd")) {
             checkSize(result, "U盘");
             QStringList list = result.split(" ");
-            emit udiskReceive(list.at(0));
+            Q_EMIT udiskReceive(list.at(0));
         }
 #else
         if (result.startsWith("/dev/sd")) {
             checkSize(result, "");
             QStringList list = result.split(" ");
-            emit udiskReceive(list.at(0));
+            Q_EMIT udiskReceive(list.at(0));
         }
 #endif
     }

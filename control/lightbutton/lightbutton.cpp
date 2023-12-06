@@ -52,7 +52,7 @@ bool LightButton::eventFilter(QObject *watched, QEvent *event)
         }
     } else if (mouseEvent->type() == QEvent::MouseButtonRelease && pressed) {
         pressed = false;
-        emit clicked();
+        Q_EMIT clicked();
     }
 
     return QWidget::eventFilter(watched, event);

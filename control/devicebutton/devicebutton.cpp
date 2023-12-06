@@ -94,7 +94,7 @@ bool DeviceButton::eventFilter(QObject *watched, QEvent *event)
         if (mouseEvent->button() == Qt::LeftButton) {
             lastPoint = mouseEvent->pos();
             isPressed = true;
-            emit clicked();
+            Q_EMIT clicked();
             return true;
         }
     } else if (event->type() == QEvent::MouseMove) {
@@ -108,7 +108,7 @@ bool DeviceButton::eventFilter(QObject *watched, QEvent *event)
     } else if (event->type() == QEvent::MouseButtonRelease) {
         isPressed = false;
     } else if (event->type() == QEvent::MouseButtonDblClick) {
-        emit doubleClicked();
+        Q_EMIT doubleClicked();
     }
 
     return QWidget::eventFilter(watched, event);

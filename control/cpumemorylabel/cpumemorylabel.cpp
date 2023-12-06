@@ -214,8 +214,8 @@ void CpuMemoryLabel::setData()
         this->setText(msg);
     }
 
-    emit textChanged(msg);
-    emit valueChanged(cpuPercent, memoryPercent, memoryAll, memoryUse, memoryFree);
+    Q_EMIT textChanged(msg);
+    Q_EMIT valueChanged(cpuPercent, memoryPercent, memoryAll, memoryUse, memoryFree);
 }
 
 QSize CpuMemoryLabel::sizeHint() const

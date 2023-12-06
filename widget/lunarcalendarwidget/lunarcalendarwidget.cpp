@@ -412,9 +412,9 @@ void LunarCalendarWidget::dayChanged(const QDate &date)
     }
 
     //发送日期单击信号
-    emit clicked(date);
+    Q_EMIT clicked(date);
     //发送日期更新信号
-    emit selectionChanged();
+    Q_EMIT selectionChanged();
 }
 
 void LunarCalendarWidget::dateChanged(int year, int month, int day)

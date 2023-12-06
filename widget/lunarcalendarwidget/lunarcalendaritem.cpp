@@ -61,7 +61,7 @@ void LunarCalendarItem::mousePressEvent(QMouseEvent *)
     pressed = true;
     this->update();
 
-    emit clicked(date, dayType);
+    Q_EMIT clicked(date, dayType);
 }
 
 void LunarCalendarItem::mouseReleaseEvent(QMouseEvent *)

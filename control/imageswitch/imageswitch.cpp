@@ -18,7 +18,7 @@ void ImageSwitch::mousePressEvent(QMouseEvent *)
 {
     imgFile = isChecked ? imgOffFile : imgOnFile;
     isChecked = !isChecked;
-    emit checkedChanged(isChecked);
+    Q_EMIT checkedChanged(isChecked);
     this->update();
 }
 

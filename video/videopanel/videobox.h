@@ -51,17 +51,20 @@ private:
     QString actionFlag;
 
     //布局方案标识集合
-    QMap<int, QStringList> types;
-    void addMenu(QMenu *menu, int type);
+    QMap<QString, QStringList> types;
+    void addMenu(QMenu *menu, const QString &type);
 
 public Q_SLOTS:
-    //设置当前画面类型
+    //获取和设置当前画面类型
+    QString getVideoType() const;
     void setVideoType(const QString &videoType);
-    //设置表格布局
-    void setLayout(QGridLayout *gridLayout);
-    //设置视频控件集合
+
+    //获取和设置视频控件集合
+    QWidgetList getWidgets() const;
     void setWidgets(QWidgetList widgets);
 
+    //设置表格布局
+    void setLayout(QGridLayout *gridLayout);
     //设置启用其他通道画面
     void setEnableOther(bool enableOther);
 
@@ -69,8 +72,8 @@ public Q_SLOTS:
     void setMenuFlag(const QString &menuFlag);
     void setActionFlag(const QString &actionFlag);
 
-    //设置子菜单类型集合
-    void setTypes(const QMap<int, QStringList> &types);
+    //设置菜单类型集合
+    void setTypes(const QMap<QString, QStringList> &types);
     //初始化菜单
     void initMenu(QMenu *menu, const QList<bool> &enable);
 
@@ -84,8 +87,11 @@ public Q_SLOTS:
     void hide_video_all();
 
     //常规及异形通道布局
-    void change_video_normal(int index, int flag);
+    void change_video_normal(int index, int row, int column);
     void change_video_custom(int index, int type);
+
+    //设置可见
+    void change_video_visible(int start, int end);
 
     //异形布局
     void change_video_6(const QList<int> &indexs);

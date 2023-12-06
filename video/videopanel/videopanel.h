@@ -58,9 +58,9 @@ private slots:
 private slots:
     void play_video_all();
     void snapshot_video_one();
-    void snapshot_video_all(); 
+    void snapshot_video_all();
 
-signals:
+Q_SIGNALS:
     //全屏切换信号
     void fullScreen(bool full);
 };

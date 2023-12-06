@@ -196,7 +196,7 @@ void SaveLog::save(const QString &content)
 {
     //如果重定向输出到网络则通过网络发出去,否则输出到日志文件
     if (toNet) {
-        emit send(content);
+        Q_EMIT send(content);
     } else {
         //目录不存在则先新建目录
         QDir dir(path);

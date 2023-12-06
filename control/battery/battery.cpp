@@ -230,7 +230,7 @@ void Battery::setValue(double value)
     }
 
     this->value = value;
-    emit valueChanged(value);
+    Q_EMIT valueChanged(value);
     if (animation) {
         timer->stop();
         timer->start();

@@ -214,7 +214,7 @@ void VideoWindow::dropEvent(QDropEvent *event)
     }
 
     if (!url.isEmpty()) {
-        emit fileDrag(url);
+        Q_EMIT fileDrag(url);
         this->restart(url);
     }
 }
@@ -601,7 +601,7 @@ void VideoWindow::checkVideo()
 void VideoWindow::btnClicked()
 {
     QPushButton *btn = (QPushButton *)sender();
-    emit btnClicked(btn->objectName());
+    Q_EMIT btnClicked(btn->objectName());
 }
 
 uint VideoWindow::getLength()

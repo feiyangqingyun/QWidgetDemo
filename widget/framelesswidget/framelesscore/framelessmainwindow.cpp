@@ -67,7 +67,7 @@ void FramelessMainWindow::doWindowStateChange(QEvent *event)
     }
 
     //发出最大化最小化等改变事件,以便界面上更改对应的信息比如右上角图标和文字
-    emit windowStateChange(!moveEnable);
+    Q_EMIT windowStateChange(!moveEnable);
 
     //解决mac系统上无边框最小化失效的bug
 #ifdef Q_OS_MACOS
@@ -248,9 +248,9 @@ bool FramelessMainWindow::eventFilter(QObject *watched, QEvent *event)
         //下面的 *result = HTCAPTION; 标志位也会自动识别双击标题栏
 #ifndef Q_OS_WIN
         if (event->type() == QEvent::MouseButtonDblClick) {
-            emit titleDblClick();
+            Q_EMIT titleDblClick();
         } else if (event->type() == QEvent::NonClientAreaMouseButtonDblClick) {
-            emit titleDblClick();
+            Q_EMIT titleDblClick();
         }
 #endif
     }

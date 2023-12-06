@@ -124,10 +124,10 @@ void VideoPanel::initMenu()
 void VideoPanel::full()
 {
     if (actionFull->text() == "切换全屏模式") {
-        emit fullScreen(true);
+        Q_EMIT fullScreen(true);
         actionFull->setText("切换正常模式");
     } else {
-        emit fullScreen(false);
+        Q_EMIT fullScreen(false);
         actionFull->setText("切换全屏模式");
     }
 
