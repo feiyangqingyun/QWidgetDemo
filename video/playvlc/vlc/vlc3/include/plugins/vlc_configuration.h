@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * vlc_configuration.h : configuration management module
  * This file describes the programming interface for the configuration module.
  * It includes functions allowing to declare, get or set configuration options.
@@ -102,9 +102,9 @@ VLC_API float config_GetFloat(vlc_object_t *, const char *) VLC_USED;
 VLC_API void config_PutFloat(vlc_object_t *, const char *, float);
 VLC_API char * config_GetPsz(vlc_object_t *, const char *) VLC_USED VLC_MALLOC;
 VLC_API void config_PutPsz(vlc_object_t *, const char *, const char *);
-VLC_API int config_GetIntChoices(vlc_object_t *, const char *,
+VLC_API uint config_GetIntChoices(vlc_object_t *, const char *,
                                      int64_t **, char ***) VLC_USED;
-VLC_API int config_GetPszChoices(vlc_object_t *, const char *,
+VLC_API uint config_GetPszChoices(vlc_object_t *, const char *,
                                      char ***, char ***) VLC_USED;
 
 VLC_API int config_SaveConfigFile( vlc_object_t * );

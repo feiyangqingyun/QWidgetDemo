@@ -19,7 +19,8 @@ VideoPanel::VideoPanel(QWidget *parent) : QWidget(parent)
 
 bool VideoPanel::eventFilter(QObject *watched, QEvent *event)
 {
-    if (event->type() == QEvent::MouseButtonDblClick) {
+    int type = event->type();
+    if (type == QEvent::MouseButtonDblClick) {
         QLabel *widget = (QLabel *) watched;
         if (!videoMax) {
             videoMax = true;
@@ -32,7 +33,7 @@ bool VideoPanel::eventFilter(QObject *watched, QEvent *event)
         }
 
         widget->setFocus();
-    } else if (event->type() == QEvent::MouseButtonPress) {
+    } else if (type == QEvent::MouseButtonPress) {
         QMouseEvent *mouseEvent = (QMouseEvent *)event;
         if (mouseEvent->button() == Qt::RightButton) {
             videoMenu->exec(QCursor::pos());

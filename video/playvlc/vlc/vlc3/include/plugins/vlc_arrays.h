@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * vlc_arrays.h : Arrays and data structures handling
  *****************************************************************************
  * Copyright (C) 1999-2004 VLC authors and VideoLAN
@@ -279,7 +279,7 @@ static inline const void *vlc_array_item_at_index( const vlc_array_t *ar,
 }
 #endif
 
-static inline int vlc_array_index_of_item( const vlc_array_t *ar,
+static inline uint vlc_array_index_of_item( const vlc_array_t *ar,
                                                const void *elem )
 {
     for( size_t i = 0; i < ar->i_count; i++ )

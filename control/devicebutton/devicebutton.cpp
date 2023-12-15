@@ -88,8 +88,9 @@ void DeviceButton::paintEvent(QPaintEvent *)
 bool DeviceButton::eventFilter(QObject *watched, QEvent *event)
 {
     //识别鼠标 按下+移动+松开+双击 等事件
+    int type = event->type();
     QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-    if (event->type() == QEvent::MouseButtonPress) {
+    if (type == QEvent::MouseButtonPress) {
         //限定鼠标左键
         if (mouseEvent->button() == Qt::LeftButton) {
             lastPoint = mouseEvent->pos();
@@ -97,7 +98,7 @@ bool DeviceButton::eventFilter(QObject *watched, QEvent *event)
             Q_EMIT clicked();
             return true;
         }
-    } else if (event->type() == QEvent::MouseMove) {
+    } else if (type == QEvent::MouseMove) {
         //允许拖动并且鼠标按下准备拖动
         if (canMove && isPressed) {
             int dx = mouseEvent->pos().x() - lastPoint.x();
@@ -105,9 +106,9 @@ bool DeviceButton::eventFilter(QObject *watched, QEvent *event)
             this->move(this->x() + dx, this->y() + dy);
             return true;
         }
-    } else if (event->type() == QEvent::MouseButtonRelease) {
+    } else if (type == QEvent::MouseButtonRelease) {
         isPressed = false;
-    } else if (event->type() == QEvent::MouseButtonDblClick) {
+    } else if (type == QEvent::MouseButtonDblClick) {
         Q_EMIT doubleClicked();
     }
 

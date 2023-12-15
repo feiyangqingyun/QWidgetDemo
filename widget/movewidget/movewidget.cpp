@@ -14,8 +14,9 @@ MoveWidget::MoveWidget(QObject *parent) : QObject(parent)
 bool MoveWidget::eventFilter(QObject *watched, QEvent *event)
 {
     if (widget && watched == widget) {
+        int type = event->type();
         QMouseEvent *mouseEvent = (QMouseEvent *)event;
-        if (mouseEvent->type() == QEvent::MouseButtonPress) {
+        if (type == QEvent::MouseButtonPress) {
             //如果限定了只能鼠标左键拖动则判断当前是否是鼠标左键
             if (leftButton && mouseEvent->button() != Qt::LeftButton) {
                 return false;
@@ -26,7 +27,7 @@ bool MoveWidget::eventFilter(QObject *watched, QEvent *event)
                 lastPoint = mouseEvent->pos();
                 pressed = true;
             }
-        } else if (mouseEvent->type() == QEvent::MouseMove && pressed) {
+        } else if (type == QEvent::MouseMove && pressed) {
             //计算坐标偏移值,调用move函数移动过去
             int offsetX = mouseEvent->pos().x() - lastPoint.x();
             int offsetY = mouseEvent->pos().y() - lastPoint.y();
@@ -47,7 +48,7 @@ bool MoveWidget::eventFilter(QObject *watched, QEvent *event)
             }
 
             widget->move(x, y);
-        } else if (mouseEvent->type() == QEvent::MouseButtonRelease && pressed) {
+        } else if (type == QEvent::MouseButtonRelease && pressed) {
             pressed = false;
         }
     }

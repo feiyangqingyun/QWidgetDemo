@@ -317,6 +317,9 @@ mtime_t impossible_deadline( mtime_t deadline )
 # define check_deadline(d) (d)
 #endif
 
+//#define msleep(d) msleep(check_delay(d))
+//#define mwait(d) mwait(check_deadline(d))
+
 VLC_API int vlc_timer_create(vlc_timer_t *, void (*) (void *), void *) VLC_USED;
 VLC_API void vlc_timer_destroy(vlc_timer_t);
 VLC_API void vlc_timer_schedule(vlc_timer_t, bool, mtime_t, mtime_t);

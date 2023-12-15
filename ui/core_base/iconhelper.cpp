@@ -158,26 +158,27 @@ bool IconHelper::eventFilter(QObject *watched, QEvent *event)
         int index = btns.indexOf(btn);
         if (index >= 0) {
             //不同的事件设置不同的图标,同时区分选中的和没有选中的
+            int type = event->type();
             if (btn->isChecked()) {
-                if (event->type() == QEvent::MouseButtonPress) {
+                if (type == QEvent::MouseButtonPress) {
                     QMouseEvent *mouseEvent = (QMouseEvent *)event;
                     if (mouseEvent->button() == Qt::LeftButton) {
                         btn->setIcon(QIcon(pixChecked.at(index)));
                     }
-                } else if (event->type() == QEvent::Enter) {
+                } else if (type == QEvent::Enter) {
                     btn->setIcon(QIcon(pixChecked.at(index)));
-                } else if (event->type() == QEvent::Leave) {
+                } else if (type == QEvent::Leave) {
                     btn->setIcon(QIcon(pixChecked.at(index)));
                 }
             } else {
-                if (event->type() == QEvent::MouseButtonPress) {
+                if (type == QEvent::MouseButtonPress) {
                     QMouseEvent *mouseEvent = (QMouseEvent *)event;
                     if (mouseEvent->button() == Qt::LeftButton) {
                         btn->setIcon(QIcon(pixPressed.at(index)));
                     }
-                } else if (event->type() == QEvent::Enter) {
+                } else if (type == QEvent::Enter) {
                     btn->setIcon(QIcon(pixHover.at(index)));
-                } else if (event->type() == QEvent::Leave) {
+                } else if (type == QEvent::Leave) {
                     btn->setIcon(QIcon(pixNormal.at(index)));
                 }
             }

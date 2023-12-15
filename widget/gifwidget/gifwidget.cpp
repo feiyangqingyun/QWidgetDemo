@@ -54,17 +54,18 @@ bool GifWidget::eventFilter(QObject *watched, QEvent *event)
     static QPoint mousePoint;
     static bool mousePressed = false;
 
+    int type = event->type();
     QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-    if (mouseEvent->type() == QEvent::MouseButtonPress) {
+    if (type == QEvent::MouseButtonPress) {
         if (mouseEvent->button() == Qt::LeftButton) {
             mousePressed = true;
             mousePoint = mouseEvent->globalPos() - this->pos();
             return true;
         }
-    } else if (mouseEvent->type() == QEvent::MouseButtonRelease) {
+    } else if (type == QEvent::MouseButtonRelease) {
         mousePressed = false;
         return true;
-    } else if (mouseEvent->type() == QEvent::MouseMove) {
+    } else if (type == QEvent::MouseMove) {
         if (mousePressed) {
             this->move(mouseEvent->globalPos() - mousePoint);
             return true;

@@ -158,6 +158,8 @@
 ![](video/0snap/playvlc.jpg)
 - 视频播放mpv-plaympv
 ![](video/0snap/plaympv.jpg)
+- 视频播放mdk-playmdk
+![](video/0snap/playmdk.jpg)
 
 ### 3.4 窗体相关-widget
 - 颜色拾取器-colorwidget

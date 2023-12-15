@@ -6,7 +6,7 @@
 #include <QtWidgets>
 #endif
 
-#include "vlchead.h"
+#include "vlcinclude.h"
 
 class VlcThread : public QThread
 {

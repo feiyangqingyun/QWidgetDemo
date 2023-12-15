@@ -7,4 +7,5 @@ win32 {
 SUBDIRS += playffmpeg
 SUBDIRS += playvlc
 SUBDIRS += plaympv
+SUBDIRS += playmdk
 }

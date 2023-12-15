@@ -2,7 +2,7 @@
  * vlc_es.h: Elementary stream formats descriptions
  *****************************************************************************
  * Copyright (C) 1999-2012 VLC authors and VideoLAN
- * $Id: c03fca394aeef77ad642defe241bd5a5ffe5d53d $
+ * $Id: 3c8e04e1b15740166df2e0b2d9a651ffb2c5bc2f $
  *
  * Authors: Laurent Aimar <fenrir@via.ecp.fr>
  *
@@ -521,7 +521,7 @@ struct subs_format_t
     struct
     {
         /*  */
-        uint32_t palette[16+1];
+        uint32_t palette[16+1]; /* CLUT Palette AYVU */
 
         /* the width of the original movie the spu was extracted from */
         int i_original_frame_width;

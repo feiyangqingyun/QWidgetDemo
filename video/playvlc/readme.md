@@ -8,4 +8,4 @@
 2. 国内站点：[https://gitee.com/feiyangqingyun](https://gitee.com/feiyangqingyun)
 3. 国际站点：[https://github.com/feiyangqingyun](https://github.com/feiyangqingyun)
 4. 个人主页：[https://blog.csdn.net/feiyangqingyun](https://blog.csdn.net/feiyangqingyun)
-5. 知乎主页：[https://www.zhihu.com/people/feiyangqingyun/](https://www.zhihu.com/people/feiyangqingyun/)
+5. 知乎主页：[https://www.zhihu.com/people/liudianwu/](https://www.zhihu.com/people/liudianwu/)

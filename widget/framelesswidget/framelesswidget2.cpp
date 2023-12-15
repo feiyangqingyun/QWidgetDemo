@@ -27,7 +27,8 @@ FramelessWidget2::FramelessWidget2(QObject *parent) : QObject(parent)
 bool FramelessWidget2::eventFilter(QObject *watched, QEvent *event)
 {
     if (widget && watched == widget) {
-        if (event->type() == QEvent::WindowStateChange) {
+        int type = event->type();
+        if (type == QEvent::WindowStateChange) {
             //解决mac系统上无边框最小化失效的bug
 #ifdef Q_OS_MACOS
             if (widget->windowState() & Qt::WindowMinimized) {
@@ -41,7 +42,7 @@ bool FramelessWidget2::eventFilter(QObject *watched, QEvent *event)
                 }
             }
 #endif
-        } else if (event->type() == QEvent::Resize) {
+        } else if (type == QEvent::Resize) {
             //重新计算八个描点的区域,描点区域的作用还有就是计算鼠标坐标是否在某一个区域内
             int width = widget->width();
             int height = widget->height();
@@ -63,7 +64,7 @@ bool FramelessWidget2::eventFilter(QObject *watched, QEvent *event)
             pressedRect[6] = QRect(0, height - padding, padding, padding);
             //右下角描点区域
             pressedRect[7] = QRect(width - padding, height - padding, padding, padding);
-        } else if (event->type() == QEvent::HoverMove) {
+        } else if (type == QEvent::HoverMove) {
             //设置对应鼠标形状,这个必须放在这里而不是下面,因为可以在鼠标没有按下的时候识别
             QHoverEvent *hoverEvent = (QHoverEvent *)event;
             QPoint point = hoverEvent->pos();
@@ -148,7 +149,7 @@ bool FramelessWidget2::eventFilter(QObject *watched, QEvent *event)
                     widget->setGeometry(widget->x(), widget->y(), resizeW, resizeH);
                 }
             }
-        } else if (event->type() == QEvent::MouseButtonPress) {
+        } else if (type == QEvent::MouseButtonPress) {
             //记住鼠标按下的坐标+窗体区域
             QMouseEvent *mouseEvent = (QMouseEvent *)event;
             mousePoint = mouseEvent->pos();
@@ -174,9 +175,9 @@ bool FramelessWidget2::eventFilter(QObject *watched, QEvent *event)
             } else {
                 mousePressed = true;
             }
-        } else if (event->type() == QEvent::MouseMove) {
+        } else if (type == QEvent::MouseMove) {
             //改成用HoverMove识别
-        } else if (event->type() == QEvent::MouseButtonRelease) {
+        } else if (type == QEvent::MouseButtonRelease) {
             //恢复所有
             widget->setCursor(Qt::ArrowCursor);
             mousePressed = false;

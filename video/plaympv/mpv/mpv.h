@@ -6,7 +6,7 @@
 #include <QtWidgets>
 #endif
 
-#include "mpvhead.h"
+#include "mpvinclude.h"
 
 class MpvThread : public QThread
 {

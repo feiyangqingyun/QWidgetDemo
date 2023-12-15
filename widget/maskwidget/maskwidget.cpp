@@ -78,18 +78,19 @@ void MaskWidget::showEvent(QShowEvent *)
 
 bool MaskWidget::eventFilter(QObject *obj, QEvent *event)
 {
-    if (event->type() == QEvent::Show) {
+    int type = event->type();
+    if (type == QEvent::Show) {
         if (dialogNames.contains(obj->objectName())) {
             this->show();
             this->activateWindow();
             QWidget *w = (QWidget *)obj;
             w->activateWindow();
         }
-    } else if (event->type() == QEvent::Hide) {
+    } else if (type == QEvent::Hide) {
         if (dialogNames.contains(obj->objectName())) {
             this->hide();
         }
-    } else if (event->type() == QEvent::WindowActivate) {
+    } else if (type == QEvent::WindowActivate) {
         //当主窗体激活时,同时激活遮罩层
         if (mainWidget) {
             if (obj->objectName() == mainWidget->objectName()) {

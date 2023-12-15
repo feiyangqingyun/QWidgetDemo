@@ -38,19 +38,20 @@ LightButton::LightButton(QWidget *parent) : QWidget(parent)
 
 bool LightButton::eventFilter(QObject *watched, QEvent *event)
 {
+    int type = event->type();
     QMouseEvent *mouseEvent = (QMouseEvent *)event;
-    if (mouseEvent->type() == QEvent::MouseButtonPress) {
+    if (type == QEvent::MouseButtonPress) {
         if (this->rect().contains(mouseEvent->pos()) && (mouseEvent->button() == Qt::LeftButton)) {
             lastPoint = mouseEvent->pos();
             pressed = true;
         }
-    } else if (mouseEvent->type() == QEvent::MouseMove && pressed) {
+    } else if (type == QEvent::MouseMove && pressed) {
         if (canMove) {
             int dx = mouseEvent->pos().x() - lastPoint.x();
             int dy = mouseEvent->pos().y() - lastPoint.y();
             this->move(this->x() + dx, this->y() + dy);
         }
-    } else if (mouseEvent->type() == QEvent::MouseButtonRelease && pressed) {
+    } else if (type == QEvent::MouseButtonRelease && pressed) {
         pressed = false;
         Q_EMIT clicked();
     }

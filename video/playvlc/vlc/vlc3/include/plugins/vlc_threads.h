@@ -82,6 +82,18 @@ typedef struct vlc_timer *vlc_timer_t;
 # define VLC_THREAD_PRIORITY_OUTPUT   THREAD_PRIORITY_ABOVE_NORMAL
 # define VLC_THREAD_PRIORITY_HIGHEST  THREAD_PRIORITY_TIME_CRITICAL
 
+static inline int vlc_poll(struct pollfd *fds, unsigned nfds, int timeout)
+{
+    int val;
+
+    vlc_testcancel();
+    val = vlc_poll(fds, nfds, timeout);
+    if (val < 0)
+        vlc_testcancel();
+    return val;
+}
+//# define poll(u,n,t) vlc_poll(u, n, t)
+
 #elif defined (__OS2__)
 # include <errno.h>
 
@@ -862,6 +874,9 @@ mtime_t impossible_deadline( mtime_t deadline )
 # define check_delay(d) (d)
 # define check_deadline(d) (d)
 #endif
+
+//#define msleep(d) msleep(check_delay(d))
+//#define mwait(d) mwait(check_deadline(d))
 
 /**
  * Initializes an asynchronous timer.

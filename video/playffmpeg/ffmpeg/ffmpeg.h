@@ -6,7 +6,7 @@
 #include <QtWidgets>
 #endif
 
-#include "ffmpeghead.h"
+#include "ffmpeginclude.h"
 
 class FFmpegThread : public QThread
 {

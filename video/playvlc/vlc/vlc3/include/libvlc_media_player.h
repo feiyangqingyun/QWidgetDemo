@@ -2,7 +2,7 @@
  * libvlc_media_player.h:  libvlc_media_player external API
  *****************************************************************************
  * Copyright (C) 1998-2015 VLC authors and VideoLAN
- * $Id: 4336df9442b5bae28ec93d540f2ee5907f34e077 $
+ * $Id: c431c235e92ced9e6e7d7712eb7ff0e73dc4f933 $
  *
  * Authors: Clément Stenac <zorglub@videolan.org>
  *          Jean-Paul Saman <jpsaman@videolan.org>
@@ -766,7 +766,7 @@ void libvlc_audio_set_format_callbacks( libvlc_media_player_t *mp,
  *
  * \param mp the media player
  * \param format a four-characters string identifying the sample format
- *               (e.g. "S16N" or "FL32")
+ *               (e.g. "S16N" or "f32l")
  * \param rate sample rate (expressed in Hz)
  * \param channels channels count
  * \version LibVLC 2.0.0 or later
