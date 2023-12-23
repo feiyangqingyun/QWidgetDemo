@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 #endif
 
     frmVideoBox w;
-    w.setWindowTitle("视频监控布局(QQ: 517216493 WX: feiyangqingyun)");
+    w.setWindowTitle("视频监控布局 (QQ: 517216493 WX: feiyangqingyun)");
     w.resize(800, 600);
     w.show();
 

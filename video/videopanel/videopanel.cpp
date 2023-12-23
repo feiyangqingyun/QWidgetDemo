@@ -113,9 +113,7 @@ void VideoPanel::initMenu()
 
     //实例化通道布局类
     videoBox = new VideoBox(this);
-    QList<bool> enable;
-    enable << true << true << true << true << true << true << true << true << true;
-    videoBox->initMenu(videoMenu, enable);
+    videoBox->initMenu(videoMenu);
     videoBox->setVideoType(videoType);
     videoBox->setLayout(gridLayout);
     videoBox->setWidgets(widgets);

@@ -13,7 +13,7 @@ CONFIG      += warn_off
 
 INCLUDEPATH += $$PWD/mdk
 include ($$PWD/mdk/mdk.pri)
-
+message($$DEFINES)
 !contains(DEFINES, mdkx) {
-error("no c++11")
+error("mdk need c++1122")
 }
