@@ -17,7 +17,11 @@ greaterThan(QT_MAJOR_VERSION, 5) {
 SUBDIRS -= hotkey
 SUBDIRS -= shortcut
 SUBDIRS -= qwtdemo
-}
+#qcustomplot在qt6中暂时不支持debug套件
+#准确的说是不支持6.4及以上/等官方解决以后再去掉这个限制
+CONFIG(debug, debug|release) {
+SUBDIRS -= qcustomplotdemo
+}}
 
 win32 {
 SUBDIRS += miniblink
