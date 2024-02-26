@@ -207,7 +207,7 @@ void CpuMemoryLabel::readData()
 
 void CpuMemoryLabel::setData()
 {
-    cpuPercent = (cpuPercent < 0 ? 0 : cpuPercent);
+    //cpuPercent = (cpuPercent < 0 ? 0 : cpuPercent);
     cpuPercent = (cpuPercent > 100 ? 0 : cpuPercent);
     QString msg = QString("CPU %1%  Mem %2% ( 已用 %3 MB / 共 %4 MB )").arg(cpuPercent).arg(memoryPercent).arg(memoryUse).arg(memoryAll);
     if (showText) {

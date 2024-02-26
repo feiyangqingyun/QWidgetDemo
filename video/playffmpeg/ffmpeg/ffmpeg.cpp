@@ -9,8 +9,6 @@ FFmpegThread::FFmpegThread(QObject *parent) : QThread(parent)
     frameFinish = false;
     videoWidth = 0;
     videoHeight = 0;
-    oldWidth = 0;
-    oldHeight = 0;
     videoStreamIndex = -1;
     audioStreamIndex = -1;
 
@@ -18,17 +16,16 @@ FFmpegThread::FFmpegThread(QObject *parent) : QThread(parent)
 
     buffer = NULL;
     avPacket = NULL;
-    avFrame = NULL;
-    avFrame2 = NULL;
-    avFrame3 = NULL;
-    avFormatContext = NULL;
-    videoCodec = NULL;
-    audioCodec = NULL;
+    yuvFrame = NULL;
+    rgbFrame = NULL;
+    formatCtx = NULL;
+    videoCodecCtx = NULL;
+    audioCodecCtx = NULL;
     swsContext = NULL;
 
     options = NULL;
-    videoDecoder = NULL;
-    audioDecoder = NULL;
+    videoCodec = NULL;
+    audioCodec = NULL;
 
     //初始化注册,一个软件中只注册一次即可
     FFmpegThread::initlib();
@@ -81,9 +78,9 @@ bool FFmpegThread::init()
     av_dict_set(&options, "threads", "auto", 0);
 
     //打开视频流
-    avFormatContext = avformat_alloc_context();
+    formatCtx = avformat_alloc_context();
 
-    int result = avformat_open_input(&avFormatContext, url.toStdString().data(), NULL, &options);
+    int result = avformat_open_input(&formatCtx, url.toStdString().data(), NULL, &options);
     if (result < 0) {
         qDebug() << TIMEMS << "open input error" << url;
         return false;
@@ -95,7 +92,7 @@ bool FFmpegThread::init()
     }
 
     //获取流信息
-    result = avformat_find_stream_info(avFormatContext, NULL);
+    result = avformat_find_stream_info(formatCtx, NULL);
     if (result < 0) {
         qDebug() << TIMEMS << "find stream info error";
         return false;
@@ -103,30 +100,30 @@ bool FFmpegThread::init()
 
     //----------视频流部分开始,打个标记方便折叠代码----------
     if (1) {
-        videoStreamIndex = av_find_best_stream(avFormatContext, AVMEDIA_TYPE_VIDEO, -1, -1, &videoDecoder, 0);
+        videoStreamIndex = av_find_best_stream(formatCtx, AVMEDIA_TYPE_VIDEO, -1, -1, &videoCodec, 0);
         if (videoStreamIndex < 0) {
             qDebug() << TIMEMS << "find video stream index error";
             return false;
         }
 
         //获取视频流
-        AVStream *videoStream = avFormatContext->streams[videoStreamIndex];
+        AVStream *videoStream = formatCtx->streams[videoStreamIndex];
 
         //获取视频流解码器,或者指定解码器
-        videoCodec = videoStream->codec;
-        videoDecoder = avcodec_find_decoder(videoCodec->codec_id);
-        //videoDecoder = avcodec_find_decoder_by_name("h264_qsv");
-        if (videoDecoder == NULL) {
+        videoCodecCtx = videoStream->codec;
+        videoCodec = avcodec_find_decoder(videoCodecCtx->codec_id);
+        //videoCodec = avcodec_find_decoder_by_name("h264_qsv");
+        if (videoCodec == NULL) {
             qDebug() << TIMEMS << "video decoder not found";
             return false;
         }
 
         //设置加速解码
-        videoCodec->lowres = videoDecoder->max_lowres;
-        videoCodec->flags2 |= AV_CODEC_FLAG2_FAST;
+        videoCodecCtx->lowres = videoCodec->max_lowres;
+        videoCodecCtx->flags2 |= AV_CODEC_FLAG2_FAST;
 
         //打开视频解码器
-        result = avcodec_open2(videoCodec, videoDecoder, NULL);
+        result = avcodec_open2(videoCodecCtx, videoCodec, NULL);
         if (result < 0) {
             qDebug() << TIMEMS << "open video codec error";
             return false;
@@ -143,8 +140,8 @@ bool FFmpegThread::init()
         }
 
         QString videoInfo = QString("视频流信息 -> 索引: %1  解码: %2  格式: %3  时长: %4 秒  分辨率: %5*%6")
-                            .arg(videoStreamIndex).arg(videoDecoder->name).arg(avFormatContext->iformat->name)
-                            .arg((avFormatContext->duration) / 1000000).arg(videoWidth).arg(videoHeight);
+                            .arg(videoStreamIndex).arg(videoCodec->name).arg(formatCtx->iformat->name)
+                            .arg((formatCtx->duration) / 1000000).arg(videoWidth).arg(videoHeight);
         qDebug() << TIMEMS << videoInfo;
     }
     //----------视频流部分开始----------
@@ -153,8 +150,8 @@ bool FFmpegThread::init()
     if (1) {
         //循环查找音频流索引
         audioStreamIndex = -1;
-        for (uint i = 0; i < avFormatContext->nb_streams; i++) {
-            if (avFormatContext->streams[i]->codec->codec_type == AVMEDIA_TYPE_AUDIO) {
+        for (uint i = 0; i < formatCtx->nb_streams; i++) {
+            if (formatCtx->streams[i]->codec->codec_type == AVMEDIA_TYPE_AUDIO) {
                 audioStreamIndex = i;
                 break;
             }
@@ -165,27 +162,27 @@ bool FFmpegThread::init()
             qDebug() << TIMEMS << "find audio stream index error";
         } else {
             //获取音频流
-            AVStream *audioStream = avFormatContext->streams[audioStreamIndex];
-            audioCodec = audioStream->codec;
+            AVStream *audioStream = formatCtx->streams[audioStreamIndex];
+            audioCodecCtx = audioStream->codec;
 
             //获取音频流解码器,或者指定解码器
-            audioDecoder = avcodec_find_decoder(audioCodec->codec_id);
-            //audioDecoder = avcodec_find_decoder_by_name("aac");
-            if (audioDecoder == NULL) {
+            audioCodec = avcodec_find_decoder(audioCodecCtx->codec_id);
+            //audioCodec = avcodec_find_decoder_by_name("aac");
+            if (audioCodec == NULL) {
                 qDebug() << TIMEMS << "audio codec not found";
                 return false;
             }
 
             //打开音频解码器
-            result = avcodec_open2(audioCodec, audioDecoder, NULL);
+            result = avcodec_open2(audioCodecCtx, audioCodec, NULL);
             if (result < 0) {
                 qDebug() << TIMEMS << "open audio codec error";
                 return false;
             }
 
             QString audioInfo = QString("音频流信息 -> 索引: %1  解码: %2  比特率: %3  声道数: %4  采样: %5")
-                                .arg(audioStreamIndex).arg(audioDecoder->name).arg(avFormatContext->bit_rate)
-                                .arg(audioCodec->channels).arg(audioCodec->sample_rate);
+                                .arg(audioStreamIndex).arg(audioCodec->name).arg(formatCtx->bit_rate)
+                                .arg(audioCodecCtx->channels).arg(audioCodecCtx->sample_rate);
             qDebug() << TIMEMS << audioInfo;
         }
     }
@@ -193,37 +190,31 @@ bool FFmpegThread::init()
 
     //预分配好内存
     avPacket = av_packet_alloc();
-    avFrame = av_frame_alloc();
-    avFrame2 = av_frame_alloc();
-    avFrame3 = av_frame_alloc();
+    yuvFrame = av_frame_alloc();
+    rgbFrame = av_frame_alloc();
 
-    //比较上一次文件的宽度高度,当改变时,需要重新分配内存
-    if (oldWidth != videoWidth || oldHeight != videoHeight) {
-        int byte = avpicture_get_size(AV_PIX_FMT_RGB32, videoWidth, videoHeight);
-        buffer = (uint8_t *)av_malloc(byte * sizeof(uint8_t));
-        oldWidth = videoWidth;
-        oldHeight = videoHeight;
-    }
+    int byte = avpicture_get_size(AV_PIX_FMT_RGB32, videoWidth, videoHeight);
+    buffer = (uint8_t *)av_malloc(byte * sizeof(uint8_t));
 
     //定义像素格式
     AVPixelFormat srcFormat = AV_PIX_FMT_YUV420P;
     AVPixelFormat dstFormat = AV_PIX_FMT_RGB32;
     //通过解码器获取解码格式
-    srcFormat = videoCodec->pix_fmt;
+    srcFormat = videoCodecCtx->pix_fmt;
 
     //默认最快速度的解码采用的SWS_FAST_BILINEAR参数,可能会丢失部分图片数据,可以自行更改成其他参数
     int flags = SWS_FAST_BILINEAR;
 
     //开辟缓存存储一帧数据
     //以下两种方法都可以,avpicture_fill已经逐渐被废弃
-    //avpicture_fill((AVPicture *)avFrame3, buffer, dstFormat, videoWidth, videoHeight);
-    av_image_fill_arrays(avFrame3->data, avFrame3->linesize, buffer, dstFormat, videoWidth, videoHeight, 1);
+    //avpicture_fill((AVPicture *)rgbFrame, buffer, dstFormat, videoWidth, videoHeight);
+    av_image_fill_arrays(rgbFrame->data, rgbFrame->linesize, buffer, dstFormat, videoWidth, videoHeight, 1);
 
     //图像转换
     swsContext = sws_getContext(videoWidth, videoHeight, srcFormat, videoWidth, videoHeight, dstFormat, flags, NULL, NULL, NULL);
 
     //输出视频信息
-    //av_dump_format(avFormatContext, 0, url.toStdString().data(), 0);
+    //av_dump_format(formatCtx, 0, url.toStdString().data(), 0);
 
     //qDebug() << TIMEMS << "init ffmpeg finsh";
     return true;
@@ -240,21 +231,28 @@ void FFmpegThread::run()
             continue;
         }
 
-        frameFinish = av_read_frame(avFormatContext, avPacket);
+        frameFinish = av_read_frame(formatCtx, avPacket);
         if (frameFinish >= 0) {
+            //下面演示倍速播放
+            if (0) {
+                double speed = 2.0;
+                avPacket->pts = avPacket->pts / speed;
+                avPacket->dts = avPacket->dts / speed;
+            }
+
             //判断当前包是视频还是音频
             int index = avPacket->stream_index;
             if (index == videoStreamIndex) {
                 //解码视频流 avcodec_decode_video2 方法已被废弃
 #if 0
-                avcodec_decode_video2(videoCodec, avFrame2, &frameFinish, avPacket);
+                avcodec_decode_video2(videoCodecCtx, yuvFrame, &frameFinish, avPacket);
 #else
-                frameFinish = avcodec_send_packet(videoCodec, avPacket);
+                frameFinish = avcodec_send_packet(videoCodecCtx, avPacket);
                 if (frameFinish < 0) {
                     continue;
                 }
 
-                frameFinish = avcodec_receive_frame(videoCodec, avFrame2);
+                frameFinish = avcodec_receive_frame(videoCodecCtx, yuvFrame);
                 if (frameFinish < 0) {
                     continue;
                 }
@@ -262,10 +260,10 @@ void FFmpegThread::run()
 
                 if (frameFinish >= 0) {
                     //将数据转成一张图片
-                    sws_scale(swsContext, (const uint8_t *const *)avFrame2->data, avFrame2->linesize, 0, videoHeight, avFrame3->data, avFrame3->linesize);
+                    sws_scale(swsContext, (const uint8_t *const *)yuvFrame->data, yuvFrame->linesize, 0, videoHeight, rgbFrame->data, rgbFrame->linesize);
 
                     //以下两种方法都可以
-                    //QImage image(avFrame3->data[0], videoWidth, videoHeight, QImage::Format_RGB32);
+                    //QImage image(rgbFrame->data[0], videoWidth, videoHeight, QImage::Format_RGB32);
                     QImage image((uchar *)buffer, videoWidth, videoHeight, QImage::Format_RGB32);
                     if (!image.isNull()) {
                         emit receiveImage(image);
@@ -276,7 +274,7 @@ void FFmpegThread::run()
 #if 1
                 //延时(不然文件会立即全部播放完)
                 AVRational timeBase = {1, AV_TIME_BASE};
-                int64_t ptsTime = av_rescale_q(avPacket->dts, avFormatContext->streams[videoStreamIndex]->time_base, timeBase);
+                int64_t ptsTime = av_rescale_q(avPacket->dts, formatCtx->streams[videoStreamIndex]->time_base, timeBase);
                 int64_t nowTime = av_gettime() - startTime;
                 if (ptsTime > nowTime) {
                     av_usleep(ptsTime - nowTime);
@@ -316,34 +314,29 @@ void FFmpegThread::free()
         avPacket = NULL;
     }
 
-    if (avFrame != NULL) {
-        av_frame_free(&avFrame);
-        avFrame = NULL;
+    if (yuvFrame != NULL) {
+        av_frame_free(&yuvFrame);
+        yuvFrame = NULL;
     }
 
-    if (avFrame2 != NULL) {
-        av_frame_free(&avFrame2);
-        avFrame2 = NULL;
+    if (rgbFrame != NULL) {
+        av_frame_free(&rgbFrame);
+        rgbFrame = NULL;
     }
 
-    if (avFrame3 != NULL) {
-        av_frame_free(&avFrame3);
-        avFrame3 = NULL;
+    if (videoCodecCtx != NULL) {
+        avcodec_close(videoCodecCtx);
+        videoCodecCtx = NULL;
     }
 
-    if (videoCodec != NULL) {
-        avcodec_close(videoCodec);
-        videoCodec = NULL;
+    if (audioCodecCtx != NULL) {
+        avcodec_close(audioCodecCtx);
+        audioCodecCtx = NULL;
     }
 
-    if (audioCodec != NULL) {
-        avcodec_close(audioCodec);
-        audioCodec = NULL;
-    }
-
-    if (avFormatContext != NULL) {
-        avformat_close_input(&avFormatContext);
-        avFormatContext = NULL;
+    if (formatCtx != NULL) {
+        avformat_close_input(&formatCtx);
+        formatCtx = NULL;
     }
 
     av_dict_free(&options);

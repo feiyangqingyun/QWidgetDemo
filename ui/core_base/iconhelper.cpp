@@ -132,8 +132,10 @@ void IconHelper::setStyle(QWidget *widget, QList<QAbstractButton *> btns,
 IconHelper::IconHelper(const QString &fontFile, const QString &fontName, QObject *parent) : QObject(parent)
 {
     //判断图形字体是否存在,不存在则加入
+    //这里暂时限制在同一个项目中只加载一次字体文件
     QFontDatabase fontDb;
-    if (!fontDb.families().contains(fontName) && QFile(fontFile).exists()) {
+    bool exist = false;//fontDb.families().contains(fontName);
+    if (!exist && QFile(fontFile).exists()) {
         int fontId = fontDb.addApplicationFont(fontFile);
         QStringList listName = fontDb.applicationFontFamilies(fontId);
         if (listName.count() == 0) {

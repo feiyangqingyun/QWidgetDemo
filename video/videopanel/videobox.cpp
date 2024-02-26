@@ -8,9 +8,9 @@
 
 VideoBox::VideoBox(QObject *parent) : QObject(parent)
 {
-    gridLayout = 0;
-    videoCount = 64;
-    videoType = "1_16";
+    maxCount = 64;
+    layoutType = "1_16";
+    gridLayout = NULL;
 
     menuFlag = "画面";
     actionFlag = "通道";
@@ -20,10 +20,10 @@ VideoBox::VideoBox(QObject *parent) : QObject(parent)
     //自定义x布局/按照行列数生成/可以通过appendtype函数添加其他类型
     //1_2x4表示通道1开始2x4行列布局画面(相当于通道1-8按照2行4列排列)
     //9_2x4表示通道9开始2x4行列布局画面(相当于通道9-16按照2行4列排列)
-    types.insert("x", QStringList() << "1_4x1" << "1_2x4" << "9_2x4" << "1_3x2" << "1_4x2" << "1_5x2" << "1_6x2" << "1_7x2" << "1_8x2");
+    types.insert("x", QStringList() << "1_1x1" << "1_4x1" << "1_2x4" << "9_2x4" << "1_3x2" << "1_4x2" << "1_5x2" << "1_6x2" << "1_7x2" << "1_8x2");
 
     //自定义y布局/主要是一些用户定义的不规则的排列布局/加个y用于区分其他布局/可能有雷同
-    types.insert("y", QStringList() << "y_1_2" << "y_1_3" << "y_1_9" << "y_1_10" << "y_1_12" << "y_1_16");
+    types.insert("y", QStringList() << "y_1_2" << "y_1_3" << "y_1_5" << "y_1_8" << "y_1_9" << "y_1_10" << "y_1_12" << "y_1_16");
 
     //1_4表示通道1-通道4/前面是通道开始的索引/后面是通道结束的索引
     types.insert("4", QStringList() << "1_4" << "5_8" << "9_12" << "13_16" << "17_20" << "21_24" << "25_28" << "29_32" << "33_36");
@@ -87,7 +87,7 @@ void VideoBox::addMenu(QMenu *menu, const QString &type)
         }
 
         //添加菜单动作
-        QAction *action = menuSub->addAction(text, this, SLOT(show_video()));
+        QAction *action = menuSub->addAction(text, this, SLOT(change_layout()));
         //设置弱属性传入大类和子类布局标识等
         action->setProperty("index", start);
         action->setProperty("type", type);
@@ -97,17 +97,17 @@ void VideoBox::addMenu(QMenu *menu, const QString &type)
 
 //行列数一致的比如 2*2 3*3 4*4 5*5 等可以直接套用通用的公式
 //按照这个函数还可以非常容易的拓展出 10*10 16*16=256 通道界面
-void VideoBox::change_video_normal(int index, int row, int column)
+void VideoBox::change_layout_normal(int index, int row, int column)
 {
     int size = 0;
     int rowCount = 0;
     int columnCount = 0;
 
     //首先隐藏所有通道
-    hide_video_all();
+    hide_all();
 
     //按照指定的行列数逐个添加
-    for (int i = 0; i < videoCount; ++i) {
+    for (int i = 0; i < maxCount; ++i) {
         if (i >= index) {
             //添加到对应布局并设置可见
             gridLayout->addWidget(widgets.at(i), rowCount, columnCount);
@@ -128,7 +128,7 @@ void VideoBox::change_video_normal(int index, int row, int column)
     }
 }
 
-void VideoBox::change_video_custom(int index, int type)
+void VideoBox::change_layout_custom(int index, int type)
 {
     //从开始索引开始往后衍生多少个通道
     QList<int> indexs;
@@ -142,13 +142,13 @@ void VideoBox::change_video_custom(int index, int type)
     }
 
     if (type == 6 || type == 8 || type == 10 || type == 12 || type == 16) {
-        change_video_l(indexs);
+        change_layout_l(indexs);
     } else if (type == 13) {
-        change_video_o(indexs);
+        change_layout_o(indexs);
     }
 }
 
-void VideoBox::change_video_visible(int start, int end)
+void VideoBox::change_layout_visible(int start, int end)
 {
     //设置通道控件可见
     for (int i = start; i <= end; ++i) {
@@ -156,7 +156,7 @@ void VideoBox::change_video_visible(int start, int end)
     }
 }
 
-void VideoBox::change_video_l(const QList<int> &indexs)
+void VideoBox::change_layout_l(const QList<int> &indexs)
 {
     //通过观察发现这种都是左上角一个大通道/右侧和底部排列几个小通道
     int count = indexs.count();
@@ -164,7 +164,7 @@ void VideoBox::change_video_l(const QList<int> &indexs)
     int flag = num - 1;
 
     //首先隐藏所有通道
-    hide_video_all();
+    hide_all();
 
     //添加大通道
     gridLayout->addWidget(widgets.at(indexs.at(0)), 0, 0, flag, flag);
@@ -188,13 +188,13 @@ void VideoBox::change_video_l(const QList<int> &indexs)
 #endif
 
     //设置通道控件可见
-    change_video_visible(indexs.first(), indexs.last());
+    change_layout_visible(indexs.first(), indexs.last());
 }
 
-void VideoBox::change_video_o(const QList<int> &indexs)
+void VideoBox::change_layout_o(const QList<int> &indexs)
 {
     //首先隐藏所有通道
-    hide_video_all();
+    hide_all();
     //挨个重新添加到布局
     gridLayout->addWidget(widgets.at(indexs.at(0)), 0, 0, 1, 1);
     gridLayout->addWidget(widgets.at(indexs.at(1)), 0, 1, 1, 1);
@@ -210,17 +210,17 @@ void VideoBox::change_video_o(const QList<int> &indexs)
     gridLayout->addWidget(widgets.at(indexs.at(11)), 3, 2, 1, 1);
     gridLayout->addWidget(widgets.at(indexs.at(12)), 3, 3, 1, 1);
     //设置通道控件可见
-    change_video_visible(indexs.first(), indexs.last());
+    change_layout_visible(indexs.first(), indexs.last());
 }
 
-QString VideoBox::getVideoType() const
+QString VideoBox::getLayoutType() const
 {
-    return this->videoType;
+    return this->layoutType;
 }
 
-void VideoBox::setVideoType(const QString &videoType)
+void VideoBox::setLayoutType(const QString &layoutType)
 {
-    this->videoType = videoType;
+    this->layoutType = layoutType;
 }
 
 QWidgetList VideoBox::getWidgets() const
@@ -231,7 +231,7 @@ QWidgetList VideoBox::getWidgets() const
 void VideoBox::setWidgets(QWidgetList widgets)
 {
     this->widgets = widgets;
-    this->videoCount = widgets.count();
+    this->maxCount = widgets.count();
 }
 
 void VideoBox::setLayout(QGridLayout *gridLayout)
@@ -257,7 +257,7 @@ void VideoBox::setVisibles(const QList<bool> &visibles)
 void VideoBox::appendType(int index, int row, int column)
 {
     //先要过滤下是否满足最大通道数量/start从1开始
-    if (((index - 1) + (row * column)) > videoCount) {
+    if (((index - 1) + (row * column)) > maxCount) {
         return;
     }
 
@@ -316,131 +316,168 @@ void VideoBox::initMenu(QMenu *menu)
     }
 }
 
-void VideoBox::show_video_all()
+void VideoBox::show_all()
 {
     //一般是从配置文件读取到了最后的通道画面类型进行设置
     int type = 1;
-    if (videoType.startsWith("0_")) {
-        int index = videoType.split("_").last().toInt() - 1;
-        change_video_1(index);
-        Q_EMIT changeVideo(type, videoType, true);
-    } else {
-        int index = videoType.split("_").first().toInt() - 1;
-        //y开头的布局需要重置索引=0
-        if (videoType.startsWith("y")) {
-            index = 0;
-        }
-
-        QMap<QString, QStringList>::iterator iter = types.begin();
-        while (iter != types.end()) {
-            QStringList flags = iter.value();
-            if (flags.contains(videoType)) {
-                type = iter.key().toInt();
-                show_video(type, index);
-                return;
-            }
-            iter++;
-        }
-
-        //如果运行到这里说明设置了不存在的布局/强制纠正
-        videoType = "1_4";
-        this->show_video_all();
+    int index = layoutType.split("_").first().toInt() - 1;
+    //y开头的布局需要重置索引=0
+    if (layoutType.startsWith("y")) {
+        index = 0;
     }
+
+    QMap<QString, QStringList>::iterator iter = types.begin();
+    while (iter != types.end()) {
+        QStringList flags = iter.value();
+        if (flags.contains(layoutType)) {
+            type = iter.key().toInt();
+            change_layout(type, index);
+            return;
+        }
+        iter++;
+    }
+
+    //如果运行到这里说明设置了不存在的布局/强制纠正
+    layoutType = "1_4";
+    this->show_all();
 }
 
-void VideoBox::hide_video_all()
+void VideoBox::hide_all()
 {
-    for (int i = 0; i < videoCount; ++i) {
+    for (int i = 0; i < maxCount; ++i) {
         gridLayout->removeWidget(widgets.at(i));
         widgets.at(i)->setVisible(false);
     }
 }
 
-void VideoBox::show_video()
+void VideoBox::change_layout()
 {
     //识别具体是哪个动作菜单触发的
     QAction *action = (QAction *)sender();
     //从弱属性取出值
     int index = action->property("index").toInt() - 1;
     int type = action->property("type").toInt();
-    QString videoType = action->property("flag").toString();
+    QString layoutType = action->property("flag").toString();
     //只有当画面布局类型改变了才需要切换
-    if (this->videoType != videoType) {
-        this->videoType = videoType;
-        show_video(type, index);
+    if (this->layoutType != layoutType) {
+        this->layoutType = layoutType;
+        change_layout(type, index);
     }
 }
 
-void VideoBox::show_video(int type, int index)
+void VideoBox::change_layout(int type, int index)
 {
     //根据不同的父菜单类型执行对应的函数
     if (type == 0) {
-        if (videoType.contains("x")) {
+        if (layoutType.contains("x")) {
             //取出行列
-            QString text = videoType.split("_").last();
+            QString text = layoutType.split("_").last();
             QStringList list = text.split("x");
             int row = list.at(0).toInt();
             int column = list.at(1).toInt();
-            change_video_normal(index, row, column);
-        } else if (videoType == "y_1_2") {
-            change_video_y_1_2(index);
-        } else if (videoType == "y_1_3") {
-            change_video_y_1_3(index);
-        } else if (videoType == "y_1_9") {
-            change_video_y_1_9(index);
-        } else if (videoType == "y_1_10") {
-            change_video_y_1_10(index);
-        } else if (videoType == "y_1_12") {
-            change_video_y_1_12(index);
-        } else if (videoType == "y_1_16") {
-            change_video_y_1_16(index);
+            change_layout_normal(index, row, column);
+
+            //只有1个通道需要更改类型/方便外面区分当前是1通道
+            if (layoutType.endsWith("1x1")) {
+                type = 1;
+            }
+        } else if (layoutType == "y_1_2") {
+            change_layout_y_1_2(index);
+        } else if (layoutType == "y_1_3") {
+            change_layout_y_1_3(index);
+        } else if (layoutType == "y_1_5") {
+            change_layout_y_1_5(index);
+        } else if (layoutType == "y_1_8") {
+            change_layout_y_1_8(index);
+        } else if (layoutType == "y_1_9") {
+            change_layout_y_1_9(index);
+        } else if (layoutType == "y_1_10") {
+            change_layout_y_1_10(index);
+        } else if (layoutType == "y_1_12") {
+            change_layout_y_1_12(index);
+        } else if (layoutType == "y_1_16") {
+            change_layout_y_1_16(index);
         }
     } else if (type == 1) {
-        change_video_1(index);
+        change_layout_1(index);
     } else if (type == 4) {
-        change_video_4(index);
+        change_layout_4(index);
     } else if (type == 6) {
-        change_video_6(index);
+        change_layout_6(index);
     } else if (type == 8) {
-        change_video_8(index);
+        change_layout_8(index);
     } else if (type == 9) {
-        change_video_9(index);
+        change_layout_9(index);
     } else if (type == 13) {
-        change_video_13(index);
+        change_layout_13(index);
     } else if (type == 16) {
-        change_video_16(index);
+        change_layout_16(index);
     } else if (type == 25) {
-        change_video_25(index);
+        change_layout_25(index);
     } else if (type == 36) {
-        change_video_36(index);
+        change_layout_36(index);
     } else if (type == 64) {
-        change_video_64(index);
+        change_layout_64(index);
     }
 
-    Q_EMIT changeVideo(type, videoType, false);
+    Q_EMIT changeLayout(type, layoutType, false);
 }
 
-void VideoBox::change_video_y_1_2(int index)
+void VideoBox::change_layout_y_1_2(int index)
 {
-    change_video_normal(index, 1, 2);
+    change_layout_normal(index, 1, 2);
 }
 
-void VideoBox::change_video_y_1_3(int index)
+void VideoBox::change_layout_y_1_3(int index)
 {
     //首先隐藏所有通道
-    hide_video_all();
+    hide_all();
     //添加通道到布局
     gridLayout->addWidget(widgets.at(index + 0), 0, 0, 1, 2);
-    gridLayout->addWidget(widgets.at(index + 1), 1, 0);
-    gridLayout->addWidget(widgets.at(index + 2), 1, 1);
+    gridLayout->addWidget(widgets.at(index + 1), 1, 0, 1, 1);
+    gridLayout->addWidget(widgets.at(index + 2), 1, 1, 1, 1);
     //设置通道控件可见
-    change_video_visible(index, index + 2);
+    change_layout_visible(index, index + 2);
 }
 
-void VideoBox::change_video_y_1_9(int index)
+void VideoBox::change_layout_y_1_5(int index)
 {
     //首先隐藏所有通道
-    hide_video_all();
+    hide_all();
+    //依次左上/左下/
+    gridLayout->addWidget(widgets.at(index + 0), 0, 0, 1, 2);
+    gridLayout->addWidget(widgets.at(index + 1), 1, 0, 2, 1);
+    gridLayout->addWidget(widgets.at(index + 2), 1, 1, 1, 1);
+    gridLayout->addWidget(widgets.at(index + 3), 2, 1, 1, 1);
+    gridLayout->addWidget(widgets.at(index + 4), 0, 2, 3, 1);
+    //设置通道控件可见
+    change_layout_visible(index, index + 4);
+}
+
+void VideoBox::change_layout_y_1_8(int index)
+{
+    //首先隐藏所有通道
+    hide_all();
+    //添加上面4个通道
+    gridLayout->addWidget(widgets.at(index + 0), 0, 0, 1, 1);
+    gridLayout->addWidget(widgets.at(index + 1), 0, 1, 1, 1);
+    gridLayout->addWidget(widgets.at(index + 2), 0, 2, 1, 1);
+    gridLayout->addWidget(widgets.at(index + 3), 0, 3, 1, 1);
+    //添加中间全景通道
+    gridLayout->addWidget(widgets.at(index + 8), 1, 0, 1, 4);
+    //添加下面4个通道
+    gridLayout->addWidget(widgets.at(index + 4), 2, 0, 1, 1);
+    gridLayout->addWidget(widgets.at(index + 5), 2, 1, 1, 1);
+    gridLayout->addWidget(widgets.at(index + 6), 2, 2, 1, 1);
+    gridLayout->addWidget(widgets.at(index + 7), 2, 3, 1, 1);
+    //设置通道控件可见
+    change_layout_visible(index, index + 8);
+}
+
+void VideoBox::change_layout_y_1_9(int index)
+{
+    //首先隐藏所有通道
+    hide_all();
     //添加通道到布局
     gridLayout->addWidget(widgets.at(index + 0), 0, 0, 2, 2);
     gridLayout->addWidget(widgets.at(index + 1), 0, 2, 1, 1);
@@ -452,70 +489,70 @@ void VideoBox::change_video_y_1_9(int index)
     gridLayout->addWidget(widgets.at(index + 7), 2, 1, 1, 1);
     gridLayout->addWidget(widgets.at(index + 8), 2, 0, 1, 1);
     //设置通道控件可见
-    change_video_visible(index, index + 8);
+    change_layout_visible(index, index + 8);
 }
 
-void VideoBox::change_video_y_1_10(int index)
+void VideoBox::change_layout_y_1_10(int index)
 {
-    change_video_custom(index, 10);
+    change_layout_custom(index, 10);
 }
 
-void VideoBox::change_video_y_1_12(int index)
+void VideoBox::change_layout_y_1_12(int index)
 {
-    change_video_custom(index, 12);
+    change_layout_custom(index, 12);
 }
 
-void VideoBox::change_video_y_1_16(int index)
+void VideoBox::change_layout_y_1_16(int index)
 {
-    change_video_custom(index, 16);
+    change_layout_custom(index, 16);
 }
 
-void VideoBox::change_video_1(int index)
+void VideoBox::change_layout_1(int index)
 {
-    change_video_normal(index, 1, 1);
+    change_layout_normal(index, 1, 1);
 }
 
-void VideoBox::change_video_4(int index)
+void VideoBox::change_layout_4(int index)
 {
-    change_video_normal(index, 2, 2);
+    change_layout_normal(index, 2, 2);
 }
 
-void VideoBox::change_video_6(int index)
+void VideoBox::change_layout_6(int index)
 {
-    change_video_custom(index, 6);
+    change_layout_custom(index, 6);
 }
 
-void VideoBox::change_video_8(int index)
+void VideoBox::change_layout_8(int index)
 {
-    change_video_custom(index, 8);
+    change_layout_custom(index, 8);
 }
 
-void VideoBox::change_video_9(int index)
+void VideoBox::change_layout_9(int index)
 {
-    change_video_normal(index, 3, 3);
+    change_layout_normal(index, 3, 3);
 }
 
-void VideoBox::change_video_13(int index)
+void VideoBox::change_layout_13(int index)
 {
-    change_video_custom(index, 13);
+    change_layout_custom(index, 13);
 }
 
-void VideoBox::change_video_16(int index)
+void VideoBox::change_layout_16(int index)
 {
-    change_video_normal(index, 4, 4);
+    change_layout_normal(index, 4, 4);
 }
 
-void VideoBox::change_video_25(int index)
+void VideoBox::change_layout_25(int index)
 {
-    change_video_normal(index, 5, 5);
+    change_layout_normal(index, 5, 5);
 }
 
-void VideoBox::change_video_36(int index)
+void VideoBox::change_layout_36(int index)
 {
-    change_video_normal(index, 6, 6);
+    change_layout_normal(index, 6, 6);
 }
 
-void VideoBox::change_video_64(int index)
+void VideoBox::change_layout_64(int index)
 {
-    change_video_normal(index, 8, 8);
+    change_layout_normal(index, 8, 8);
 }

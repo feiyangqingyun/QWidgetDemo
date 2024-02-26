@@ -28,12 +28,12 @@ bool frmVideoBox::eventFilter(QObject *watched, QEvent *event)
         QLabel *widget = (QLabel *) watched;
         if (!max) {
             max = true;
-            box->hide_video_all();
+            box->hide_all();
             ui->gridLayout->addWidget(widget, 0, 0);
             widget->setVisible(true);
         } else {
             max = false;
-            box->show_video_all();
+            box->show_all();
         }
 
         return true;
@@ -69,9 +69,9 @@ void frmVideoBox::initForm()
     //实例化盒子
     box = new VideoBox(this);
     //关联信号槽
-    connect(box, SIGNAL(changeVideo(int, QString, bool)), this, SLOT(changeVideo(int, QString, bool)));
+    connect(box, SIGNAL(changeLayout(int, QString, bool)), this, SLOT(changeLayout(int, QString, bool)));
     //可以改成 1_4/5_8/1_36 等
-    box->setVideoType("1_16");
+    box->setLayoutType("1_16");
     box->setLayout(ui->gridLayout);
     box->setWidgets(widgets);
 
@@ -89,7 +89,7 @@ void frmVideoBox::initForm()
 
     //把菜单加到盒子上
     box->initMenu(menu);
-    box->show_video_all();
+    box->show_all();
 }
 
 void frmVideoBox::doAction()
@@ -99,7 +99,7 @@ void frmVideoBox::doAction()
     ui->label->setText(QString("触发了菜单： %1").arg(action->text()));
 }
 
-void frmVideoBox::changeVideo(int type, const QString &videoType, bool videoMax)
+void frmVideoBox::changeLayout(int type, const QString &videoType, bool videoMax)
 {
     QString info = QString("主菜单：%1  子菜单：%2").arg(type).arg(videoType);
     ui->label->setText(info);

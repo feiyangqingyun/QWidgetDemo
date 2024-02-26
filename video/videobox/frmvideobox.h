@@ -32,7 +32,7 @@ private slots:
     void doAction();
 
     //画面布局切换信号
-    void changeVideo(int type, const QString &videoType, bool videoMax);
+    void changeLayout(int type, const QString &videoType, bool videoMax);
 };
 
 #endif // FRMVIDEOBOX_H

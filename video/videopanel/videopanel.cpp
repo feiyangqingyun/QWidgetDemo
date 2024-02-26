@@ -14,7 +14,7 @@ VideoPanel::VideoPanel(QWidget *parent) : QWidget(parent)
     this->initControl();
     this->initForm();
     this->initMenu();
-    QTimer::singleShot(1000, this, SLOT(play_video_all()));
+    QTimer::singleShot(1000, this, SLOT(playAll()));
 }
 
 bool VideoPanel::eventFilter(QObject *watched, QEvent *event)
@@ -24,12 +24,12 @@ bool VideoPanel::eventFilter(QObject *watched, QEvent *event)
         QLabel *widget = (QLabel *) watched;
         if (!videoMax) {
             videoMax = true;
-            videoBox->hide_video_all();
+            videoBox->hide_all();
             gridLayout->addWidget(widget, 0, 0);
             widget->setVisible(true);
         } else {
             videoMax = false;
-            videoBox->show_video_all();
+            videoBox->show_all();
         }
 
         widget->setFocus();
@@ -74,7 +74,7 @@ void VideoPanel::initForm()
 
     videoMax = false;
     videoCount = 64;
-    videoType = "1_16";
+    layoutType = "1_16";
 
     for (int i = 0; i < videoCount; ++i) {
         QLabel *widget = new QLabel;
@@ -107,17 +107,17 @@ void VideoPanel::initMenu()
     videoMenu->addSeparator();
 
     //直接通过文字的形式添加子菜单
-    videoMenu->addAction("截图当前视频", this, SLOT(snapshot_video_one()));
-    videoMenu->addAction("截图所有视频", this, SLOT(snapshot_video_all()));
+    videoMenu->addAction("截图当前视频", this, SLOT(snapOne()));
+    videoMenu->addAction("截图所有视频", this, SLOT(snapAll()));
     videoMenu->addSeparator();
 
     //实例化通道布局类
     videoBox = new VideoBox(this);
     videoBox->initMenu(videoMenu);
-    videoBox->setVideoType(videoType);
+    videoBox->setLayoutType(layoutType);
     videoBox->setLayout(gridLayout);
     videoBox->setWidgets(widgets);
-    videoBox->show_video_all();
+    videoBox->show_all();
 }
 
 void VideoPanel::full()
@@ -144,17 +144,17 @@ void VideoPanel::poll()
     //执行轮询处理
 }
 
-void VideoPanel::play_video_all()
+void VideoPanel::playAll()
 {
 
 }
 
-void VideoPanel::snapshot_video_one()
+void VideoPanel::snapOne()
 {
 
 }
 
-void VideoPanel::snapshot_video_all()
+void VideoPanel::snapAll()
 {
 
 }

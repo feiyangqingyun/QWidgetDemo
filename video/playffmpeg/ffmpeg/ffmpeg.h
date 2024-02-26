@@ -25,8 +25,6 @@ private:
     int frameFinish;                //一帧完成
     int videoWidth;                 //视频宽度
     int videoHeight;                //视频高度
-    int oldWidth;                   //上一次视频宽度
-    int oldHeight;                  //上一次视频高度
     int videoStreamIndex;           //视频流索引
     int audioStreamIndex;           //音频流索引
 
@@ -34,17 +32,17 @@ private:
 
     uint8_t *buffer;                //存储解码后图片buffer
     AVPacket *avPacket;             //包对象
-    AVFrame *avFrame;               //帧对象
-    AVFrame *avFrame2;              //帧对象
-    AVFrame *avFrame3;              //帧对象
-    AVFormatContext *avFormatContext;//格式对象
-    AVCodecContext *videoCodec;     //视频解码器
-    AVCodecContext *audioCodec;     //音频解码器
+    AVFrame *yuvFrame;              //原始视频帧
+    AVFrame *rgbFrame;              //转图片视频帧
+
+    AVFormatContext *formatCtx;     //格式上下文
+    AVCodecContext *videoCodecCtx;  //视频解码器上下文
+    AVCodecContext *audioCodecCtx;  //音频解码器上下文
     SwsContext *swsContext;         //处理图片数据对象
 
     AVDictionary *options;          //参数对象
-    AVCodec *videoDecoder;          //视频解码
-    AVCodec *audioDecoder;          //音频解码
+    AVCodec *videoCodec;            //视频解码器
+    AVCodec *audioCodec;            //音频解码器
 
 signals:
     //收到图片信号

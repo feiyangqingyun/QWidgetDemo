@@ -34,8 +34,8 @@ protected:
 
 private:
     bool videoMax;              //是否最大化
-    int videoCount;             //视频通道个数
-    QString videoType;          //当前画面类型
+    int videoCount;             //最大通道数
+    QString layoutType;         //当前画面类型
     QMenu *videoMenu;           //右键菜单
     QAction *actionFull;        //全屏动作
     QAction *actionPoll;        //轮询动作
@@ -56,9 +56,9 @@ private slots:
     void poll();
 
 private slots:
-    void play_video_all();
-    void snapshot_video_one();
-    void snapshot_video_all();
+    void playAll();
+    void snapOne();
+    void snapAll();
 
 Q_SIGNALS:
     //全屏切换信号

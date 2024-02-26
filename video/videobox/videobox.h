@@ -35,15 +35,15 @@ public:
     explicit VideoBox(QObject *parent = 0);
 
 private:
+    //最大通道数量
+    int maxCount;
+    //当前布局类型
+    QString layoutType;
+
     //表格布局存放通道
     QGridLayout *gridLayout;
     //视频控件集合
     QWidgetList widgets;
-
-    //通道数量
-    int videoCount;
-    //当前画面类型
-    QString videoType;
 
     //主菜单子菜单文字标识
     QString menuFlag;
@@ -58,20 +58,20 @@ private:
 
 private:
     //常规及异形通道布局
-    void change_video_normal(int index, int row, int column);
-    void change_video_custom(int index, int type);
+    void change_layout_normal(int index, int row, int column);
+    void change_layout_custom(int index, int type);
 
     //设置可见
-    void change_video_visible(int start, int end);
+    void change_layout_visible(int start, int end);
 
     //异形布局(l表示右侧底部环绕布局/o表示上下左右环绕布局)
-    void change_video_l(const QList<int> &indexs);
-    void change_video_o(const QList<int> &indexs);
+    void change_layout_l(const QList<int> &indexs);
+    void change_layout_o(const QList<int> &indexs);
 
 public:
-    //获取和设置当前画面类型
-    QString getVideoType() const;
-    void setVideoType(const QString &videoType);
+    //获取和设置当前布局类型
+    QString getLayoutType() const;
+    void setLayoutType(const QString &layoutType);
 
     //获取和设置视频控件集合
     QWidgetList getWidgets() const;
@@ -94,36 +94,38 @@ public:
 
 public Q_SLOTS:
     //显示和隐藏所有通道
-    void show_video_all();
-    void hide_video_all();
+    void show_all();
+    void hide_all();
 
     //菜单切换布局槽函数
-    void show_video();
-    void show_video(int type, int index);
+    void change_layout();
+    void change_layout(int type, int index);
 
     //自定义布局通道切换函数
-    void change_video_y_1_2(int index);
-    void change_video_y_1_3(int index);
-    void change_video_y_1_9(int index);
-    void change_video_y_1_10(int index);
-    void change_video_y_1_12(int index);
-    void change_video_y_1_16(int index);
+    void change_layout_y_1_2(int index);
+    void change_layout_y_1_3(int index);
+    void change_layout_y_1_5(int index);
+    void change_layout_y_1_8(int index);
+    void change_layout_y_1_9(int index);
+    void change_layout_y_1_10(int index);
+    void change_layout_y_1_12(int index);
+    void change_layout_y_1_16(int index);
 
     //常规布局通道切换函数
-    void change_video_1(int index);
-    void change_video_4(int index);
-    void change_video_6(int index);
-    void change_video_8(int index);
-    void change_video_9(int index);
-    void change_video_13(int index);
-    void change_video_16(int index);
-    void change_video_25(int index);
-    void change_video_36(int index);
-    void change_video_64(int index);
+    void change_layout_1(int index);
+    void change_layout_4(int index);
+    void change_layout_6(int index);
+    void change_layout_8(int index);
+    void change_layout_9(int index);
+    void change_layout_13(int index);
+    void change_layout_16(int index);
+    void change_layout_25(int index);
+    void change_layout_36(int index);
+    void change_layout_64(int index);
 
 Q_SIGNALS:
     //画面布局切换信号
-    void changeVideo(int type, const QString &videoType, bool videoMax);
+    void changeLayout(int type, const QString &layoutType, bool max);
 };
 
 #endif // VIDEOBOX_H
