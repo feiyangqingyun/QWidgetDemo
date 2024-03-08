@@ -1,7 +1,7 @@
 ﻿#include "frmmain.h"
 #include "ui_frmmain.h"
 #include "iconhelper.h"
-#include "quihelper.h"
+#include "qthelper.h"
 
 frmMain::frmMain(QWidget *parent) : QDialog(parent), ui(new Ui::frmMain)
 {
@@ -29,7 +29,7 @@ bool frmMain::eventFilter(QObject *watched, QEvent *event)
 void frmMain::initForm()
 {
     //设置无边框
-    QUIHelper::setFramelessForm(this);
+    QtHelper::setFramelessForm(this);
     //设置图标
     IconHelper::setIcon(ui->labIco, 0xf099, 35);
     IconHelper::setIcon(ui->btnMenu_Min, 0xf068);
@@ -125,7 +125,7 @@ void frmMain::on_btnMenu_Max_clicked()
         this->setGeometry(location);
     } else {
         location = this->geometry();
-        this->setGeometry(QUIHelper::getScreenRect());
+        this->setGeometry(QtHelper::getScreenRect());
     }
 
     this->setProperty("canMove", max);

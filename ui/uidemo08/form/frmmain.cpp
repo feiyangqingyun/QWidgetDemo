@@ -3,7 +3,7 @@
 #include "frmmain.h"
 #include "ui_frmmain.h"
 #include "iconhelper.h"
-#include "quihelper.h"
+#include "qthelper.h"
 
 frmMain::frmMain(QWidget *parent) : QWidget(parent), ui(new Ui::frmMain)
 {
@@ -55,7 +55,7 @@ void frmMain::getQssColor(const QString &qss, QString &textColor, QString &panel
 void frmMain::initForm()
 {
     //设置无边框
-    QUIHelper::setFramelessForm(this);
+    QtHelper::setFramelessForm(this);
     //设置图标
     IconHelper::setIcon(ui->labIco, 0xf073, 30);
     IconHelper::setIcon(ui->btnMenu_Min, 0xf068);
@@ -99,14 +99,11 @@ void frmMain::initForm()
 void frmMain::initStyle()
 {
     //加载样式表
-    QString qss;
-    QFile file(":/qss/blacksoft.css");
-    if (file.open(QFile::ReadOnly)) {
-        qss = QLatin1String(file.readAll());
+    QString qss = QtHelper::getStyle(":/qss/blacksoft.css");
+    if (!qss.isEmpty()) {
         QString paletteColor = qss.mid(20, 7);
-        qApp->setPalette(QPalette(paletteColor));
+        qApp->setPalette(QPalette(QColor(paletteColor)));
         qApp->setStyleSheet(qss);
-        file.close();
     }
 
     //先从样式表中取出对应的颜色
@@ -149,8 +146,7 @@ void frmMain::initLeftMain()
     iconsMain << 0xf030 << 0xf03e << 0xf247;
     btnsMain << ui->tbtnMain1 << ui->tbtnMain2 << ui->tbtnMain3;
 
-    int count = btnsMain.count();
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < btnsMain.count(); ++i) {
         QToolButton *btn = (QToolButton *)btnsMain.at(i);
         btn->setCheckable(true);
         btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -174,8 +170,7 @@ void frmMain::initLeftConfig()
     iconsConfig << 0xf031 << 0xf036 << 0xf249 << 0xf055 << 0xf05a << 0xf249;
     btnsConfig << ui->tbtnConfig1 << ui->tbtnConfig2 << ui->tbtnConfig3 << ui->tbtnConfig4 << ui->tbtnConfig5 << ui->tbtnConfig6;
 
-    int count = btnsConfig.count();
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < btnsConfig.count(); ++i) {
         QToolButton *btn = (QToolButton *)btnsConfig.at(i);
         btn->setCheckable(true);
         btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
@@ -198,9 +193,7 @@ void frmMain::leftMainClick()
 {
     QAbstractButton *b = (QAbstractButton *)sender();
     QString name = b->text();
-
-    int count = btnsMain.count();
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < btnsMain.count(); ++i) {
         QAbstractButton *btn = btnsMain.at(i);
         btn->setChecked(btn == b);
     }
@@ -212,9 +205,7 @@ void frmMain::leftConfigClick()
 {
     QToolButton *b = (QToolButton *)sender();
     QString name = b->text();
-
-    int count = btnsConfig.count();
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < btnsConfig.count(); ++i) {
         QAbstractButton *btn = btnsConfig.at(i);
         btn->setChecked(btn == b);
     }
@@ -236,7 +227,7 @@ void frmMain::on_btnMenu_Max_clicked()
         this->setGeometry(location);
     } else {
         location = this->geometry();
-        this->setGeometry(QUIHelper::getScreenRect());
+        this->setGeometry(QtHelper::getScreenRect());
     }
 
     this->setProperty("canMove", max);

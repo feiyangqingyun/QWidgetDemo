@@ -24,7 +24,7 @@ AppInit::AppInit(QObject *parent) : QObject(parent)
 }
 
 bool AppInit::eventFilter(QObject *watched, QEvent *event)
-{ 
+{
     QWidget *w = (QWidget *)watched;
     if (!w->property("canMove").toBool()) {
         return QObject::eventFilter(watched, event);
@@ -33,17 +33,27 @@ bool AppInit::eventFilter(QObject *watched, QEvent *event)
     static QPoint mousePoint;
     static bool mousePressed = false;
 
-    QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-    if (mouseEvent->type() == QEvent::MouseButtonPress) {
+    int type = event->type();
+    QPoint p;
+    QMouseEvent *mouseEvent = (QMouseEvent *)(event);    
+    if (mouseEvent) {
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
+        p = mouseEvent->globalPos();
+#else
+        p = mouseEvent->globalPosition().toPoint();
+#endif
+    }
+
+    if (type == QEvent::MouseButtonPress) {
         if (mouseEvent->button() == Qt::LeftButton) {
             mousePressed = true;
-            mousePoint = mouseEvent->globalPos() - w->pos();
+            mousePoint = p - w->pos();
         }
-    } else if (mouseEvent->type() == QEvent::MouseButtonRelease) {
+    } else if (type == QEvent::MouseButtonRelease) {
         mousePressed = false;
-    } else if (mouseEvent->type() == QEvent::MouseMove) {
+    } else if (type == QEvent::MouseMove) {
         if (mousePressed) {
-            w->move(mouseEvent->globalPos() - mousePoint);
+            w->move(p - mousePoint);
             return true;
         }
     }

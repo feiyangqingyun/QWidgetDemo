@@ -13,6 +13,4 @@ RESOURCES   += $$PWD/../core_qss/qss.qrc
 INCLUDEPATH += $$PWD
 INCLUDEPATH += $$PWD/form
 include ($$PWD/form/form.pri)
-
-INCLUDEPATH += $$PWD/../core_base
-include ($$PWD/../core_base/core_base.pri)
+include ($$PWD/../core_helper/core_helper.pri)

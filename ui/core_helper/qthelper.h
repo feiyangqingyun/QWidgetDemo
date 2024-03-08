@@ -1,15 +1,17 @@
-﻿#ifndef QUIHELPER2_H
-#define QUIHELPER2_H
+﻿#ifndef QTHELPER_H
+#define QTHELPER_H
 
 #include "head.h"
 
-class QUIHelper
+class QtHelper
 {
 public:
-    //获取当前鼠标所在屏幕索引/区域尺寸/缩放系数
+    //获取所有屏幕区域/当前鼠标所在屏幕索引/区域尺寸/缩放系数
+    static QList<QRect> getScreenRects(bool available = true);
     static int getScreenIndex();
     static QRect getScreenRect(bool available = true);
-    static qreal getScreenRatio(bool devicePixel = false);
+    static qreal getScreenRatio(int index = -1, bool devicePixel = false);
+
     //矫正当前鼠标所在屏幕居中尺寸
     static QRect checkCenterRect(QRect &rect, bool available = true);
 
@@ -24,12 +26,20 @@ public:
     static void setFormInCenter(QWidget *form);
     static void showForm(QWidget *form);
 
-    //程序文件名称+当前所在路径
+    //程序文件名称和当前所在路径
     static QString appName();
     static QString appPath();
 
+    //程序最前面获取应用程序路径和名称
+    static void getCurrentInfo(char *argv[], QString &path, QString &name);
+    //程序最前面读取配置文件节点的值
+    static QString getIniValue(const QString &fileName, const QString &key);
+    static QString getIniValue(char *argv[], const QString &key, const QString &dir = QString(), const QString &file = QString());
+
     //获取本地网卡IP集合
     static QStringList getLocalIPs();
+    //添加网卡集合并根据默认值设置当前项
+    static void initLocalIPs(QComboBox *cbox, const QString &defaultIP, bool local127 = true);
 
     //获取内置颜色集合
     static QList<QColor> colors;
@@ -53,8 +63,10 @@ public:
     static QString getUuid();
     //校验目录
     static void checkPath(const QString &dirName);
-    //延时
-    static void sleep(int msec);
+    //通用延时函数(支持Qt4 Qt5 Qt6)
+    static void sleep(int msec, bool exec = true);
+    //检查程序是否已经运行
+    static void checkRun();
 
     //设置Qt自带样式
     static void setStyle();
@@ -74,9 +86,24 @@ public:
     //一次性设置所有包括编码样式字体等
     static void initAll(bool utf8 = true, bool style = true, int fontSize = 13);
     //初始化main函数最前面执行的一段代码
-    static void initMain(bool desktopSettingsAware = true, bool useOpenGLES = false);
+    static void initMain(bool desktopSettingsAware = false, bool use96Dpi = true, bool logCritical = true);
+    //初始化opengl类型(1=AA_UseDesktopOpenGL 2=AA_UseOpenGLES 3=AA_UseSoftwareOpenGL)
+    static void initOpenGL(quint8 type = 0, bool checkCardEnable = false, bool checkVirtualSystem = false);
+
+    //读取qss文件获取样式表内容
+    static QString getStyle(const QString &qssFile);
+    //设置qss文件到全局样式
+    static void setStyle(const QString &qssFile);
+
+    //执行命令行返回执行结果
+    static QString doCmd(const QString &program, const QStringList &arguments, int timeout = 1000);
+    //获取显卡是否被禁用
+    static bool isVideoCardEnable();
+    //获取是否在虚拟机环境
+    static bool isVirtualSystem();
 
     //插入消息
+    static bool replaceCRLF;
     static QVector<int> msgTypes;
     static QVector<QString> msgKeys;
     static QVector<QColor> msgColors;
@@ -147,6 +174,15 @@ public:
     static QString getTimeString(QElapsedTimer timer);
     //文件大小转 KB MB GB TB
     static QString getSizeString(quint64 size);
+
+    //设置系统时间
+    static void setSystemDateTime(const QString &year, const QString &month, const QString &day,
+                                  const QString &hour, const QString &min, const QString &sec);
+    //设置开机自启动
+    static void runWithSystem(bool autoRun = true);
+    static void runWithSystem(const QString &fileName, const QString &filePath, bool autoRun = true);
+    //启动运行程序(已经在运行则不启动)
+    static void runBin(const QString &path, const QString &name);
 };
 
-#endif // QUIHELPER2_H
+#endif // QTHELPER_H

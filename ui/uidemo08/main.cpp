@@ -1,18 +1,18 @@
 ﻿#include "frmmain.h"
 #include "appinit.h"
-#include "quihelper.h"
+#include "qthelper.h"
 
 int main(int argc, char *argv[])
 {
-    QUIHelper::initMain();
+    QtHelper::initMain();
     QApplication a(argc, argv);
     AppInit::Instance()->start();
 
-    QUIHelper::setFont();
-    QUIHelper::setCode();
+    QtHelper::setFont();
+    QtHelper::setCode();
 
     frmMain w;
-    QUIHelper::setFormInCenter(&w);
+    QtHelper::setFormInCenter(&w);
     w.show();
 
     return a.exec();
