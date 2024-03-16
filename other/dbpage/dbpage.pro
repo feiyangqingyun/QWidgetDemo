@@ -11,6 +11,7 @@ SOURCES     += main.cpp
 SOURCES     += dbpage.cpp
 SOURCES     += frmdbpage.cpp
 
+HEADERS     += head.h
 HEADERS     += dbpage.h
 HEADERS     += frmdbpage.h
 FORMS       += frmdbpage.ui
