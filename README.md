@@ -4,7 +4,7 @@
 2. **视频主页：[https://space.bilibili.com/687803542](https://space.bilibili.com/687803542)**
 3. **网店地址：[https://shop244026315.taobao.com](https://shop244026315.taobao.com)**
 4. **联系方式：QQ（517216493）微信（feiyangqingyun）推荐加微信。**
-5. **公 众 号：Qt实战（本人）/Qt教程（民间）/Qt软件（官方）**
+5. **公 众 号：Qt实战/Qt入门和进阶/Qt教程/Qt软件**
 6. **版本支持：所有项目已经全部支持Qt4/5/6所有版本以及后续版本。**
 7. 监控作品体验：[https://pan.baidu.com/s/1d7TH_GEYl5nOecuNlWJJ7g](https://pan.baidu.com/s/1d7TH_GEYl5nOecuNlWJJ7g) 提取码：01jf
 8. 其他作品体验：[https://pan.baidu.com/s/1ZxG-oyUKe286LPMPxOrO2A](https://pan.baidu.com/s/1ZxG-oyUKe286LPMPxOrO2A) 提取码：o05q
