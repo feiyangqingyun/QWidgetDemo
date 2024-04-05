@@ -150,30 +150,33 @@ bool FramelessWidget2::eventFilter(QObject *watched, QEvent *event)
                 }
             }
         } else if (type == QEvent::MouseButtonPress) {
-            //记住鼠标按下的坐标+窗体区域
-            QMouseEvent *mouseEvent = (QMouseEvent *)event;
-            mousePoint = mouseEvent->pos();
-            mouseRect = widget->geometry();
+            //必须是鼠标左键
+            if (qApp->mouseButtons() == Qt::LeftButton) {
+                //记住鼠标按下的坐标和窗体区域
+                QMouseEvent *mouseEvent = (QMouseEvent *)event;
+                mousePoint = mouseEvent->pos();
+                mouseRect = widget->geometry();
 
-            //判断按下的手柄的区域位置
-            if (pressedRect.at(0).contains(mousePoint)) {
-                pressedArea[0] = true;
-            } else if (pressedRect.at(1).contains(mousePoint)) {
-                pressedArea[1] = true;
-            } else if (pressedRect.at(2).contains(mousePoint)) {
-                pressedArea[2] = true;
-            } else if (pressedRect.at(3).contains(mousePoint)) {
-                pressedArea[3] = true;
-            } else if (pressedRect.at(4).contains(mousePoint)) {
-                pressedArea[4] = true;
-            } else if (pressedRect.at(5).contains(mousePoint)) {
-                pressedArea[5] = true;
-            } else if (pressedRect.at(6).contains(mousePoint)) {
-                pressedArea[6] = true;
-            } else if (pressedRect.at(7).contains(mousePoint)) {
-                pressedArea[7] = true;
-            } else {
-                mousePressed = true;
+                //判断按下的手柄的区域位置
+                if (pressedRect.at(0).contains(mousePoint)) {
+                    pressedArea[0] = true;
+                } else if (pressedRect.at(1).contains(mousePoint)) {
+                    pressedArea[1] = true;
+                } else if (pressedRect.at(2).contains(mousePoint)) {
+                    pressedArea[2] = true;
+                } else if (pressedRect.at(3).contains(mousePoint)) {
+                    pressedArea[3] = true;
+                } else if (pressedRect.at(4).contains(mousePoint)) {
+                    pressedArea[4] = true;
+                } else if (pressedRect.at(5).contains(mousePoint)) {
+                    pressedArea[5] = true;
+                } else if (pressedRect.at(6).contains(mousePoint)) {
+                    pressedArea[6] = true;
+                } else if (pressedRect.at(7).contains(mousePoint)) {
+                    pressedArea[7] = true;
+                } else {
+                    mousePressed = true;
+                }
             }
         } else if (type == QEvent::MouseMove) {
             //改成用HoverMove识别
