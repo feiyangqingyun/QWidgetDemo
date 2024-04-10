@@ -1,4 +1,5 @@
 ﻿#include "framelesswidget2.h"
+#include "qapplication.h"
 #include "qevent.h"
 #include "qdebug.h"
 
@@ -7,7 +8,7 @@ FramelessWidget2::FramelessWidget2(QObject *parent) : QObject(parent)
     padding = 8;
     moveEnable = true;
     resizeEnable = true;
-    widget = 0;
+    widget = NULL;
 
     mousePressed = false;
     mousePoint = QPoint(0, 0);
