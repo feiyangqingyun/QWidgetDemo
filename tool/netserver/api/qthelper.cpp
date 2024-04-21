@@ -4,21 +4,41 @@
 
 #define TIMEMS qPrintable(QTime::currentTime().toString("HH:mm:ss zzz"))
 
-QList<QRect> QtHelper::getScreenRects(bool available)
+bool QtHelper::useRatio = true;
+
+//full指宽屏/就是将所有屏幕拼接在一起
+QList<QRect> QtHelper::getScreenRects(bool available, bool full)
 {
+    QRect rect;
     QList<QRect> rects;
 #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
-    int screenCount = qApp->screens().count();
     QList<QScreen *> screens = qApp->screens();
+    int screenCount = screens.count();
     for (int i = 0; i < screenCount; ++i) {
         QScreen *screen = screens.at(i);
-        rects << (available ? screen->availableGeometry() : screen->geometry());
+        if (full) {
+            rect = (available ? screen->availableVirtualGeometry() : screen->virtualGeometry());
+        } else {
+            rect = (available ? screen->availableGeometry() : screen->geometry());
+        }
+
+        //需要根据缩放比来重新调整宽高
+        qreal ratio = (QtHelper::useRatio ? screen->devicePixelRatio() : 1);
+        rect.setWidth(rect.width() * ratio);
+        rect.setHeight(rect.height() * ratio);
+        rects << rect;
     }
 #else
-    int screenCount = qApp->desktop()->screenCount();
     QDesktopWidget *desk = qApp->desktop();
+    int screenCount = desk->screenCount();
     for (int i = 0; i < screenCount; ++i) {
-        rects << (available ? desk->availableGeometry(i) : desk->screenGeometry(i));
+        if (full) {
+            rect = (available ? desk->geometry() : desk->geometry());
+        } else {
+            rect = (available ? desk->availableGeometry(i) : desk->screenGeometry(i));
+        }
+
+        rects << rect;
     }
 #endif
     return rects;
@@ -42,22 +62,23 @@ int QtHelper::getScreenIndex()
     return screenIndex;
 }
 
-QRect QtHelper::getScreenRect(bool available)
+QRect QtHelper::getScreenRect(bool available, bool full)
 {
     int screenIndex = getScreenIndex();
-    QList<QRect> rects = getScreenRects(available);
+    QList<QRect> rects = getScreenRects(available, full);
     return rects.at(screenIndex);
 }
 
-qreal QtHelper::getScreenRatio(bool devicePixel)
+qreal QtHelper::getScreenRatio(int index, bool devicePixel)
 {
     qreal ratio = 1.0;
-    int screenIndex = getScreenIndex();
-#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+    //索引-1则自动获取鼠标所在当前屏幕
+    int screenIndex = (index == -1 ? getScreenIndex() : index);
+#if (QT_VERSION >= QT_VERSION_CHECK(5,5,0))
     QScreen *screen = qApp->screens().at(screenIndex);
     if (devicePixel) {
         //需要开启 AA_EnableHighDpiScaling 属性才能正常获取
-        ratio = screen->devicePixelRatio() * 100;
+        ratio = screen->devicePixelRatio() * 96;
     } else {
         ratio = screen->logicalDotsPerInch();
     }
@@ -188,10 +209,15 @@ QString QtHelper::getIniValue(const QString &fileName, const QString &key)
     return value;
 }
 
-QString QtHelper::getIniValue(char *argv[], const QString &key, const QString &dir)
+QString QtHelper::getIniValue(char *argv[], const QString &key, const QString &dir, const QString &file)
 {
     QString path, name;
     QtHelper::getCurrentInfo(argv, path, name);
+    //指定了名称则取指定的名称/防止程序重命名
+    if (!file.isEmpty()) {
+        name = file;
+    }
+
     QString fileName = QString("%1/%2%3.ini").arg(path).arg(dir).arg(name);
     return getIniValue(fileName, key);
 }
@@ -234,6 +260,33 @@ QStringList QtHelper::getLocalIPs()
     }
 
     return ips;
+}
+
+void QtHelper::initLocalIPs(QComboBox *cbox, const QString &defaultIP, bool local127)
+{
+    QStringList ips;
+    if (local127) {
+        ips << "127.0.0.1";
+    }
+
+    //添加本地网卡地址集合
+    ips << QtHelper::getLocalIPs();
+
+    //不在网卡地址列表中则取第一个
+    QString ip = defaultIP;
+    if (ips.count() > 0) {
+        ip = ips.contains(ip) ? ip : ips.first();
+    }
+
+    //设置当前下拉框索引
+    int index = ips.indexOf(ip);
+    cbox->addItems(ips);
+    cbox->setCurrentIndex(index < 0 ? 0 : index);
+
+    //如果有文本框还要设置文本框的值
+    if (cbox->lineEdit()) {
+        cbox->lineEdit()->setText(ip);
+    }
 }
 
 QList<QColor> QtHelper::colors = QList<QColor>();
@@ -416,7 +469,8 @@ void QtHelper::checkRun()
 void QtHelper::setStyle()
 {
     //打印下所有内置风格的名字
-    qDebug() << TIMEMS << "QStyleFactory::keys" << QStyleFactory::keys();
+    //qDebug() << TIMEMS << "QStyleFactory::keys" << QStyleFactory::keys();
+
     //设置内置风格
 #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
     qApp->setStyle("Fusion");
@@ -477,22 +531,16 @@ void QtHelper::setFont(int fontSize)
 
 void QtHelper::setCode(bool utf8)
 {
-#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
-    //如果想要控制台打印信息中文正常就注释掉这个设置
-    if (utf8) {
-        QTextCodec *codec = QTextCodec::codecForName("utf-8");
-        QTextCodec::setCodecForLocale(codec);
-    }
-#else
-#if _MSC_VER
-    QTextCodec *codec = QTextCodec::codecForName("gbk");
-#else
     QTextCodec *codec = QTextCodec::codecForName("utf-8");
-#endif
-    QTextCodec::setCodecForLocale(codec);
+#if (QT_VERSION < QT_VERSION_CHECK(5,0,0))
     QTextCodec::setCodecForCStrings(codec);
     QTextCodec::setCodecForTr(codec);
 #endif
+
+    //如果想要控制台打印信息中文正常就注释掉这个设置/setCodecForLocale会影响toLocal8Bit函数
+    if (utf8) {
+        QTextCodec::setCodecForLocale(codec);
+    }
 }
 
 void QtHelper::setTranslator(const QString &qmFile)
@@ -585,11 +633,16 @@ void QtHelper::initAll(bool utf8, bool style, int fontSize)
 #endif
 }
 
+#ifdef webengine
+#include "qquickwindow.h"
+#endif
 void QtHelper::initMain(bool desktopSettingsAware, bool use96Dpi, bool logCritical)
 {
-#ifdef Q_OS_WIN
-    //Qt6.5开始默认是ffmpeg后端但是不成熟需要换成系统的
-    qputenv("QT_MEDIA_BACKEND", "windows");
+#ifdef Q_OS_LINUX
+#ifndef Q_OS_ANDROID
+    //Qt6开始默认用wayland/由于没有坐标系统导致无边框窗体不可用
+    //qputenv("QT_QPA_PLATFORM", "xcb");
+#endif
 #endif
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
@@ -597,15 +650,17 @@ void QtHelper::initMain(bool desktopSettingsAware, bool use96Dpi, bool logCritic
     QApplication::setDesktopSettingsAware(desktopSettingsAware);
 #endif
 
-    bool highDpi = !use96Dpi;
+//安卓必须启用高分屏
 #ifdef Q_OS_ANDROID
-    highDpi = true;
+    use96Dpi = false;
 #endif
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5,6,0))
+    QtHelper::useRatio = use96Dpi;
+#if (QT_VERSION >= QT_VERSION_CHECK(5,6,0) && QT_VERSION < QT_VERSION_CHECK(6,0,0))
     //开启高分屏缩放支持
-    if (highDpi) {
+    if (!use96Dpi) {
         QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     }
 #endif
 
@@ -622,7 +677,7 @@ void QtHelper::initMain(bool desktopSettingsAware, bool use96Dpi, bool logCritic
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5,14,0))
     //高分屏缩放策略
-    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
+    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
@@ -635,6 +690,13 @@ void QtHelper::initMain(bool desktopSettingsAware, bool use96Dpi, bool logCritic
 #if (QT_VERSION >= QT_VERSION_CHECK(5,4,0))
     //设置opengl共享上下文
     QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+#endif
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#ifdef webengine
+    //修复openglwidget和webengine共存出现黑屏的bug
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
+#endif
 #endif
 }
 
@@ -662,6 +724,39 @@ void QtHelper::initOpenGL(quint8 type, bool checkCardEnable, bool checkVirtualSy
         QApplication::setAttribute(Qt::AA_UseOpenGLES);
     }
 #endif
+}
+
+QString QtHelper::getStyle(const QString &qssFile)
+{
+    QString qss;
+    QFile file(qssFile);
+    if (file.open(QFile::ReadOnly)) {
+#if 0
+        qss = QLatin1String(file.readAll());
+#else
+        //用下面这种方式读取可以不用区分文件编码
+        QStringList list;
+        QTextStream stream(&file);
+        while (!stream.atEnd()) {
+            QString line;
+            stream >> line;
+            list << line;
+        }
+        qss = list.join("\n");
+#endif
+    }
+
+    return qss.trimmed();
+}
+
+void QtHelper::setStyle(const QString &qssFile)
+{
+    QString qss = QtHelper::getStyle(qssFile);
+    if (!qss.isEmpty()) {
+        QString paletteColor = qss.mid(20, 7);
+        qApp->setPalette(QPalette(QColor(paletteColor)));
+        qApp->setStyleSheet(qss);
+    }
 }
 
 QString QtHelper::doCmd(const QString &program, const QStringList &arguments, int timeout)
@@ -728,6 +823,7 @@ bool QtHelper::isVirtualSystem()
     return virtualSystem;
 }
 
+bool QtHelper::replaceCRLF = true;
 QVector<int> QtHelper::msgTypes = QVector<int>() << 0 << 1 << 2 << 3 << 4;
 QVector<QString> QtHelper::msgKeys = QVector<QString>() << QString::fromUtf8("发送") << QString::fromUtf8("接收") << QString::fromUtf8("解析") << QString::fromUtf8("错误") << QString::fromUtf8("提示");
 QVector<QColor> QtHelper::msgColors = QVector<QColor>() << QColor("#3BA372") << QColor("#EE6668") << QColor("#9861B4") << QColor("#FA8359") << QColor("#22A3A9");
@@ -758,8 +854,11 @@ QString QtHelper::appendMsg(QTextEdit *textEdit, int type, const QString &data, 
 
     //过滤回车换行符
     QString strData = data;
-    strData.replace("\r", "");
-    strData.replace("\n", "");
+    if (replaceCRLF) {
+        strData.replace("\r", "");
+        strData.replace("\n", "");
+    }
+
     strData = QString("时间[%1] %2: %3").arg(TIMEMS).arg(strType).arg(strData);
     textEdit->append(strData);
     currentCount++;
@@ -809,7 +908,7 @@ void QtHelper::showMessageBoxInfo(const QString &text, int closeSec, bool exec)
 {
     QMessageBox box(QMessageBox::Information, "提示", text);
     box.setStandardButtons(QMessageBox::Yes);
-    box.setButtonText(QMessageBox::Yes, QString("确 定"));
+    box.button(QMessageBox::Yes)->setText("确 定");
     box.exec();
     //QMessageBox::information(0, "提示", info, QMessageBox::Yes);
 }
@@ -818,7 +917,7 @@ void QtHelper::showMessageBoxError(const QString &text, int closeSec, bool exec)
 {
     QMessageBox box(QMessageBox::Critical, "错误", text);
     box.setStandardButtons(QMessageBox::Yes);
-    box.setButtonText(QMessageBox::Yes, QString("确 定"));
+    box.button(QMessageBox::Yes)->setText("确 定");
     box.exec();
     //QMessageBox::critical(0, "错误", info, QMessageBox::Yes);
 }
@@ -827,8 +926,8 @@ int QtHelper::showMessageBoxQuestion(const QString &text)
 {
     QMessageBox box(QMessageBox::Question, "询问", text);
     box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    box.setButtonText(QMessageBox::Yes, QString("确 定"));
-    box.setButtonText(QMessageBox::No, QString("取 消"));
+    box.button(QMessageBox::Yes)->setText("确 定");
+    box.button(QMessageBox::No)->setText("取 消");
     return box.exec();
     //return QMessageBox::question(0, "询问", info, QMessageBox::Yes | QMessageBox::No);
 }
@@ -1165,16 +1264,16 @@ QString QtHelper::getSizeString(quint64 size)
 void QtHelper::setSystemDateTime(const QString &year, const QString &month, const QString &day, const QString &hour, const QString &min, const QString &sec)
 {
 #ifdef Q_OS_WIN
-    QProcess p(0);
+    QProcess p;
     //先设置日期
-    p.start("cmd");
+    p.start("cmd", QStringList());
     p.waitForStarted();
     p.write(QString("date %1-%2-%3\n").arg(year).arg(month).arg(day).toLatin1());
     p.closeWriteChannel();
     p.waitForFinished(1000);
     p.close();
     //再设置时间
-    p.start("cmd");
+    p.start("cmd", QStringList());
     p.waitForStarted();
     p.write(QString("time %1:%2:%3.00\n").arg(hour).arg(min).arg(sec).toLatin1());
     p.closeWriteChannel();
@@ -1203,11 +1302,11 @@ void QtHelper::runWithSystem(const QString &fileName, const QString &filePath, b
 #endif
 }
 
-void QtHelper::runBin(const QString &path, const QString &name)
+void QtHelper::start(const QString &path, const QString &name, bool bin)
 {
 #ifdef Q_OS_WIN
     QString cmd1 = "tasklist";
-    QString cmd2 = QString("%1/%2.exe").arg(path).arg(name);
+    QString cmd2 = QString("%1/%2%3").arg(path).arg(name).arg(bin ? ".exe" : "");
 #else
     QString cmd1 = "ps -aux";
     QString cmd2 = QString("%1/%2").arg(path).arg(name);
@@ -1215,7 +1314,7 @@ void QtHelper::runBin(const QString &path, const QString &name)
 
 #ifndef Q_OS_WASM
     QProcess p;
-    p.start(cmd1);
+    p.start(cmd1, QStringList());
     if (p.waitForFinished()) {
         QString result = p.readAll();
         if (result.contains(name)) {
@@ -1228,7 +1327,11 @@ void QtHelper::runBin(const QString &path, const QString &name)
         cmd2 = "\"" + cmd2 + "\"";
     }
 
-    //QProcess::execute(cmd2);
-    QProcess::startDetached(cmd2);
+    //切换到当前目录
+    QDir::setCurrent(path);
+    //QProcess::execute(cmd2, QStringList());
+    QProcess::startDetached(cmd2, QStringList());
+    //执行完成后切换回默认目录
+    QDir::setCurrent(QtHelper::appPath());
 #endif
 }

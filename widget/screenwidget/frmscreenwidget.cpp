@@ -10,7 +10,7 @@ frmScreenWidget::frmScreenWidget(QWidget *parent) : QWidget(parent), ui(new Ui::
 frmScreenWidget::~frmScreenWidget()
 {
     delete ui;
-    exit(0); 
+    exit(0);
 }
 
 void frmScreenWidget::on_pushButton_clicked()

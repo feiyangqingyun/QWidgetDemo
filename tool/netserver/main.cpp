@@ -3,13 +3,7 @@
 
 int main(int argc, char *argv[])
 {
-#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
-    QApplication::setAttribute(Qt::AA_Use96Dpi);
-#endif
-#if (QT_VERSION >= QT_VERSION_CHECK(5,14,0))
-    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
-#endif
-
+    QtHelper::initMain();
     QApplication a(argc, argv);
     a.setWindowIcon(QIcon(":/main.ico"));
 
@@ -21,7 +15,7 @@ int main(int argc, char *argv[])
     AppConfig::readConfig();
 
     frmMain w;
-    w.setWindowTitle("网络中转服务器 V2023 (QQ: 517216493 WX: feiyangqingyun)");
+    w.setWindowTitle("网络中转服务器 V2024 (QQ: 517216493 WX: feiyangqingyun)");
     w.resize(900, 650);
     QtHelper::setFormInCenter(&w);
     w.show();

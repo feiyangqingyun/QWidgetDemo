@@ -7,9 +7,10 @@ class QtHelper
 {
 public:
     //获取所有屏幕区域/当前鼠标所在屏幕索引/区域尺寸/缩放系数
-    static QList<QRect> getScreenRects(bool available = true);
+    static bool useRatio;
+    static QList<QRect> getScreenRects(bool available = true, bool full = false);
     static int getScreenIndex();
-    static QRect getScreenRect(bool available = true);
+    static QRect getScreenRect(bool available = true, bool full = false);
     static qreal getScreenRatio(int index = -1, bool devicePixel = false);
 
     //矫正当前鼠标所在屏幕居中尺寸
@@ -86,7 +87,7 @@ public:
     //一次性设置所有包括编码样式字体等
     static void initAll(bool utf8 = true, bool style = true, int fontSize = 13);
     //初始化main函数最前面执行的一段代码
-    static void initMain(bool desktopSettingsAware = false, bool use96Dpi = true, bool logCritical = true);
+    static void initMain(bool desktopSettingsAware = false, bool use96Dpi = false, bool logCritical = true);
     //初始化opengl类型(1=AA_UseDesktopOpenGL 2=AA_UseOpenGLES 3=AA_UseSoftwareOpenGL)
     static void initOpenGL(quint8 type = 0, bool checkCardEnable = false, bool checkVirtualSystem = false);
 
@@ -181,8 +182,9 @@ public:
     //设置开机自启动
     static void runWithSystem(bool autoRun = true);
     static void runWithSystem(const QString &fileName, const QString &filePath, bool autoRun = true);
+
     //启动运行程序(已经在运行则不启动)
-    static void runBin(const QString &path, const QString &name);
+    static void start(const QString &path, const QString &name, bool bin = true);
 };
 
 #endif // QTHELPER_H

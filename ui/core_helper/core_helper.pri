@@ -19,9 +19,6 @@ DESTDIR = $$PWD/../bin
 
 #把所有警告都关掉眼不见为净
 CONFIG += warn_off
-#QMAKE_CXXFLAGS_WARN_ON -= -w34100
-#QMAKE_CXXFLAGS *= -Wno-unused-parameter
-
 #开启大资源支持
 CONFIG += resources_big
 #开启后会将打印信息用控制台输出
@@ -29,8 +26,7 @@ CONFIG += resources_big
 #开启后不会生成空的 debug release 目录
 #CONFIG -= debug_and_release
 
-#引入全志H3芯片依赖(不需要的用户可以删除)
-include ($$PWD/h3.pri)
+include ($$PWD/core_util.pri)
 #将当前目录加入到头文件路径
 INCLUDEPATH += $$PWD
 

@@ -7,10 +7,11 @@ class QtHelper
 {
 public:
     //获取所有屏幕区域/当前鼠标所在屏幕索引/区域尺寸/缩放系数
-    static QList<QRect> getScreenRects(bool available = true);
+    static bool useRatio;
+    static QList<QRect> getScreenRects(bool available = true, bool full = false);
     static int getScreenIndex();
-    static QRect getScreenRect(bool available = true);
-    static qreal getScreenRatio(bool devicePixel = false);
+    static QRect getScreenRect(bool available = true, bool full = false);
+    static qreal getScreenRatio(int index = -1, bool devicePixel = false);
 
     //矫正当前鼠标所在屏幕居中尺寸
     static QRect checkCenterRect(QRect &rect, bool available = true);
@@ -34,10 +35,12 @@ public:
     static void getCurrentInfo(char *argv[], QString &path, QString &name);
     //程序最前面读取配置文件节点的值
     static QString getIniValue(const QString &fileName, const QString &key);
-    static QString getIniValue(char *argv[], const QString &key, const QString &dir = QString());
+    static QString getIniValue(char *argv[], const QString &key, const QString &dir = QString(), const QString &file = QString());
 
     //获取本地网卡IP集合
     static QStringList getLocalIPs();
+    //添加网卡集合并根据默认值设置当前项
+    static void initLocalIPs(QComboBox *cbox, const QString &defaultIP, bool local127 = true);
 
     //获取内置颜色集合
     static QList<QColor> colors;
@@ -84,9 +87,14 @@ public:
     //一次性设置所有包括编码样式字体等
     static void initAll(bool utf8 = true, bool style = true, int fontSize = 13);
     //初始化main函数最前面执行的一段代码
-    static void initMain(bool desktopSettingsAware = false, bool use96Dpi = true, bool logCritical = true);
+    static void initMain(bool desktopSettingsAware = false, bool use96Dpi = false, bool logCritical = true);
     //初始化opengl类型(1=AA_UseDesktopOpenGL 2=AA_UseOpenGLES 3=AA_UseSoftwareOpenGL)
     static void initOpenGL(quint8 type = 0, bool checkCardEnable = false, bool checkVirtualSystem = false);
+
+    //读取qss文件获取样式表内容
+    static QString getStyle(const QString &qssFile);
+    //设置qss文件到全局样式
+    static void setStyle(const QString &qssFile);
 
     //执行命令行返回执行结果
     static QString doCmd(const QString &program, const QStringList &arguments, int timeout = 1000);
@@ -96,6 +104,7 @@ public:
     static bool isVirtualSystem();
 
     //插入消息
+    static bool replaceCRLF;
     static QVector<int> msgTypes;
     static QVector<QString> msgKeys;
     static QVector<QColor> msgColors;
@@ -173,8 +182,9 @@ public:
     //设置开机自启动
     static void runWithSystem(bool autoRun = true);
     static void runWithSystem(const QString &fileName, const QString &filePath, bool autoRun = true);
+
     //启动运行程序(已经在运行则不启动)
-    static void runBin(const QString &path, const QString &name);
+    static void start(const QString &path, const QString &name, bool bin = true);
 };
 
 #endif // QTHELPER_H

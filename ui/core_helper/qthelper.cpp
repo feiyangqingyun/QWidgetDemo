@@ -4,26 +4,40 @@
 
 #define TIMEMS qPrintable(QTime::currentTime().toString("HH:mm:ss zzz"))
 
-QList<QRect> QtHelper::getScreenRects(bool available)
+bool QtHelper::useRatio = true;
+
+//full指宽屏/就是将所有屏幕拼接在一起
+QList<QRect> QtHelper::getScreenRects(bool available, bool full)
 {
+    QRect rect;
     QList<QRect> rects;
 #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
-    int screenCount = qApp->screens().count();
     QList<QScreen *> screens = qApp->screens();
+    int screenCount = screens.count();
     for (int i = 0; i < screenCount; ++i) {
         QScreen *screen = screens.at(i);
+        if (full) {
+            rect = (available ? screen->availableVirtualGeometry() : screen->virtualGeometry());
+        } else {
+            rect = (available ? screen->availableGeometry() : screen->geometry());
+        }
+
         //需要根据缩放比来重新调整宽高
-        qreal ratio = screen->devicePixelRatio();
-        QRect rect = (available ? screen->availableGeometry() : screen->geometry());
+        qreal ratio = (QtHelper::useRatio ? screen->devicePixelRatio() : 1);
         rect.setWidth(rect.width() * ratio);
         rect.setHeight(rect.height() * ratio);
         rects << rect;
     }
 #else
-    int screenCount = qApp->desktop()->screenCount();
     QDesktopWidget *desk = qApp->desktop();
+    int screenCount = desk->screenCount();
     for (int i = 0; i < screenCount; ++i) {
-        QRect rect = (available ? desk->availableGeometry(i) : desk->screenGeometry(i));
+        if (full) {
+            rect = (available ? desk->geometry() : desk->geometry());
+        } else {
+            rect = (available ? desk->availableGeometry(i) : desk->screenGeometry(i));
+        }
+
         rects << rect;
     }
 #endif
@@ -48,10 +62,10 @@ int QtHelper::getScreenIndex()
     return screenIndex;
 }
 
-QRect QtHelper::getScreenRect(bool available)
+QRect QtHelper::getScreenRect(bool available, bool full)
 {
     int screenIndex = getScreenIndex();
-    QList<QRect> rects = getScreenRects(available);
+    QList<QRect> rects = getScreenRects(available, full);
     return rects.at(screenIndex);
 }
 
@@ -455,7 +469,8 @@ void QtHelper::checkRun()
 void QtHelper::setStyle()
 {
     //打印下所有内置风格的名字
-    qDebug() << TIMEMS << "QStyleFactory::keys" << QStyleFactory::keys();
+    //qDebug() << TIMEMS << "QStyleFactory::keys" << QStyleFactory::keys();
+
     //设置内置风格
 #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
     qApp->setStyle("Fusion");
@@ -618,6 +633,9 @@ void QtHelper::initAll(bool utf8, bool style, int fontSize)
 #endif
 }
 
+#ifdef webengine
+#include "qquickwindow.h"
+#endif
 void QtHelper::initMain(bool desktopSettingsAware, bool use96Dpi, bool logCritical)
 {
 #ifdef Q_OS_LINUX
@@ -632,15 +650,17 @@ void QtHelper::initMain(bool desktopSettingsAware, bool use96Dpi, bool logCritic
     QApplication::setDesktopSettingsAware(desktopSettingsAware);
 #endif
 
-    bool highDpi = !use96Dpi;
+//安卓必须启用高分屏
 #ifdef Q_OS_ANDROID
-    highDpi = true;
+    use96Dpi = false;
 #endif
 
+    QtHelper::useRatio = use96Dpi;
 #if (QT_VERSION >= QT_VERSION_CHECK(5,6,0) && QT_VERSION < QT_VERSION_CHECK(6,0,0))
     //开启高分屏缩放支持
-    if (highDpi) {
+    if (!use96Dpi) {
         QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     }
 #endif
 
@@ -657,7 +677,7 @@ void QtHelper::initMain(bool desktopSettingsAware, bool use96Dpi, bool logCritic
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5,14,0))
     //高分屏缩放策略
-    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::Floor);
+    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #endif
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
@@ -670,6 +690,13 @@ void QtHelper::initMain(bool desktopSettingsAware, bool use96Dpi, bool logCritic
 #if (QT_VERSION >= QT_VERSION_CHECK(5,4,0))
     //设置opengl共享上下文
     QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+#endif
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#ifdef webengine
+    //修复openglwidget和webengine共存出现黑屏的bug
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
+#endif
 #endif
 }
 
@@ -1275,11 +1302,11 @@ void QtHelper::runWithSystem(const QString &fileName, const QString &filePath, b
 #endif
 }
 
-void QtHelper::runBin(const QString &path, const QString &name)
+void QtHelper::start(const QString &path, const QString &name, bool bin)
 {
 #ifdef Q_OS_WIN
     QString cmd1 = "tasklist";
-    QString cmd2 = QString("%1/%2.exe").arg(path).arg(name);
+    QString cmd2 = QString("%1/%2%3").arg(path).arg(name).arg(bin ? ".exe" : "");
 #else
     QString cmd1 = "ps -aux";
     QString cmd2 = QString("%1/%2").arg(path).arg(name);
