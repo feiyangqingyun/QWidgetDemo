@@ -2,6 +2,10 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += printsupport
 greaterThan(QT_MAJOR_VERSION, 4): CONFIG += c++11
 #lessThan(QT_MAJOR_VERSION, 5): QMAKE_CXXFLAGS += -std=c++11
 
+#下面用于开启opengl
+#DEFINES += QCUSTOMPLOT_USE_OPENGL
+#LIBS += -lopengl32 -lglu32
+
 #将当前目录加入到头文件路径
 INCLUDEPATH += $$PWD
 DEFINES += qcustomplot
@@ -46,3 +50,10 @@ HEADERS += $$PWD/v2_1/qcustomplot.h
 }
 SOURCES += $$PWD/v2_1/qcustomplot.cpp
 }}
+
+#修复debug套件编译失败
+greaterThan(QT_MAJOR_VERSION, 5) {
+mingw {
+QMAKE_CXXFLAGS += -Wa,-mbig-obj
+}
+}
