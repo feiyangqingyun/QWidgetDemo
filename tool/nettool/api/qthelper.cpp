@@ -266,7 +266,7 @@ void QtHelper::initLocalIPs(QComboBox *cbox, const QString &defaultIP, bool loca
 {
     QStringList ips;
     if (local127) {
-        ips << "127.0.0.1";
+        ips << "0.0.0.0" << "127.0.0.1";
     }
 
     //添加本地网卡地址集合

@@ -22,9 +22,6 @@ public:
 
     //保存数据到文件
     static void saveData(const QString &data);
-
-    //添加网卡IP地址到下拉框
-    static void loadIP(QComboBox *cbox);
 };
 
 #endif // APPDATA_H

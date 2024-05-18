@@ -50,7 +50,7 @@ void frmUdpClient::initForm()
     //填充数据到下拉框
     ui->cboxInterval->addItems(AppData::Intervals);
     ui->cboxData->addItems(AppData::Datas);
-    AppData::loadIP(ui->cboxBindIP);
+    QtHelper::initLocalIPs(ui->cboxBindIP, AppConfig::UdpBindIP);
 }
 
 void frmUdpClient::initConfig()
