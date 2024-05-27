@@ -8,9 +8,9 @@
 6. **版本支持：所有项目已经全部支持Qt4/5/6所有版本以及后续版本。**
 7. 监控作品体验：[https://pan.baidu.com/s/1d7TH_GEYl5nOecuNlWJJ7g](https://pan.baidu.com/s/1d7TH_GEYl5nOecuNlWJJ7g) 提取码：01jf
 8. 其他作品体验：[https://pan.baidu.com/s/1ZxG-oyUKe286LPMPxOrO2A](https://pan.baidu.com/s/1ZxG-oyUKe286LPMPxOrO2A) 提取码：o05q
-9. 监控系统在线文档：[https://feiyangqingyun.gitee.io/QWidgetDemo/video_system/](https://feiyangqingyun.gitee.io/QWidgetDemo/video_system/)
-10. 大屏系统在线文档：[https://feiyangqingyun.gitee.io/QWidgetDemo/bigscreen/](https://feiyangqingyun.gitee.io/QWidgetDemo/bigscreen/)
-11. 物联网系统在线文档：[https://feiyangqingyun.gitee.io/QWidgetDemo/iotsystem/](https://feiyangqingyun.gitee.io/QWidgetDemo/iotsystem/)
+9. 监控系统在线文档：[http://www.qtcdev.com/video_system/](http://www.qtcdev.com/video_system/)
+10. 大屏系统在线文档：[http://www.qtcdev.com/bigscreen/](http://www.qtcdev.com/bigscreen/)
+11. 物联网系统在线文档：[http://www.qtcdev.com/iotsystem/](http://www.qtcdev.com/iotsystem/)
 
 ## 1 特别说明
 1. 可以选择打开QWidgetDemo.pro一次性编译所有的，也可以到目录下打开pro编译。
@@ -18,7 +18,7 @@
 3. 编译好的可执行文件在源码同级目录下的bin目录。
 4. 亲测Qt4.6到Qt6.6所有版本，亲测win、linux、mac、uos等系统。
 5. 有少部分项目不支持部分Qt版本比如Qt6，会自动跳过。
-6. **建议用git命令行下载，压缩包下载后重新解压文件可能会有问题，不知为何。**
+6. **建议用git命令行下载，压缩包下载后重新解压文件可能会有问题（提示Excess closing brace），不知为何。**
 8. **强烈推荐各位搭配Qt开发经验一起学习 [https://gitee.com/feiyangqingyun/qtkaifajingyan](https://gitee.com/feiyangqingyun/qtkaifajingyan)**
 9. 视频演示 [https://www.bilibili.com/video/BV1kg4y1P7VD](https://www.bilibili.com/video/BV1kg4y1P7VD)
 10. **各位有需要购买Qt商业版可以联系Qt中国商务人员微信 zzwdkxx ，支持Qt。**
