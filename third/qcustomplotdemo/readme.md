@@ -1,6 +1,6 @@
 按照国际惯例，先吹吹牛，QCustomPlot这个开源图表组件，作者绝对是全宇宙Qt领域的天花板，设计的极其巧妙和精美，各种情况都考虑到了，将每个功能细分到不同的类，每个类负责管理自己的绘制和各种属性参数等，虽然代码量不多但是又极具拓展性，当时阅读完代码的时候，我直接跪了8个小时，膝盖现在还是红的。作者的实力至少是八星斗圣级别，只要一个巴掌就能把斗宗干趴下。
 
-**网页版本：[https://feiyangqingyun.gitee.io/qwidgetdemo/qcustomplotdemo/](https://feiyangqingyun.gitee.io/qwidgetdemo/qcustomplotdemo/)**
+**网页版本：[http://www.qtcdev.com/wasm/qcustomplot/](http://www.qtcdev.com/wasm/qcustomplot/)**
 
 ## 一、功能特点
 1. 同时支持多个版本，比如1.3、2.0、2.1。
