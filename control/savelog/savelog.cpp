@@ -105,7 +105,7 @@ SaveLog::SaveLog(QObject *parent) : QObject(parent)
     maxRow = currentRow = 0;
     maxSize = 128;
     toNet = false;
-    useContext = true;
+    useContext = false;
 
     //全局的文件对象,在需要的时候打开而不是每次添加日志都打开
     file = new QFile(this);
