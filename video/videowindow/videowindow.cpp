@@ -699,7 +699,7 @@ void VideoWindow::setSavePath(const QString &savePath)
     //如果目录不存在则新建
     QDir dir(savePath);
     if (!dir.exists()) {
-        dir.mkdir(savePath);
+        dir.mkpath(savePath);
     }
 }
 

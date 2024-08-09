@@ -101,7 +101,7 @@ void SaveRunTime::newPath()
     //检查目录是否存在,不存在则先新建
     QDir dir(path);
     if (!dir.exists()) {
-        dir.mkdir(path);
+        dir.mkpath(path);
     }
 }
 

@@ -201,7 +201,7 @@ void SaveLog::save(const QString &content)
         //目录不存在则先新建目录
         QDir dir(path);
         if (!dir.exists()) {
-            dir.mkdir(path);
+            dir.mkpath(path);
         }
 
         //日志存储规则有多种策略 优先级 行数>大小>日期
