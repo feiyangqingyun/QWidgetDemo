@@ -59,7 +59,11 @@ void QwtEventPattern::initMousePattern( int numButtons )
         {
             setMousePattern( MouseSelect1, Qt::LeftButton );
             setMousePattern( MouseSelect2, Qt::RightButton );
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
             setMousePattern( MouseSelect3, Qt::MidButton );
+#else
+            setMousePattern( MouseSelect3, Qt::MiddleButton );
+#endif
         }
     }
 

@@ -677,7 +677,7 @@ void QwtSlider::paintEvent( QPaintEvent *event )
     painter.setClipRegion( event->region() );
 
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 
     if ( d_data->scalePosition != QwtSlider::NoScale )
@@ -898,7 +898,12 @@ bool QwtSlider::hasGroove() const
 QSize QwtSlider::sizeHint() const
 {
     const QSize hint = minimumSizeHint();
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     return hint.expandedTo( QApplication::globalStrut() );
+#else
+    QScreen *screen = QGuiApplication::primaryScreen();
+    return hint.expandedTo( screen->availableSize() );
+#endif
 }
 
 /*!
@@ -961,8 +966,11 @@ QSize QwtSlider::minimumSizeHint() const
     }
 
     // finally add margins
-    int left, right, top, bottom;
-    getContentsMargins( &left, &top, &right, &bottom );
+    QMargins margins = contentsMargins();
+    int left = margins.left();
+    int top = margins.top();
+    int right = margins.right();
+    int bottom = margins.bottom();
 
     w += left + right;
     h += top + bottom;
