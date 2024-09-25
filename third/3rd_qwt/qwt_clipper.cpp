@@ -12,6 +12,8 @@
 #include <qrect.h>
 #include <string.h>
 #include <stdlib.h>
+#include <iostream>
+#include <algorithm>
 
 #if QT_VERSION < 0x040601
 #define qAtan(x) ::atan(x)
@@ -351,7 +353,7 @@ QVector<QwtInterval> QwtCircleClipper::clipCircle(
         QList<double> angles;
         for ( int i = 0; i < points.size(); i++ )
             angles += toAngle( pos, points[i] );
-        qSort( angles );
+        std::sort(angles.begin(), angles.end());
 
         const int in = d_rect.contains( qwtPolar2Pos( pos, radius,
             angles[0] + ( angles[1] - angles[0] ) / 2 ) );

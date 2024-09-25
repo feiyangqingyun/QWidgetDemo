@@ -62,7 +62,11 @@ QwtDynGridLayout::QwtDynGridLayout( QWidget *parent,
     init();
 
     setSpacing( spacing );
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     setMargin( margin );
+#else
+    setContentsMargins( margin , 0, 0, 0 );
+#endif
 }
 
 /*!
@@ -82,7 +86,7 @@ void QwtDynGridLayout::init()
 {
     d_data = new QwtDynGridLayout::PrivateData;
     d_data->maxColumns = d_data->numRows = d_data->numColumns = 0;
-    d_data->expanding = 0;
+    d_data->expanding = Qt::Vertical;
 }
 
 //! Destructor
@@ -305,7 +309,11 @@ int QwtDynGridLayout::maxRowWidth( int numColumns ) const
             d_data->itemSizeHints[int( index )].width() );
     }
 
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     int rowWidth = 2 * margin() + ( numColumns - 1 ) * spacing();
+#else
+    int rowWidth = 2 * contentsMargins().left() + ( numColumns - 1 ) * spacing();
+#endif
     for ( col = 0; col < numColumns; col++ )
         rowWidth += colWidth[col];
 
@@ -382,11 +390,19 @@ QList<QRect> QwtDynGridLayout::layoutItems( const QRect &rect,
 
     const int xySpace = spacing();
 
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     rowY[0] = yOffset + margin();
+#else
+    rowY[0] = yOffset + contentsMargins().left();
+#endif
     for ( uint r = 1; r < numRows; r++ )
         rowY[r] = rowY[r-1] + rowHeight[r-1] + xySpace;
 
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     colX[0] = xOffset + margin();
+#else
+    colX[0] = xOffset + contentsMargins().left();
+#endif
     for ( uint c = 1; c < numColumns; c++ )
         colX[c] = colX[c-1] + colWidth[c-1] + xySpace;
 
@@ -465,7 +481,11 @@ int QwtDynGridLayout::heightForWidth( int width ) const
 
     layoutGrid( numColumns, rowHeight, colWidth );
 
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     int h = 2 * margin() + ( numRows - 1 ) * spacing();
+#else
+    int h = 2 * contentsMargins().left() + ( numRows - 1 ) * spacing();
+#endif
     for ( uint row = 0; row < numRows; row++ )
         h += rowHeight[row];
 
@@ -496,7 +516,11 @@ void QwtDynGridLayout::stretchGrid( const QRect &rect,
 
     if ( expandH )
     {
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
         int xDelta = rect.width() - 2 * margin() - ( numColumns - 1 ) * spacing();
+#else
+        int xDelta = rect.width() - 2 * contentsMargins().left() - ( numColumns - 1 ) * spacing();
+#endif
         for ( uint col = 0; col < numColumns; col++ )
             xDelta -= colWidth[col];
 
@@ -517,7 +541,11 @@ void QwtDynGridLayout::stretchGrid( const QRect &rect,
         if ( itemCount() % numColumns )
             numRows++;
 
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
         int yDelta = rect.height() - 2 * margin() - ( numRows - 1 ) * spacing();
+#else
+        int yDelta = rect.height() - 2 * contentsMargins().left() - ( numRows - 1 ) * spacing();
+#endif
         for ( uint row = 0; row < numRows; row++ )
             yDelta -= rowHeight[row];
 
@@ -559,11 +587,19 @@ QSize QwtDynGridLayout::sizeHint() const
 
     layoutGrid( numColumns, rowHeight, colWidth );
 
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     int h = 2 * margin() + ( numRows - 1 ) * spacing();
+#else
+    int h = 2 * contentsMargins().left() + ( numRows - 1 ) * spacing();
+#endif
     for ( uint row = 0; row < numRows; row++ )
         h += rowHeight[row];
 
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     int w = 2 * margin() + ( numColumns - 1 ) * spacing();
+#else
+    int w = 2 * contentsMargins().left() + ( numColumns - 1 ) * spacing();
+#endif
     for ( uint col = 0; col < numColumns; col++ )
         w += colWidth[col];
 

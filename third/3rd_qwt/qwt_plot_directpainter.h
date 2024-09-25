@@ -45,6 +45,7 @@ public:
     */
     enum Attribute
     {
+        AttributeNone = 0x00,
         /*!
           Initializing a QPainter is an expensive operation.
           When AtomicPainter is set each call of drawSeries() opens/closes

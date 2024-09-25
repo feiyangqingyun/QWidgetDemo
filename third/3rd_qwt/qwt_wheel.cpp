@@ -17,6 +17,7 @@
 #include <qstyleoption.h>
 #include <qapplication.h>
 #include <qdatetime.h>
+#include <QElapsedTimer>
 
 #if QT_VERSION < 0x040601
 #define qFabs(x) ::fabs(x)
@@ -75,7 +76,7 @@ public:
 
     // for the flying wheel effect
     int timerId;
-    QTime time;
+    QElapsedTimer time;
     double speed;
     double mouseValue;
     double flyingValue;
@@ -328,7 +329,11 @@ void QwtWheel::timerEvent( QTimerEvent *event )
 */
 void QwtWheel::wheelEvent( QWheelEvent *event )
 {
+#if (QT_VERSION < QT_VERSION_CHECK(5,15,0))
     if ( !wheelRect().contains( event->pos() ) )
+#else
+    if ( !wheelRect().contains( event->position().toPoint() ) )
+#endif
     {
         event->ignore();
         return;
@@ -346,12 +351,12 @@ void QwtWheel::wheelEvent( QWheelEvent *event )
     {
         // one page regardless of delta
         increment = d_data->singleStep * d_data->pageStepCount;
-        if ( event->delta() < 0 )
+        if ( event->angleDelta().y() < 0 )
             increment = -increment;
     }
     else
     {
-        const int numSteps = event->delta() / 120;
+        const int numSteps = event->angleDelta().y() / 120;
         increment = d_data->singleStep * numSteps;
     }
 
@@ -733,7 +738,7 @@ void QwtWheel::paintEvent( QPaintEvent *event )
     painter.setClipRegion( event->region() );
 
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 
     qDrawShadePanel( &painter,
@@ -946,7 +951,12 @@ int QwtWheel::wheelWidth() const
 QSize QwtWheel::sizeHint() const
 {
     const QSize hint = minimumSizeHint();
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     return hint.expandedTo( QApplication::globalStrut() );
+#else
+    QScreen *screen = QGuiApplication::primaryScreen();
+    return hint.expandedTo( screen->availableSize() );
+#endif
 }
 
 /*!

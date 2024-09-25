@@ -171,10 +171,10 @@ static void qwtDrawTriangleNeedle( QPainter *painter,
     const QColor lightColor = palette.color( colorGroup, QPalette::Light );
 
     QColor color[4];
-    color[0] = darkColor.light( 100 + colorOffset );
-    color[1] = darkColor.dark( 100 + colorOffset );
-    color[2] = lightColor.light( 100 + colorOffset );
-    color[3] = lightColor.dark( 100 + colorOffset );
+    color[0] = darkColor.lighter( 100 + colorOffset );
+    color[1] = darkColor.darker( 100 + colorOffset );
+    color[2] = lightColor.lighter( 100 + colorOffset );
+    color[3] = lightColor.darker( 100 + colorOffset );
 
     painter->setPen( Qt::NoPen );
 
@@ -386,15 +386,15 @@ void QwtCompassMagnetNeedle::drawNeedle( QPainter *painter,
         const QColor dark = palette().color( colorGroup, QPalette::Dark );
 
         qwtDrawShadedPointer( painter,
-            dark.light( 100 + colorOffset ),
-            dark.dark( 100 + colorOffset ),
+            dark.lighter( 100 + colorOffset ),
+            dark.darker( 100 + colorOffset ),
             length, width );
 
         painter->rotate( 180.0 );
 
         qwtDrawShadedPointer( painter,
-            light.light( 100 + colorOffset ),
-            light.dark( 100 + colorOffset ),
+            light.lighter( 100 + colorOffset ),
+            light.darker( 100 + colorOffset ),
             length, width );
 
         const QBrush baseBrush = palette().brush( colorGroup, QPalette::Base );

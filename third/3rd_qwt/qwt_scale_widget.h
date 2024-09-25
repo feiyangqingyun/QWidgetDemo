@@ -38,6 +38,7 @@ public:
     //! Layout flags of the title
     enum LayoutFlag
     {
+        TitleNone = 0,
         /*!
           The title of vertical scales is painted from top to bottom.
           Otherwise it is painted from bottom to top.

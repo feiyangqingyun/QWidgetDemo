@@ -37,8 +37,11 @@ static QSize qwtKnobSizeHint( const QwtKnob *knob, int min )
     const int extent = qCeil( knob->scaleDraw()->extent( knob->font() ) );
     const int d = 2 * ( extent + 4 ) + knobWidth;
 
-    int left, right, top, bottom;
-    knob->getContentsMargins( &left, &top, &right, &bottom );
+    QMargins margins = knob->contentsMargins();
+    int left = margins.left();
+    int top = margins.top();
+    int right = margins.right();
+    int bottom = margins.bottom();
 
     return QSize( d + left + right, d + top + bottom );
 }
@@ -463,7 +466,7 @@ void QwtKnob::paintEvent( QPaintEvent *event )
     painter.setClipRegion( event->region() );
 
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 
     painter.setRenderHint( QPainter::Antialiasing, true );
@@ -842,7 +845,12 @@ int QwtKnob::markerSize() const
 QSize QwtKnob::sizeHint() const
 {
     const QSize hint = qwtKnobSizeHint( this, 50 );
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     return hint.expandedTo( QApplication::globalStrut() );
+#else
+    QScreen *screen = QGuiApplication::primaryScreen();
+    return hint.expandedTo( screen->availableSize() );
+#endif
 }
 
 /*!
