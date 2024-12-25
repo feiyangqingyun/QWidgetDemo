@@ -283,8 +283,12 @@ bool FramelessWidget::nativeEvent(const QByteArray &eventType, void *message, lo
             //计算鼠标对应的屏幕坐标
             //这里最开始用的 LOWORD HIWORD 在多屏幕的时候会有问题
             //官方说明在这里 https://docs.microsoft.com/zh-cn/windows/win32/inputdev/wm-nchittest
-            long x = GET_X_LPARAM(msg->lParam);
-            long y = GET_Y_LPARAM(msg->lParam);
+            qreal ratio = 1.0;
+#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
+            ratio = this->devicePixelRatio();
+#endif
+            long x = GET_X_LPARAM(msg->lParam) / ratio;
+            long y = GET_Y_LPARAM(msg->lParam) / ratio;
             QPoint pos = mapFromGlobal(QPoint(x, y));
 
             //判断当前鼠标位置在哪个区域

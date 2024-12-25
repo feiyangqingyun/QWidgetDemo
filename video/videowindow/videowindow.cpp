@@ -179,11 +179,7 @@ void VideoWindow::resizeEvent(QResizeEvent *)
     //flowPanel->setGeometry(borderWidth, this->height() - height - borderWidth, this->width() - (borderWidth * 2), height);
 }
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
-void VideoWindow::enterEvent(QEnterEvent *)
-#else
-void VideoWindow::enterEvent(QEvent *)
-#endif
+void VideoWindow::enterEvent(EnterEvent *)
 {
     //这里还可以增加一个判断,是否获取了焦点的才需要显示
     //if (this->hasFocus()) {}

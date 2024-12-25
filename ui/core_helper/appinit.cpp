@@ -5,20 +5,7 @@
 #include "qwidget.h"
 #include "qdebug.h"
 
-QScopedPointer<AppInit> AppInit::self;
-AppInit *AppInit::Instance()
-{
-    if (self.isNull()) {
-        static QMutex mutex;
-        QMutexLocker locker(&mutex);
-        if (self.isNull()) {
-            self.reset(new AppInit);
-        }
-    }
-
-    return self.data();
-}
-
+SINGLETON_IMPL(AppInit)
 AppInit::AppInit(QObject *parent) : QObject(parent)
 {
 }

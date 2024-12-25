@@ -15,6 +15,12 @@
 
 #include <QPushButton>
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#define EnterEvent QEnterEvent
+#else
+#define EnterEvent QEvent
+#endif
+
 #ifdef quc
 class Q_DECL_EXPORT NavButton : public QPushButton
 #else
@@ -92,7 +98,7 @@ public:
     explicit NavButton(QWidget *parent = 0);
 
 protected:
-    void enterEvent(QEvent *);
+    void enterEvent(EnterEvent *);
     void leaveEvent(QEvent *);
     void paintEvent(QPaintEvent *);
     void drawBg(QPainter *painter);

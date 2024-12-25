@@ -103,11 +103,15 @@ bool DeviceButton::eventFilter(QObject *watched, QEvent *event)
         if (canMove && isPressed) {
             int dx = mouseEvent->pos().x() - lastPoint.x();
             int dy = mouseEvent->pos().y() - lastPoint.y();
-            this->move(this->x() + dx, this->y() + dy);
+            this->move(this->x() + dx, this->y() + dy);            
             return true;
         }
     } else if (type == QEvent::MouseButtonRelease) {
         isPressed = false;
+        //增加刷新父窗体/防止残影
+        if (this->parent()) {
+            QMetaObject::invokeMethod(this->parent(), "update");
+        }
     } else if (type == QEvent::MouseButtonDblClick) {
         Q_EMIT doubleClicked();
     }

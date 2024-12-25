@@ -383,8 +383,8 @@ QStringList QtHelper::getRandPoint(int count, float mainLng, float mainLat, floa
         float lngx = QRandomGenerator::global()->bounded(dotLng);
         float latx = QRandomGenerator::global()->bounded(dotLat);
 #else
-        float lngx = getRandFloat(dotLng / 10, dotLng);
-        float latx = getRandFloat(dotLat / 10, dotLat);
+        float lngx = getRandFloat(dotLng / 100, dotLng);
+        float latx = getRandFloat(dotLat / 100, dotLat);
 #endif
         //需要先用精度转换成字符串
         QString lng2 = QString::number(mainLng + lngx, 'f', 8);
@@ -409,7 +409,7 @@ QString QtHelper::getUuid()
     return uuid;
 }
 
-void QtHelper::checkPath(const QString &dirName)
+QString QtHelper::checkPath(const QString &dirName)
 {
     //相对路径需要补全完整路径
     QString path = dirName;
@@ -425,6 +425,19 @@ void QtHelper::checkPath(const QString &dirName)
     if (!dir.exists()) {
         dir.mkpath(path);
     }
+
+    return path;
+}
+
+QString QtHelper::checkFile(const QString &fileName)
+{
+    //将相对路径转换成完整路径
+    QString name = fileName;
+    if (name.startsWith("./")) {
+        name = QtHelper::appPath() + name.mid(1, name.length());
+    }
+
+    return name;
 }
 
 void QtHelper::sleep(int msec, bool exec)
@@ -481,7 +494,7 @@ void QtHelper::setStyle()
     //设置指定颜色
     QPalette palette;
     palette.setBrush(QPalette::Window, QColor("#F0F0F0"));
-    qApp->setPalette(palette);
+    //qApp->setPalette(palette);
 }
 
 QFont QtHelper::addFont(const QString &fontFile, const QString &fontName)
@@ -597,13 +610,14 @@ void QtHelper::initAndroidPermission()
     checkPermission("android.permission.WRITE_EXTERNAL_STORAGE");
 
     checkPermission("android.permission.ACCESS_COARSE_LOCATION");
+    checkPermission("android.permission.INTERNET");
     checkPermission("android.permission.BLUETOOTH");
     checkPermission("android.permission.BLUETOOTH_SCAN");
     checkPermission("android.permission.BLUETOOTH_CONNECT");
     checkPermission("android.permission.BLUETOOTH_ADVERTISE");
 }
 
-void QtHelper::initAll(bool utf8, bool style, int fontSize)
+void QtHelper::initAll(bool utf8, bool style, bool tabCenter, int fontSize)
 {
     //初始化安卓权限
     QtHelper::initAndroidPermission();
@@ -613,9 +627,15 @@ void QtHelper::initAll(bool utf8, bool style, int fontSize)
     QtHelper::setCode(utf8);
     //设置字体
     QtHelper::setFont(fontSize);
+
     //设置样式风格
     if (style) {
         QtHelper::setStyle();
+    }
+
+    //选项卡居中
+    if (tabCenter) {
+        qApp->setStyleSheet("QTabWidget::tab-bar{alignment:center;}");
     }
 
     //设置翻译文件支持多个
@@ -633,9 +653,12 @@ void QtHelper::initAll(bool utf8, bool style, int fontSize)
 #endif
 }
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
 #ifdef webengine
 #include "qquickwindow.h"
 #endif
+#endif
+
 void QtHelper::initMain(bool desktopSettingsAware, bool use96Dpi, bool logCritical)
 {
 #ifdef Q_OS_LINUX
@@ -645,12 +668,18 @@ void QtHelper::initMain(bool desktopSettingsAware, bool use96Dpi, bool logCritic
 #endif
 #endif
 
+#ifdef webengine
+    //谷歌浏览器禁用沙箱和安全策略以便跨域请求/否则可能报错 Access-Control-Allow-Origin
+    qputenv("QTWEBENGINE_DISABLE_SANDBOX", "1");
+    qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-web-security");
+#endif
+
 #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
     //设置是否应用操作系统设置比如字体
     QApplication::setDesktopSettingsAware(desktopSettingsAware);
 #endif
 
-//安卓必须启用高分屏
+    //安卓必须启用高分屏
 #ifdef Q_OS_ANDROID
     use96Dpi = false;
 #endif
@@ -1036,6 +1065,8 @@ QString QtHelper::getExistingDirectory(const QString &dirName, bool native, int 
     //设置只显示目录
 #if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     dialog.setFileMode(QFileDialog::DirectoryOnly);
+#else
+    dialog.setFileMode(QFileDialog::Directory);
 #endif
     dialog.setOption(QFileDialog::ShowDirsOnly);
     return getDialogResult(&dialog);

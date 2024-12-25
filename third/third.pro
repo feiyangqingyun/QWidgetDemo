@@ -14,7 +14,6 @@ SUBDIRS -= hotkey
 
 #Qt6有些项目还不支持
 greaterThan(QT_MAJOR_VERSION, 5) {
-SUBDIRS -= hotkey
 SUBDIRS -= shortcut
 SUBDIRS -= qwtdemo
 #qcustomplot在qt6中暂时不支持debug套件

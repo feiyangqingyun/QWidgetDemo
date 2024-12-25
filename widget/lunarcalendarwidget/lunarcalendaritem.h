@@ -4,6 +4,12 @@
 #include <QWidget>
 #include <QDate>
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#define EnterEvent QEnterEvent
+#else
+#define EnterEvent QEvent
+#endif
+
 #ifdef quc
 class Q_DECL_EXPORT LunarCalendarItem : public QWidget
 #else
@@ -62,7 +68,7 @@ public:
     explicit LunarCalendarItem(QWidget *parent = 0);
 
 protected:
-    void enterEvent(QEvent *);
+    void enterEvent(EnterEvent *);
     void leaveEvent(QEvent *);
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);

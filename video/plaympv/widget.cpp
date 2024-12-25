@@ -8,7 +8,6 @@ Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
     ui->setupUi(this);
 
     QStringList urls;
-    urls << "http://vfx.mtime.cn/Video/2021/11/16/mp4/211116131456748178.mp4";
     urls << "http://vd3.bdstatic.com/mda-jennyc5ci1ugrxzi/mda-jennyc5ci1ugrxzi.mp4";
     urls << "rtsp://admin:Admin123456@192.168.0.15:554/media/video1";
     ui->cboxUrl->addItems(urls);

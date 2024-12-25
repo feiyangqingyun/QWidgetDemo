@@ -46,7 +46,7 @@ NavButton::NavButton(QWidget *parent) : QPushButton(parent)
     setText("导航按钮");
 }
 
-void NavButton::enterEvent(QEvent *)
+void NavButton::enterEvent(EnterEvent *)
 {
     hover = true;
     this->update();

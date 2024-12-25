@@ -3,7 +3,7 @@
 
 QString AppData::TitleFlag = "(QQ: 517216493 WX: feiyangqingyun)";
 int AppData::RowHeight = 25;
-int AppData::RightWidth = 180;
+int AppData::RightWidth = 250;
 int AppData::FormWidth = 1200;
 int AppData::FormHeight = 750;
 

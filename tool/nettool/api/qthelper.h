@@ -63,7 +63,9 @@ public:
     //获取uuid
     static QString getUuid();
     //校验目录
-    static void checkPath(const QString &dirName);
+    static QString checkPath(const QString &dirName);
+    //转换成完整路径
+    static QString checkFile(const QString &fileName);
     //通用延时函数(支持Qt4 Qt5 Qt6)
     static void sleep(int msec, bool exec = true);
     //检查程序是否已经运行
@@ -85,7 +87,7 @@ public:
     static void initAndroidPermission();
 
     //一次性设置所有包括编码样式字体等
-    static void initAll(bool utf8 = true, bool style = true, int fontSize = 13);
+    static void initAll(bool utf8 = true, bool style = true, bool tabCenter = true, int fontSize = 13);
     //初始化main函数最前面执行的一段代码
     static void initMain(bool desktopSettingsAware = false, bool use96Dpi = false, bool logCritical = true);
     //初始化opengl类型(1=AA_UseDesktopOpenGL 2=AA_UseOpenGLES 3=AA_UseSoftwareOpenGL)

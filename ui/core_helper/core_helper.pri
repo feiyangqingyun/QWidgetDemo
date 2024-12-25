@@ -27,8 +27,10 @@ CONFIG += resources_big
 #CONFIG -= debug_and_release
 
 include ($$PWD/core_util.pri)
+
 #将当前目录加入到头文件路径
 INCLUDEPATH += $$PWD
+HEADERS += $$PWD/singleton.h
 
 HEADERS += $$PWD/appdata.h
 SOURCES += $$PWD/appdata.cpp
@@ -41,6 +43,9 @@ SOURCES += $$PWD/base64helper.cpp
 
 HEADERS += $$PWD/customstyle.h
 SOURCES += $$PWD/customstyle.cpp
+
+HEADERS += $$PWD/delegate.h
+SOURCES += $$PWD/delegate.cpp
 
 HEADERS += $$PWD/iconhelper.h
 SOURCES += $$PWD/iconhelper.cpp

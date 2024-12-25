@@ -33,8 +33,10 @@ CpuMemoryLabel::CpuMemoryLabel(QWidget *parent) : QLabel(parent)
     connect(timerMemory, SIGNAL(timeout()), this, SLOT(getMemory()));
 
     //执行命令获取
+#ifndef Q_OS_WASM
     process = new QProcess(this);
     connect(process, SIGNAL(readyRead()), this, SLOT(readData()));
+#endif
 
     showText = true;
 }
@@ -59,7 +61,10 @@ void CpuMemoryLabel::start(int interval)
 
 void CpuMemoryLabel::stop()
 {
+#ifndef Q_OS_WASM
     process->close();
+#endif
+
     if (timerCPU->isActive()) {
         timerCPU->stop();
     }

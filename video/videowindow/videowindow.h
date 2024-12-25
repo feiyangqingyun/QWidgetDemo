@@ -19,8 +19,13 @@
 
 #include <QWidget>
 #include <QDateTime>
-
 class QTimer;
+
+#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
+#define EnterEvent QEnterEvent
+#else
+#define EnterEvent QEvent
+#endif
 
 #ifdef quc
 class Q_DECL_EXPORT VideoWindow : public QWidget
@@ -89,11 +94,7 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent *);
-#if (QT_VERSION >= QT_VERSION_CHECK(6,0,0))
-    void enterEvent(QEnterEvent *);
-#else
-    void enterEvent(QEvent *);
-#endif
+    void enterEvent(EnterEvent *);
     void leaveEvent(QEvent *);
     void dropEvent(QDropEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);

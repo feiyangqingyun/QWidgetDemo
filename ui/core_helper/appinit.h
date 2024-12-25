@@ -2,19 +2,16 @@
 #define APPINIT_H
 
 #include <QObject>
+#include "singleton.h"
 
 class AppInit : public QObject
 {
-    Q_OBJECT
+    Q_OBJECT SINGLETON_DECL(AppInit)
 public:
-    static AppInit *Instance();
     explicit AppInit(QObject *parent = 0);
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event);
-
-private:
-    static QScopedPointer<AppInit> self;
 
 public slots:
     void start();
