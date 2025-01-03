@@ -28,9 +28,17 @@ static bool qwtHasScalablePen( const QPainter *painter )
         scalablePen = !pen.isCosmetic();
         if ( !scalablePen && pen.widthF() == 0.0 )
         {
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
             const QPainter::RenderHints hints = painter->renderHints();
-            if ( hints.testFlag( QPainter::NonCosmeticDefaultPen ) )
+            if ( hints.testFlag( QPainter::NonCosmeticDefaultPen ) ) {
                 scalablePen = true;
+            }
+#else
+            const QPainter::RenderHints hints = painter->renderHints();
+            if ( hints.testFlag( QPainter::NonCosmeticBrushPatterns ) ) {
+                scalablePen = true;
+            }
+#endif
         }
     }
 
@@ -81,9 +89,17 @@ static inline void qwtExecCommand(
                 bool isCosmetic = painter->pen().isCosmetic();
                 if ( isCosmetic && painter->pen().widthF() == 0.0 )
                 {
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
                     QPainter::RenderHints hints = painter->renderHints();
-                    if ( hints.testFlag( QPainter::NonCosmeticDefaultPen ) )
+                    if ( hints.testFlag( QPainter::NonCosmeticDefaultPen ) ) {
                         isCosmetic = false;
+                    }
+#else
+                    QPainter::RenderHints hints = painter->renderHints();
+                    if ( hints.testFlag( QPainter::NonCosmeticBrushPatterns ) ) {
+                        isCosmetic = false;
+                    }
+#endif
                 }
 
                 doMap = !isCosmetic;
@@ -178,12 +194,19 @@ static inline void qwtExecCommand(
 
                 painter->setRenderHint( QPainter::SmoothPixmapTransform,
                     hints.testFlag( QPainter::SmoothPixmapTransform ) );
-
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
                 painter->setRenderHint( QPainter::HighQualityAntialiasing,
                     hints.testFlag( QPainter::HighQualityAntialiasing ) );
 
                 painter->setRenderHint( QPainter::NonCosmeticDefaultPen,
                     hints.testFlag( QPainter::NonCosmeticDefaultPen ) );
+#else
+                painter->setRenderHint( QPainter::TextAntialiasing,
+                    hints.testFlag( QPainter::TextAntialiasing ) );
+
+                painter->setRenderHint( QPainter::NonCosmeticBrushPatterns,
+                    hints.testFlag( QPainter::NonCosmeticBrushPatterns ) );
+#endif
             }
 
             if ( data->flags & QPaintEngine::DirtyCompositionMode)

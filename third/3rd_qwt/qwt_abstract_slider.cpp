@@ -314,12 +314,13 @@ void QwtAbstractSlider::wheelEvent( QWheelEvent *event )
     {
         // one page regardless of delta
         numSteps = d_data->pageSteps;
-        if ( event->delta() < 0 )
+        if ( event->angleDelta().y() < 0.0 ) {
             numSteps = -numSteps;
+        }
     }
     else
     {
-        const int numTurns = ( event->delta() / 120 );
+        const int numTurns = ( event->angleDelta().y() / 120 );
         numSteps = numTurns * d_data->singleSteps;
     }
 

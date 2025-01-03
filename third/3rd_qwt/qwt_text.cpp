@@ -17,7 +17,11 @@
 #include <qbrush.h>
 #include <qpainter.h>
 #include <qapplication.h>
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
 #include <qdesktopwidget.h>
+#else
+#include <QScreen>
+#endif
 #include <qmath.h>
 
 class QwtTextEngineDict
@@ -138,8 +142,8 @@ public:
         borderRadius( 0 ),
         borderPen( Qt::NoPen ),
         backgroundBrush( Qt::NoBrush ),
-        paintAttributes( 0 ),
-        layoutAttributes( 0 ),
+        paintAttributes( PaintAttributeNone ),
+        layoutAttributes( LayoutAttributeNone ),
         textEngine( NULL )
     {
     }
@@ -489,7 +493,12 @@ double QwtText::heightForWidth( double width, const QFont &defaultFont ) const
     // We want to calculate in screen metrics. So
     // we need a font that uses screen metrics
 
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     const QFont font( usedFont( defaultFont ), QApplication::desktop() );
+#else
+    // QScreen *pScreen = QApplication::primaryScreen();
+    const QFont font( usedFont( defaultFont ) );
+#endif
 
     double h = 0;
 
@@ -524,8 +533,11 @@ QSizeF QwtText::textSize( const QFont &defaultFont ) const
 {
     // We want to calculate in screen metrics. So
     // we need a font that uses screen metrics
-
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     const QFont font( usedFont( defaultFont ), QApplication::desktop() );
+#else
+    const QFont font( usedFont( defaultFont ) );
+#endif
 
     if ( !d_layoutCache->textSize.isValid()
         || d_layoutCache->font != font )
@@ -599,8 +611,11 @@ void QwtText::draw( QPainter *painter, const QRectF &rect ) const
     {
         // We want to calculate in screen metrics. So
         // we need a font that uses screen metrics
-
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
         const QFont font( painter->font(), QApplication::desktop() );
+#else
+        const QFont font( painter->font() );
+#endif
 
         double left, right, top, bottom;
         d_data->textEngine->textMargins(

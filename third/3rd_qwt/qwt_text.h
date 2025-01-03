@@ -111,6 +111,7 @@ public:
     */
     enum PaintAttribute
     {
+        PaintAttributeNone = 0x00,
         //! The text has an individual font.
         PaintUsingTextFont = 0x01,
 
@@ -130,6 +131,7 @@ public:
     */
     enum LayoutAttribute
     {
+        LayoutAttributeNone = 0x00,
         /*!
           Layout the text without its margins. This mode is useful if a
           text needs to be aligned accurately, like the tick labels of a scale.

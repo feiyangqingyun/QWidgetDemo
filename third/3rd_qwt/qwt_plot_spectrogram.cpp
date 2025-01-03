@@ -286,7 +286,7 @@ bool QwtPlotSpectrogram::testConrecFlag(
 void QwtPlotSpectrogram::setContourLevels( const QList<double> &levels )
 {
     d_data->contourLevels = levels;
-    qSort( d_data->contourLevels );
+    std::sort( d_data->contourLevels.begin(), d_data->contourLevels.end() );
 
     legendChanged();
     itemChanged();
@@ -449,9 +449,13 @@ QImage QwtPlotSpectrogram::renderImage(
         }
         else
         {
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
             futures += QtConcurrent::run(
                 this, &QwtPlotSpectrogram::renderTile,
                 xMap, yMap, tile, &image );
+#else
+            futures += QtConcurrent::run([&] { renderTile (xMap, yMap, tile, &image );});
+#endif
         }
     }
     for ( int i = 0; i < futures.size(); i++ )
