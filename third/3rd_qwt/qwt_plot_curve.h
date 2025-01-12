@@ -109,6 +109,7 @@ public:
     */
     enum CurveAttribute
     {
+        CurveAttributeNone = 0x00,
         /*!
            For QwtPlotCurve::Steps only.
            Draws a step function from the right to the left.

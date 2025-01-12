@@ -72,7 +72,11 @@ void QwtCounter::initCounter()
 
     QHBoxLayout *layout = new QHBoxLayout( this );
     layout->setSpacing( 0 );
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     layout->setMargin( 0 );
+#else
+    layout->setContentsMargins(0, 0, 0, 0);
+#endif
 
     for ( int i = ButtonCnt - 1; i >= 0; i-- )
     {
@@ -486,7 +490,11 @@ bool QwtCounter::event( QEvent *event )
 {
     if ( event->type() == QEvent::PolishRequest )
     {
+#if (QT_VERSION < QT_VERSION_CHECK(5,11,0))
         const int w = d_data->valueEdit->fontMetrics().width( "W" ) + 8;
+#else
+        const int w = d_data->valueEdit->fontMetrics().horizontalAdvance( "W" ) + 8;
+#endif
         for ( int i = 0; i < ButtonCnt; i++ )
         {
             d_data->buttonDown[i]->setMinimumWidth( w );
@@ -607,8 +615,13 @@ void QwtCounter::wheelEvent( QWheelEvent *event )
 
     for ( int i = 0; i < d_data->numButtons; i++ )
     {
+#if (QT_VERSION < QT_VERSION_CHECK(5,15,0))
         if ( d_data->buttonDown[i]->geometry().contains( event->pos() ) ||
             d_data->buttonUp[i]->geometry().contains( event->pos() ) )
+#else
+        if ( d_data->buttonDown[i]->geometry().contains( event->position().toPoint() ) ||
+            d_data->buttonUp[i]->geometry().contains( event->position().toPoint() ) )
+#endif
         {
             increment = d_data->increment[i];
         }
@@ -617,7 +630,8 @@ void QwtCounter::wheelEvent( QWheelEvent *event )
     const int wheel_delta = 120;
 
 #if 1
-    int delta = event->delta();
+    int delta = event->angleDelta().y();
+    
     if ( delta >= 2 * wheel_delta )
         delta /= 2; // Never saw an abs(delta) < 240
 #endif
@@ -769,7 +783,11 @@ QSize QwtCounter::sizeHint() const
     tmp.fill( '9', w );
 
     QFontMetrics fm( d_data->valueEdit->font() );
+#if (QT_VERSION < QT_VERSION_CHECK(5,11,0))
     w = fm.width( tmp ) + 2;
+#else
+    w = fm.horizontalAdvance( tmp ) + 2;
+#endif
     if ( d_data->valueEdit->hasFrame() )
         w += 2 * style()->pixelMetric( QStyle::PM_DefaultFrameWidth );
 

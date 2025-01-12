@@ -26,7 +26,11 @@
 #include <qstyleoption.h>
 #include <qpaintengine.h>
 #include <qapplication.h>
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
 #include <qdesktopwidget.h>
+#else
+#include <QScreen>
+#endif
 #include <qpainterpath.h>
 
 #if QT_VERSION >= 0x050000
@@ -104,12 +108,19 @@ static inline QSize qwtScreenResolution()
     static QSize screenResolution;
     if ( !screenResolution.isValid() )
     {
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
         QDesktopWidget *desktop = QApplication::desktop();
-        if ( desktop )
-        {
+        if ( desktop ) {
             screenResolution.setWidth( desktop->logicalDpiX() );
             screenResolution.setHeight( desktop->logicalDpiY() );
+        }        
+#else
+        QScreen *desktop = QGuiApplication::primaryScreen();
+        if ( desktop ) {
+            screenResolution.setWidth( desktop->geometry().width() );
+            screenResolution.setHeight( desktop->geometry().height() );
         }
+#endif
     }
 
     return screenResolution;
@@ -126,10 +137,16 @@ static inline void qwtUnscaleFont( QPainter *painter )
     if ( pd->logicalDpiX() != screenResolution.width() ||
         pd->logicalDpiY() != screenResolution.height() )
     {
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
         QFont pixelFont( painter->font(), QApplication::desktop() );
         pixelFont.setPixelSize( QFontInfo( pixelFont ).pixelSize() );
-
         painter->setFont( pixelFont );
+#else
+        // QScreen *pScreen = QApplication::primaryScreen();
+        QFont pixelFont( painter->font() );
+        pixelFont.setPixelSize( QFontInfo( pixelFont ).pixelSize() );
+        painter->setFont( pixelFont );
+#endif
     }
 }
 
@@ -699,7 +716,7 @@ void QwtPainter::drawFocusRect( QPainter *painter, const QWidget *widget,
     const QRect &rect )
 {
     QStyleOptionFocusRect opt;
-    opt.init( widget );
+    opt.initFrom( widget );
     opt.rect = rect;
     opt.state |= QStyle::State_HasFocus;
     opt.backgroundColor = widget->palette().color( widget->backgroundRole() );

@@ -234,7 +234,7 @@ void QwtThermo::paintEvent( QPaintEvent *event )
     painter.setClipRegion( event->region() );
 
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 
     const QRect tRect = pipeRect();
@@ -559,10 +559,11 @@ void QwtThermo::drawLiquid(
 
         QVector<double> values = qwtTickList( scaleDraw()->scaleDiv() );
 
-        if ( scaleMap.isInverting() )
-            qSort( values.begin(), values.end(), qGreater<double>() );
-        else
-            qSort( values.begin(), values.end(), qLess<double>() );
+        if ( scaleMap.isInverting() ) {
+            std::sort(values.begin(), values.end(), std::greater<double>());
+        } else {
+            std::sort(values.begin(), values.end(), std::less<double>());
+        }
 
         int from;
         if ( !values.isEmpty() )
@@ -875,8 +876,11 @@ QSize QwtThermo::minimumSizeHint() const
     h += 2 * d_data->borderWidth;
 
     // finally add the margins
-    int left, right, top, bottom;
-    getContentsMargins( &left, &top, &right, &bottom );
+    QMargins margins = contentsMargins();
+    int left = margins.left();
+    int top = margins.top();
+    int right = margins.right();
+    int bottom = margins.bottom();
     w += left + right;
     h += top + bottom;
 

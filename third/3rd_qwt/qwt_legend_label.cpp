@@ -27,7 +27,7 @@ static const int Margin = 2;
 static QSize buttonShift( const QwtLegendLabel *w )
 {
     QStyleOption option;
-    option.init( w );
+    option.initFrom( w );
 
     const int ph = w->style()->pixelMetric(
         QStyle::PM_ButtonShiftHorizontal, &option, w );
@@ -277,7 +277,12 @@ QSize QwtLegendLabel::sizeHint() const
     if ( d_data->itemMode != QwtLegendData::ReadOnly )
     {
         sz += buttonShift( this );
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
         sz = sz.expandedTo( QApplication::globalStrut() );
+#else
+        QScreen *screen = QGuiApplication::primaryScreen();
+        sz = sz.expandedTo( screen->availableSize() );
+#endif
     }
 
     return sz;
