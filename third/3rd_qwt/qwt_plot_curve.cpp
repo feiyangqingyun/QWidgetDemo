@@ -66,10 +66,10 @@ public:
         style( QwtPlotCurve::Lines ),
         baseline( 0.0 ),
         symbol( NULL ),
-        attributes( 0 ),
+        attributes( CurveAttributeNone ),
         paintAttributes(
             QwtPlotCurve::ClipPolygons | QwtPlotCurve::FilterPoints ),
-        legendAttributes( 0 )
+        legendAttributes( LegendNoAttribute )
     {
         pen = QPen( Qt::black );
         curveFitter = new QwtSplineCurveFitter;

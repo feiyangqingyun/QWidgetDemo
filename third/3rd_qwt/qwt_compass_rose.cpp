@@ -20,8 +20,13 @@ static QPointF qwtIntersection(
     const QLineF line2( p21, p22 );
 
     QPointF pos;
-    if ( line1.intersect( line2, &pos ) == QLineF::NoIntersection )
+#if (QT_VERSION < QT_VERSION_CHECK(5,14,0))
+    if ( line1.intersect( line2, &pos ) == QLineF::NoIntersection ) {
+#else
+    if ( line1.intersects( line2, &pos ) == QLineF::NoIntersection ) {
+#endif
         return QPointF();
+    }
 
     return pos;
 }

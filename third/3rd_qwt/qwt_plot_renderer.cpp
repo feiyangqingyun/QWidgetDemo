@@ -100,8 +100,9 @@ static QPainterPath qwtCanvasClip(
 static inline QFont qwtResolvedFont( const QWidget *widget )
 {
     QFont font = widget->font();
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
     font.resolve( QFont::AllPropertiesResolved );
-
+#endif
     return font;
 }
 
@@ -292,7 +293,7 @@ void QwtPlotRenderer::renderDocument( QwtPlot *plot,
 
 #if QWT_PDF_WRITER
         QPdfWriter pdfWriter( fileName );
-        pdfWriter.setPageSizeMM( sizeMM );
+        pdfWriter.setPageSize(QPageSize(sizeMM, QPageSize::Millimeter) );
         pdfWriter.setTitle( title );
         pdfWriter.setPageMargins( QMarginsF() );
         pdfWriter.setResolution( resolution );
@@ -486,8 +487,11 @@ void QwtPlotRenderer::render( QwtPlot *plot,
     {
         // subtract the contents margins
 
-        int left, top, right, bottom;
-        plot->getContentsMargins( &left, &top, &right, &bottom );
+        QMargins margins = plot->contentsMargins();
+        int left = margins.left();
+        int top = margins.top();
+        int right = margins.right();
+        int bottom = margins.bottom();
         layoutRect.adjust( left, top, -right, -bottom );
     }
 

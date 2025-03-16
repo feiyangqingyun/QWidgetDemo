@@ -91,7 +91,7 @@ void QwtScaleWidget::initScale( QwtScaleDraw::Alignment align )
 {
     d_data = new PrivateData;
 
-    d_data->layoutFlags = 0;
+    d_data->layoutFlags = TitleNone;
     if ( align == QwtScaleDraw::RightScale )
         d_data->layoutFlags |= TitleInverted;
 
@@ -417,7 +417,7 @@ void QwtScaleWidget::paintEvent( QPaintEvent *event )
     painter.setClipRegion( event->region() );
 
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 
     draw( &painter );
@@ -720,8 +720,11 @@ QSize QwtScaleWidget::minimumSizeHint() const
     if ( o == Qt::Vertical )
         size.transpose();
 
-    int left, right, top, bottom;
-    getContentsMargins( &left, &top, &right, &bottom );
+    QMargins margins = contentsMargins();
+    int left = margins.left();
+    int top = margins.top();
+    int right = margins.right();
+    int bottom = margins.bottom();
     return size + QSize( left + right, top + bottom );
 }
 

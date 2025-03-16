@@ -32,6 +32,7 @@ public:
      */
     enum Option
     {
+        OptionNone = 0x00,
         //! Unused
         AlignScales = 0x01,
 
@@ -81,7 +82,7 @@ public:
     virtual QSize minimumSizeHint( const QwtPlot * ) const;
 
     virtual void activate( const QwtPlot *,
-        const QRectF &plotRect, Options options = 0x00 );
+        const QRectF &plotRect, Options options = OptionNone );
 
     virtual void invalidate();
 
