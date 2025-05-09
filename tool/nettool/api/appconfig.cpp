@@ -11,7 +11,7 @@ bool AppConfig::DebugTcpClient = false;
 bool AppConfig::AutoSendTcpClient = false;
 int AppConfig::IntervalTcpClient = 1000;
 QString AppConfig::TcpBindIP = "127.0.0.1";
-int AppConfig::TcpBindPort = 6001;
+int AppConfig::TcpBindPort = 0;
 QString AppConfig::TcpServerIP = "127.0.0.1";
 int AppConfig::TcpServerPort = 6000;
 

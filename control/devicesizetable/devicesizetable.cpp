@@ -64,7 +64,7 @@ void DeviceSizeTable::readData()
 #if defined(Q_OS_UNIX) && !defined(Q_OS_WASM)
     while (!process->atEnd()) {
         QString result = QLatin1String(process->readLine());
-#ifdef __arm__
+#if defined(__arm__) || defined(__aarch64__)
         if (result.startsWith("/dev/root")) {
             checkSize(result, "本地存储");
         } else if (result.startsWith("/dev/mmcblk")) {

@@ -14,9 +14,9 @@
  * 9. 支持设置对应的菜单标识比如默认的通道字样改成设备。
  */
 
-#include <QObject>
 #include <QWidget>
 #include <QMap>
+#include <QDateTime>
 
 class QMenu;
 class QWidget;
@@ -34,16 +34,33 @@ class VideoBox : public QObject
 public:
     explicit VideoBox(QObject *parent = 0);
 
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
+
 private:
+    //是否最大化
+    bool isMax;
     //最大通道数量
     int maxCount;
+    //最后按下时间
+    QDateTime pressedTime;
+
+    //当前布局大类
+    int type;
     //当前布局类型
     QString layoutType;
 
+    //右键菜单对象
+    QMenu *menu;
     //表格布局存放通道
     QGridLayout *gridLayout;
-    //视频控件集合
+    //布局窗体集合
     QWidgetList widgets;
+    //布局子窗体集合
+    QWidgetList widgets2;
+
+    //父类名
+    QString parentName;
 
     //主菜单子菜单文字标识
     QString menuFlag;
@@ -53,7 +70,7 @@ private:
     QList<bool> visibles;
 
     //布局方案标识集合
-    QMap<QString, QStringList> types;
+    QMap<QString, QStringList> types;    
     void addMenu(QMenu *menu, const QString &type);
 
 private:
@@ -64,7 +81,7 @@ private:
     //设置可见
     void change_layout_visible(int start, int end);
 
-    //异形布局(l表示右侧底部环绕布局/o表示上下左右环绕布局)
+    //异形布局/l表示右侧底部环绕布局/o表示上下左右环绕布局
     void change_layout_l(const QList<int> &indexs);
     void change_layout_o(const QList<int> &indexs);
 
@@ -73,9 +90,10 @@ public:
     QString getLayoutType() const;
     void setLayoutType(const QString &layoutType);
 
-    //获取和设置视频控件集合
+    //获取和设置窗体集合
     QWidgetList getWidgets() const;
-    void setWidgets(QWidgetList widgets);
+    //如果需要处理的窗体和父窗体是一起则两个参数值填一样
+    void setWidgets(QWidgetList widgets, QWidgetList widgets2);
 
     //设置表格布局
     void setLayout(QGridLayout *gridLayout);
@@ -84,11 +102,15 @@ public:
     void setMenuFlag(const QString &menuFlag);
     void setActionFlag(const QString &actionFlag);
 
+    //设置父类名
+    void setParentName(const QString &parentName);
+
     //设置子菜单可见
     void setVisibles(const QList<bool> &visibles);
 
-    //添加行列布局(必须在initMenu前调用)
+    //添加行列布局/必须在initMenu前调用
     void appendType(int index, int row, int column);
+
     //初始化菜单
     void initMenu(QMenu *menu);
 
@@ -124,8 +146,10 @@ public Q_SLOTS:
     void change_layout_64(int index);
 
 Q_SIGNALS:
-    //画面布局切换信号
-    void changeLayout(int type, const QString &layoutType, bool max);
+    //选中通道
+    void widgetSelected(QWidget *widget);
+    //布局切换
+    void layoutChanged(int type, const QString &layoutType, bool isMax);
 };
 
 #endif // VIDEOBOX_H

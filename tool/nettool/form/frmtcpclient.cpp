@@ -210,7 +210,9 @@ void frmTcpClient::on_btnConnect_clicked()
         //提示 The bound address is already in use
         //参考 https://www.cnblogs.com/baiduboy/p/7426822.html
 #if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
-        //socket->bind(QHostAddress(AppConfig::TcpBindIP), AppConfig::TcpBindPort);
+        if (AppConfig::TcpBindPort > 0) {
+            socket->bind(QHostAddress(AppConfig::TcpBindIP), AppConfig::TcpBindPort);
+        }
 #endif
         //连接服务器
         socket->connectToHost(AppConfig::TcpServerIP, AppConfig::TcpServerPort);

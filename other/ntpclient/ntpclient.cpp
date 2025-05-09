@@ -92,7 +92,7 @@ void NtpClient::readData()
     dateTime.setTime_t(secs);
 #endif
 
-#ifdef __arm__
+#if defined(__arm__) || defined(__aarch64__)
 #ifdef arma9
     dateTime = dateTime.addSecs(8 * 60 * 60);
 #endif

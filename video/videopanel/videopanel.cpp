@@ -17,32 +17,6 @@ VideoPanel::VideoPanel(QWidget *parent) : QWidget(parent)
     QTimer::singleShot(1000, this, SLOT(playAll()));
 }
 
-bool VideoPanel::eventFilter(QObject *watched, QEvent *event)
-{
-    int type = event->type();
-    if (type == QEvent::MouseButtonDblClick) {
-        QLabel *widget = (QLabel *) watched;
-        if (!videoMax) {
-            videoMax = true;
-            videoBox->hide_all();
-            gridLayout->addWidget(widget, 0, 0);
-            widget->setVisible(true);
-        } else {
-            videoMax = false;
-            videoBox->show_all();
-        }
-
-        widget->setFocus();
-    } else if (type == QEvent::MouseButtonPress) {
-        QMouseEvent *mouseEvent = (QMouseEvent *)event;
-        if (mouseEvent->button() == Qt::RightButton) {
-            videoMenu->exec(QCursor::pos());
-        }
-    }
-
-    return QWidget::eventFilter(watched, event);
-}
-
 QSize VideoPanel::sizeHint() const
 {
     return QSize(800, 600);
@@ -72,14 +46,12 @@ void VideoPanel::initForm()
     this->setStyleSheet(qss.join(""));
 #endif
 
-    videoMax = false;
     videoCount = 64;
     layoutType = "1_16";
 
     for (int i = 0; i < videoCount; ++i) {
         QLabel *widget = new QLabel;
         widget->setObjectName(QString("video%1").arg(i + 1));
-        widget->installEventFilter(this);
         widget->setFocusPolicy(Qt::StrongFocus);
         widget->setAlignment(Qt::AlignCenter);
         widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -116,7 +88,7 @@ void VideoPanel::initMenu()
     videoBox->initMenu(videoMenu);
     videoBox->setLayoutType(layoutType);
     videoBox->setLayout(gridLayout);
-    videoBox->setWidgets(widgets);
+    videoBox->setWidgets(widgets, widgets);
     videoBox->show_all();
 }
 

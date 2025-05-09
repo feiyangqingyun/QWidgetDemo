@@ -204,7 +204,7 @@ void frmUdpServer::sendData(const QString &ip, int port, const QString &data)
 void frmUdpServer::on_btnListen_clicked()
 {
     if (ui->btnListen->text() == "监听") {
-        bool ok = socket->bind(QHostAddress(AppConfig::UdpListenIP), AppConfig::UdpListenPort);
+        bool ok = socket->bind(QHostAddress(AppConfig::UdpListenIP), AppConfig::UdpListenPort,QUdpSocket::ShareAddress);
         if (ok) {
             append(2, "监听成功");
             ui->btnListen->setText("关闭");

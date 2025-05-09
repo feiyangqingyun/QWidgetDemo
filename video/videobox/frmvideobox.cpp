@@ -21,44 +21,13 @@ frmVideoBox::~frmVideoBox()
     delete ui;
 }
 
-bool frmVideoBox::eventFilter(QObject *watched, QEvent *event)
-{
-    if (event->type() == QEvent::MouseButtonDblClick) {
-        //双击最大化再次双击还原
-        QLabel *widget = (QLabel *) watched;
-        if (!max) {
-            max = true;
-            box->hide_all();
-            ui->gridLayout->addWidget(widget, 0, 0);
-            widget->setVisible(true);
-        } else {
-            max = false;
-            box->show_all();
-        }
-
-        return true;
-    } else if (event->type() == QEvent::MouseButtonPress) {
-        //鼠标右键的地方弹出菜单
-        if (qApp->mouseButtons() == Qt::RightButton) {
-            menu->exec(QCursor::pos());
-        }
-    }
-
-    return QWidget::eventFilter(watched, event);
-}
-
 void frmVideoBox::initForm()
 {
-    max = false;
-    //安装事件过滤器
-    this->installEventFilter(this);
-
     //实例化子对象
     QWidgetList widgets;
     for (int i = 0; i < 64; ++i) {
         //这里用QLabel做演示可以改成自己的窗体类比如视频监控窗体
         QLabel *label = new QLabel;
-        label->installEventFilter(this);
         label->setFrameShape(QLabel::Box);
         label->setAlignment(Qt::AlignCenter);
         label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -69,11 +38,11 @@ void frmVideoBox::initForm()
     //实例化盒子
     box = new VideoBox(this);
     //关联信号槽
-    connect(box, SIGNAL(changeLayout(int, QString, bool)), this, SLOT(changeLayout(int, QString, bool)));
+    connect(box, SIGNAL(layoutChanged(int,QString,bool)), this, SLOT(layoutChanged(int, QString, bool)));
     //可以改成 1_4/5_8/1_36 等
     box->setLayoutType("1_16");
     box->setLayout(ui->gridLayout);
-    box->setWidgets(widgets);
+    box->setWidgets(widgets, widgets);
 
     //box->setMenuFlag("排列");
     //box->setActionFlag("监控");
@@ -99,8 +68,8 @@ void frmVideoBox::doAction()
     ui->label->setText(QString("触发了菜单： %1").arg(action->text()));
 }
 
-void frmVideoBox::changeLayout(int type, const QString &videoType, bool videoMax)
+void frmVideoBox::layoutChanged(int type, const QString &layoutType, bool isMax)
 {
-    QString info = QString("主菜单：%1  子菜单：%2").arg(type).arg(videoType);
+    QString info = QString("主菜单：%1  子菜单：%2  最大化: %3").arg(type).arg(layoutType).arg(isMax ? "是" : "否");
     ui->label->setText(info);
 }

@@ -1,6 +1,8 @@
 ﻿#pragma execution_character_set("utf-8")
 
 #include "videobox.h"
+#include "qapplication.h"
+#include "qevent.h"
 #include "qmenu.h"
 #include "qaction.h"
 #include "qgridlayout.h"
@@ -8,18 +10,22 @@
 
 VideoBox::VideoBox(QObject *parent) : QObject(parent)
 {
+    isMax = false;
     maxCount = 64;
+
+    type = 16;
     layoutType = "1_16";
+
+    menu = NULL;
     gridLayout = NULL;
 
     menuFlag = "画面";
     actionFlag = "通道";
 
-    //通过这里设置好数据下面只需要循环添加和判断就行(灵活性大大增强/只需要这里改动下就行)
-
+    //通过这里设置好数据/下面只需要循环添加和判断就行/灵活性大大增强/只需要这里改动下就行
     //自定义x布局/按照行列数生成/可以通过appendtype函数添加其他类型
-    //1_2x4表示通道1开始2x4行列布局画面(相当于通道1-8按照2行4列排列)
-    //9_2x4表示通道9开始2x4行列布局画面(相当于通道9-16按照2行4列排列)
+    //1_2x4表示通道1开始/2x4行列布局画面/相当于通道1-8按照2行4列排列
+    //9_2x4表示通道9开始/2x4行列布局画面/相当于通道9-16按照2行4列排列
     types.insert("x", QStringList() << "1_1x1" << "1_4x1" << "1_2x4" << "9_2x4" << "1_3x2" << "1_4x2" << "1_5x2" << "1_6x2" << "1_7x2" << "1_8x2");
 
     //自定义y布局/主要是一些用户定义的不规则的排列布局/加个y用于区分其他布局/可能有雷同
@@ -41,6 +47,58 @@ VideoBox::VideoBox(QObject *parent) : QObject(parent)
     for (int i = 0; i < count; ++i) {
         visibles << true;
     }
+}
+
+bool VideoBox::eventFilter(QObject *watched, QEvent *event)
+{
+    if (event->type() == QEvent::FocusIn) {
+        QWidget *widget = (QWidget *) watched;
+        Q_EMIT widgetSelected(widget);
+    } else if (event->type() == QEvent::MouseButtonDblClick) {
+        //有些情况是要对控件的父窗体进行处理
+        QWidget *widget = (QWidget *) watched;
+        if (widget->parent()->inherits(parentName.toUtf8().constData())) {
+            widget = (QWidget *)widget->parent();
+        }
+
+        //双击最大化再次双击还原
+        if (!isMax) {
+            isMax = true;
+            this->hide_all();
+            this->gridLayout->addWidget(widget, 0, 0);
+            widget->setVisible(true);
+        } else {
+            isMax = false;
+            this->show_all();
+        }
+
+        //获取焦点
+        int index = widgets.indexOf(widget);
+        if (index >= 0) {
+            widgets2.at(index)->setFocus();
+        }
+
+        //通知布局发生了变化
+        Q_EMIT layoutChanged(type, layoutType, isMax);
+        return true;
+    } else if (event->type() == QEvent::MouseButtonPress) {
+        //鼠标右键的地方弹出菜单
+        pressedTime = QDateTime::currentDateTime();
+        if (menu && qApp->mouseButtons() == Qt::RightButton) {
+            menu->exec(QCursor::pos());
+        }
+    } else if (event->type() == QEvent::MouseButtonRelease) {
+#ifdef Q_OS_ANDROID
+        //长按弹出菜单
+        int offset = pressedTime.msecsTo(QDateTime::currentDateTime());
+        if (menu && offset >= 1000) {
+            menu->exec(QCursor::pos());
+            return true;
+        }
+#endif
+    }
+
+    return QObject::eventFilter(watched, event);
 }
 
 void VideoBox::addMenu(QMenu *menu, const QString &type)
@@ -228,10 +286,14 @@ QWidgetList VideoBox::getWidgets() const
     return this->widgets;
 }
 
-void VideoBox::setWidgets(QWidgetList widgets)
+void VideoBox::setWidgets(QWidgetList widgets, QWidgetList widgets2)
 {
     this->widgets = widgets;
+    this->widgets2 = widgets2;
     this->maxCount = widgets.count();
+    foreach (QWidget *widget, widgets2) {
+        widget->installEventFilter(this);
+    }
 }
 
 void VideoBox::setLayout(QGridLayout *gridLayout)
@@ -247,6 +309,11 @@ void VideoBox::setMenuFlag(const QString &menuFlag)
 void VideoBox::setActionFlag(const QString &actionFlag)
 {
     this->actionFlag = actionFlag;
+}
+
+void VideoBox::setParentName(const QString &parentName)
+{
+    this->parentName = parentName;
 }
 
 void VideoBox::setVisibles(const QList<bool> &visibles)
@@ -279,40 +346,47 @@ void VideoBox::appendType(int index, int row, int column)
 
 void VideoBox::initMenu(QMenu *menu)
 {
+    //为空则主动创建一个菜单
+    if (!menu) {
+        this->menu = new QMenu((QWidget *)this->parent());
+    } else {
+        this->menu = menu;
+    }
+
     //约定依次是按照顺序控制启用状态
     int count = visibles.count();
     if (count > 0 && visibles.at(0)) {
-        addMenu(menu, "x");
+        addMenu(this->menu, "x");
     }
     if (count > 1 && visibles.at(1)) {
-        addMenu(menu, "y");
+        addMenu(this->menu, "y");
     }
     if (count > 2 && visibles.at(2)) {
-        addMenu(menu, "4");
+        addMenu(this->menu, "4");
     }
     if (count > 3 && visibles.at(3)) {
-        addMenu(menu, "6");
+        addMenu(this->menu, "6");
     }
     if (count > 4 && visibles.at(4)) {
-        addMenu(menu, "8");
+        addMenu(this->menu, "8");
     }
     if (count > 5 && visibles.at(5)) {
-        addMenu(menu, "9");
+        addMenu(this->menu, "9");
     }
     if (count > 6 && visibles.at(6)) {
-        addMenu(menu, "13");
+        addMenu(this->menu, "13");
     }
     if (count > 7 && visibles.at(7)) {
-        addMenu(menu, "16");
+        addMenu(this->menu, "16");
     }
     if (count > 8 && visibles.at(8)) {
-        addMenu(menu, "25");
+        addMenu(this->menu, "25");
     }
     if (count > 9 && visibles.at(9)) {
-        addMenu(menu, "36");
+        addMenu(this->menu, "36");
     }
     if (count > 10 && visibles.at(10)) {
-        addMenu(menu, "64");
+        addMenu(this->menu, "64");
     }
 }
 
@@ -420,7 +494,9 @@ void VideoBox::change_layout(int type, int index)
         change_layout_64(index);
     }
 
-    Q_EMIT changeLayout(type, layoutType, false);
+    this->type = type;
+    this->isMax = false;
+    Q_EMIT layoutChanged(type, layoutType, isMax);
 }
 
 void VideoBox::change_layout_y_1_2(int index)

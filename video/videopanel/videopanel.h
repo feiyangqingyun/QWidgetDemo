@@ -29,11 +29,7 @@ class VideoPanel : public QWidget
 public:
     explicit VideoPanel(QWidget *parent = 0);
 
-protected:
-    bool eventFilter(QObject *watched, QEvent *event);
-
 private:
-    bool videoMax;              //是否最大化
     int videoCount;             //最大通道数
     QString layoutType;         //当前画面类型
     QMenu *videoMenu;           //右键菜单

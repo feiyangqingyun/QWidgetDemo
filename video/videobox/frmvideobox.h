@@ -17,22 +17,16 @@ public:
     explicit frmVideoBox(QWidget *parent = 0);
     ~frmVideoBox();
 
-protected:
-    bool eventFilter(QObject *watched, QEvent *event);
-
 private:
     Ui::frmVideoBox *ui;
 
-    bool max;
     QMenu *menu;
     VideoBox *box;
 
 private slots:
     void initForm();
     void doAction();
-
-    //画面布局切换信号
-    void changeLayout(int type, const QString &videoType, bool videoMax);
+    void layoutChanged(int type, const QString &layoutType, bool isMax);
 };
 
 #endif // FRMVIDEOBOX_H
