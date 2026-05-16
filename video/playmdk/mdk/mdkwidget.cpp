@@ -1,4 +1,5 @@
 ﻿#include "mdkwidget.h"
+#include "qdebug.h"
 
 MdkWidget::MdkWidget(QWidget *parent): OpenGLWidget(parent)
 {

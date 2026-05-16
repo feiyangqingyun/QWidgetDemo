@@ -15,7 +15,7 @@ IPAddress::IPAddress(QWidget *parent) : QWidget(parent)
     borderColor = "#A6B5B8";
     borderRadius = 3;
 
-    //用于显示小圆点的标签,居中对齐
+    //用于显示小圆点的标签/居中对齐
     labDot1 = new QLabel;
     labDot1->setAlignment(Qt::AlignCenter);
     labDot1->setText(".");
@@ -28,7 +28,7 @@ IPAddress::IPAddress(QWidget *parent) : QWidget(parent)
     labDot3->setAlignment(Qt::AlignCenter);
     labDot3->setText(".");
 
-    //用于输入IP地址的文本框,居中对齐
+    //用于输入IP地址的文本框/居中对齐
     txtIP1 = new QLineEdit;
     txtIP1->setObjectName("txtIP1");
     txtIP1->setAlignment(Qt::AlignCenter);
@@ -69,22 +69,14 @@ IPAddress::IPAddress(QWidget *parent) : QWidget(parent)
     txtIP3->setValidator(validator);
     txtIP4->setValidator(validator);
 
-    //绑定事件过滤器,识别键盘按下
+    //绑定事件过滤器/识别键盘按下
     txtIP1->installEventFilter(this);
     txtIP2->installEventFilter(this);
     txtIP3->installEventFilter(this);
     txtIP4->installEventFilter(this);
 
-    QFrame *frame = new QFrame;
+    frame = new QFrame;
     frame->setObjectName("frameIP");
-
-    QStringList qss;
-    qss.append(QString("QFrame#frameIP{border:1px solid %1;border-radius:%2px;}").arg(borderColor).arg(borderRadius));
-    qss.append(QString("QLabel{min-width:15px;background-color:%1;}").arg(bgColor));
-    qss.append(QString("QLineEdit{background-color:%1;border:none;}").arg(bgColor));
-    qss.append(QString("QLineEdit#txtIP1{border-top-left-radius:%1px;border-bottom-left-radius:%1px;}").arg(borderRadius));
-    qss.append(QString("QLineEdit#txtIP4{border-top-right-radius:%1px;border-bottom-right-radius:%1px;}").arg(borderRadius));
-    frame->setStyleSheet(qss.join(""));
 
     QVBoxLayout *verticalLayout = new QVBoxLayout(this);
     verticalLayout->setContentsMargins(0, 0, 0, 0);
@@ -102,6 +94,8 @@ IPAddress::IPAddress(QWidget *parent) : QWidget(parent)
     layout->addWidget(txtIP3);
     layout->addWidget(labDot3);
     layout->addWidget(txtIP4);
+
+    this->initStyle();
 }
 
 bool IPAddress::eventFilter(QObject *watched, QEvent *event)
@@ -111,12 +105,12 @@ bool IPAddress::eventFilter(QObject *watched, QEvent *event)
         if (txt == txtIP1 || txt == txtIP2 || txt == txtIP3 || txt == txtIP4) {
             QKeyEvent *key = (QKeyEvent *)event;
 
-            //如果当前按下了小数点则移动焦点到下一个输入框
+            //如果当前按下了小数点/则移动焦点到下一个输入框
             if (key->text() == ".") {
                 this->focusNextChild();
             }
 
-            //如果按下了退格键并且当前文本框已经没有了内容则焦点往前移
+            //如果按下了退格键/并且当前文本框已经没有了内容/则焦点往前移
             if (key->key() == Qt::Key_Backspace) {
                 if (txt->text().length() <= 1) {
                     this->focusNextPrevChild(false);
@@ -128,12 +122,23 @@ bool IPAddress::eventFilter(QObject *watched, QEvent *event)
     return QWidget::eventFilter(watched, event);
 }
 
+void IPAddress::initStyle()
+{
+    QStringList qss;
+    qss << QString("QFrame#frameIP{border:1px solid %1;border-radius:%2px;}").arg(borderColor).arg(borderRadius);
+    qss << QString("QLabel{min-width:15px;background-color:%1;}").arg(bgColor);
+    qss << QString("QLineEdit{background-color:%1;border:none;}").arg(bgColor);
+    qss << QString("QLineEdit#txtIP1{border-top-left-radius:%1px;border-bottom-left-radius:%1px;}").arg(borderRadius);
+    qss << QString("QLineEdit#txtIP4{border-top-right-radius:%1px;border-bottom-right-radius:%1px;}").arg(borderRadius);
+    frame->setStyleSheet(qss.join(""));
+}
+
 void IPAddress::textChanged(const QString &text)
 {
     int len = text.length();
     int value = text.toInt();
 
-    //判断当前是否输入完成一个网段,是的话则自动移动到下一个输入框
+    //判断当前是否输入完成一个网段/是的话则自动移动到下一个输入框
     if (len == 3) {
         if (value >= 100 && value <= 255) {
             this->focusNextChild();
@@ -192,6 +197,7 @@ void IPAddress::setBgColor(const QString &bgColor)
 {
     if (this->bgColor != bgColor) {
         this->bgColor = bgColor;
+        this->initStyle();
     }
 }
 
@@ -199,6 +205,7 @@ void IPAddress::setBorderColor(const QString &borderColor)
 {
     if (this->borderColor != borderColor) {
         this->borderColor = borderColor;
+        this->initStyle();
     }
 }
 
@@ -206,5 +213,6 @@ void IPAddress::setBorderRadius(int borderRadius)
 {
     if (this->borderRadius != borderRadius) {
         this->borderRadius = borderRadius;
+        this->initStyle();
     }
 }

@@ -61,7 +61,7 @@
   <customwidget>
    <class>FFmpegWidget</class>
    <extends>QWidget</extends>
-   <header>ffmpeg.h</header>
+   <header>ffmpegwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

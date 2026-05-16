@@ -12,7 +12,7 @@
  */
 
 #include <QWidget>
-
+class QFrame;
 class QLabel;
 class QLineEdit;
 
@@ -34,6 +34,7 @@ protected:
     bool eventFilter(QObject *watched, QEvent *event);
 
 private:
+    QFrame *frame;      //外框
     QLabel *labDot1;    //第一个小圆点
     QLabel *labDot2;    //第二个小圆点
     QLabel *labDot3;    //第三个小圆点
@@ -49,6 +50,7 @@ private:
     int borderRadius;   //边框圆角角度
 
 private slots:
+    void initStyle();
     void textChanged(const QString &text);
 
 public:

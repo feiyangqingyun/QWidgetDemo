@@ -1,8 +1,8 @@
 ﻿#pragma execution_character_set("utf-8")
 #include "widget.h"
 #include "ui_widget.h"
-#include "qfiledialog.h"
 #include "qlineedit.h"
+#include "qfiledialog.h"
 
 Widget::Widget(QWidget *parent) : QWidget(parent), ui(new Ui::Widget)
 {

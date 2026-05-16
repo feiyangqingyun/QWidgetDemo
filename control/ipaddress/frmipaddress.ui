@@ -23,6 +23,9 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
+    <property name="spacing">
+     <number>6</number>
+    </property>
     <item row="0" column="0" colspan="3">
      <widget class="IPAddress" name="widgetIP" native="true"/>
     </item>

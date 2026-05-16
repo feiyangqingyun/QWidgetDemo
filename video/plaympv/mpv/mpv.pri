@@ -22,7 +22,11 @@ INCLUDEPATH += $$PWD/$$path_main/include
 #链接库文件
 LIBS += -L$$PWD/$$path_main/$$path_lib -llibmpv
 
-HEADERS += $$PWD/mpvinclude.h
 HEADERS += $$PWD/mpvtool.h
-HEADERS += $$PWD/mpv.h
-SOURCES += $$PWD/mpv.cpp
+HEADERS += $$PWD/mpvinclude.h
+
+HEADERS += $$PWD/mpvthread.h
+SOURCES += $$PWD/mpvthread.cpp
+
+HEADERS += $$PWD/mpvwidget.h
+SOURCES += $$PWD/mpvwidget.cpp

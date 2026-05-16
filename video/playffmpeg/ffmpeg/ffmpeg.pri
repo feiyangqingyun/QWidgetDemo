@@ -18,5 +18,9 @@ INCLUDEPATH += $$PWD/$$path_main/include
 LIBS += -L$$PWD/$$path_main/$$path_lib/ -lavformat -lavfilter -lavcodec -lswresample -lswscale -lavutil
 
 HEADERS += $$PWD/ffmpeginclude.h
-HEADERS += $$PWD/ffmpeg.h
-SOURCES += $$PWD/ffmpeg.cpp
+
+HEADERS += $$PWD/ffmpegthread.h
+SOURCES += $$PWD/ffmpegthread.cpp
+
+HEADERS += $$PWD/ffmpegwidget.h
+SOURCES += $$PWD/ffmpegwidget.cpp

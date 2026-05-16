@@ -1,4 +1,6 @@
-﻿#include "ffmpeg.h"
+﻿#include "ffmpegthread.h"
+#include "qmutex.h"
+#include "qdebug.h"
 
 FFmpegThread::FFmpegThread(QObject *parent) : QThread(parent)
 {
@@ -79,7 +81,6 @@ bool FFmpegThread::init()
 
     //打开视频流
     formatCtx = avformat_alloc_context();
-
     int result = avformat_open_input(&formatCtx, url.toStdString().data(), NULL, &options);
     if (result < 0) {
         qDebug() << TIMEMS << "open input error" << url;
@@ -118,8 +119,7 @@ bool FFmpegThread::init()
             return false;
         }
 
-        //设置加速解码
-        videoCodecCtx->lowres = videoCodec->max_lowres;
+        //设置加速解码        
         videoCodecCtx->flags2 |= AV_CODEC_FLAG2_FAST;
 
         //打开视频解码器
@@ -363,86 +363,4 @@ void FFmpegThread::stop()
 {
     //通过标志位让线程停止
     stopped = true;
-}
-
-//实时视频显示窗体类
-FFmpegWidget::FFmpegWidget(QWidget *parent) : QWidget(parent)
-{
-    thread = new FFmpegThread(this);
-    connect(thread, SIGNAL(receiveImage(QImage)), this, SLOT(updateImage(QImage)));
-    image = QImage();
-}
-
-FFmpegWidget::~FFmpegWidget()
-{
-    close();
-}
-
-void FFmpegWidget::paintEvent(QPaintEvent *)
-{
-    if (image.isNull()) {
-        return;
-    }
-
-    //qDebug() << TIMEMS << "paintEvent" << objectName();
-    QPainter painter(this);
-#if 0
-    //image = image.scaled(this->size(), Qt::KeepAspectRatio);
-    //按照比例自动居中绘制
-    int pixX = rect().center().x() - image.width() / 2;
-    int pixY = rect().center().y() - image.height() / 2;
-    QPoint point(pixX, pixY);
-    painter.drawImage(point, image);
-#else
-    painter.drawImage(this->rect(), image);
-#endif
-}
-
-void FFmpegWidget::updateImage(const QImage &image)
-{
-    //this->image = image.copy();
-    this->image = image;
-    this->update();
-}
-
-void FFmpegWidget::setUrl(const QString &url)
-{
-    thread->setUrl(url);
-}
-
-void FFmpegWidget::open()
-{
-    //qDebug() << TIMEMS << "open video" << objectName();
-    clear();
-
-    thread->play();
-    thread->start();
-}
-
-void FFmpegWidget::pause()
-{
-    thread->pause();
-}
-
-void FFmpegWidget::next()
-{
-    thread->next();
-}
-
-void FFmpegWidget::close()
-{
-    //qDebug() << TIMEMS << "close video" << objectName();
-    if (thread->isRunning()) {
-        thread->stop();
-        thread->quit();
-        thread->wait(500);
-    }
-
-    QTimer::singleShot(1, this, SLOT(clear()));
-}
-
-void FFmpegWidget::clear()
-{
-    image = QImage();
-    update();
 }

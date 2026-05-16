@@ -24,5 +24,9 @@ INCLUDEPATH += $$PWD/$$path_main/include/plugins
 LIBS += -L$$PWD/$$path_main/$$path_lib -llibvlc -llibvlccore
 
 HEADERS += $$PWD/vlcinclude.h
-HEADERS += $$PWD/vlc.h
-SOURCES += $$PWD/vlc.cpp
+
+HEADERS += $$PWD/vlcthread.h
+SOURCES += $$PWD/vlcthread.cpp
+
+HEADERS += $$PWD/vlcwidget.h
+SOURCES += $$PWD/vlcwidget.cpp

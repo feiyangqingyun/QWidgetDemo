@@ -1,11 +1,8 @@
-﻿#ifndef FFMPEG_H
-#define FFMPEG_H
+﻿#ifndef FFMPEGTHREAD_H
+#define FFMPEGTHREAD_H
 
-#include <QtGui>
-#if (QT_VERSION >= QT_VERSION_CHECK(5,0,0))
-#include <QtWidgets>
-#endif
-
+#include <QThread>
+#include <QImage>
 #include "ffmpeginclude.h"
 
 class FFmpegThread : public QThread
@@ -66,39 +63,4 @@ public slots:
     void stop();
 };
 
-//实时视频显示窗体类
-class FFmpegWidget : public QWidget
-{
-    Q_OBJECT
-public:
-    explicit FFmpegWidget(QWidget *parent = 0);
-    ~FFmpegWidget();
-
-protected:   
-    void paintEvent(QPaintEvent *);
-
-private:
-    FFmpegThread *thread;
-    QImage image;
-
-private slots:
-    //接收图像并绘制
-    void updateImage(const QImage &image);
-
-public slots:
-    //设置视频流地址
-    void setUrl(const QString &url);
-
-    //打开设备
-    void open();
-    //暂停
-    void pause();
-    //继续
-    void next();
-    //关闭设备
-    void close();
-    //清空
-    void clear();
-};
-
-#endif // FFMPEG_H
+#endif // FFMPEGTHREAD_H

@@ -7,6 +7,7 @@
 frmIPAddress::frmIPAddress(QWidget *parent) : QWidget(parent), ui(new Ui::frmIPAddress)
 {
     ui->setupUi(this);
+    //ui->widgetIP->setBgColor("#ff0000");
     on_btnSetIP_clicked();
 }
 
