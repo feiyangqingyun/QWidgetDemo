@@ -41,6 +41,7 @@ public:
      */
     enum PaintAttribute
     {
+        PaintAttributeNone = 0,
         /*!
           \brief Paint double buffered reusing the content
                  of the pixmap buffer when possible.

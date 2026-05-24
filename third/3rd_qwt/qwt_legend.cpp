@@ -229,7 +229,11 @@ public:
 
         const QSize visibleSize = viewport()->contentsRect().size();
 
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
         const int minW = int( tl->maxItemWidth() ) + 2 * tl->margin();
+#else
+        const int minW = int( tl->maxItemWidth() ) + 2 * tl->contentsMargins().left();
+#endif
 
         int w = qMax( visibleSize.width(), minW );
         int h = qMax( tl->heightForWidth( w ), visibleSize.height() );
@@ -680,8 +684,11 @@ void QwtLegend::renderLegend( QPainter *painter,
     if ( legendLayout == NULL )
         return;
 
-    int left, right, top, bottom;
-    getContentsMargins( &left, &top, &right, &bottom );
+    QMargins margins = contentsMargins();
+    int left = margins.left();
+    int top = margins.top();
+    int right = margins.right();
+    int bottom = margins.bottom();
 
     QRect layoutRect;
     layoutRect.setLeft( qCeil( rect.left() ) + left );
@@ -755,7 +762,9 @@ void QwtLegend::renderItem( QPainter *painter,
         titleRect.setX( iconRect.right() + 2 * label->spacing() );
 
         QFont labelFont = label->font();
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
         labelFont.resolve( QFont::AllPropertiesResolved );
+#endif
 
         painter->setFont( labelFont );
         painter->setPen( label->palette().color( QPalette::Text ) );

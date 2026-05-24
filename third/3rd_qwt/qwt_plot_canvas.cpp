@@ -194,7 +194,9 @@ static void qwtDrawBackground( QPainter *painter, QwtPlotCanvas *canvas )
         }
         else
         {
-            rects = painter->clipRegion().rects();
+            for (auto it = painter->clipRegion().begin(); it != painter->clipRegion().end(); ++it) {
+                rects.append(*it);
+            }
         }
 
 #if 1
@@ -254,7 +256,11 @@ static void qwtDrawBackground( QPainter *painter, QwtPlotCanvas *canvas )
         painter->setPen( Qt::NoPen );
         painter->setBrush( brush );
 
-        painter->drawRects( painter->clipRegion().rects() );
+        QVector<QRect> rects;
+        for (auto it = painter->clipRegion().begin(); it != painter->clipRegion().end(); ++it) {
+            rects.append(*it);
+        }
+        painter->drawRects( rects );
 
     }
 
@@ -494,7 +500,7 @@ public:
     PrivateData():
         focusIndicator( NoFocusIndicator ),
         borderRadius( 0 ),
-        paintAttributes( 0 ),
+        paintAttributes( PaintAttributeNone ),
         backingStore( NULL )
     {
         styleSheet.hasBorder = false;
@@ -620,6 +626,7 @@ void QwtPlotCanvas::setPaintAttribute( PaintAttribute attribute, bool on )
             break;
         }
         case HackStyledBackground:
+        case PaintAttributeNone:
         case ImmediatePaint:
         {
             break;
@@ -955,7 +962,7 @@ void QwtPlotCanvas::drawBorder( QPainter *painter )
 #else
         QStyleOptionFrame opt;
 #endif
-        opt.init(this);
+        opt.initFrom(this);
 
         int frameShape  = frameStyle() & QFrame::Shape_Mask;
         int frameShadow = frameStyle() & QFrame::Shadow_Mask;

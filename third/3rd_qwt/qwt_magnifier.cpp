@@ -438,9 +438,9 @@ void QwtMagnifier::widgetWheelEvent( QWheelEvent *wheelEvent )
             of 120 (== 15 * 8).
          */
         double f = qPow( d_data->wheelFactor,
-            qAbs( wheelEvent->delta() / 120.0 ) );
+            qAbs( wheelEvent->angleDelta().y() / 120.0 ) );
 
-        if ( wheelEvent->delta() > 0 )
+        if ( wheelEvent->angleDelta().y() > 0 )
             f = 1 / f;
 
         rescale( f );

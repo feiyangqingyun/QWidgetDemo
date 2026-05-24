@@ -315,7 +315,7 @@ void QwtDial::paintEvent( QPaintEvent *event )
     painter.setClipRegion( event->region() );
 
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 
     if ( d_data->mode == QwtDial::RotateScale )
@@ -691,9 +691,14 @@ QSize QwtDial::sizeHint() const
     const int d = 6 * sh + 2 * lineWidth();
 
     QSize hint( d, d );
-    if ( !isReadOnly() )
+    if ( !isReadOnly() ) {
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
         hint = hint.expandedTo( QApplication::globalStrut() );
-
+#else
+        QScreen *screen = QGuiApplication::primaryScreen();
+        hint = hint.expandedTo( screen->availableSize() );
+#endif
+    }
     return hint;
 }
 
@@ -831,8 +836,13 @@ void QwtDial::changeEvent( QEvent *event )
 void QwtDial::wheelEvent( QWheelEvent *event )
 {
     const QRegion region( innerRect(), QRegion::Ellipse );
-    if ( region.contains( event->pos() ) )
+#if (QT_VERSION < QT_VERSION_CHECK(5,15,0))
+    if ( region.contains( event->pos() ) ) {
+#else
+    if ( region.contains( event->position().toPoint() ) ) {
+#endif
         QwtAbstractSlider::wheelEvent( event );
+    }
 }
 
 void QwtDial::setAngleRange( double angle, double span )

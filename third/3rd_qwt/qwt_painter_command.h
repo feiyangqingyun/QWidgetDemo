@@ -78,7 +78,7 @@ public:
         QBrush backgroundBrush;
         Qt::BGMode backgroundMode;
         QFont font;
-        QMatrix matrix;
+        QTransform matrix;
         QTransform transform;
 
         Qt::ClipOperation clipOperation;

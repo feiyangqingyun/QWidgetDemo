@@ -11,7 +11,11 @@
 #include "qwt_scale_map.h"
 #include "qwt_painter.h"
 #include <qapplication.h>
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
 #include <qdesktopwidget.h>
+#else
+#include <QScreen>
+#endif
 #include <qpainter.h>
 #include <qpaintengine.h>
 #include <qmath.h>
@@ -372,7 +376,9 @@ static bool qwtUseCache( QwtPlotRasterItem::CachePolicy policy,
         {
             case QPaintEngine::SVG:
             case QPaintEngine::Pdf:
+#if (QT_VERSION < QT_VERSION_CHECK(6,0,0))
             case QPaintEngine::PostScript:
+#endif
             case QPaintEngine::MacPrinter:
             case QPaintEngine::Picture:
                 break;

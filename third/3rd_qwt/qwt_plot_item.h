@@ -141,6 +141,7 @@ public:
      */
     enum ItemAttribute
     {
+        ItemAttributeNone = 0x00,
         //! The item is represented on the legend.
         Legend = 0x01,
 
@@ -199,6 +200,7 @@ public:
     //! Render hints
     enum RenderHint
     {
+        RenderHintNone = 0x00,
         //! Enable antialiasing
         RenderAntialiased = 0x1
     };
